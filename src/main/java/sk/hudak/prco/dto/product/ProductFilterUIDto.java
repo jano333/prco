@@ -17,6 +17,10 @@ public class ProductFilterUIDto implements Serializable {
     public ProductFilterUIDto() {
     }
 
+    public ProductFilterUIDto(Boolean onlyInAction) {
+        this.onlyInAction = onlyInAction;
+    }
+
     public ProductFilterUIDto(EshopUuid eshopUuid) {
         this.eshopUuid = eshopUuid;
     }

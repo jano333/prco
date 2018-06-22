@@ -211,9 +211,7 @@ public class Starter {
     }
 
     private void showProductInActionAll() {
-        ProductFilterUIDto filter = new ProductFilterUIDto();
-        filter.setOnlyInAction(Boolean.TRUE);
-        List<ProductFullDto> products = uiService.findProducts(filter);
+        List<ProductFullDto> products = uiService.findProducts(new ProductFilterUIDto(Boolean.TRUE));
         System.out.println("Produkty v akcii:");
         for (ProductFullDto product : products) {
             System.out.println("id " + product.getId() + ", "
@@ -227,11 +225,10 @@ public class Starter {
     }
 
     private void showProductsInEshopInAction(EshopUuid eshopUuid) {
-        List<ProductInActionDto> products = uiService.findProductsInAction(eshopUuid);
-
         System.out.println();
         System.out.println("Produkty v akcii pre eshop " + eshopUuid + ":");
-        for (ProductInActionDto product : products) {
+
+        for (ProductInActionDto product : uiService.findProductsInAction(eshopUuid)) {
             System.out.println("id " + product.getId() + ", "
                     + formatPrice(product.getPriceForOneItemInPackage(), 2) + " "
                     + formatPrice(product.getPriceForPackage()) + "/"
@@ -281,9 +278,8 @@ public class Starter {
 
     private void showProductsInEshop(EshopUuid eshopUuid) {
         System.out.println("Eshop " + eshopUuid);
-        ProductFilterUIDto filter = new ProductFilterUIDto();
-        filter.setEshopUuid(eshopUuid);
-        List<ProductFullDto> products = uiService.findProducts(filter);
+
+        List<ProductFullDto> products = uiService.findProducts(new ProductFilterUIDto(eshopUuid));
         for (ProductFullDto product : products) {
             System.out.println("id " + product.getId() + ", "
                     + formatPrice(product.getPriceForPackage()) + "(" + formatValidTo(product.getActionValidTo()) + ") " + formatPrice(product.getCommonPrice())
