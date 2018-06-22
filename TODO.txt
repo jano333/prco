@@ -5,25 +5,6 @@ TODO: doriesit nove produkty pre ktore nevie vyparsovat unit co mam na UI
 pridat automaticke parsovanie default ceny z daneho eshopu pri vytvarani a nasledne aj aktualizaciu ....
 otazka znie ci potom ako budem mat ja potom default cenu, lebo napr. 14,99 nutrilon... nie vsade je to bezna cena pre nutrilon
 ------------------------------------------------------------------------------------------------------------------------
-2018-04-10 12:31:18,744 ERROR [FEEDO] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:84] error while updating product data
-sk.hudak.prco.exception.PrcoRuntimeException: error while parsing product picture, URL: https://www.feedo.sk/pampers-active-baby-4-maxi-174ks-8-14kg-mesacna-zasoba-jednorazove-plienky/
-	at sk.hudak.prco.parser.impl.JSoupProductParser.internalParseProductPictureURL(JSoupProductParser.java:232)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:135)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.processUpdate(UpdateProductDataManagerImpl.java:95)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateAllProductDataForEshop$3(UpdateProductDataManagerImpl.java:71)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
-	at java.util.ArrayList.rangeCheck(ArrayList.java:653)
-	at java.util.ArrayList.get(ArrayList.java:429)
-	at sk.hudak.prco.eshop.FeedoProductParser.parseProductPictureURL(FeedoProductParser.java:129)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.internalParseProductPictureURL(JSoupProductParser.java:230)
-	... 9 common frames omitted
-------------------------------------------------------------------------------------------------------------------------
 2018-03-27 15:00:54,046 ERROR [MALL] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:170] error creating document for url 'http://mall.sk/plienky-pampers-7-18-kg/pampers-active-baby-4-maxi-7-14kg-giant-box-90ks':
 java.net.SocketTimeoutException: Read timed out
 	at java.net.SocketInputStream.socketRead0(Native Method)

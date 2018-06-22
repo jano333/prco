@@ -127,11 +127,13 @@ public class FeedoProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("a[class=image]");
+        //TODO parsovanie obrazkov nefunguje(musim pridat testy na komplet to co urcite funguje..., vsetky eshopy v jednom vlaklne postupne )
+        Elements select = documentDetailProduct.select("div[class=box-image]");
         if (select.isEmpty()) {
             return Optional.empty();
         }
-        String href = select.get(0).attr("href");
+        Element child = select.get(0).child(0);
+        String href = child.attr("href");
         return Optional.ofNullable(href);
     }
 }
