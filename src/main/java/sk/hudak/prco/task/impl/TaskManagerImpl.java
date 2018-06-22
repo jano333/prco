@@ -1,5 +1,6 @@
 package sk.hudak.prco.task.impl;
 
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ public class TaskManagerImpl implements TaskManager {
 
     private Map<EshopUuid, ExecutorService> executors = new EnumMap<>(EshopUuid.class);
 
+    @Getter
     private Map<EshopUuid, TaskStatus> tasks = new ConcurrentHashMap<>(EshopUuid.values().length);
 
     @PostConstruct

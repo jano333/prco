@@ -42,6 +42,11 @@ public interface ProductService {
 
     void removeProduct(Long productId);
 
+    /**
+     * Resetne ceny a akcie na null, last update na aktualny datum
+     *
+     * @param productId id produktu
+     */
     void markProductAsUnavailable(Long productId);
 
     void resetUpdateDateProduct(Long productId);

@@ -19,6 +19,7 @@ import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.dto.product.ProductInActionDto;
 import sk.hudak.prco.manager.AddingNewProductManager;
 import sk.hudak.prco.manager.DbExportImportManager;
+import sk.hudak.prco.manager.EshopThreadStatisticManager;
 import sk.hudak.prco.manager.HtmlExportManager;
 import sk.hudak.prco.manager.UpdateProductDataManager;
 import sk.hudak.prco.manager.UpdateProductInfoListener;
@@ -72,7 +73,12 @@ public class Starter {
     @Autowired
     private WatchDogManager watchDogManager;
 
+    @Autowired
+    private EshopThreadStatisticManager theadStatisticManager;
+
     public void run() {
+
+        theadStatisticManager.startShowingStatistics();
 
         // --- WATCH DOG SERVICE ---
 //        watchDogManager.startWatching("https://www.obi.sk/zahradne-hadice/cmi-zahradna-hadica-12-5-mm-1-2-20-m-zelena/p/2235422",
@@ -103,7 +109,7 @@ public class Starter {
         // olej
 //        showProductsInGroup(225L);
 
-        showAllProductsInAllGroups();
+//        showAllProductsInAllGroups();
 //        showProductsNotInAnyGroup();
 
 
@@ -115,8 +121,8 @@ public class Starter {
 //        showProductsInEshopInAction(EshopUuid.METRO);
 //        showProductInActionAll();
 
-        showProductsInEshopWithBestPriceInGroupOnly(EshopUuid.TESCO);
-        showProductsInEshopWithBestPriceInGroupOnly(EshopUuid.METRO);
+//        showProductsInEshopWithBestPriceInGroupOnly(EshopUuid.TESCO);
+//        showProductsInEshopWithBestPriceInGroupOnly(EshopUuid.METRO);
 
 
 //        watchDogService.notifyByEmail(Collections.emptyList());
@@ -130,7 +136,7 @@ public class Starter {
                         updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
             }
         };
-//        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
+        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
 //        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.TESCO, listener);
 //        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.BAMBINO, listener);
 //        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.METRO, listener);

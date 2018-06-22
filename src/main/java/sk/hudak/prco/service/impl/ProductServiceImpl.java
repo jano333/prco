@@ -337,7 +337,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void markProductAsUnavailable(Long productId) {
-        internalLastTimeDataUpdated(productId, new Date());
+        ProductDataUpdateEntity updateEntity = productDataUpdateEntityDao.findById(productId);
+        updateEntity.setLastTimeDataUpdated(new Date());
+        // prices
+        updateEntity.setPriceForOneItemInPackage(null);
+        updateEntity.setPriceForPackage(null);
+        updateEntity.setPriceForUnit(null);
+        // action
+        updateEntity.setProductAction(null);
+        updateEntity.setActionValidTo(null);
+
+        productDataUpdateEntityDao.update(updateEntity);
+        log.debug("product with id {} was reset/mark as unavailable", productId);
     }
 
     @Override

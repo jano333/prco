@@ -2,9 +2,12 @@ package sk.hudak.prco.task;
 
 import sk.hudak.prco.api.EshopUuid;
 
+import java.util.Map;
 import java.util.concurrent.Future;
 
 public interface TaskManager {
+
+    Map<EshopUuid, TaskStatus> getTasks();
 
     Future<?> submitTask(EshopUuid eshopUuid, Runnable task);
 
