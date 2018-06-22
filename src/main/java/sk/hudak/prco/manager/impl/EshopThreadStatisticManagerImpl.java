@@ -24,7 +24,7 @@ public class EshopThreadStatisticManagerImpl implements EshopThreadStatisticMana
             while (aha) {
                 doInOneLoop();
                 try {
-                    Thread.sleep(5 * 1000);
+                    Thread.sleep(10 * 1000);
                 } catch (InterruptedException e) {
                     //TODO
                     e.printStackTrace();
