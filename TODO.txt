@@ -1,22 +1,6 @@
-Dorobit:
-- ak je neaka chyba tak odmazat vsetky ceny aby sa neaktualny product nedostal do zoznamu porovnani...
-
-
-
-
-2018-06-05 11:24:11,752 ERROR [BAMBINO] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:172] error creating document for url 'https://www.bambino.sk/pokracovacia-mliecna-vyziva/4-pronutra-6x800g':  org.jsoup.HttpStatusException: HTTP error fetching URL. Status=404, URL=https://www.bambino.sk/pokracovacia-mliecna-vyziva/4-pronutra-6x800g
-2018-06-05 11:24:21,927 ERROR [MALL] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:172] error creating document for url 'http://mall.sk/detske-mlieka/nutrilon-4-pronutra-6-x-800g':  org.jsoup.HttpStatusException: HTTP error fetching URL. Status=404, URL=https://www.mall.sk/detske-mlieka/nutrilon-4-pronutra-6-x-800g
-
 
 ------------------------------------------------------------------------------------------------------------------------
 TODO: doriesit nove produkty pre ktore nevie vyparsovat unit co mam na UI
-------------------------------------------------------------------------------------------------------------------------
-nie je zozname new produktov... na GUI neviem preco...
-2018-04-16 12:20:07,169 DEBUG [METRO] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:172] checking existence of product URL https://sortiment.metro.sk/sk/tento-economy-tp-2vrst-24x68m/209965p/
-2018-04-16 12:20:07,211 DEBUG [METRO] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:151] request URL: https://sortiment.metro.sk/sk/tento-economy-tp-2vrst-24x68m/209965p/
-2018-04-16 12:20:07,211 DEBUG [METRO] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:154] userAgent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10; rv:33.0) Gecko/20100101 Firefox/33.0
-2018-04-16 12:20:07,857 DEBUG [METRO] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:30] parsing product name to retrieve unit info: Tento Toaletný papier Economy 2-vrst.68m 1x24 ks
-2018-04-16 12:20:07,885 DEBUG [METRO] [] s.h.p.s.i.NewProductServiceImpl [NewProductServiceImpl.java:63] create new entity NewProductEntity with id 1217
 ------------------------------------------------------------------------------------------------------------------------
 pridat automaticke parsovanie default ceny z daneho eshopu pri vytvarani a nasledne aj aktualizaciu ....
 otazka znie ci potom ako budem mat ja potom default cenu, lebo napr. 14,99 nutrilon... nie vsade je to bezna cena pre nutrilon
