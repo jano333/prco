@@ -1,0 +1,88 @@
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                <pattern>%date %level [%thread] [%X{eshopUuid}] %logger{10} [%file:%line] %msg%n</pattern>
+            </Pattern>
+        </layout>
+    </appender>
+
+
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/dev/sk.hudak.prco/logs/sk.hudak.prco-error.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/dev/sk.hudak.prco/logs/sk.hudak.prco-error-%d{yyyy_MM_dd}.log.zip</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%date %level [%thread] [%X{eshopUuid}] %logger{10} [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/dev/sk.hudak.prco/logs/sk.hudak.prco-debug.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/dev/sk.hudak.prco/logs/sk.hudak.prco-debug-%d{yyyy_MM_dd}.log.zip</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%date %level [%thread] [%X{eshopUuid}] %logger{10} [%file:%line] %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+   <!-- <appender name="FILE_SLOW_SQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/amc/app-ws-api-ca-test/logs/sk.hudak.prco-debug-slow-sql.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/amc/app-ws-api-ca-test/logs/sk.hudak.prco-debug-slow-sql-%d{yyyy_MM_dd}.log.zip</fileNamePattern>
+            &lt;!&ndash; keep 30 days' worth of history &ndash;&gt;
+            <maxHistory>30</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date %level [%thread] [%X{eshopUuid}] %logger{10} [%file:%line] %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.jdbcdslog.SlowQueryLogger" additivity="true">
+        <level value="info" />
+        <appender-ref ref="FILE_SLOW_SQL" />
+    </logger>-->
+
+    <logger name="sk.hudak" level="debug" additivity="true">
+        <appender-ref ref="FILE_DEBUG" />
+        <!--<appender-ref ref="STDOUT" />-->
+    </logger>
+
+    <logger name="org.springframework" level="info" additivity="false">
+        <appender-ref ref="FILE_DEBUG" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="com" level="warn" additivity="false">
+        <appender-ref ref="FILE_DEBUG" />
+        <appender-ref ref="FILE_ERROR" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="org" level="warn" additivity="false">
+        <appender-ref ref="FILE_DEBUG" />
+        <appender-ref ref="FILE_ERROR" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <root level="warn">
+        <appender-ref ref="FILE_ERROR" />
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

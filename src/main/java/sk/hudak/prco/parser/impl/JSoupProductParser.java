@@ -1,0 +1,290 @@
+package sk.hudak.prco.parser.impl;
+
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Connection;
+import org.jsoup.HttpStatusException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import sk.hudak.prco.api.ProductAction;
+import sk.hudak.prco.dto.UnitTypeValueCount;
+import sk.hudak.prco.dto.newproduct.NewProductInfo;
+import sk.hudak.prco.dto.product.ProductForUpdateData;
+import sk.hudak.prco.exception.HttpErrorPrcoRuntimeException;
+import sk.hudak.prco.exception.PrcoRuntimeException;
+import sk.hudak.prco.exception.ProductNameNotFoundException;
+import sk.hudak.prco.exception.ProductPriceNotFoundException;
+import sk.hudak.prco.parser.EshopProductsParser;
+import sk.hudak.prco.parser.UnitParser;
+import sk.hudak.prco.utils.UserAgentDataHolder;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import static sk.hudak.prco.utils.ThreadUtils.sleepRandomSafeBetween;
+import static sk.hudak.prco.utils.URLUtils.buildSearchUrl;
+
+/**
+ * Created by jan.hudak on 9/29/2017.
+ */
+@Slf4j
+public abstract class JSoupProductParser implements EshopProductsParser {
+
+    public static final int DEFAULT_TIMOUT_IN_MILIS = 3000;
+
+    protected UnitParser unitParser;
+    protected UserAgentDataHolder userAgentDataHolder;
+
+    public JSoupProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder) {
+        this.unitParser = unitParser;
+        this.userAgentDataHolder = userAgentDataHolder;
+    }
+
+    @Override
+    public List<String> parseUrlsOfProduct(@NonNull String searchKeyWord) {
+        String searchUrl = buildSearchUrl(getEshopUuid(), searchKeyWord);
+        Document firstPageDocument = retrieveDocument(searchUrl);
+
+        // 1. krok - zistim paging(pocet stranok)
+        int countOfPages = internalGetCountOfPages(firstPageDocument, searchUrl);
+        log.debug("pages count: {}", countOfPages);
+
+        // checking for max size
+        if (countOfPages > getEshopUuid().getMaxCountOfNewPages()) {
+            countOfPages = getEshopUuid().getMaxCountOfNewPages();
+            log.debug("new pages count: {}", countOfPages);
+        }
+
+        // 2. krok - parsujem prvu stranku
+        List<String> firstPageUrls = internalParsePageForProductUrls(firstPageDocument, searchUrl);
+        if (firstPageUrls.isEmpty()) {
+            log.warn("none products URL found for keyword {}", searchKeyWord);
+            return Collections.emptyList();
+        }
+        List<String> resultUrls = new ArrayList<>();
+        resultUrls.addAll(firstPageUrls);
+
+        // 3. krok - ak existuju dalsie stranky parsujem aj tie
+        if (countOfPages > 1) {
+            for (int pageNumber = 2; pageNumber <= countOfPages; pageNumber++) {
+                resultUrls.addAll(parseNextPage(pageNumber, searchKeyWord));
+            }
+        }
+        return resultUrls;
+    }
+
+    @Override
+    public NewProductInfo parseNewProductInfo(@NonNull String productUrl) {
+        //FIXME prepisat tak ako je parseProductUpdateData myslim tym tie optional
+
+        Document document = retrieveDocument(productUrl);
+
+        NewProductInfo.NewProductInfoBuilder builder = NewProductInfo.builder()
+                .url(productUrl)
+                .eshopUuid(getEshopUuid());
+
+        Optional<String> nameOpt = parseProductNameFromList(document);
+        if (!nameOpt.isPresent()) {
+            return builder.build();
+        }
+        builder.name(nameOpt.get());
+
+        Optional<UnitTypeValueCount> unitTypeValueCountOpt = parseUnitValueCount(nameOpt.get());
+        if (!unitTypeValueCountOpt.isPresent()) {
+            return builder.build();
+        }
+        return builder
+                .unit(unitTypeValueCountOpt.get().getUnit())
+                .unitValue(unitTypeValueCountOpt.get().getValue())
+                .unitPackageCount(unitTypeValueCountOpt.get().getPackageCount())
+                .build();
+    }
+
+    @Override
+    public ProductForUpdateData parseProductUpdateData(@NonNull String productUrl) {
+        Document document = retrieveDocument(productUrl);
+
+        // ak je produkt nedostupny tak nastavim len url a eshop uuid
+        if (isProductUnavailable(document)) {
+            log.debug("product is unavailable: {} ", productUrl);
+            return ProductForUpdateData.builder()
+                    .url(productUrl)
+                    .eshopUuid(getEshopUuid()).build();
+        }
+
+        String productName = parseProductNameFromDetail(document)
+                .orElseThrow(() -> new ProductNameNotFoundException(productUrl));
+
+        BigDecimal productPriceForPackage = parseProductPriceForPackage(document)
+                .orElseThrow(() -> new ProductPriceNotFoundException(productUrl));
+
+        Optional<ProductAction> productAction = internalParseProductAction(document, productUrl);
+
+        // platnost akcie
+        Optional<Date> productActionValidity = Optional.empty();
+        if (productAction.isPresent() && productAction.get().equals(ProductAction.IN_ACTION)) {
+            productActionValidity = internalParseProductActionValidity(document, productUrl);
+        }
+
+        Optional<String> pictureUrl = internalParseProductPictureURL(document, productUrl);
+
+        return ProductForUpdateData.builder()
+                .url(productUrl)
+                .eshopUuid(getEshopUuid())
+                .name(productName)
+                .priceForPackage(productPriceForPackage)
+
+                // FIXME spojit do jedneho ohladne product action
+                .productAction(productAction.isPresent() ? productAction.get() : null)
+                .actionValidity(productActionValidity.isPresent() ? productActionValidity.get() : null)
+
+                .pictureUrl(pictureUrl.isPresent() ? pictureUrl.get() : null)
+                .build();
+    }
+
+    protected Document retrieveDocument(String productUrl) {
+        try {
+            log.debug("request URL: {}", productUrl);
+
+            String userAgent = getUserAgent();
+            log.debug("userAgent: {}", userAgent);
+
+            Connection connection = Jsoup.connect(productUrl)
+                    .userAgent(userAgent)
+                    .timeout(getTimeout());
+
+            if (getCookie() != null && !getCookie().isEmpty()) {
+                connection.cookies(getCookie());
+            }
+
+            return connection.get();
+
+        } catch (Exception e) {
+            String errMsg = "error creating document for url '" + productUrl + "': ";
+            if (e instanceof HttpStatusException) {
+                HttpStatusException se = (HttpStatusException) e;
+                errMsg = errMsg + " " + se.toString();
+                log.error(errMsg, e);
+                throw new HttpErrorPrcoRuntimeException(se.getStatusCode(), errMsg, e);
+            } else {
+                log.error(errMsg, e);
+                throw new PrcoRuntimeException(errMsg, e);
+            }
+        }
+    }
+
+    protected List<String> parseNextPage(int pageNumber, String searchKeyWord) {
+        String searchUrl = buildSearchUrl(getEshopUuid(), searchKeyWord, pageNumber);
+        // FIXME 5 a 20 dat nech nacita od konfiguracie pre konkretny eshop
+        sleepRandomSafeBetween(5, 20);
+        return parsePageForProductUrls(retrieveDocument(searchUrl), pageNumber);
+    }
+
+    private Optional<UnitTypeValueCount> parseUnitValueCount(String productName) {
+        return unitParser.parseUnitTypeValueCount(productName);
+    }
+
+    protected String getUserAgent() {
+//        return UserAgentManager.getRandom();
+        return userAgentDataHolder.getUserAgentForEshop(getEshopUuid());
+    }
+
+    protected int getTimeout() {
+        return DEFAULT_TIMOUT_IN_MILIS;
+    }
+
+    protected Map<String, String> getCookie() {
+        return Collections.emptyMap();
+    }
+
+    /**
+     * Volane pri ziskavani noveho produktu
+     *
+     * @param documentList html document
+     * @return
+     */
+    @Deprecated
+    protected abstract Optional<String> parseProductNameFromList(Document documentList);
+
+    private List<String> internalParsePageForProductUrls(Document firstPageDocument, String searchUrl) {
+        try {
+            return parsePageForProductUrls(firstPageDocument, 1);
+        } catch (Exception e) {
+            throw new PrcoRuntimeException("error while parsing pages of products, search URL: " + searchUrl, e);
+        }
+    }
+
+    private Optional<Date> internalParseProductActionValidity(Document document, String searchUrl) {
+        try {
+            return parseProductActionValidity(document);
+        } catch (Exception e) {
+            throw new PrcoRuntimeException("error while parsing product action validity, search URL: " + searchUrl, e);
+        }
+    }
+
+    private Optional<String> internalParseProductPictureURL(Document document, String productUrl) {
+        try {
+            return parseProductPictureURL(document);
+        } catch (Exception e) {
+            throw new PrcoRuntimeException("error while parsing product picture, URL: " + productUrl, e);
+        }
+    }
+
+    private Optional<ProductAction> internalParseProductAction(Document document, String productUrl) {
+        try {
+            return parseProductAction(document);
+        } catch (Exception e) {
+            throw new PrcoRuntimeException("error while parsing product action, URL: " + productUrl, e);
+        }
+
+    }
+
+    private int internalGetCountOfPages(Document documentList, String searchUrl) {
+        try {
+            return parseCountOfPages(documentList);
+        } catch (Exception e) {
+            throw new PrcoRuntimeException("error while parsing count of page for products, search URL: " + searchUrl, e);
+        }
+    }
+
+    /**
+     * Metoda vrati pocet stranok(pagging) na kolkych sa dane vyhladavane slovo vyskytuje.
+     * <br><b>Pozor:</b> Nie je to celkovy pocet produktov, ale pocet stranok, v zavislosti od strankovanie
+     * daneho eshopu...
+     * <br>Volana 1 v poradi.
+     * <br> vynimky vyhadzovane touto metodu su odchytovane vyssie
+     *
+     * @param documentList
+     * @return
+     */
+    protected abstract int parseCountOfPages(Document documentList);
+
+    /**
+     * Volana 2 v poradi.<br>
+     * vynimky vyhadzovane touto metodu su odchytovane vyssie
+     *
+     * @param documentList aktualne parsovany dokument
+     * @param pageNumber   poradove cislo stranky(z pagingu)
+     * @return
+     */
+    protected abstract List<String> parsePageForProductUrls(Document documentList, int pageNumber);
+
+    protected abstract boolean isProductUnavailable(Document documentDetailProduct);
+
+    protected abstract Optional<String> parseProductNameFromDetail(Document documentDetailProduct);
+
+    protected abstract Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct);
+
+    //TODO nasledovne 2 metody spojit do jednej a urobit aj navratovy typ
+    protected abstract Optional<ProductAction> parseProductAction(Document documentDetailProduct);
+
+    protected abstract Optional<Date> parseProductActionValidity(Document documentDetailProduct);
+
+    protected abstract Optional<String> parseProductPictureURL(Document documentDetailProduct);
+
+}
