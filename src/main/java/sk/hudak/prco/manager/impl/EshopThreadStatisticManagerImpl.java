@@ -8,6 +8,8 @@ import sk.hudak.prco.manager.EshopThreadStatisticManager;
 import sk.hudak.prco.task.TaskManager;
 import sk.hudak.prco.task.TaskStatus;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -39,13 +41,17 @@ public class EshopThreadStatisticManagerImpl implements EshopThreadStatisticMana
 
     private void doInOneLoop() {
         Map<EshopUuid, TaskStatus> tasks = taskManager.getTasks();
-        int countOfRunning = 0;
+        List<EshopUuid> running = new ArrayList<>(EshopUuid.values().length);
         for (Map.Entry<EshopUuid, TaskStatus> eshopUuidTaskStatusEntry : tasks.entrySet()) {
             if (eshopUuidTaskStatusEntry.getValue().equals(TaskStatus.RUNNING)) {
-                countOfRunning++;
+                running.add(eshopUuidTaskStatusEntry.getKey());
             }
         }
-        log.debug(">> all tasks: {}  running: {}", tasks.size(), countOfRunning);
+        if (running.isEmpty()) {
+            log.debug(">> all tasks: {}  running: {}", tasks.size(), running.size());
+        } else {
+            log.debug(">> all tasks: {}  running: {} -> {}", tasks.size(), running.size(), running.toString());
+        }
         log.debug("status: {}", tasks.toString());
 
     }

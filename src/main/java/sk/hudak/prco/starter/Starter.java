@@ -22,8 +22,6 @@ import sk.hudak.prco.manager.DbExportImportManager;
 import sk.hudak.prco.manager.EshopThreadStatisticManager;
 import sk.hudak.prco.manager.HtmlExportManager;
 import sk.hudak.prco.manager.UpdateProductDataManager;
-import sk.hudak.prco.manager.UpdateProductInfoListener;
-import sk.hudak.prco.manager.UpdateStatusInfo;
 import sk.hudak.prco.manager.WatchDogManager;
 import sk.hudak.prco.parser.HtmlParser;
 import sk.hudak.prco.service.InternalTxService;
@@ -129,14 +127,11 @@ public class Starter {
 
 
         // --- UPDATE PRICE DATA ---
-        UpdateProductInfoListener listener = new UpdateProductInfoListener() {
-            @Override
-            public void updateStatusInfo(UpdateStatusInfo updateStatusInfo) {
-                log.debug(">> eshop: {}, updated/waiting: {}/{}", updateStatusInfo.getEshopUuid(),
-                        updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
-            }
-        };
-        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
+//        UpdateProductInfoListener listener = updateStatusInfo ->
+//                log.debug(">> eshop: {}, updated/waiting: {}/{}",
+//                        updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
+//
+//        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
 //        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.TESCO, listener);
 //        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.BAMBINO, listener);
 //        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.METRO, listener);
@@ -156,7 +151,7 @@ public class Starter {
 //        uiService.updateCommonPrice(385L, BigDecimal.valueOf(1.99));
 
         // --- ADD NEW PRODUCTS ---
-//        newProductManager.addNewProductsByKeywordForAllEshops("pampers 4");
+        newProductManager.addNewProductsByKeywordForAllEshops("pampers 4");
 //        newProductManager.addNewProductsByKeywordForAllEshops("nutrilon 4");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.METRO, "pampers 4");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.TESCO, "pampers 4");
