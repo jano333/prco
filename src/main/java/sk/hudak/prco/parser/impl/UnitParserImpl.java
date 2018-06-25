@@ -124,9 +124,9 @@ public class UnitParserImpl implements UnitParser {
         }
         // "Radoma Preto Filé z Aljašskej tresky 4 x 100 g"
         // "Radoma Preto Filé z Aljašskej tresky 4 x 100g"
-        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, " x ", NUMBER_AT_LEAST_ONE, " g|g");
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, " ", "x|×", " ", NUMBER_AT_LEAST_ONE, " g|g");
         if (matcher.find()) {
-            return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(4))), matcher.group(2));
+            return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(6))), matcher.group(2));
         }
         // "NUTRILON NUTRIMAMA Profutura cereálne tyčinky Brusnice a Maliny (5x40g)"
         matcher = craeteMatcher(productName, " \\(", NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, "g\\)");
