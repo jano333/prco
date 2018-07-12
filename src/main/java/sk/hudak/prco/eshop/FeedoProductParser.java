@@ -63,12 +63,10 @@ public class FeedoProductParser extends JSoupProductParser {
     protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
         // skusim -> premim cena
         Elements select = documentDetailProduct.select("div[class=price price-premium] span");
-        if (!select.isEmpty()) {
-        } else {
+        if (select.isEmpty()) {
             // ak sa nenajde tak skusim -> akcna cena
             select = documentDetailProduct.select("div[class=price price-discount] span");
-            if (!select.isEmpty()) {
-            } else {
+            if (select.isEmpty()) {
                 // ak sa nenajde tak skusim -> normalna cena
                 select = documentDetailProduct.select("div[class=price price-base] span");
                 if (select.isEmpty()) {

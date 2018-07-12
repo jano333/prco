@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static sk.hudak.prco.api.EshopUuid.BAMBINO;
 import static sk.hudak.prco.api.ProductAction.IN_ACTION;
 import static sk.hudak.prco.api.ProductAction.NON_ACTION;
 import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
@@ -37,7 +38,7 @@ public class BambinoProductParser extends JSoupProductParser {
 
     @Override
     public EshopUuid getEshopUuid() {
-        return EshopUuid.BAMBINO;
+        return BAMBINO;
     }
 
     @Override
