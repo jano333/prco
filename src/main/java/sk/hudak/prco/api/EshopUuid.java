@@ -5,6 +5,10 @@ package sk.hudak.prco.api;
  */
 public enum EshopUuid {
     //TODO pridat prvy parameter boolean ktory bude hovorit o tom ci je alebo nie je enablovany dany eshop
+//    ALZA("",
+//            "",
+//            "",
+//            5, 24),
 
     OBI("https://www.obi.sk",
             "https://www.obi.sk/search/{keyword}/?isi=true",
