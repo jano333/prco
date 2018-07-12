@@ -50,6 +50,8 @@ public class UnitParserTest {
                 Unit.LITER, "0.70000");
         addTestData(values, "Velkopopovický Kozel pivo tmavé 6x4x500 ml PLECH",
                 Unit.LITER, "0.50000", 24);
+        addTestData(values, "absolut vodka 40% 1x1 l",
+                Unit.LITER, "1", 1);
 
         // VAHA
         addTestData(values, "Radoma Preto Filé z Aljašskej tresky 4 x 100 g",
@@ -78,6 +80,9 @@ public class UnitParserTest {
                 Unit.KILOGRAM, "1");
         addTestData(values, "Kinder Chocolate tyčinky z mliečnej čokolády s mliečnou náplňou 8 x 12,5 g",
                 Unit.KILOGRAM, "0.01250", 8);
+         addTestData(values, "Nutrilon Nutrilon 4 Pronutra - 6 × 800g + vlhčené obrúsky Oncle SENSITIVE",
+                Unit.KILOGRAM, "0.80000", 6);
+
 
 
         for (String name : values.keySet()) {
