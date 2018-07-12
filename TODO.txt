@@ -5,9 +5,6 @@ TODO: doriesit nove produkty pre ktore nevie vyparsovat unit co mam na UI
 pridat automaticke parsovanie default ceny z daneho eshopu pri vytvarani a nasledne aj aktualizaciu ....
 otazka znie ci potom ako budem mat ja potom default cenu, lebo napr. 14,99 nutrilon... nie vsade je to bezna cena pre nutrilon
 ------------------------------------------------------------------------------------------------------------------------
-dava to zle...
-Nutrilon 4 Pronutra 6×800g + Nutrilon 4 Pronutra 2x400g
-------------------------------------------------------------------------------------------------------------------------
 pre tieto dve nerozpozna unit produktu(nie je tam jednotka len cislo, ide o plienky pre obe URL
 https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121218245
 https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121218256
