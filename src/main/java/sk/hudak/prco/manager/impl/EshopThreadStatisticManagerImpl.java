@@ -28,7 +28,8 @@ public class EshopThreadStatisticManagerImpl implements EshopThreadStatisticMana
                 try {
                     Thread.sleep((long)(10 * 1000));
                 } catch (InterruptedException e) {
-                    log.error("thread interupted " + e.getMessage());
+                    log.error("thread interrupted " + e.getMessage());
+                    Thread.currentThread().interrupt();
                 }
             }
 
