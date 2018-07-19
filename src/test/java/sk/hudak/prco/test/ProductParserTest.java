@@ -1,15 +1,26 @@
 package sk.hudak.prco.test;
 
-import sk.hudak.prco.eshop.MallProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
+import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
 
 public class ProductParserTest {
 
     public static void main(String[] args) {
 
+        PrcoSslManager.getInstance().init();
+
         UserAgentDataHolder userAgentDataHolder = new UserAgentDataHolder();
         userAgentDataHolder.init();
+
+        UnitParserImpl unitParser = new UnitParserImpl();
+
+        //Alza
+//        System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder)
+//                .parseUrlsOfProduct("pampers 4"));
+//                System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder)
+//                .parseNewProductInfo("https://www.alza.sk/maxi/pampers-active-baby-dry-vel-4-maxi-174-ks-d4593569.htm"));
+
 
         //HORNBACH
 //        System.out.println(new HornbachProductParser(new UnitParserImpl(), userAgentDataHolder)
@@ -36,8 +47,8 @@ public class ProductParserTest {
 //                .parseUrlsOfProduct("pampers 4"));
 //        System.out.println(new MallProductParser(new UnitParserImpl())
 //                .parseNewProductInfo("https://www.mall.sk/detske-mlieka/nutrilon-4-6-x-800g"));
-        System.out.println(new MallProductParser(new UnitParserImpl(), userAgentDataHolder)
-                .parseProductUpdateData("http://mall.sk/plienky-pampers-7-18-kg/pampers-active-baby-4-maxi-7-14kg-giant-box-90ks"));
+//        System.out.println(new MallProductParser(new UnitParserImpl(), userAgentDataHolder)
+//                .parseProductUpdateData("http://mall.sk/plienky-pampers-7-18-kg/pampers-active-baby-4-maxi-7-14kg-giant-box-90ks"));
 
         //Bambino
 //        System.out.println(new BambinoProductParser(new UnitParserImpl())
@@ -65,7 +76,7 @@ public class ProductParserTest {
 //        System.out.println(new MetroProductParser(new UnitParserImpl())
 //                .parseProductUpdateData("https://sortiment.metro.sk/sk/pampers-abd-mb-s4p-152ks/241760p/"));
 //                .parseProductUpdateData("https://sortiment.metro.sk/sk/guacamole-mix-vanicka-380g/259947p/"));
-    //Feedo
+        //Feedo
 //        System.out.println(new MetroProductParser(new UnitParserImpl())
 //                .parseUrlsOfProduct("pampers 4"));
 //        System.out.println(new MetroProductParser(new UnitParserImpl())
