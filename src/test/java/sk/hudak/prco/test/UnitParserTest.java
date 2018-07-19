@@ -38,6 +38,8 @@ public class UnitParserTest {
                 Unit.KUS, "108");
          addTestData(values, "Pampers Active Baby 4+ Maxi (9-16kg) Giant Pack - 70ks",
                 Unit.KUS, "70");
+         addTestData(values, "pampers pants veľ. 4 (352 ks) – dvojmesačná zásoba",
+                Unit.KUS, "352");
 
         // OBJEM
         addTestData(values, "Becherovka Original Bylinný likér 0,5 l",
