@@ -52,6 +52,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
             updateAllProductsDataForEshop(eshopUuid, listener);
             // kazdy dalsi spusti s 1 sekundovym oneskorenim
+            //TODO dat do configu dany parameter
             sleepSafe(5);
         }
     }

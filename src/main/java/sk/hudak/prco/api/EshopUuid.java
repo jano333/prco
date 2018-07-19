@@ -4,11 +4,17 @@ package sk.hudak.prco.api;
  * Created by jan.hudak on 9/29/2017.
  */
 public enum EshopUuid {
+
+//    pilulka
+//    bambino
+    // dr max
+    //
+
     //TODO pridat prvy parameter boolean ktory bude hovorit o tom ci je alebo nie je enablovany dany eshop
-//    ALZA("",
-//            "",
-//            "",
-//            5, 24),
+    ALZA("https://www.alza.sk/",
+            "https://www.alza.sk/search.htm?exps={keyword}",
+            "https://www.alza.sk/search-p{pageNumber}.htm?exps={keyword}",
+            3, 24),
 
     OBI("https://www.obi.sk",
             "https://www.obi.sk/search/{keyword}/?isi=true",

@@ -72,6 +72,12 @@ public class UnitParserImpl implements UnitParser {
             return createKus(convertToBigDecimal(matcher.group(2)), "1");
         }
 
+        // pampers pants veľ. 4 (352 ks) – dvojmesačná zásoba
+        matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, " ks\\)");
+        if (matcher.find()) {
+            return createKus(convertToBigDecimal(matcher.group(1)), "1");
+        }
+
         // --- OBJEM ---
 
         // Velkopopovický Kozel pivo tmavé 6x4x500 ml PLECH

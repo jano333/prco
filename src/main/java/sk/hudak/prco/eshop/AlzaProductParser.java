@@ -1,37 +1,77 @@
 package sk.hudak.prco.eshop;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.TextNode;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.nodes.DataNode;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.parser.UnitParser;
 import sk.hudak.prco.parser.impl.JSoupProductParser;
 import sk.hudak.prco.utils.UserAgentDataHolder;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static sk.hudak.prco.api.EshopUuid.ALZA;
 import static sk.hudak.prco.api.ProductAction.IN_ACTION;
 import static sk.hudak.prco.api.ProductAction.NON_ACTION;
 import static sk.hudak.prco.utils.JsoupUtils.existElement;
 import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
 
-//import static sk.hudak.prco.api.EshopUuid.ALZA;
-
+@Slf4j
+@Component
 public class AlzaProductParser extends JSoupProductParser {
 
+    public static final String chop = StringUtils.chop(EshopUuid.ALZA.getProductStartUrl());
 
     public AlzaProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder) {
         super(unitParser, userAgentDataHolder);
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 10 sekund
+        return 10000;
+    }
+
+    @Override
     public EshopUuid getEshopUuid() {
-//        return ALZA;
-        return null;
+        return ALZA;
+    }
+
+    @Override
+    protected int parseCountOfPages(Document documentList) {
+        // zaujimaju aj tak maximalne 3 page viac nie...
+        Element select = documentList.select("#pagertop").first();
+        if (select == null) {
+            return 1;
+        }
+        Elements children = select.children();
+        // 2-hy predposledny
+        Element element = children.get(children.size() - 3).child(0);
+        return Integer.valueOf(element.text());
+    }
+
+    @Override
+    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
+        Elements select1 = documentList.select("a[class='name browsinglink']");
+        List<String> urls = new ArrayList<>(select1.size());
+        for (Element element : select1) {
+            urls.add(chop + element.attr("href"));
+        }
+        return urls;
     }
 
     @Override
@@ -68,21 +108,25 @@ public class AlzaProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        //TODO
-        return Optional.empty();
+
+        Elements first = documentDetailProduct.select("script[type=application/ld+json]");
+        Element element = first.get(1);
+        List<Node> nodes = element.childNodes();
+        DataNode node = (DataNode) nodes.get(0);
+        String wholeDataJson = node.getWholeData();
+        JsonNode actualObj;
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            actualObj = mapper.readTree(wholeDataJson);
+        } catch (IOException e) {
+            log.error("error while parsing json for url " + documentDetailProduct.location(), e);
+            return Optional.empty();
+        }
+
+        TextNode name = (TextNode) actualObj.get("name");
+        return Optional.of(name.textValue());
     }
 
-    @Override
-    protected int parseCountOfPages(Document documentList) {
-        //TODO
-        return 0;
-    }
-
-    @Override
-    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
-        //TODO
-        return null;
-    }
 
     @Override
     protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
