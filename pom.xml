@@ -26,8 +26,8 @@
 		<querydsl.version>4.1.4</querydsl.version>
 		<vaadin.version>8.1.7</vaadin.version>
 		<httpclient.version>4.5.5</httpclient.version>
-		<spring-social.version>1.1.6.RELEASE</spring-social.version>
-		<spring-social-facebook.version>2.0.3.RELEASE</spring-social-facebook.version>
+		<!--<spring-social.version>1.1.4.RELEASE</spring-social.version>-->
+		<!--<spring-social-facebook.version>2.0.3.RELEASE</spring-social-facebook.version>-->
 	</properties>
 
 	<repositories>
@@ -49,7 +49,7 @@
 			<version>2.9.6</version>
 		</dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework.social</groupId>
 			<artifactId>spring-social-core</artifactId>
 			<version>${spring-social.version}</version>
@@ -57,15 +57,23 @@
 
 		<dependency>
 			<groupId>org.springframework.social</groupId>
-			<artifactId>spring-social-facebook</artifactId>
-			<version>${spring-social-facebook.version}</version>
+			<artifactId>spring-social-web</artifactId>
+			<version>${spring-social.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.social</groupId>
-			<artifactId>spring-social-web</artifactId>
-			<version>${spring-social.version}</version>
+			<artifactId>spring-social-facebook</artifactId>
+			<version>${spring-social-facebook.version}</version>
+		</dependency>-->
+
+		<!-- https://mvnrepository.com/artifact/com.restfb/restfb -->
+		<dependency>
+			<groupId>com.restfb</groupId>
+			<artifactId>restfb</artifactId>
+			<version>2.7.0</version>
 		</dependency>
+
 
 
 		<dependency>
