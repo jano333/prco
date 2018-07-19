@@ -294,6 +294,12 @@ public class InternalTxServiceImpl implements InternalTxService {
     }
 
     @Override
+    @Transactional
+    public void removeProductsFromGroup(Long groupId, Long... productIds) {
+        groupService.removeProductsFromGroup(groupId, productIds);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<GroupListDto> getGroupsWithoutProduct(Long productId) {
         return groupService.getGroupsWithoutProduct(productId);

@@ -1,5 +1,6 @@
 package sk.hudak.prco.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import sk.hudak.prco.api.EshopUuid;
@@ -23,7 +24,8 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@Entity(name = "PRODUCT" )
+@Entity(name = "PRODUCT")
+@EqualsAndHashCode
 public class ProductEntity extends DbEntity {
 
     @Id

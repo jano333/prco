@@ -121,6 +121,21 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public void removeProductsFromGroup(Long groupId, Long... productIds) {
+        notNull(groupId, "groupId");
+        notNull(productIds, "productIds");
+        atLeastOneIsNotNull(productIds, "productIds");
+
+        GroupEntity groupEntity = groupEntityDao.findById(groupId);
+
+        for (Long productId : productIds) {
+            groupEntity.getProducts().remove(productEntityDao.findById(productId));
+        }
+
+        groupEntityDao.update(groupEntity);
+    }
+
+    @Override
     public List<GroupListDto> getGroupsWithoutProduct(Long productId) {
         notNull(productId, "productId");
 

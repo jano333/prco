@@ -112,6 +112,11 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
+    public void removeProductsFromGroup(Long groupId, Long... productIds) {
+        internalTxService.removeProductsFromGroup(groupId, productIds);
+    }
+
+    @Override
     public List<GroupListDto> getGroupsWithoutProduct(Long productId) {
         return internalTxService.getGroupsWithoutProduct(productId);
     }

@@ -17,6 +17,8 @@ public interface GroupService {
 
     void addProductsToGroup(Long groupId, Long... productIds);
 
+    void removeProductsFromGroup(Long groupId, Long... productIds);
+
     List<GroupListDto> getGroupsWithoutProduct(Long productId);
 
     List<GroupListDto> findGroups(GroupFilterDto groupFilterDto);

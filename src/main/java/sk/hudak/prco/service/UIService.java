@@ -140,6 +140,12 @@ public interface UIService {
     void addProductsToGroup(Long groupId, Long... productIds);
 
     /**
+     * @param groupId
+     * @param productIds
+     */
+    void removeProductsFromGroup(Long groupId, Long... productIds);
+
+    /**
      * Zoznam skupin, v ktorych dany produkt nie je pridany.
      *
      * @param productId id produktu
