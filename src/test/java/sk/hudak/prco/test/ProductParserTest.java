@@ -17,8 +17,11 @@ public class ProductParserTest {
         UnitParserImpl unitParser = new UnitParserImpl();
 
         // Dx max
+//        System.out.println(new DrMaxProductParser(unitParser, userAgentDataHolder)
+//                .parseUrlsOfProduct("pampers 4"));
         System.out.println(new DrMaxProductParser(unitParser, userAgentDataHolder)
-                .parseUrlsOfProduct("pampers 4"));
+                .parseNewProductInfo("https://www.drmax.sk/pampers-mega-maxi-132/"));
+
 
         //Alza
 //        System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder)

@@ -94,7 +94,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
         }
         builder.name(nameOpt.get());
 
-        Optional<UnitTypeValueCount> unitTypeValueCountOpt = parseUnitValueCount(nameOpt.get());
+        Optional<UnitTypeValueCount> unitTypeValueCountOpt = parseUnitValueCount(productUrl, nameOpt.get());
         if (!unitTypeValueCountOpt.isPresent()) {
             return builder.build();
         }
@@ -184,7 +184,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
         String searchUrl;
         if (searchTemplateUrlWithPageNumber.contains("{offset}")) {
             searchUrl = buildSearchUrl(getEshopUuid(), searchKeyWord,
-                    (currentPageNumber -1)* getEshopUuid().getMaxCountOfProductOnPage(),
+                    (currentPageNumber - 1) * getEshopUuid().getMaxCountOfProductOnPage(),
                     getEshopUuid().getMaxCountOfProductOnPage());
         } else {
             searchUrl = buildSearchUrl(getEshopUuid(), searchKeyWord, currentPageNumber);
@@ -196,7 +196,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
         return parsePageForProductUrls(retrieveDocument(searchUrl), currentPageNumber);
     }
 
-    private Optional<UnitTypeValueCount> parseUnitValueCount(String productName) {
+    protected Optional<UnitTypeValueCount> parseUnitValueCount(String productUrl, String productName) {
         return unitParser.parseUnitTypeValueCount(productName);
     }
 
