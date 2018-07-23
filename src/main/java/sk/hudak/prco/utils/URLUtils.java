@@ -19,7 +19,8 @@ public class URLUtils {
      * @return
      */
     public static String buildSearchUrl(EshopUuid eshopUuid, String searchKeyword) {
-        String searchUrl = eshopUuid.getSearchTemplateUrl().replace("{keyword}", searchKeyword);
+        String searchUrl = eshopUuid.getSearchTemplateUrl()
+                .replace("{keyword}", searchKeyword);
 
         // safe converzation URL space to %20 see: https://stackoverflow.com/questions/724043/http-url-address-encoding-in-java
         try {
@@ -48,6 +49,23 @@ public class URLUtils {
         } catch (Exception e) {
             throw new PrcoRuntimeException("error while converting search url", e);
         }
+    }
 
+    public static String buildSearchUrl(EshopUuid eshopUuid, String searchKeyword, int offset, int limit) {
+        // FIXME duplicita
+        String searchUrl = eshopUuid.getSearchTemplateUrlWithPageNumber()
+                .replace("{keyword}", searchKeyword)
+                .replace("{offset}", String.valueOf(offset))
+                .replace("{limit}", String.valueOf(limit));
+
+        try {
+            URL url = new URL(searchUrl);
+            URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+            url = uri.toURL();
+            return url.toString();
+
+        } catch (Exception e) {
+            throw new PrcoRuntimeException("error while converting search url", e);
+        }
     }
 }

@@ -51,13 +51,13 @@ public abstract class JSoupProductParser implements EshopProductsParser {
         Document firstPageDocument = retrieveDocument(searchUrl);
 
         // 1. krok - zistim paging(pocet stranok)
-        int countOfPages = internalGetCountOfPages(firstPageDocument, searchUrl);
-        log.debug("pages count: {}", countOfPages);
+        int countOfAllPages = internalGetCountOfPages(firstPageDocument, searchUrl);
+        log.debug("pages count: {}", countOfAllPages);
 
         // checking for max size
-        if (countOfPages > getEshopUuid().getMaxCountOfNewPages()) {
-            countOfPages = getEshopUuid().getMaxCountOfNewPages();
-            log.debug("new pages count: {}", countOfPages);
+        if (countOfAllPages > getEshopUuid().getMaxCountOfNewPages()) {
+            countOfAllPages = getEshopUuid().getMaxCountOfNewPages();
+            log.debug("new pages count: {}", countOfAllPages);
         }
 
         // 2. krok - parsujem prvu stranku
@@ -70,9 +70,9 @@ public abstract class JSoupProductParser implements EshopProductsParser {
         resultUrls.addAll(firstPageUrls);
 
         // 3. krok - ak existuju dalsie stranky parsujem aj tie
-        if (countOfPages > 1) {
-            for (int pageNumber = 2; pageNumber <= countOfPages; pageNumber++) {
-                resultUrls.addAll(parseNextPage(pageNumber, searchKeyWord));
+        if (countOfAllPages > 1) {
+            for (int currentPageNumber = 2; currentPageNumber <= countOfAllPages; currentPageNumber++) {
+                resultUrls.addAll(parseNextPage(searchKeyWord, currentPageNumber));
             }
         }
         return resultUrls;
@@ -178,11 +178,22 @@ public abstract class JSoupProductParser implements EshopProductsParser {
         }
     }
 
-    protected List<String> parseNextPage(int pageNumber, String searchKeyWord) {
-        String searchUrl = buildSearchUrl(getEshopUuid(), searchKeyWord, pageNumber);
+    protected List<String> parseNextPage(String searchKeyWord, int currentPageNumber) {
+        //FIXME presunut tuto logiku do utils...
+        String searchTemplateUrlWithPageNumber = getEshopUuid().getSearchTemplateUrlWithPageNumber();
+        String searchUrl;
+        if (searchTemplateUrlWithPageNumber.contains("{offset}")) {
+            searchUrl = buildSearchUrl(getEshopUuid(), searchKeyWord,
+                    (currentPageNumber -1)* getEshopUuid().getMaxCountOfProductOnPage(),
+                    getEshopUuid().getMaxCountOfProductOnPage());
+        } else {
+            searchUrl = buildSearchUrl(getEshopUuid(), searchKeyWord, currentPageNumber);
+        }
+
+
         // FIXME 5 a 20 dat nech nacita od konfiguracie pre konkretny eshop
         sleepRandomSafeBetween(5, 20);
-        return parsePageForProductUrls(retrieveDocument(searchUrl), pageNumber);
+        return parsePageForProductUrls(retrieveDocument(searchUrl), currentPageNumber);
     }
 
     private Optional<UnitTypeValueCount> parseUnitValueCount(String productName) {
@@ -190,7 +201,6 @@ public abstract class JSoupProductParser implements EshopProductsParser {
     }
 
     protected String getUserAgent() {
-//        return UserAgentManager.getRandom();
         return userAgentDataHolder.getUserAgentForEshop(getEshopUuid());
     }
 

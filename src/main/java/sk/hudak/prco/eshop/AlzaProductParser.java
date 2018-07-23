@@ -34,8 +34,6 @@ import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
 @Component
 public class AlzaProductParser extends JSoupProductParser {
 
-    public static final String chop = StringUtils.chop(EshopUuid.ALZA.getProductStartUrl());
-
     public AlzaProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder) {
         super(unitParser, userAgentDataHolder);
     }
@@ -69,7 +67,7 @@ public class AlzaProductParser extends JSoupProductParser {
         Elements select1 = documentList.select("a[class='name browsinglink']");
         List<String> urls = new ArrayList<>(select1.size());
         for (Element element : select1) {
-            urls.add(chop + element.attr("href"));
+            urls.add(getEshopUuid().getProductStartUrl() + element.attr("href"));
         }
         return urls;
     }

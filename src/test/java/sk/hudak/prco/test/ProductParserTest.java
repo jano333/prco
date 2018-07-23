@@ -1,5 +1,6 @@
 package sk.hudak.prco.test;
 
+import sk.hudak.prco.eshop.DrMaxProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -14,6 +15,10 @@ public class ProductParserTest {
         userAgentDataHolder.init();
 
         UnitParserImpl unitParser = new UnitParserImpl();
+
+        // Dx max
+        System.out.println(new DrMaxProductParser(unitParser, userAgentDataHolder)
+                .parseUrlsOfProduct("pampers 4"));
 
         //Alza
 //        System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder)

@@ -1,30 +1,27 @@
 package sk.hudak.prco.api;
 
+import lombok.Getter;
+
 /**
  * Created by jan.hudak on 9/29/2017.
  */
 public enum EshopUuid {
 
-//    pilulka
-//    bambino
-    // dr max
-    //
-
     //TODO pridat prvy parameter boolean ktory bude hovorit o tom ci je alebo nie je enablovany dany eshop
-    ALZA("https://www.alza.sk/",
+    ALZA("https://www.alza.sk",
             "https://www.alza.sk/search.htm?exps={keyword}",
             "https://www.alza.sk/search-p{pageNumber}.htm?exps={keyword}",
             3, 24),
-
-    OBI("https://www.obi.sk",
-            "https://www.obi.sk/search/{keyword}/?isi=true",
-            "https://www.obi.sk/search/{keyword}?page={pageNumber}",
-            5, 24),
 
     BAMBINO("https://www.bambino.sk",
             "https://www.bambino.sk/vyhladavanie?search={keyword}",
             "https://www.bambino.sk/vyhladavanie/{pageNumber}?search={keyword}",
             3, 12),
+
+//    DR_MAX("https://www.drmax.sk",
+//            "https://www.drmax.sk/catalog/search/?q={keyword}",
+//            "https://www.drmax.sk/catalog/search/?q={keyword}&offset={offset}&limit={limit}",
+//            3, 12, 24),
 
     FEEDO("https://www.feedo.sk",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/",
@@ -48,6 +45,12 @@ public enum EshopUuid {
             "https://sortiment.metro.sk/sk/search/?p={pageNumber}&search_by_price=dph_without&category_id=0&ownbrand=0&product_type_id=0&inaction=0&mysort=0&pcheck=0&local=0&orderby=wght&direction=asc&q={keyword}&extorder=0&onstock=0",
             5, 12),
 
+    //TODO impl
+    OBI("https://www.obi.sk",
+            "https://www.obi.sk/search/{keyword}/?isi=true",
+            "https://www.obi.sk/search/{keyword}?page={pageNumber}",
+            5, 24),
+
     PILULKA("https://www.pilulka.sk",
             "https://www.pilulka.sk/hledat?q={keyword}",
             "https://www.pilulka.sk/hledat?q={keyword}&page={pageNumber}",
@@ -58,32 +61,35 @@ public enum EshopUuid {
             "https://potravinydomov.itesco.sk/groceries/sk-SK/search?query={keyword}&page={pageNumber}",
             5, 12);
 
+    @Getter
     private String productStartUrl;
+    @Getter
     private String searchTemplateUrl;
+    @Getter
     private String searchTemplateUrlWithPageNumber;
+    @Getter
     private int maxCountOfNewPages;
+    @Getter
     private int olderThanInHours;
+    @Getter
+    private int maxCountOfProductOnPage;
 
     EshopUuid(String productStartUrl, String searchTemplateUrl, String searchTemplateUrlWithPageNumber,
-              int maxCountOfNewPages, int olderThanInHours) {
+              int maxCountOfNewPages, int olderThanInHours, int maxCountOfProductOnPage) {
         this.productStartUrl = productStartUrl;
         this.searchTemplateUrl = searchTemplateUrl;
         this.searchTemplateUrlWithPageNumber = searchTemplateUrlWithPageNumber;
         this.maxCountOfNewPages = maxCountOfNewPages;
         this.olderThanInHours = olderThanInHours;
+        this.maxCountOfProductOnPage = maxCountOfProductOnPage;
     }
 
-    public String getProductStartUrl() {
-        return productStartUrl;
+    @Deprecated
+    EshopUuid(String productStartUrl, String searchTemplateUrl, String searchTemplateUrlWithPageNumber,
+              int maxCountOfNewPages, int olderThanInHours) {
+        this(productStartUrl, searchTemplateUrl, searchTemplateUrlWithPageNumber, maxCountOfNewPages, olderThanInHours, 5);
     }
 
-    public String getSearchTemplateUrl() {
-        return searchTemplateUrl;
-    }
-
-    public String getSearchTemplateUrlWithPageNumber() {
-        return searchTemplateUrlWithPageNumber;
-    }
 
     /**
      * Definuje maximalne pocet stran ktore prechadzat pre pridavanie novych produktov, pre dane vyhladavanie slovo
@@ -95,7 +101,4 @@ public enum EshopUuid {
         return maxCountOfNewPages;
     }
 
-    public int getOlderThanInHours() {
-        return olderThanInHours;
-    }
 }
