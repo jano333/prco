@@ -1,6 +1,8 @@
 package sk.hudak.prco.starter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
@@ -22,11 +24,13 @@ import sk.hudak.prco.manager.DbExportImportManager;
 import sk.hudak.prco.manager.EshopThreadStatisticManager;
 import sk.hudak.prco.manager.HtmlExportManager;
 import sk.hudak.prco.manager.UpdateProductDataManager;
+import sk.hudak.prco.manager.UpdateProductInfoListener;
 import sk.hudak.prco.manager.WatchDogManager;
 import sk.hudak.prco.parser.HtmlParser;
 import sk.hudak.prco.service.InternalTxService;
 import sk.hudak.prco.service.UIService;
 import sk.hudak.prco.service.WatchDogService;
+import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.CalculationUtils;
 
 import java.math.BigDecimal;
@@ -76,7 +80,12 @@ public class Starter {
 
     public void run() {
 
+        //TODO
+        PrcoSslManager.getInstance().init();
+
         theadStatisticManager.startShowingStatistics();
+
+        System.out.println(ToStringBuilder.reflectionToString(uiService.getStatisticsOfProducts(), ToStringStyle.MULTI_LINE_STYLE));
 
         // --- WATCH DOG SERVICE ---
 //        watchDogManager.startWatching("https://www.obi.sk/zahradne-hadice/cmi-zahradna-hadica-12-5-mm-1-2-20-m-zelena/p/2235422",
@@ -88,15 +97,9 @@ public class Starter {
         // --- GROUPY --
 //        createNewGroup("olej");
 //        updateGroupName(1L, "pampers 4 zelene");
-//        uiService.addProductsToGroup(1L,  769L);
-//        uiService.addProductsToGroup(225L,  393L);
-//        uiService.addProductsToGroup(225L,  391L);
-//        uiService.addProductsToGroup(225L,  395L);
-//        uiService.addProductsToGroup(225L,  386L);
-//        uiService.addProductsToGroup(225L,  387L);
-//        uiService.addProductsToGroup(225L,  388L);
-//        uiService.addProductsToGroup(225L,  390L);
-        showAllGroups();
+//        uiService.addProductsToGroup(1L, 961L, 962L, 963L, 964L, 965L);
+//        uiService.removeProductsFromGroup(1L, 965L);
+//        showAllGroups();
 
         // --- PRODUCTS ---
 //        showAllProducts();
@@ -127,43 +130,26 @@ public class Starter {
 
 
         // --- UPDATE PRICE DATA ---
-//        UpdateProductInfoListener listener = updateStatusInfo ->
-//                log.debug(">> eshop: {}, updated/waiting: {}/{}",
-//                        updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
-//
+        UpdateProductInfoListener listener = updateStatusInfo ->
+                log.debug(">> eshop: {}, updated/waiting: {}/{}",
+                        updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
+
 //        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
 //        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.TESCO, listener);
-//        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.BAMBINO, listener);
-//        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.METRO, listener);
         // updatne vsetky produkty v danej skupine
 //        updateProductDataManager.updateAllProductsDataInGroup(33L);
 //        updateProductDataManager.updateProductData(103L);
 //        uiService.resetUpdateDateForAllProductsInEshop(EshopUuid.TESCO);
 //        uiService.updateCommonPrice(449L, BigDecimal.valueOf(0.59));
-//        uiService.updateCommonPrice(356L, BigDecimal.valueOf(0.99));
-//        uiService.updateCommonPrice(455L, BigDecimal.valueOf(0.77));
-//        uiService.updateCommonPrice(386L, BigDecimal.valueOf(3.89));
-//        uiService.updateCommonPrice(387L, BigDecimal.valueOf(3.89));
-//        uiService.updateCommonPrice(390L, BigDecimal.valueOf(3.89));
-//        uiService.updateCommonPrice(419L, BigDecimal.valueOf(0.79));
-//        uiService.updateCommonPrice(418L, BigDecimal.valueOf(0.79));
-//        uiService.updateCommonPrice(545L, BigDecimal.valueOf(15.59));
-//        uiService.updateCommonPrice(385L, BigDecimal.valueOf(1.99));
 
         // --- ADD NEW PRODUCTS ---
-        newProductManager.addNewProductsByKeywordForAllEshops("pampers 4");
-//        newProductManager.addNewProductsByKeywordForAllEshops("nutrilon 4");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.METRO, "pampers 4");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.TESCO, "pampers 4");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.MALL, "pampers 4");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "pampers 4");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PILULKA, "pampers 4");
+//        newProductManager.addNewProductsByKeywordForAllEshops("pampers 4");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "pampers 4");
 //        newProductManager.addNewProductsByUrl(
-//                "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120575818",
-//                "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120307521",
-//        "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002014050505"
+//                  "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120575818",
+//                  "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120307521",
+//                  "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002014050505"
 //       );
-
 
         // --- EXPORT ----
 
@@ -195,8 +181,8 @@ public class Starter {
 
         //TODO z GUI vyplnit spravne data
 //        internalTxService.repairInvalidUnitForNewProduct(
-//                1185L,
-//                new UnitData(Unit.KUS, new BigDecimal("1"), Integer.valueOf(1)));
+//                348L,
+//                new UnitData(Unit.KILOGRAM, new BigDecimal(5.6), Integer.valueOf(1)));
 
     }
 
@@ -306,7 +292,8 @@ public class Starter {
     }
 
     private void showProductsNotInAnyGroup() {
-        System.out.println("Product not in any group:");
+        System.out.println();
+        System.out.println("Products not in any group:");
 
         List<ProductFullDto> products = uiService.findProductsWitchAreNotInAnyGroup();
         for (ProductFullDto product : products) {
