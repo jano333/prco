@@ -1,8 +1,9 @@
 package sk.hudak.prco.task;
 
 public enum TaskStatus {
-   RUNNING,
+    RUNNING,
     SHOUD_STOP, // pomocny interny stav
     STOPPED,
-    FINISHED
+    FINISHED_OK,
+    FINISHED_WITH_ERROR
 }

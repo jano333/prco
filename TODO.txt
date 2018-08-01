@@ -1,3 +1,33 @@
+----------------------
+2018-08-01 13:10:10,477 ERROR [PILULKA] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:172] error while updating product data
+sk.hudak.prco.exception.PrcoRuntimeException: error creating document for url 'https://www.pilulka.sk/pampers-s4-active-baby-monthly-box-174ks':
+	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:176)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:110)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.processUpdate(UpdateProductDataManagerImpl.java:223)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateAllProductsDataForEshop$29(UpdateProductDataManagerImpl.java:145)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+----------------------
+018-08-01 13:09:45,533 ERROR [FEEDO] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:172] error while updating product data
+sk.hudak.prco.exception.PrcoRuntimeException: error creating document for url 'https://www.feedo.sk/pampers-active-baby-4-maxi-174ks-8-14kg-mesacna-zasoba-jednorazove-plienky/':
+	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:176)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:110)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.processUpdate(UpdateProductDataManagerImpl.java:223)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateAllProductsDataForEshop$29(UpdateProductDataManagerImpl.java:145)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.IOException: HTTPS hostname wrong:  should be <www.feedo.sk>
+	at sun.net.www.protocol.https.HttpsClient.checkURLSpoofing(HttpsClient.java:649)
+----------------------
 dalo zle unity: Absolut vodka 40% 1x1 l
 ------------------------------------------------------------------------------------------------------------------------
 TODO: doriesit nove produkty pre ktore nevie vyparsovat unit co mam na UI

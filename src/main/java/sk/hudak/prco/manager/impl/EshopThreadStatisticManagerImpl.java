@@ -26,7 +26,7 @@ public class EshopThreadStatisticManagerImpl implements EshopThreadStatisticMana
             while (aha) {
                 doInOneLoop();
                 try {
-                    Thread.sleep((long)(10 * 1000));
+                    Thread.sleep((long) (10 * 1000));
                 } catch (InterruptedException e) {
                     log.error("thread interrupted " + e.getMessage());
                     Thread.currentThread().interrupt();
@@ -42,18 +42,23 @@ public class EshopThreadStatisticManagerImpl implements EshopThreadStatisticMana
     private void doInOneLoop() {
         Map<EshopUuid, TaskStatus> tasks = taskManager.getTasks();
         List<EshopUuid> running = new ArrayList<>(EshopUuid.values().length);
-        List<EshopUuid> finished = new ArrayList<>(EshopUuid.values().length);
+        List<EshopUuid> finishedOk = new ArrayList<>(EshopUuid.values().length);
+        List<EshopUuid> finishedNotOk = new ArrayList<>(EshopUuid.values().length);
         for (Map.Entry<EshopUuid, TaskStatus> eshopUuidTaskStatusEntry : tasks.entrySet()) {
             TaskStatus value = eshopUuidTaskStatusEntry.getValue();
             if (value.equals(TaskStatus.RUNNING)) {
                 running.add(eshopUuidTaskStatusEntry.getKey());
             }
-            if (value.equals(TaskStatus.FINISHED)) {
-                finished.add(eshopUuidTaskStatusEntry.getKey());
+            if (value.equals(TaskStatus.FINISHED_OK)) {
+                finishedOk.add(eshopUuidTaskStatusEntry.getKey());
             }
-        }
-        log.debug(">> all tasks: {}  running: {}, finished: {}", tasks.size(), running.size(), finished.size());
-        log.debug("status: {}", tasks.toString());
+            if (value.equals(TaskStatus.FINISHED_WITH_ERROR)) {
+                finishedNotOk.add(eshopUuidTaskStatusEntry.getKey());
+            }
 
+        }
+        log.debug(">> all tasks: {}  running: {}, finished(ok/error): {}/{}",
+                tasks.size(), running.size(), finishedOk.size(), finishedNotOk.size());
+        log.debug("status: {}", tasks.toString());
     }
 }

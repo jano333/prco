@@ -84,7 +84,8 @@ public class TaskManagerImpl implements TaskManager {
 
     @Override
     public boolean isTaskFinished(EshopUuid eshopUuid) {
-        return TaskStatus.FINISHED.equals(tasks.get(eshopUuid));
+        TaskStatus other = tasks.get(eshopUuid);
+        return TaskStatus.FINISHED_OK.equals(other) || TaskStatus.FINISHED_WITH_ERROR.equals(other);
     }
 
     @Override
@@ -105,8 +106,13 @@ public class TaskManagerImpl implements TaskManager {
 
     @Override
     public void markTaskAsFinished(EshopUuid eshopUuid, boolean finishedWithError) {
-        log.debug("marking task for eshop {} as {}, finished with error: {}", eshopUuid, TaskStatus.FINISHED, finishedWithError);
-        tasks.put(eshopUuid, TaskStatus.FINISHED);
+        log.debug("marking task for eshop {} as {}", eshopUuid, finishedWithError ? TaskStatus.FINISHED_WITH_ERROR : TaskStatus.FINISHED_OK);
+
+        if (finishedWithError) {
+            tasks.put(eshopUuid, TaskStatus.FINISHED_WITH_ERROR);
+        } else {
+            tasks.put(eshopUuid, TaskStatus.FINISHED_OK);
+        }
     }
 
     @Override
