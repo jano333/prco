@@ -132,7 +132,7 @@ public interface UIService {
     List<GroupListDto> findGroups(GroupFilterDto groupFilterDto);
 
     /**
-     * Pridanie produktu do skupiny.
+     * Pridanie produktov do skupiny.
      *
      * @param groupId    id grupy, do ktorej maju byt pridane produkty
      * @param productIds idcka produktov, ktore maju byt pridane do danej skupiny
@@ -140,8 +140,10 @@ public interface UIService {
     void addProductsToGroup(Long groupId, Long... productIds);
 
     /**
-     * @param groupId
-     * @param productIds
+     * Odstranenie produktov zo skupiny.
+     *
+     * @param groupId    id grupy, z ktorej maju byt odstranene produkty
+     * @param productIds idcka produktov, ktore maju byt odstranene z danej skupiny
      */
     void removeProductsFromGroup(Long groupId, Long... productIds);
 
@@ -155,10 +157,11 @@ public interface UIService {
 
     List<GroupListExtendedDto> findAllGroupExtended();
 
-
-    // ------------ TODO other prest a pretriedit !!!
+    // ------------ Statistiky --------------
 
     ProductStatisticInfoDto getStatisticsOfProducts();
+
+    // ------------ TODO other prest a pretriedit !!!
 
     /**
      * Overi existenciu produktu s danou URL, pozera sa iba do 'interested' produktov TODO staci iba tam?
