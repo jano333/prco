@@ -41,9 +41,11 @@ public class EshopThreadStatisticManagerImpl implements EshopThreadStatisticMana
 
     private void doInOneLoop() {
         Map<EshopUuid, TaskStatus> tasks = taskManager.getTasks();
+
         List<EshopUuid> running = new ArrayList<>(EshopUuid.values().length);
         List<EshopUuid> finishedOk = new ArrayList<>(EshopUuid.values().length);
         List<EshopUuid> finishedNotOk = new ArrayList<>(EshopUuid.values().length);
+
         for (Map.Entry<EshopUuid, TaskStatus> eshopUuidTaskStatusEntry : tasks.entrySet()) {
             TaskStatus value = eshopUuidTaskStatusEntry.getValue();
             if (value.equals(TaskStatus.RUNNING)) {
