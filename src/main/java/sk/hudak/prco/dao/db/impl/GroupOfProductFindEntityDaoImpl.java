@@ -51,6 +51,7 @@ public class GroupOfProductFindEntityDaoImpl implements GroupOfProductFindEntity
     public long countOfProductInGroup(String groupName) {
         return getQueryFactory()
                 .select(QGroupEntity.groupEntity)
+                .from(QGroupEntity.groupEntity)
                 .where(QGroupEntity.groupEntity.name.eq(groupName))
                 .fetchFirst().getProducts().size();
     }
