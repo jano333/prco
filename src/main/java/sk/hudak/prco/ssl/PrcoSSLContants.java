@@ -10,6 +10,9 @@ public class PrcoSSLContants {
     static {
         ALLOWED_HOSTNAME.add("hej.sk");
         ALLOWED_HOSTNAME.add("esodrogeria.eu");
+        ALLOWED_HOSTNAME.add("pilulka-lb1.vshosting.cz");
+        ALLOWED_HOSTNAME.add("www.pilulka.sk");
+        ALLOWED_HOSTNAME.add("www.feedo.sk");
     }
 
     private PrcoSSLContants() {

@@ -42,12 +42,14 @@ public class PrcoCustomTrustManager implements X509TrustManager {
         this.serverCert = chain[0];
         // ak sa v subjecte certifikatu nachadza povoleny hostname, koncim
         // validaciu
+        String name = this.serverCert.getSubjectX500Principal().getName();
         for (String allowedHostName : PrcoSSLContants.ALLOWED_HOSTNAME) {
-            if (this.serverCert.getSubjectX500Principal().getName().contains(allowedHostName)) {
+            if (name.contains(allowedHostName)) {
                 log.debug("ignoring server cert");
                 return;
             }
         }
+        log.debug("server cert subject name {}", name);
         log.debug("delegating checking to java default trust manager");
         this.javaDefaultTrustManager.checkServerTrusted(chain, authType);
     }

@@ -1,8 +1,6 @@
 package sk.hudak.prco.starter;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
@@ -85,7 +83,7 @@ public class Starter {
 
         theadStatisticManager.startShowingStatistics();
 
-        System.out.println(ToStringBuilder.reflectionToString(uiService.getStatisticsOfProducts(), ToStringStyle.MULTI_LINE_STYLE));
+//        System.out.println(ToStringBuilder.reflectionToString(uiService.getStatisticsOfProducts(), ToStringStyle.MULTI_LINE_STYLE));
 
         // --- WATCH DOG SERVICE ---
 //        watchDogManager.startWatching("https://www.obi.sk/zahradne-hadice/cmi-zahradna-hadica-12-5-mm-1-2-20-m-zelena/p/2235422",
@@ -104,7 +102,7 @@ public class Starter {
         // --- PRODUCTS ---
 //        showAllProducts();
         // pampers
-        showProductsInGroup(1L);
+//        showProductsInGroup(1L);
         // nutrilon
 //        showProductsInGroup(33L);
         // olej
@@ -135,7 +133,8 @@ public class Starter {
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
 //        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
-//        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.TESCO, listener);
+//        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.PILULKA, listener);
+        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.FEEDO, listener);
         // updatne vsetky produkty v danej skupine
 //        updateProductDataManager.updateAllProductsDataInGroup(33L);
 //        updateProductDataManager.updateProductData(103L);
