@@ -67,8 +67,6 @@ public class HtmlExportManagerImpl extends AbstractExportImportManagerImpl imple
             e.printStackTrace();
         }
         log.debug("export done");
-
-//        System.out.println(html.toString());
     }
 
     public String buildRowFor(NewProductFullDto fullDto) {

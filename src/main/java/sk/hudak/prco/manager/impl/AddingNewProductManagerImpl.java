@@ -26,6 +26,7 @@ import static sk.hudak.prco.utils.Validate.notNull;
 @Component
 public class AddingNewProductManagerImpl implements AddingNewProductManager {
 
+    public static final String ERROR_WHILE_CREATING_NEW_PRODUCT = "error while creating new product";
     @Autowired
     private InternalTxService internalTxService;
 
@@ -78,7 +79,7 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
                 createNewProducts(eshopUuid, urlList);
 
             } catch (Exception e) {
-                log.error("error while creating new product", e);
+                log.error(ERROR_WHILE_CREATING_NEW_PRODUCT, e);
                 finishedWithError = true;
 
             } finally {

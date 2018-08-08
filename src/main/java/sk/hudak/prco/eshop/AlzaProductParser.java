@@ -87,14 +87,13 @@ public class AlzaProductParser extends JSoupProductParser {
             elements = documentDetailProduct.select("span[class=bigPrice price_withVat]");
         }
         if (elements.isEmpty()) {
-            //TODO tu by mala byt vynimka ked bduem mat ze je nedostupne
-            return null;
+            return Optional.empty();
         }
         String text = elements.get(0).text();
         if (StringUtils.isBlank(text)) {
             return Optional.empty();
         }
-        StringBuffer sb = new StringBuffer(text);
+        StringBuilder sb = new StringBuilder(text);
         sb = sb.deleteCharAt(0);
         return Optional.of(new BigDecimal(sb.toString().replace(",", ".")));
     }

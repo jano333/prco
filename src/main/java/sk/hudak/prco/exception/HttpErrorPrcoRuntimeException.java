@@ -5,7 +5,7 @@ import lombok.Getter;
 public class HttpErrorPrcoRuntimeException extends PrcoRuntimeException {
 
     @Getter
-    private int httpStatus;
+    private final int httpStatus;
 
     public HttpErrorPrcoRuntimeException(int httpStatus, String message) {
         super(message);

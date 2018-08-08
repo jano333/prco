@@ -346,6 +346,6 @@ public class InternalTxServiceImpl implements InternalTxService {
     @Override
     @Transactional
     public void test() {
-
+        throw new UnsupportedOperationException();
     }
 }

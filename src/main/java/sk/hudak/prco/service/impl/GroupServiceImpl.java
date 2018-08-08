@@ -33,6 +33,7 @@ import static sk.hudak.prco.utils.Validate.notNullNotEmpty;
 @Service("groupService")
 public class GroupServiceImpl implements GroupService {
 
+    public static final String PRODUCT_IDS = "productIds";
     @Autowired
     private ProductEntityDao productEntityDao;
 
@@ -87,8 +88,8 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void addProductsToGroup(Long groupId, Long... productIds) {
         notNull(groupId, "groupId");
-        notNull(productIds, "productIds");
-        atLeastOneIsNotNull(productIds, "productIds");
+        notNull(productIds, PRODUCT_IDS);
+        atLeastOneIsNotNull(productIds, PRODUCT_IDS);
 
         //FIXME fix optimalizaciu lebo to viem pridat cez id cka do tabulky...
         GroupEntity groupEntity = groupEntityDao.findById(groupId);
@@ -123,8 +124,8 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void removeProductsFromGroup(Long groupId, Long... productIds) {
         notNull(groupId, "groupId");
-        notNull(productIds, "productIds");
-        atLeastOneIsNotNull(productIds, "productIds");
+        notNull(productIds, PRODUCT_IDS);
+        atLeastOneIsNotNull(productIds, PRODUCT_IDS);
 
         GroupEntity groupEntity = groupEntityDao.findById(groupId);
 
