@@ -4,13 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import sk.hudak.prco.api.EshopUuid;
-
-import java.io.Serializable;
+import sk.hudak.prco.dto.DtoAble;
 
 @Getter
 @Setter
 @ToString
-public class ProductFilterUIDto implements Serializable {
+public class ProductFilterUIDto implements DtoAble {
     private EshopUuid eshopUuid;
     private Boolean onlyInAction;
 

@@ -7,7 +7,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @AllArgsConstructor
-public class EshopProductInfoDto {
+public class EshopProductInfoDto implements DtoAble {
     private long countOfAllProduct;
     private long countOfAlreadyUpdated;
 }

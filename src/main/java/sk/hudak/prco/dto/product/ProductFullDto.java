@@ -9,6 +9,7 @@ import lombok.ToString;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.api.Unit;
+import sk.hudak.prco.dto.DtoAble;
 import sk.hudak.prco.dto.group.GroupIdNameDto;
 
 import java.math.BigDecimal;
@@ -22,7 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ToString
-public class ProductFullDto {
+public class ProductFullDto implements DtoAble {
     private Date created;
     private Date updated;
     private Long id;
