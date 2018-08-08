@@ -1,4 +1,4 @@
-package sk.hudak.prco.dto.newproduct;
+package sk.hudak.prco.dto.internal;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,6 @@ import lombok.Setter;
 import lombok.ToString;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.Unit;
-import sk.hudak.prco.dto.internal.InternalDto;
 
 import java.math.BigDecimal;
 

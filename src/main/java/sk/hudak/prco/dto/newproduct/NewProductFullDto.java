@@ -20,6 +20,7 @@ import java.util.Date;
 @Builder
 @ToString
 public class NewProductFullDto implements DtoAble {
+
     private Date created;
     private Date updated;
     private Long id;

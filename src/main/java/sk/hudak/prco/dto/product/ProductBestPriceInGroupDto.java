@@ -14,6 +14,7 @@ import java.util.Date;
 @Getter
 @ToString
 public class ProductBestPriceInGroupDto implements DtoAble {
+
     private Long id;
     private String url;
     private String name;

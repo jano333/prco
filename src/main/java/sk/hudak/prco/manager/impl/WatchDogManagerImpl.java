@@ -7,7 +7,7 @@ import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.WatchDogAddDto;
 import sk.hudak.prco.dto.WatchDogDto;
 import sk.hudak.prco.dto.WatchDogNotifyUpdateDto;
-import sk.hudak.prco.dto.product.ProductForUpdateData;
+import sk.hudak.prco.dto.internal.ProductForUpdateData;
 import sk.hudak.prco.manager.WatchDogManager;
 import sk.hudak.prco.parser.HtmlParser;
 import sk.hudak.prco.service.InternalTxService;

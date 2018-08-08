@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
-import sk.hudak.prco.dto.product.ProductForUpdateData;
+import sk.hudak.prco.dto.internal.ProductForUpdateData;
 import sk.hudak.prco.eshop.FeedoProductParser;
 
 @RunWith(SpringRunner.class)

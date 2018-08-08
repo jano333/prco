@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 @Builder
 @ToString
 public class NewProductCreateDto implements DtoAble {
+
     private String url;
     private String name;
     private EshopUuid eshopUuid;

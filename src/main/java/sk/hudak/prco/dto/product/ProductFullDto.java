@@ -24,9 +24,11 @@ import java.util.List;
 @Builder
 @ToString
 public class ProductFullDto implements DtoAble {
+
+    private Long id;
     private Date created;
     private Date updated;
-    private Long id;
+
     private String url;
     private String name;
     private EshopUuid eshopUuid;

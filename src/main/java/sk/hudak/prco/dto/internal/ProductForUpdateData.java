@@ -1,4 +1,4 @@
-package sk.hudak.prco.dto.product;
+package sk.hudak.prco.dto.internal;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.ToString;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.dto.internal.InternalDto;
 
 import java.math.BigDecimal;
 import java.util.Date;

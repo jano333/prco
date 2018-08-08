@@ -1,8 +1,8 @@
 package sk.hudak.prco.parser;
 
 import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.dto.newproduct.NewProductInfo;
-import sk.hudak.prco.dto.product.ProductForUpdateData;
+import sk.hudak.prco.dto.internal.NewProductInfo;
+import sk.hudak.prco.dto.internal.ProductForUpdateData;
 
 import java.util.List;
 
