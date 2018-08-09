@@ -35,7 +35,6 @@ public class MallProductParser extends JSoupProductParser {
     private static final int MAX_COUNT_OF_PRODUCT_PRE_PAGE = 36;
     private static final String DATE_FORMAT_HH_MM_YYYY = "dd.MM.yyyy";
 
-
     @Autowired
     public MallProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder) {
         super(unitParser, userAgentDataHolder);

@@ -3,9 +3,11 @@ package sk.hudak.prco.mapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.ConfigurableMapper;
 import org.springframework.stereotype.Component;
+import sk.hudak.prco.dto.error.ErrorListDto;
 import sk.hudak.prco.dto.group.GroupIdNameDto;
 import sk.hudak.prco.dto.internal.StatisticForUpdateForEshopDto;
 import sk.hudak.prco.manager.UpdateStatusInfo;
+import sk.hudak.prco.model.ErrorEntity;
 import sk.hudak.prco.model.GroupEntity;
 import sk.hudak.prco.model.NewProductEntity;
 import sk.hudak.prco.model.NotInterestedProductEntity;
@@ -21,6 +23,8 @@ public class PrcoOrikaMapper extends ConfigurableMapper {
 
         config_GroupEntity_To_GroupIdNameDto(factory);
         config_StatisticForUpdateForEshopDto_To_UpdateStatusInfo(factory);
+
+        config_ErrorEntity_To_ErrorListDto(factory);
     }
 
     private void config_NewProductEntity_To_ProductEntity(MapperFactory mapperFactory) {
@@ -45,6 +49,12 @@ public class PrcoOrikaMapper extends ConfigurableMapper {
 
     private void config_StatisticForUpdateForEshopDto_To_UpdateStatusInfo(MapperFactory mapperFactory) {
         mapperFactory.classMap(StatisticForUpdateForEshopDto.class, UpdateStatusInfo.class)
+                .byDefault()
+                .register();
+    }
+
+    private void config_ErrorEntity_To_ErrorListDto(MapperFactory mapperFactory) {
+        mapperFactory.classMap(ErrorEntity.class, ErrorListDto.class)
                 .byDefault()
                 .register();
     }

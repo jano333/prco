@@ -5,6 +5,7 @@ public interface InternalTxService extends
         ProductCommonService,
         ProductService,
         GroupService,
+        ErrorService,
         WatchDogService
 {
 

@@ -2,10 +2,13 @@ package sk.hudak.prco.manager.impl;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.ProductUpdateData;
+import sk.hudak.prco.dto.error.ErrorCreateDto;
 import sk.hudak.prco.dto.internal.ProductForUpdateData;
 import sk.hudak.prco.dto.product.ProductDetailInfo;
 import sk.hudak.prco.dto.product.ProductFullDto;
@@ -225,6 +228,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
         } catch (HttpErrorPrcoRuntimeException e) {
             log.error("error while updating", e);
             if (404 == e.getHttpStatus()) {
+                save404Error(productDetailInfo.getEshopUuid(), productDetailInfo.getUrl(), e.getMessage(), e);
                 return ERR_HTML_PARSING_FAILED_404_ERROR;
             }
             throw e;
@@ -244,6 +248,18 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
         internalTxService.markProductAsUnavailable(productDetailInfo.getId());
         return ERR_PRODUCT_IS_UNAVAILABLE;
+    }
+
+    private void save404Error(EshopUuid eshopUuid, String url, String message, HttpErrorPrcoRuntimeException e) {
+        ErrorCreateDto build = ErrorCreateDto.builder()
+                .url(url)
+                .message(message)
+                .errorType(ErrorType.HTTP_STATUS_ERR)
+                .statusCode("" + 404)
+                .fullMsg(ExceptionUtils.getStackTrace(e))
+                .build();
+
+        internalTxService.createError(build);
     }
 
     enum UpdateProcessResult {

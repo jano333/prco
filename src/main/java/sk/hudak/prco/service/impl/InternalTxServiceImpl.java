@@ -3,6 +3,7 @@ package sk.hudak.prco.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.ProductStatisticInfoDto;
@@ -11,6 +12,8 @@ import sk.hudak.prco.dto.UnitData;
 import sk.hudak.prco.dto.WatchDogAddDto;
 import sk.hudak.prco.dto.WatchDogDto;
 import sk.hudak.prco.dto.WatchDogNotifyUpdateDto;
+import sk.hudak.prco.dto.error.ErrorCreateDto;
+import sk.hudak.prco.dto.error.ErrorListDto;
 import sk.hudak.prco.dto.group.GroupCreateDto;
 import sk.hudak.prco.dto.group.GroupFilterDto;
 import sk.hudak.prco.dto.group.GroupIdNameDto;
@@ -27,6 +30,7 @@ import sk.hudak.prco.dto.product.ProductDetailInfo;
 import sk.hudak.prco.dto.product.ProductFilterUIDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.dto.product.ProductInActionDto;
+import sk.hudak.prco.service.ErrorService;
 import sk.hudak.prco.service.GroupService;
 import sk.hudak.prco.service.InternalTxService;
 import sk.hudak.prco.service.NewProductService;
@@ -67,6 +71,10 @@ public class InternalTxServiceImpl implements InternalTxService {
     @Inject
     @Named("watchDogService")
     private WatchDogService watchDogService;
+
+    @Inject
+    @Named("errorService")
+    private ErrorService errorService;
 
     @Override
     @Transactional(readOnly = true)
@@ -339,6 +347,31 @@ public class InternalTxServiceImpl implements InternalTxService {
     public void notifyByEmail(List<WatchDogNotifyUpdateDto> toBeNotified) {
         // nemusi bezat v tranzakcii
         watchDogService.notifyByEmail(toBeNotified);
+    }
+
+
+    @Override
+    @Transactional
+    public Long createError(ErrorCreateDto createDto) {
+        return errorService.createError(createDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ErrorListDto> findAll() {
+        return errorService.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ErrorListDto> findByTypes(ErrorType... errorTypes) {
+        return errorService.findByTypes(errorTypes);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<ErrorType, Long> getStatisticForErrors() {
+        return errorService.getStatisticForErrors();
     }
 
     // tests

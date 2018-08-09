@@ -1,3 +1,55 @@
+2018-08-08 15:39:59,924 DEBUG [http-nio-8080-exec-9] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:32] parsing product name to retrieve unit info: Nutrilon 4 3x600 g
+2018-08-08 15:39:59,924 WARN [http-nio-8080-exec-9] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:192] unit info not found for 'nutrilon 4 3x600 g'
+----------------
+2018-08-08 15:28:13,157 DEBUG [http-nio-8080-exec-7] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:32] parsing product name to retrieve unit info: Nutrilon 4 1x800 g
+2018-08-08 15:28:13,158 WARN [http-nio-8080-exec-7] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:192] unit info not found for 'nutrilon 4 1x800 g'
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+TODO log each type of unit parser exception name, najlepsie asi specialny typ chyby aby som vedel ze parsing nepresiel...
+a dat len nech maze starsie zaznamy ako 30 dni, a teda aj nech tam vklada ak tam taka chyba este nie je equal na zaklade name
+produktu
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+2018-08-08 15:14:13,085 ERROR [ALZA] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:82] error while creating new product
+sk.hudak.prco.exception.PrcoRuntimeException: error creating document for url 'https://www.alza.sk/maxi/nutrilon-1-proexpert-ha-specialne-mlieko-800-g-d4821531.htm?o=14':
+	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:176)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseNewProductInfo(JSoupProductParser.java:85)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseNewProductInfo(JsoupHtmlParser.java:51)
+	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.java:180)
+	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$6(AddingNewProductManagerImpl.java:79)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.net.SocketTimeoutException: Read timed out
+-----------------------------------------------------------------------------------------------------------------------------
+2018-08-08 15:10:57,680 ERROR [HORNBACH] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:82] error while creating new product
+sk.hudak.prco.exception.PrcoRuntimeException: error while downloading/parsing content for url https://www.hornbach.sk/shop/vyhladavanie/sortiment/nutrilon%205
+	at sk.hudak.prco.eshop.HornbachProductParser.retrieveDocument(HornbachProductParser.java:70)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:51)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.searchProductUrls(JsoupHtmlParser.java:41)
+	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$6(AddingNewProductManagerImpl.java:77)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.NullPointerException: null
+	at org.apache.http.impl.cookie.PublicSuffixDomainFilter.match(PublicSuffixDomainFilter.java:93)
+	at org.apache.http.impl.cookie.CookieSpecBase.match(CookieSpecBase.java:136)
+	at org.apache.http.impl.cookie.DefaultCookieSpec.match(DefaultCookieSpec.java:178)
+	at org.apache.http.client.protocol.RequestAddCookies.process(RequestAddCookies.java:166)
+	at org.apache.http.protocol.ImmutableHttpProcessor.process(ImmutableHttpProcessor.java:133)
+	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:183)
+	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:89)
+	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:111)
+	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:185)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:72)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:221)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:165)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:140)
+	at sk.hudak.prco.eshop.HornbachProductParser.retrieveDocument(HornbachProductParser.java:67)
+	... 8 common frames omitted
+-------------------------------------------------------------------------------------------------
 2018-08-07 11:53:12,803 DEBUG [OBI] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:152] request URL: https://www.obi.sk/search/nutrilon%204/?isi=true
 2018-08-07 11:53:12,803 DEBUG [OBI] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:155] userAgent: Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko
 2018-08-07 11:53:12,949 DEBUG [OBI] [] s.h.p.s.PrcoCustomTrustManager [PrcoCustomTrustManager.java:41] checkServerTrusted() for hostname CN=*.obi.at,O=OBI Smart Technologies GmbH,L=Wermelskirchen,ST=Nordrhein-Westfalen,C=DE

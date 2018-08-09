@@ -34,6 +34,7 @@ import static sk.hudak.prco.utils.Validate.notNullNotEmpty;
 public class GroupServiceImpl implements GroupService {
 
     public static final String PRODUCT_IDS = "productIds";
+
     @Autowired
     private ProductEntityDao productEntityDao;
 

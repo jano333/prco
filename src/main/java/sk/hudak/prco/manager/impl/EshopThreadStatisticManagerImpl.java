@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.manager.EshopThreadStatisticManager;
+import sk.hudak.prco.service.InternalTxService;
 import sk.hudak.prco.task.TaskManager;
 import sk.hudak.prco.task.TaskStatus;
 
@@ -18,6 +19,9 @@ public class EshopThreadStatisticManagerImpl implements EshopThreadStatisticMana
 
     @Autowired
     private TaskManager taskManager;
+
+    @Autowired
+    private InternalTxService internalTxService;
 
     @Override
     public void startShowingStatistics() {
@@ -62,5 +66,7 @@ public class EshopThreadStatisticManagerImpl implements EshopThreadStatisticMana
         log.debug(">> all tasks: {}  running: {}, finished(ok/error): {}/{}",
                 tasks.size(), running.size(), finishedOk.size(), finishedNotOk.size());
         log.debug("status: {}", tasks.toString());
+
+        log.debug("error statistic {}", internalTxService.getStatisticForErrors());
     }
 }

@@ -3,7 +3,9 @@ package sk.hudak.prco.manager.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.api.EshopUuid;
+import sk.hudak.prco.dto.error.ErrorCreateDto;
 import sk.hudak.prco.dto.internal.NewProductInfo;
 import sk.hudak.prco.dto.newproduct.NewProductCreateDto;
 import sk.hudak.prco.manager.AddingNewProductManager;
@@ -166,7 +168,7 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
                 taskManager.markTaskAsStopped(eshopUuid);
                 break;
             }
-            log.debug("starting {}/{}", currentUrlIndex + 1, allUrlCount);
+            log.debug("starting {} of {}", currentUrlIndex + 1, allUrlCount);
             String productUrl = urlList.get(currentUrlIndex);
 
             // ak uz exituje, tak vynechavam
@@ -178,6 +180,10 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
 
             // parsujem
             NewProductInfo newProductInfo = htmlParser.parseNewProductInfo(productUrl);
+            if (newProductInfo.getUnit() == null) {
+                logErrorParsingUnit(productUrl, newProductInfo.getName());
+            }
+
             // preklopim a pridavam do DB
             internalTxService.createNewProduct(mapper.map(newProductInfo, NewProductCreateDto.class));
 
@@ -185,6 +191,15 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
             //TODO fix na zaklade nastavenia daneho eshopu.... dave od to delay
             ThreadUtils.sleepRandomSafe();
         }
+    }
+
+    private void logErrorParsingUnit(String productUrl, String productName) {
+        internalTxService.createError(ErrorCreateDto.builder()
+                .errorType(ErrorType.PARSING_PRODUCT_INFO_ERR)
+                .url(productUrl)
+                .additionalInfo(productName)
+                .build());
+
     }
 
     private boolean existParserFor(EshopUuid eshopUuid) {

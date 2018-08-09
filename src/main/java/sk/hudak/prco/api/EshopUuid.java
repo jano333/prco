@@ -38,7 +38,7 @@ public enum EshopUuid {
     MALL("http://mall.sk",
             "https://www.mall.sk/hladaj?s={keyword}",
             "https://www.mall.sk/hladaj?page={pageNumber}&s={keyword}",
-            3, 24),
+            2, 24),
 
     METRO("https://sortiment.metro.sk",
             "https://sortiment.metro.sk/sk/search/?q={keyword}",
