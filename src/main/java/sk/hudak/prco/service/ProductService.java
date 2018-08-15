@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+// TODO javadoc
 public interface ProductService {
 
     boolean existProductWithUrl(String productURL);

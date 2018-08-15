@@ -3,9 +3,11 @@ package sk.hudak.prco.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.dao.db.NewProductEntityDbDao;
 import sk.hudak.prco.dto.UnitData;
 import sk.hudak.prco.dto.UnitTypeValueCount;
+import sk.hudak.prco.dto.error.ErrorCreateDto;
 import sk.hudak.prco.dto.internal.NewProductInfo;
 import sk.hudak.prco.dto.newproduct.NewProductCreateDto;
 import sk.hudak.prco.dto.newproduct.NewProductFilterUIDto;
@@ -15,6 +17,7 @@ import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.mapper.PrcoOrikaMapper;
 import sk.hudak.prco.model.NewProductEntity;
 import sk.hudak.prco.parser.UnitParser;
+import sk.hudak.prco.service.ErrorService;
 import sk.hudak.prco.service.NewProductService;
 
 import java.util.ArrayList;
@@ -39,6 +42,9 @@ public class NewProductServiceImpl implements NewProductService {
 
     @Autowired
     private UnitParser unitParser;
+
+    @Autowired
+    private ErrorService errorService;
 
     @Override
     public Long createNewProduct(NewProductCreateDto newProductCreateDto) {
@@ -120,7 +126,15 @@ public class NewProductServiceImpl implements NewProductService {
             productEntity.setUnitPackageCount(unitTypeValueCount.getPackageCount());
             productEntity.setValid(Boolean.TRUE);
             newProductEntityDao.update(productEntity);
-            log.debug("New product with id {} was updated with unit data {}", productEntity.getId(), unitTypeValueCountOpt);
+            log.debug("new product with id {} was updated with unit data {}", productEntity.getId(), unitTypeValueCountOpt);
+        } else {
+            log.warn("parsing failed for name {}", productEntity.getName());
+            errorService.createError(ErrorCreateDto.builder()
+                    .errorType(ErrorType.PARSING_PRODUCT_INFO_ERR)
+                    .url(productEntity.getUrl())
+                    .eshopUuid(productEntity.getEshopUuid())
+                    .additionalInfo(productEntity.getName())
+                    .build());
         }
     }
 
@@ -194,7 +208,6 @@ public class NewProductServiceImpl implements NewProductService {
     public List<NewProductFullDto> findNewProductsForExport() {
         return mapper.mapAsList(newProductEntityDao.findAll(), NewProductFullDto.class);
     }
-
 
 
 }
