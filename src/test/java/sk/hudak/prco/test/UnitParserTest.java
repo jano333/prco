@@ -84,8 +84,8 @@ public class UnitParserTest {
                 Unit.KILOGRAM, "0.01250", 8);
          addTestData(values, "Nutrilon Nutrilon 4 Pronutra - 6 × 800g + vlhčené obrúsky Oncle SENSITIVE",
                 Unit.KILOGRAM, "0.80000", 6);
-
-
+         addTestData(values, "Nutrilon 4 3x600 g nevie vyparsovat",
+                Unit.KILOGRAM, "0.60000", 3);
 
         for (String name : values.keySet()) {
             verify(name, values.get(name));

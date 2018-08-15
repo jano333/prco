@@ -188,6 +188,11 @@ public class UnitParserImpl implements UnitParser {
             return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(5))), matcher.group(1));
         }
 
+        // Nutrilon 4 3x600 g nevie vyparsovat
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, SPACE, "g");
+        if (matcher.find()) {
+            return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(4))), matcher.group(2));
+        }
 
         log.warn("unit info not found for '{}'", productName);
 
