@@ -6,7 +6,9 @@ import sk.hudak.prco.dao.db.ErrorEntityDao;
 import sk.hudak.prco.model.ErrorEntity;
 import sk.hudak.prco.model.QErrorEntity;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class ErrorEntityDaoImpl extends BaseDaoImpl<ErrorEntity> implements ErrorEntityDao {
@@ -49,5 +51,11 @@ public class ErrorEntityDaoImpl extends BaseDaoImpl<ErrorEntity> implements Erro
                 .from(QErrorEntity.errorEntity)
                 .where(QErrorEntity.errorEntity.errorType.eq(type))
                 .fetchCount();
+    }
+
+    @Override
+    public List<ErrorEntity> findOlderThan(int unitCount, TimeUnit timeUnit) {
+        //TODO impl
+        return Collections.emptyList();
     }
 }

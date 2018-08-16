@@ -15,6 +15,8 @@ public class ErrorCreateDto implements DtoAble {
     private EshopUuid eshopUuid;
     private ErrorType errorType;
     private String statusCode;
+    //TODO impl validation cez validation spring framework a moje vynimky
+//    @NotNull
     private String message;
     private String fullMsg;
     private String url;

@@ -6,6 +6,7 @@ import sk.hudak.prco.dto.error.ErrorListDto;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 public interface ErrorService {
 
@@ -19,4 +20,11 @@ public interface ErrorService {
 
     Map<ErrorType, Long> getStatisticForErrors();
 
+    /**
+     * Odmaze:
+     * - vsetky chyby ktore maju update date starsi ako 30 dni.
+     * - vsetky chyby, ktore maju URL rovnaku ako v not interested produkts
+     * -
+     */
+    Future<Void> startErrorCleanUp();
 }

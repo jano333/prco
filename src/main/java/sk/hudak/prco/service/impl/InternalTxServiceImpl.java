@@ -44,6 +44,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.Future;
 
 /**
  * Transacny delegator do dalsich servisov.
@@ -372,6 +373,12 @@ public class InternalTxServiceImpl implements InternalTxService {
     @Transactional(readOnly = true)
     public Map<ErrorType, Long> getStatisticForErrors() {
         return errorService.getStatisticForErrors();
+    }
+
+    @Override
+    public Future<Void> startErrorCleanUp() {
+        //TODO
+        return null;
     }
 
     // tests

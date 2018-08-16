@@ -11,9 +11,15 @@ import sk.hudak.prco.mapper.PrcoOrikaMapper;
 import sk.hudak.prco.model.ErrorEntity;
 import sk.hudak.prco.service.ErrorService;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static sk.hudak.prco.utils.Validate.notNull;
@@ -27,6 +33,20 @@ public class ErrorServiceImpl implements ErrorService {
 
     @Autowired
     private PrcoOrikaMapper prcoMapper;
+
+    private ExecutorService executorService;
+
+    @PostConstruct
+    public void init() {
+        executorService = Executors.newSingleThreadExecutor(runnable -> new Thread(runnable, "errorCleanUpThread"));
+    }
+
+    @PreDestroy
+    public void tearDown() {
+        if (executorService != null) {
+            executorService.shutdownNow();
+        }
+    }
 
     @Override
     public Long createError(ErrorCreateDto createDto) {
@@ -99,5 +119,24 @@ public class ErrorServiceImpl implements ErrorService {
             result.put(type, errorEntityDao.getCountOfType(type));
         }
         return result;
+    }
+
+    @Override
+    public Future<Void> startErrorCleanUp() {
+        //TODO pozor na startnutie a commit transakcie
+//        return executorService.submit(() -> {
+//            List<ErrorEntity> errors = errorEntityDao.findOlderThan(30, TimeUnit.DAYS);
+//            //TODO impl
+//
+//
+//            return null;
+//        });
+
+        List<ErrorEntity> errors = errorEntityDao.findOlderThan(30, TimeUnit.DAYS);
+        //TODO impl
+
+        return null;
+
+
     }
 }

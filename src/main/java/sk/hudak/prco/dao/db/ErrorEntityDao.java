@@ -5,6 +5,7 @@ import sk.hudak.prco.dao.BaseDao;
 import sk.hudak.prco.model.ErrorEntity;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public interface ErrorEntityDao extends BaseDao<ErrorEntity> {
 
@@ -14,5 +15,19 @@ public interface ErrorEntityDao extends BaseDao<ErrorEntity> {
 
     List<ErrorEntity> findByTypes(ErrorType... errorTypes);
 
+    /**
+     * vrati pocet chyb na zaklade typu
+     * @param type
+     * @return
+     */
     Long getCountOfType(ErrorType type);
+
+    /**
+     * vyhlada starsie ako pocet jednotie z vstupu(zatial podpovovane len dni !!)
+     *
+     * @param unitCount
+     * @param timeUnit
+     * @return zoznam entit
+     */
+    List<ErrorEntity> findOlderThan(int unitCount, TimeUnit timeUnit);
 }
