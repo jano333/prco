@@ -24,6 +24,8 @@ import static sk.hudak.prco.utils.Validate.notNullNotEmpty;
 @Component
 public class UnitParserImpl implements UnitParser {
 
+    // INDEX pre group match je od JEDNA !!!!! nie nula
+
     private static final String NUMBER_AT_LEAST_ONE = "[0-9]{1,}";
     public static final String SPACE = " ";
 
@@ -177,22 +179,27 @@ public class UnitParserImpl implements UnitParser {
         if (matcher.find()) {
             return createKilogram(convertToBigDecimal(matcher.group(2)), "1");
         }
-        // Hamé Májka Lahôdkový bravčový krém 75 g
-        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, " g|g");
-        if (matcher.find()) {
-            return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(2))), "1");
-        }
         // Kinder Chocolate tyčinky z mliečnej čokolády s mliečnou náplňou 8 x 12,5 g
         matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, SPACE, "x", SPACE, NUMBER_AT_LEAST_ONE + ",[0-9]{1,2}", SPACE, "g");
         if (matcher.find()) {
             return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(5))), matcher.group(1));
         }
-
-        // Nutrilon 4 3x600 g nevie vyparsovat
+        // Nutrilon 4 3x600 g
         matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, SPACE, "g");
         if (matcher.find()) {
             return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(4))), matcher.group(2));
         }
+        // Nutrilon dojčenské mlieko 1 Pronutra Good Sleep 6x 800g
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "x", SPACE, NUMBER_AT_LEAST_ONE, "g");
+        if (matcher.find()) {
+            return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(5))), matcher.group(2));
+        }
+        // Hamé Májka Lahôdkový bravčový krém 75 g
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, " g|g");
+        if (matcher.find()) {
+            return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(2))), "1");
+        }
+
 
         log.warn("unit info not found for '{}'", productName);
 
