@@ -50,7 +50,6 @@ public class GroupServiceImpl implements GroupService {
         notNullNotEmpty(createDto.getName(), "name");
 
         // validacia, ci uz group s takym nazvom existuje
-        // FIXME prerobit na boolean exist
         if (groupEntityDao.findGroupByName(createDto.getName()).isPresent()) {
             throw new PrcoRuntimeException(GroupEntity.class.getSimpleName() + " with name '" + createDto.getName() + "' already exist");
         }
