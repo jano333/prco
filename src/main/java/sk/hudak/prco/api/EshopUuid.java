@@ -8,6 +8,8 @@ import lombok.Getter;
 public enum EshopUuid {
 
     //TODO pridat prvy parameter boolean ktory bude hovorit o tom ci je alebo nie je enablovany dany eshop
+
+
     ALZA("https://www.alza.sk",
             "https://www.alza.sk/search.htm?exps={keyword}",
             "https://www.alza.sk/search-p{pageNumber}.htm?exps={keyword}",
@@ -84,6 +86,15 @@ public enum EshopUuid {
         this.maxCountOfProductOnPage = maxCountOfProductOnPage;
     }
 
+    /**
+     *
+     * @param productStartUrl
+     * @param searchTemplateUrl
+     * @param searchTemplateUrlWithPageNumber
+     * @param maxCountOfNewPages
+     * @param olderThanInHours
+     * @deprecated nepouzivat
+     */
     @Deprecated
     EshopUuid(String productStartUrl, String searchTemplateUrl, String searchTemplateUrlWithPageNumber,
               int maxCountOfNewPages, int olderThanInHours) {
