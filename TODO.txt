@@ -1,3 +1,5 @@
+zle unit vyparsuje.
+https://www.drmax.sk/nutrilon-4-bez-prichute-akciove-balenie/
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 toto je rovnaky produkt:(urobit servic, ktory vyhlada v danom esope produkty ktore maju rovnaky price for unit, pricie for one item a aj nazov, teda lisia sa len URL)
 eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 169, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-pronutra-800g-dojcenske-mlieko/

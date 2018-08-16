@@ -20,7 +20,8 @@ public class ProductParserTest {
 //        System.out.println(new DrMaxProductParser(unitParser, userAgentDataHolder)
 //                .parseUrlsOfProduct("pampers 4"));
         System.out.println(new DrMaxProductParser(unitParser, userAgentDataHolder)
-                .parseNewProductInfo("https://www.drmax.sk/pampers-mega-maxi-132/"));
+//                .parseNewProductInfo("https://www.drmax.sk/pampers-mega-maxi-132/"));
+                .parseProductUpdateData("https://www.drmax.sk/pampers-mega-maxi-132/"));
 
 
         //Alza

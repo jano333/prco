@@ -6,11 +6,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.dto.UnitTypeValueCount;
 import sk.hudak.prco.parser.UnitParser;
 import sk.hudak.prco.parser.impl.JSoupProductParser;
+import sk.hudak.prco.utils.ConvertUtils;
 import sk.hudak.prco.utils.UserAgentDataHolder;
 
 import java.math.BigDecimal;
@@ -20,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-//@Component
+@Component
 public class DrMaxProductParser extends JSoupProductParser {
 
     @Autowired
@@ -30,8 +32,7 @@ public class DrMaxProductParser extends JSoupProductParser {
 
     @Override
     public EshopUuid getEshopUuid() {
-//        return EshopUuid.DR_MAX;
-        return null;
+        return EshopUuid.DR_MAX;
     }
 
     @Override
@@ -83,34 +84,46 @@ public class DrMaxProductParser extends JSoupProductParser {
     }
 
     @Override
-    protected Optional<UnitTypeValueCount> parseUnitValueCount(String productUrl, String productName) {
-
-        //TODO pocet kusov je v osobitnej metode..., skusist zavolat super a ak nenajde tak tu ...
-        return Optional.empty();
+    protected Optional<UnitTypeValueCount> parseUnitValueCount(Document document, String productName) {
+        Elements select = document.select("div.redesign-product-detail-slogan");
+        if (select.isEmpty()) {
+            return Optional.empty();
+        }
+        String text = select.get(0).child(0).text();
+        return unitParser.parseUnitTypeValueCount(text);
     }
 
     @Override
     protected boolean isProductUnavailable(Document documentDetailProduct) {
-        return false;
+        return documentDetailProduct.select("button[class=redesign-button addToCartBtn btn btn-big btn-pink ucase]").isEmpty();
     }
 
     @Override
     protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        return Optional.empty();
+        Elements select = documentDetailProduct.select("strong[itemprop=price]");
+        if (select.isEmpty()) {
+            return Optional.empty();
+        }
+        String text = select.get(0).text();
+        BigDecimal value = ConvertUtils.convertToBigDecimal(text);
+        return Optional.ofNullable(value);
     }
 
     @Override
     protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
+        //TODO impl
         return Optional.empty();
     }
 
     @Override
     protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
+        //TODO impl
         return Optional.empty();
     }
 
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
+        //TODO impl
         return Optional.empty();
     }
 

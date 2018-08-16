@@ -20,10 +20,10 @@ public enum EshopUuid {
             "https://www.bambino.sk/vyhladavanie/{pageNumber}?search={keyword}",
             3, 12),
 
-//    DR_MAX("https://www.drmax.sk",
-//            "https://www.drmax.sk/catalog/search/?q={keyword}",
-//            "https://www.drmax.sk/catalog/search/?q={keyword}&offset={offset}&limit={limit}",
-//            3, 12, 24),
+    DR_MAX("https://www.drmax.sk",
+            "https://www.drmax.sk/catalog/search/?q={keyword}",
+            "https://www.drmax.sk/catalog/search/?q={keyword}&offset={offset}&limit={limit}",
+            3, 12, 24),
 
     FEEDO("https://www.feedo.sk",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/",

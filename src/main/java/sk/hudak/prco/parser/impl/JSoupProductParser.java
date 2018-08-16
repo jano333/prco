@@ -94,7 +94,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
         }
         builder.name(nameOpt.get());
 
-        Optional<UnitTypeValueCount> unitTypeValueCountOpt = parseUnitValueCount(productUrl, nameOpt.get());
+        Optional<UnitTypeValueCount> unitTypeValueCountOpt = parseUnitValueCount(document, nameOpt.get());
         if (!unitTypeValueCountOpt.isPresent()) {
             return builder.build();
         }
@@ -196,7 +196,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
         return parsePageForProductUrls(retrieveDocument(searchUrl), currentPageNumber);
     }
 
-    protected Optional<UnitTypeValueCount> parseUnitValueCount(String productUrl, String productName) {
+    protected Optional<UnitTypeValueCount> parseUnitValueCount(Document document, String productName) {
         return unitParser.parseUnitTypeValueCount(productName);
     }
 
