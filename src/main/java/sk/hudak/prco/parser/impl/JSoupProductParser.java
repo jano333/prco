@@ -40,7 +40,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
     protected UnitParser unitParser;
     protected UserAgentDataHolder userAgentDataHolder;
 
-    public JSoupProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder) {
+    public JSoupProductParser(@NonNull UnitParser unitParser, @NonNull UserAgentDataHolder userAgentDataHolder) {
         this.unitParser = unitParser;
         this.userAgentDataHolder = userAgentDataHolder;
     }
@@ -93,6 +93,11 @@ public abstract class JSoupProductParser implements EshopProductsParser {
             return builder.build();
         }
         builder.name(nameOpt.get());
+
+        Optional<String> pictureUrl = internalParseProductPictureURL(document, productUrl);
+        if (pictureUrl.isPresent()) {
+            builder.pictureUrl(pictureUrl.get());
+        }
 
         Optional<UnitTypeValueCount> unitTypeValueCountOpt = parseUnitValueCount(document, nameOpt.get());
         if (!unitTypeValueCountOpt.isPresent()) {

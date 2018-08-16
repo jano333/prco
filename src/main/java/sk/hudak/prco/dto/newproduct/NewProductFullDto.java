@@ -32,4 +32,5 @@ public class NewProductFullDto implements DtoAble {
     private Integer unitPackageCount;
     private Boolean valid;
     private Boolean confirmValidity;
+    private String pictureUrl;
 }

@@ -81,4 +81,6 @@ public class NewProductEntity extends DbEntity {
     @Column(nullable = false)
     private Boolean confirmValidity;
 
+    private String pictureUrl;
+
 }

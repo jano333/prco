@@ -123,8 +123,11 @@ public class DrMaxProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        //TODO impl
-        return Optional.empty();
+        Elements select = documentDetailProduct.select("#productImg > img.image");
+        Element element = select.get(0);
+        String src = element.attr("src");
+        String s = getEshopUuid().getProductStartUrl() + src;
+        return Optional.of(s);
     }
 
 

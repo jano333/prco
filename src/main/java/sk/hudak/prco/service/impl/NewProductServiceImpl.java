@@ -64,6 +64,7 @@ public class NewProductServiceImpl implements NewProductService {
             entity.setUnit(newProductCreateDto.getUnit());
             entity.setUnitValue(newProductCreateDto.getUnitValue());
             entity.setUnitPackageCount(newProductCreateDto.getUnitPackageCount());
+            entity.setPictureUrl(newProductCreateDto.getPictureUrl());
 
             Long id = newProductEntityDao.save(entity);
             log.debug("create new entity {} with id {}", entity.getClass().getSimpleName(), entity.getId());
@@ -199,6 +200,7 @@ public class NewProductServiceImpl implements NewProductService {
                     .unitPackageCount(entity.getUnitPackageCount())
                     .valid(entity.getValid())
                     .confirmValidity(entity.getConfirmValidity())
+                    .pictureUrl(entity.getPictureUrl())
                     .build());
         }
         return result;

@@ -27,6 +27,8 @@ public class NewProductInfo implements InternalDto {
     private BigDecimal unitValue;
     private Integer unitPackageCount;
 
+    private String pictureUrl;
+
     /**
      * @return true, ak sa podarilo vsetko uspesne vyparsovat(vsetky parametre), inak false
      */

@@ -61,6 +61,8 @@ public class NewProductListUI extends VerticalLayout implements View/*extends UI
 
         grid.setColumns("eshopUuid");
 
+        grid.addColumn(fullDto -> "<img src='" + fullDto.getPictureUrl() + "' height=\"42\" width=\"42\">", new HtmlRenderer());
+
         grid.addColumn(fullDto -> "<a href='" + fullDto.getUrl() + "' target='_blank'>" + fullDto.getName() + "</a>", new HtmlRenderer());
 
         grid.addColumn("valid");
