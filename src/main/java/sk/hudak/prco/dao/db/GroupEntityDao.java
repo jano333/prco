@@ -13,6 +13,7 @@ public interface GroupEntityDao extends BaseDao<GroupEntity> {
 
     Optional<GroupEntity> findGroupByName(String groupName);
 
+    //TODO zmenit navratovu hodnotu na Optional<GroupEntity>
     boolean existGroupByName(String name, Long groupIdToSkip);
 
     List<GroupEntity> findGroupsWithoutProduct(Long productId);
