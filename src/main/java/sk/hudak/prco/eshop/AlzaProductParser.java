@@ -142,9 +142,12 @@ public class AlzaProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        //TODO
-        return Optional.empty();
+        Elements select = documentDetailProduct.select("#imgMain");
+        if (select.size() == 0) {
+            return Optional.empty();
+        }
+        Element element = select.get(0);
+        String fullUrl = element.attr("data-src");
+        return Optional.of(fullUrl);
     }
-
-
 }
