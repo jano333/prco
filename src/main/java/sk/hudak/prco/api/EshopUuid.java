@@ -10,21 +10,25 @@ public enum EshopUuid {
     //TODO pridat prvy parameter boolean ktory bude hovorit o tom ci je alebo nie je enablovany dany eshop
 
 
+    // picture YES
     ALZA("https://www.alza.sk",
             "https://www.alza.sk/search.htm?exps={keyword}",
             "https://www.alza.sk/search-p{pageNumber}.htm?exps={keyword}",
             3, 24),
 
+    // picture YES
     BAMBINO("https://www.bambino.sk",
             "https://www.bambino.sk/vyhladavanie?search={keyword}",
             "https://www.bambino.sk/vyhladavanie/{pageNumber}?search={keyword}",
             3, 12),
 
+    // picture YES
     DR_MAX("https://www.drmax.sk",
             "https://www.drmax.sk/catalog/search/?q={keyword}",
             "https://www.drmax.sk/catalog/search/?q={keyword}&offset={offset}&limit={limit}",
             3, 12, 24),
 
+    // picture YES
     FEEDO("https://www.feedo.sk",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/",
             // toto nefunguje: https://www.feedo.sk/vysledky-hladania/nutrilon%204/#page=2
@@ -37,6 +41,7 @@ public enum EshopUuid {
             "TODO nie je to cez parameter v stranke...",
             5, 24),
 
+    // picture YES
     MALL("http://mall.sk",
             "https://www.mall.sk/hladaj?s={keyword}",
             "https://www.mall.sk/hladaj?page={pageNumber}&s={keyword}",
@@ -53,11 +58,13 @@ public enum EshopUuid {
             "https://www.obi.sk/search/{keyword}?page={pageNumber}",
             5, 24),
 
+    // TODO picture NOT yet
     PILULKA("https://www.pilulka.sk",
             "https://www.pilulka.sk/hledat?q={keyword}",
             "https://www.pilulka.sk/hledat?q={keyword}&page={pageNumber}",
             5, 24),
 
+    // picture YES
     TESCO("https://potravinydomov.itesco.sk",
             "https://potravinydomov.itesco.sk/groceries/sk-SK/search?query={keyword}",
             "https://potravinydomov.itesco.sk/groceries/sk-SK/search?query={keyword}&page={pageNumber}",
@@ -87,7 +94,6 @@ public enum EshopUuid {
     }
 
     /**
-     *
      * @param productStartUrl
      * @param searchTemplateUrl
      * @param searchTemplateUrlWithPageNumber

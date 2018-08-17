@@ -132,7 +132,6 @@ public class FeedoProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        //TODO parsovanie obrazkov nefunguje(musim pridat testy na komplet to co urcite funguje..., vsetky eshopy v jednom vlaklne postupne )
         Elements select = documentDetailProduct.select("div[class=box-image]");
         if (select.isEmpty()) {
             return Optional.empty();
