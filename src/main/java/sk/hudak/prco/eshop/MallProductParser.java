@@ -1,8 +1,6 @@
 package sk.hudak.prco.eshop;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -127,37 +125,13 @@ public class MallProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        //TODO nedari sa mi to
-        if (true) {
+        Elements img = documentDetailProduct.select("img[class=gall-slide-img]");
+        if (img.size() == 0) {
             return Optional.empty();
         }
-        Elements img = documentDetailProduct.select("img");
-        for (Element element : img) {
-            //TODO syso
-            System.out.println(element.attributes());
-            Attributes attributes = element.attributes();
-            if (attributes.size() != 2) {
-                continue;
-            }
-            String src = attributes.get("src");
-            String alt = attributes.get("alt");
-            System.out.println("--");
-            System.out.println("src " + src);
-            System.out.println("alt " + alt);
-            System.out.println("--");
-            if (StringUtils.isNotEmpty(src) && StringUtils.isNotEmpty(alt)) {
-
-            }
-
-        }
-
-        Elements select = documentDetailProduct.select("img[class=lst-product-item-media-img]");
-        Element first = select.first();
-        if (first == null) {
-            return Optional.empty();
-        }
-        String src = first.attr("src");
-        return Optional.of("http://mall.sk" + src);
+        Element element1 = img.get(0);
+        String src1 = element1.attr("src");
+        return Optional.of(src1);
     }
 
     private Date parseDate(String strDate, String format) {
