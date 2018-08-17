@@ -61,12 +61,10 @@ public class EshopThreadStatisticManagerImpl implements EshopThreadStatisticMana
             if (value.equals(TaskStatus.FINISHED_WITH_ERROR)) {
                 finishedNotOk.add(eshopUuidTaskStatusEntry.getKey());
             }
-
         }
-        log.debug(">> all tasks: {}  running: {}, finished(ok/error): {}/{}",
-                tasks.size(), running.size(), finishedOk.size(), finishedNotOk.size());
-        log.debug("status: {}", tasks.toString());
 
+        log.debug("all tasks: {}  running: {}, finished(ok/error): {}/{}{}", tasks.size(), running.size(), finishedOk.size(), finishedNotOk.size(), finishedNotOk);
+//        log.debug("status: {}", tasks.toString());
         log.debug("error statistic {}", internalTxService.getStatisticForErrors());
     }
 }
