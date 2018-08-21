@@ -200,6 +200,12 @@ public class UnitParserImpl implements UnitParser {
             return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(2))), "1");
         }
 
+        // 2x800 g - mliečna výživa, 1x1 set
+        matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, " g|g");
+        if (matcher.find()) {
+            return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(3))), matcher.group(1));
+        }
+
 
         log.warn("unit info not found for '{}'", productName);
 
