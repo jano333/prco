@@ -376,9 +376,9 @@ public class InternalTxServiceImpl implements InternalTxService {
     }
 
     @Override
+    @Transactional
     public Future<Void> startErrorCleanUp() {
-        //TODO
-        return null;
+        return errorService.startErrorCleanUp();
     }
 
     // tests

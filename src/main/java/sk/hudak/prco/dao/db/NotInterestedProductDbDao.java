@@ -10,4 +10,6 @@ public interface NotInterestedProductDbDao extends BaseDao<NotInterestedProductE
     boolean existWithUrl(String url);
 
     List<NotInterestedProductEntity> findAll();
+
+    List<String> findFistTenURL();
 }

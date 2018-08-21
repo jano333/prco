@@ -11,6 +11,7 @@ import sk.hudak.prco.dto.UnitTypeValueCount;
 import sk.hudak.prco.dto.internal.NewProductInfo;
 import sk.hudak.prco.dto.internal.ProductForUpdateData;
 import sk.hudak.prco.exception.HttpErrorPrcoRuntimeException;
+import sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.exception.ProductNameNotFoundException;
 import sk.hudak.prco.exception.ProductPriceNotFoundException;
@@ -19,6 +20,7 @@ import sk.hudak.prco.parser.UnitParser;
 import sk.hudak.prco.utils.UserAgentDataHolder;
 
 import java.math.BigDecimal;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -169,6 +171,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
 
             return connection.get();
 
+
         } catch (Exception e) {
             String errMsg = "error creating document for url '" + productUrl + "': ";
             if (e instanceof HttpStatusException) {
@@ -176,6 +179,10 @@ public abstract class JSoupProductParser implements EshopProductsParser {
                 errMsg = errMsg + " " + se.toString();
                 log.error(errMsg, e);
                 throw new HttpErrorPrcoRuntimeException(se.getStatusCode(), errMsg, e);
+
+            } else if (e instanceof SocketTimeoutException) {
+                throw new HttpSocketTimeoutPrcoRuntimeException((SocketTimeoutException)e);
+
             } else {
                 log.error(errMsg, e);
                 throw new PrcoRuntimeException(errMsg, e);

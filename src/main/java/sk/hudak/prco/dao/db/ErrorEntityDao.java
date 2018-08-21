@@ -17,6 +17,7 @@ public interface ErrorEntityDao extends BaseDao<ErrorEntity> {
 
     /**
      * vrati pocet chyb na zaklade typu
+     *
      * @param type
      * @return
      */
@@ -30,4 +31,6 @@ public interface ErrorEntityDao extends BaseDao<ErrorEntity> {
      * @return zoznam entit
      */
     List<ErrorEntity> findOlderThan(int unitCount, TimeUnit timeUnit);
+
+    List<ErrorEntity> findByUrls(List<String> urls);
 }

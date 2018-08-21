@@ -13,6 +13,7 @@ import sk.hudak.prco.dto.internal.ProductForUpdateData;
 import sk.hudak.prco.dto.product.ProductDetailInfo;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.exception.HttpErrorPrcoRuntimeException;
+import sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException;
 import sk.hudak.prco.manager.UpdateProductDataManager;
 import sk.hudak.prco.manager.UpdateProductInfoListener;
 import sk.hudak.prco.manager.UpdateStatusInfo;
@@ -232,7 +233,12 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
                 return ERR_HTML_PARSING_FAILED_404_ERROR;
             }
             throw e;
+        } catch (HttpSocketTimeoutPrcoRuntimeException e) {
+            saveTimeout4Error(productDetailInfo.getEshopUuid(), productDetailInfo.getUrl(), e.getMessage(), e);
+            throw e;
         }
+
+
         if (updateData.isProductAvailable()) {
             //FIXME premapovanie cez sk.hudak.prco mapper nie takto rucne, nech mam na jednom mieste tie preklapacky...
             internalTxService.updateProductData(ProductUpdateData.builder()
@@ -252,10 +258,23 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
     private void save404Error(EshopUuid eshopUuid, String url, String message, HttpErrorPrcoRuntimeException e) {
         ErrorCreateDto build = ErrorCreateDto.builder()
+                .errorType(ErrorType.HTTP_STATUS_ERR)
+                .eshopUuid(eshopUuid)
                 .url(url)
                 .message(message)
-                .errorType(ErrorType.HTTP_STATUS_ERR)
                 .statusCode("" + 404)
+                .fullMsg(ExceptionUtils.getStackTrace(e))
+                .build();
+
+        internalTxService.createError(build);
+    }
+
+    private void saveTimeout4Error(EshopUuid eshopUuid, String url, String message, HttpSocketTimeoutPrcoRuntimeException e) {
+        ErrorCreateDto build = ErrorCreateDto.builder()
+                .errorType(ErrorType.TIME_OUT_ERR)
+                .eshopUuid(eshopUuid)
+                .url(url)
+                .message(message)
                 .fullMsg(ExceptionUtils.getStackTrace(e))
                 .build();
 

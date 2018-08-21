@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.dao.db.ErrorEntityDao;
+import sk.hudak.prco.dao.db.NotInterestedProductDbDao;
 import sk.hudak.prco.dto.error.ErrorCreateDto;
 import sk.hudak.prco.dto.error.ErrorListDto;
 import sk.hudak.prco.mapper.PrcoOrikaMapper;
@@ -35,6 +36,9 @@ public class ErrorServiceImpl implements ErrorService {
     private PrcoOrikaMapper prcoMapper;
 
     private ExecutorService executorService;
+
+    @Autowired
+    private NotInterestedProductDbDao notInterestedProductDbDao;
 
     @PostConstruct
     public void init() {
@@ -132,11 +136,30 @@ public class ErrorServiceImpl implements ErrorService {
 //            return null;
 //        });
 
-        List<ErrorEntity> errors = errorEntityDao.findOlderThan(30, TimeUnit.DAYS);
-        //TODO impl
 
+        List<ErrorEntity> toBeDeleted = errorEntityDao.findOlderThan(30, TimeUnit.DAYS);
+        int count = 0;
+        if (!toBeDeleted.isEmpty()) {
+            for (ErrorEntity errorEntity : toBeDeleted) {
+                errorEntityDao.delete(errorEntity);
+                count++;
+            }
+        }
+        log.debug("remove older count {}", toBeDeleted.size());
+
+        List<String> fistTenURL = notInterestedProductDbDao.findFistTenURL();
+        if (!fistTenURL.isEmpty()) {
+            toBeDeleted = errorEntityDao.findByUrls(fistTenURL);
+
+            if (!toBeDeleted.isEmpty()) {
+                for (ErrorEntity errorEntity : toBeDeleted) {
+                    errorEntityDao.delete(errorEntity);
+                }
+            }
+            log.debug("count of not interested already count {}", toBeDeleted.size());
+        }
+
+        // TODO impl future
         return null;
-
-
     }
 }
