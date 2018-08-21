@@ -36,6 +36,12 @@ public class DrMaxProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 15 sekund
+        return 15000;
+    }
+
+    @Override
     protected int parseCountOfPages(Document documentList) {
         Element select = documentList.select("h2[class=title-subcategory]").first();
         if (select == null) {
