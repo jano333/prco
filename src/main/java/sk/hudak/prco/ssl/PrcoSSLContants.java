@@ -9,10 +9,16 @@ public class PrcoSSLContants {
     protected static final Set<String> ALLOWED_HOSTNAME = new HashSet<>(1);
     static {
         ALLOWED_HOSTNAME.add("hej.sk");
+
         ALLOWED_HOSTNAME.add("esodrogeria.eu");
+
         ALLOWED_HOSTNAME.add("pilulka-lb1.vshosting.cz");
         ALLOWED_HOSTNAME.add("www.pilulka.sk");
+
         ALLOWED_HOSTNAME.add("www.feedo.sk");
+
+        ALLOWED_HOSTNAME.add("obi.at");
+        ALLOWED_HOSTNAME.add("www.obi.sk");
     }
 
     private PrcoSSLContants() {
