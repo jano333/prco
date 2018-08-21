@@ -194,16 +194,27 @@ public class UnitParserImpl implements UnitParser {
         if (matcher.find()) {
             return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(5))), matcher.group(2));
         }
-        // Hamé Májka Lahôdkový bravčový krém 75 g
-        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, " g|g");
-        if (matcher.find()) {
-            return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(2))), "1");
-        }
-
         // 2x800 g - mliečna výživa, 1x1 set
         matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, " g|g");
         if (matcher.find()) {
             return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(3))), matcher.group(1));
+        }
+        // Nutrilon 5 detská mliečna výživa v prášku 800 g 5+1 zdarma
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, SPACE, "g", SPACE, NUMBER_AT_LEAST_ONE, "\\+", NUMBER_AT_LEAST_ONE, SPACE);
+        if (matcher.find()) {
+            String group = matcher.group(2);
+            String group1 = matcher.group(6);
+            String group2 = matcher.group(8);
+            return createKilogram(recalculateToKilograms(
+                    convertToBigDecimal(group)),
+                    String.valueOf((Integer.valueOf(group1).intValue() + Integer.valueOf(group2).intValue()))
+            );
+        }
+
+        // Hamé Májka Lahôdkový bravčový krém 75 g
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, " g|g");
+        if (matcher.find()) {
+            return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(2))), "1");
         }
 
 
