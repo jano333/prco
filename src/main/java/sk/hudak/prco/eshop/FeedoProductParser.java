@@ -45,6 +45,30 @@ public class FeedoProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected int parseCountOfPages(Document documentList) {
+        Element select = documentList.select("div.product-list-pagination").first();
+        if (select == null) {
+            return 1;
+        }
+        try {
+            Elements lis = select.children().first().children().first().children().first().select("li");
+            return lis.size() - 2;
+
+        } catch (NullPointerException e) {
+            //FIXME prerobit cez optional
+            log.warn("error while parsing count of page returning 1", e);
+            return 1;
+        }
+    }
+
+    @Override
+    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
+        return documentList.select("article[class=box box-product]").stream()
+                .map(t -> t.children().first().children().first().attr("href"))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     protected boolean isProductUnavailable(Document documentDetailProduct) {
         return notExistElement(documentDetailProduct, "button[class=btn btn-danger btn-large cart]");
     }
@@ -85,30 +109,6 @@ public class FeedoProductParser extends JSoupProductParser {
         }
         String cenaZaBalenie = html.substring(0, endIndex);
         return Optional.of(convertToBigDecimal(cenaZaBalenie));
-    }
-
-    @Override
-    protected int parseCountOfPages(Document documentList) {
-        Element select = documentList.select("div.product-list-pagination").first();
-        if (select == null) {
-            return 1;
-        }
-        try {
-            Elements lis = select.children().first().children().first().children().first().select("li");
-            return lis.size() - 2;
-
-        } catch (NullPointerException e) {
-            //FIXME prerobit cez optional
-            log.warn("error while parsing count of page returning 1", e);
-            return 1;
-        }
-    }
-
-    @Override
-    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
-        return documentList.select("article[class=box box-product]").stream()
-                .map(t -> t.children().first().children().first().attr("href"))
-                .collect(Collectors.toList());
     }
 
     @Override
