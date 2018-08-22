@@ -85,11 +85,8 @@ public class UnitParserImpl implements UnitParser {
         // Velkopopovický Kozel pivo tmavé 6x4x500 ml PLECH
         matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, SPACE, "ml");
         if (matcher.find()) {
-            int value1 = Integer.valueOf(matcher.group(1)).intValue();
-            int value2 = Integer.valueOf(matcher.group(3)).intValue();
-            String value3 = matcher.group(5);
-            int packageCount = value1 * value2;
-            return createObjem(recalculateToLites(convertToBigDecimal(value3)), String.valueOf(packageCount));
+            return createObjem(recalculateToLites(convertToBigDecimal(matcher.group(5))),
+                    String.valueOf(Integer.valueOf(matcher.group(1)).intValue() * Integer.valueOf(matcher.group(3)).intValue()));
         }
 
         // "Becherovka Original Bylinný likér 0,5 l"
