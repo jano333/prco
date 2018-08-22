@@ -47,6 +47,12 @@ public enum EshopUuid {
             "https://www.mall.sk/hladaj?page={pageNumber}&s={keyword}",
             2, 24),
 
+    MOJA_LEKAREN("https://www.mojalekaren.sk/",
+            "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}",
+            "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}&strana={pageNumber}",
+            5, 24),
+
+
     METRO("https://sortiment.metro.sk",
             "https://sortiment.metro.sk/sk/search/?q={keyword}",
             "https://sortiment.metro.sk/sk/search/?p={pageNumber}&search_by_price=dph_without&category_id=0&ownbrand=0&product_type_id=0&inaction=0&mysort=0&pcheck=0&local=0&orderby=wght&direction=asc&q={keyword}&extorder=0&onstock=0",

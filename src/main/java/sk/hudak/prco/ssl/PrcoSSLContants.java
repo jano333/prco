@@ -19,6 +19,9 @@ public class PrcoSSLContants {
 
         ALLOWED_HOSTNAME.add("obi.at");
         ALLOWED_HOSTNAME.add("www.obi.sk");
+
+        ALLOWED_HOSTNAME.add("www.lekarna.cz");
+        ALLOWED_HOSTNAME.add("www.mojalekaren.sk");
     }
 
     private PrcoSSLContants() {
