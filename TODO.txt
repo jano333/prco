@@ -1,10 +1,4 @@
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-toto je rovnaky produkt:(urobit servic, ktory vyhlada v danom esope produkty ktore maju rovnaky price for unit, pricie for one item a aj nazov, teda lisia sa len URL)
-eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 169, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-pronutra-800g-dojcenske-mlieko/
-eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 996, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-800g-dojcenske-mlieko/
-----------------------------------------------------------------------------------------------------------------------------------------------------------
-Nutrilon 5 detská mliečna výživa v prášku 800 g 5+1 zdarma  - zle lebo je tam len 1x 800
-----------------------------------------------------------------------------------------------------------------------------------------------------------
 Nutrilon 5 mlieko pre deti od 36. m 800 g dava zle
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 2018-08-08 15:39:59,924 DEBUG [http-nio-8080-exec-9] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:32] parsing product name to retrieve unit info: Nutrilon 4 3x600 g
@@ -12,6 +6,10 @@ Nutrilon 5 mlieko pre deti od 36. m 800 g dava zle
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 2018-08-08 15:28:13,157 DEBUG [http-nio-8080-exec-7] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:32] parsing product name to retrieve unit info: Nutrilon 4 1x800 g
 2018-08-08 15:28:13,158 WARN [http-nio-8080-exec-7] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:192] unit info not found for 'nutrilon 4 1x800 g'
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+toto je rovnaky produkt:(urobit servic, ktory vyhlada v danom esope produkty ktore maju rovnaky price for unit, pricie for one item a aj nazov, teda lisia sa len URL)
+eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 169, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-pronutra-800g-dojcenske-mlieko/
+eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 996, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-800g-dojcenske-mlieko/
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 TODO log each type of unit parser exception name, najlepsie asi specialny typ chyby aby som vedel ze parsing nepresiel...
 a dat len nech maze starsie zaznamy ako 30 dni, a teda aj nech tam vklada ak tam taka chyba este nie je equal na zaklade name
