@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>List of new product</title>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/4.1.3/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/3.0.0/jquery.min.js"
+            th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+
+    <link href="../static/css/spring-core.css"
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+
+</head>
+<body>
+<div class="container">
+    <div th:if="${not #lists.isEmpty(newProducts)}">
+        <h2>List of new products</h2>
+        <table class="table table-striped">
+            <tr>
+                <td>Eshop</td>
+                <td>Picture</td>
+                <td>Name</td>
+                <td>Valid</td>
+                <td>Confirm</td>
+                <td>Actions</td>
+                <td>Unit</td>
+                <td>Unit value</td>
+                <td>Unit package count</td>
+                <!--<td>Url</td>-->
+                <td>Id</td>
+            </tr>
+            <tr th:each="newProduct : ${newProducts}">
+
+                <!-- eshop -->
+                <td th:text="${newProduct.eshopUuid.name()}"></td>
+
+                <!-- obrazok produktu-->
+                <td>
+                    <img th:src="${newProduct.pictureUrl}" height="142" width="142">
+                </td>
+
+                <!-- nazov -->
+                <td>
+                    <a th:href="${newProduct.url}" th:text="${newProduct.name}"></a>
+                </td>
+
+                <!-- unit validity -->
+                <td th:text="${newProduct.valid.toString()}"></td>
+
+                <!-- unit confirm validity -->
+                <td th:text="${newProduct.confirmValidity.toString()}"></td>
+
+                <!-- actions -->
+                <td>
+                    <a th:href="${'/newProduct/'+newProduct.id+'/confirm'}">Confirm</a>
+                    <br>
+                    <a th:href="${'/newProduct/'+newProduct.id+'/reprocess'}">Reprocess unit</a>
+                    <br>
+                    <a th:href="${'/newProduct/'+newProduct.id+'/interested'}">Interested</a>
+                    <br>
+                    <a th:href="${'/newProduct/'+newProduct.id+'/notInterested'}">Not interested</a>
+                </td>
+
+                <!-- unit -->
+                <td th:text="${newProduct.unit!=null} ? ${newProduct.unit.name()} : '-'"></td>
+
+                <!-- unit value -->
+                <td th:text="${newProduct.unitValue!=null} ? ${newProduct.unitValue} : '-'"></td>
+
+                <!-- unit package count -->
+                <td th:text="${newProduct.unitPackageCount!=null} ? ${newProduct.unitPackageCount} : '-'"></td>
+
+                <!-- url -->
+                <!-- <td>
+                     <a th:href="${newProduct.url}" th:text="${newProduct.url}"></a>
+                 </td>-->
+
+                <!-- id -->
+                <td th:text="${newProduct.id}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

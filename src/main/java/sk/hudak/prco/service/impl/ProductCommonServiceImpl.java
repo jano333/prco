@@ -99,11 +99,11 @@ public class ProductCommonServiceImpl implements ProductCommonService {
 
             // ulozim ho
             productEntityDao.save(productEntity);
-            log.trace("created new {} with id {}", ProductEntity.class.getSimpleName(), productEntity.getId());
+            log.debug("created new {} with id {}", ProductEntity.class.getSimpleName(), productEntity.getId());
 
             // odmazem povodne data
             newProductEntityDao.delete(newProductEntity);
-            log.trace("deleted {} with id {}", NewProductEntity.class.getSimpleName(), newProductEntity.getId());
+            log.debug("deleted {} with id {}", NewProductEntity.class.getSimpleName(), newProductEntity.getId());
         }
     }
 
