@@ -41,6 +41,16 @@
                 </td>
 
                 <td th:text="${product.id}"></td>
+
+                <!--<td>
+                    <div class="controls">
+                        <select class="form-control" name="example" id="example">
+                            <option value="0">ALL</option>
+                            <option th:each="group : ${groupsWithoutProduct}" th:value="${group.id}" th:text="${group.name}">
+                            </option>
+                        </select>
+                    </div>
+                </td>-->
             </tr>
         </table>
     </div>

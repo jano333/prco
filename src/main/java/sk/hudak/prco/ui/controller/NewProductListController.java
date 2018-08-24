@@ -1,13 +1,15 @@
 package sk.hudak.prco.ui.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import sk.hudak.prco.dto.newproduct.NewProductFilterUIDto;
 import sk.hudak.prco.dto.newproduct.NewProductFullDto;
 
 import java.util.List;
+
+import static sk.hudak.prco.ui.ViewNamesConstants.VIEW_NEW_PRODUCTS;
 
 @Controller
 public class NewProductListController extends BasicController {
@@ -15,14 +17,12 @@ public class NewProductListController extends BasicController {
     /**
      * Zoznam novych produktov
      *
-     * @param model
      * @return
      */
     @RequestMapping("/newProducts")
-    public String listNewProducts(Model model) {
+    public ModelAndView listNewProducts() {
         List<NewProductFullDto> newProducts = getUiService().findNewProducts(new NewProductFilterUIDto());
-        model.addAttribute("newProducts", newProducts);
-        return "newProducts";
+        return new ModelAndView(VIEW_NEW_PRODUCTS, "newProducts", newProducts);
     }
 
     // ------------   ACTIONS --------------
@@ -31,42 +31,37 @@ public class NewProductListController extends BasicController {
      * Potvrdenie hodnoty pre unit
      *
      * @param id
-     * @param model
      * @return
      */
     @RequestMapping("/newProduct/{id}/confirm")
-    public String confirmNewProducts(@PathVariable Long id, Model model) {
+    public ModelAndView confirmNewProducts(@PathVariable Long id) {
         getUiService().confirmUnitDataForNewProduct(id);
         //reload zoznamu
-        return listNewProducts(model);
+        return new ModelAndView("redirect:/" + VIEW_NEW_PRODUCTS);
     }
 
     /**
      * Spusti znova vyparsovanie 'unit' values na zaklade nazvu 'new' produktu.
      *
      * @param id
-     * @param model
      * @return
      */
     @RequestMapping("/newProduct/{id}/reprocess")
-    public String reprocessNewProducts(@PathVariable Long id, Model model) {
+    public ModelAndView reprocessNewProducts(@PathVariable Long id) {
         getUiService().tryToRepairInvalidUnitForNewProductByReprocessing(id);
-        //reload zoznamu
-        return listNewProducts(model);
+        return new ModelAndView("redirect:/" + VIEW_NEW_PRODUCTS);
     }
 
     @RequestMapping("/newProduct/{id}/interested")
-    public String interestedNewProducts(@PathVariable Long id, Model model) {
+    public ModelAndView interestedNewProducts(@PathVariable Long id) {
         getUiService().markNewProductAsInterested(id);
-        //reload zoznamu
-        return listNewProducts(model);
+        return new ModelAndView("redirect:/" + VIEW_NEW_PRODUCTS);
     }
 
     @RequestMapping("/newProduct/{id}/notInterested")
-    public String notInterestedNewProducts(@PathVariable Long id, Model model) {
+    public ModelAndView notInterestedNewProducts(@PathVariable Long id) {
         getUiService().markNewProductAsNotInterested(id);
-        //reload zoznamu
-        return listNewProducts(model);
+        return new ModelAndView("redirect:/" + VIEW_NEW_PRODUCTS);
     }
 
 }
