@@ -1,13 +1,56 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+BUG: unit nevie
+https://www.pilulka.sk/pa-plienky-abd-giant-cube-plus-s5-78
+Pampers Active Baby-Dry Giant Cube Plus 5 (11-18kg) 78ks
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+BUG: unit nevie
+https://www.pilulka.sk/pa-plienky-abd-giant-cube-plus-s5-78
+Pampers Active Baby-Dry Giant Cube Plus 5 (11-18kg) 78ks
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+BUG: unit nevie
+https://www.drmax.sk/pampers-plienky-premium-monthly-box-s4-168/
+1x168 ks
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+FEATURE:
+urobit reproces aby nie len unit, ale URL na obrazok, teda asi ako keby komplet update ale na new produt...
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+BUG:
+Pilluka obrazky nedava napr
+https://www.pilulka.sk/pampers-11-18kg-junior-ab-50-5-act-b-487858
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+BUG:
+dr max: 1x136 ks nevie rozparsovat
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+BUG: 2018-08-27 08:58:08,069 ERROR [ALZA] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:85] error while creating new product
+     java.lang.IndexOutOfBoundsException: Index: 1, Size: 1
+     	at java.util.ArrayList.rangeCheck(ArrayList.java:653)
+     	at java.util.ArrayList.get(ArrayList.java:429)
+     	at sk.hudak.prco.eshop.AlzaProductParser.parseProductNameFromDetail(AlzaProductParser.java:110)
+     	at sk.hudak.prco.eshop.AlzaProductParser.parseProductNameFromList(AlzaProductParser.java:103)
+     	at sk.hudak.prco.parser.impl.JSoupProductParser.parseNewProductInfo(JSoupProductParser.java:93)
+     	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseNewProductInfo(JsoupHtmlParser.java:51)
+     	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.java:183)
+     	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$30(AddingNewProductManagerImpl.java:82)
+     	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+     	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+     	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+     	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+BUG:
 2x800 g - mliečna výživa, 1x1 set - nevie rozparsovat
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
+BUG:
 Nutrilon 5 mlieko pre deti od 36. m 800 g dava zle
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
+BUG:
 2018-08-08 15:39:59,924 DEBUG [http-nio-8080-exec-9] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:32] parsing product name to retrieve unit info: Nutrilon 4 3x600 g
 2018-08-08 15:39:59,924 WARN [http-nio-8080-exec-9] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:192] unit info not found for 'nutrilon 4 3x600 g'
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
+BUG:
 2018-08-08 15:28:13,157 DEBUG [http-nio-8080-exec-7] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:32] parsing product name to retrieve unit info: Nutrilon 4 1x800 g
 2018-08-08 15:28:13,158 WARN [http-nio-8080-exec-7] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:192] unit info not found for 'nutrilon 4 1x800 g'
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
+FEATURE:
 toto je rovnaky produkt:(urobit servic, ktory vyhlada v danom esope produkty ktore maju rovnaky price for unit, pricie for one item a aj nazov, teda lisia sa len URL)
 eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 169, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-pronutra-800g-dojcenske-mlieko/
 eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 996, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-800g-dojcenske-mlieko/
