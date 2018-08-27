@@ -79,6 +79,18 @@ public class UnitParserImpl implements UnitParser {
         if (matcher.find()) {
             return createKus(convertToBigDecimal(matcher.group(1)), "1");
         }
+        // Pampers Active Baby-Dry Giant Cube Plus 5 (11-18kg) 78ks
+        matcher = craeteMatcher(productName, "\\) ", NUMBER_AT_LEAST_ONE, "ks");
+        if (matcher.find()) {
+            return createKus(convertToBigDecimal(matcher.group(2)), "1");
+        }
+
+        // 1x136 ks
+        matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, " ks");
+        if (matcher.find()) {
+            return createKus(convertToBigDecimal(matcher.group(3)), matcher.group(1));
+        }
+
 
         // --- OBJEM ---
 
