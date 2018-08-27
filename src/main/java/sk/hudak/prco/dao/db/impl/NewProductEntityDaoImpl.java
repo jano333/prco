@@ -1,5 +1,7 @@
 package sk.hudak.prco.dao.db.impl;
 
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.dao.db.NewProductEntityDbDao;
@@ -36,6 +38,8 @@ public class NewProductEntityDaoImpl extends BaseDaoImpl<NewProductEntity> imple
     public List<NewProductEntity> findByFilter(NewProductFilterUIDto filter) {
         JPAQuery<NewProductEntity> query = from(QNewProductEntity.newProductEntity);
         //TODO filter applied
+        // najnovsie najskor
+        query.orderBy(new OrderSpecifier<>(Order.DESC, QNewProductEntity.newProductEntity.created));
         return query.fetch();
     }
 
