@@ -22,7 +22,10 @@ public class NewProductListController extends BasicController {
     @RequestMapping("/newProducts")
     public ModelAndView listNewProducts() {
         List<NewProductFullDto> newProducts = getUiService().findNewProducts(new NewProductFilterUIDto());
-        return new ModelAndView(VIEW_NEW_PRODUCTS, "newProducts", newProducts);
+        ModelAndView modelAndView = new ModelAndView(VIEW_NEW_PRODUCTS, "newProducts", newProducts);
+        modelAndView.addObject("countOfAllNewProducts", newProducts.size());
+
+        return modelAndView;
     }
 
     // ------------   ACTIONS --------------
