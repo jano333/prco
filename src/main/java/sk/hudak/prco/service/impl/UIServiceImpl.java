@@ -16,6 +16,7 @@ import sk.hudak.prco.dto.product.ProductBestPriceInGroupDto;
 import sk.hudak.prco.dto.product.ProductFilterUIDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.dto.product.ProductInActionDto;
+import sk.hudak.prco.dto.product.ProductUnitDataDto;
 import sk.hudak.prco.service.InternalTxService;
 import sk.hudak.prco.service.UIService;
 
@@ -49,6 +50,11 @@ public class UIServiceImpl implements UIService {
     @Override
     public void markNewProductAsNotInterested(Long newProductId) {
         internalTxService.markNewProductAsNotInterested(newProductId);
+    }
+
+    @Override
+    public void updateProductUnitData(ProductUnitDataDto productUnitDataDto) {
+        internalTxService.updateProductUnitData(productUnitDataDto);
     }
 
     @Override

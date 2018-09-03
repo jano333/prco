@@ -13,7 +13,7 @@ import java.util.Date;
 @Setter
 @ToString
 @Builder
-public class ProductUpdateData {
+public class ProductUpdateDataDto {
     private Long id;
 
     private String name;

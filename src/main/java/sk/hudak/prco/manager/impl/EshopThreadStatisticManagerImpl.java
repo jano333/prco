@@ -25,6 +25,7 @@ public class EshopThreadStatisticManagerImpl implements EshopThreadStatisticMana
 
     @Override
     public void startShowingStatistics() {
+        boolean shoudDownStatistic = false;
         Thread thread = new Thread(() -> {
             boolean aha = true;
             while (aha) {
@@ -35,8 +36,11 @@ public class EshopThreadStatisticManagerImpl implements EshopThreadStatisticMana
                     log.error("thread interrupted " + e.getMessage());
                     Thread.currentThread().interrupt();
                 }
+                if (shoudDownStatistic) {
+                    log.debug("shunting down statistics");
+                    Thread.currentThread().interrupt();
+                }
             }
-
         });
         thread.setName("thread-statistic-mng");
         thread.setDaemon(true);
@@ -66,5 +70,11 @@ public class EshopThreadStatisticManagerImpl implements EshopThreadStatisticMana
         log.debug("all tasks: {}  running: {}, finished(ok/error): {}/{}{}", tasks.size(), running.size(), finishedOk.size(), finishedNotOk.size(), finishedNotOk);
 //        log.debug("status: {}", tasks.toString());
         log.debug("error statistic {}", internalTxService.getStatisticForErrors());
+
+        /*if (running.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }*/
     }
 }

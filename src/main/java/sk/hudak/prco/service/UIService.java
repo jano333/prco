@@ -14,6 +14,7 @@ import sk.hudak.prco.dto.product.ProductBestPriceInGroupDto;
 import sk.hudak.prco.dto.product.ProductFilterUIDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.dto.product.ProductInActionDto;
+import sk.hudak.prco.dto.product.ProductUnitDataDto;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -62,6 +63,8 @@ public interface UIService {
     void markNewProductAsNotInterested(Long newProductId);
 
     //-------------- PRODUCTS -------------------
+
+    void updateProductUnitData(ProductUnitDataDto productUnitDataDto);
 
     void updateCommonPrice(Long productId, BigDecimal newcommonPrice);
 

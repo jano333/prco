@@ -16,6 +16,7 @@ import sk.hudak.prco.dto.newproduct.NewProductInfoDetail;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.mapper.PrcoOrikaMapper;
 import sk.hudak.prco.model.NewProductEntity;
+import sk.hudak.prco.parser.HtmlParser;
 import sk.hudak.prco.parser.UnitParser;
 import sk.hudak.prco.service.ErrorService;
 import sk.hudak.prco.service.NewProductService;
@@ -45,6 +46,9 @@ public class NewProductServiceImpl implements NewProductService {
 
     @Autowired
     private ErrorService errorService;
+
+    @Autowired
+    private HtmlParser htmlParser;
 
     @Override
     public Long createNewProduct(NewProductCreateDto newProductCreateDto) {
@@ -118,16 +122,19 @@ public class NewProductServiceImpl implements NewProductService {
         notNull(newProductId, "newProductId");
         NewProductEntity productEntity = newProductEntityDao.findById(newProductId);
 
-        Optional<UnitTypeValueCount> unitTypeValueCountOpt = unitParser.parseUnitTypeValueCount(productEntity.getName());
-        if (unitTypeValueCountOpt.isPresent()) {
-            UnitTypeValueCount unitTypeValueCount = unitTypeValueCountOpt.get();
 
-            productEntity.setUnit(unitTypeValueCount.getUnit());
-            productEntity.setUnitValue(unitTypeValueCount.getValue());
-            productEntity.setUnitPackageCount(unitTypeValueCount.getPackageCount());
+        // parsujem
+        NewProductInfo newProductInfo = htmlParser.parseNewProductInfo(productEntity.getUrl());
+
+//        Optional<UnitTypeValueCount> unitTypeValueCountOpt = unitParser.parseUnitTypeValueCount(productEntity.getName());
+//        Optional<UnitTypeValueCount> unitTypeValueCountOpt = Optional.ofNullable(newProductInfo.getUnit());
+        if (newProductInfo.getUnit() != null) {
+            productEntity.setUnit(newProductInfo.getUnit());
+            productEntity.setUnitValue(newProductInfo.getUnitValue());
+            productEntity.setUnitPackageCount(newProductInfo.getUnitPackageCount());
             productEntity.setValid(Boolean.TRUE);
-            newProductEntityDao.update(productEntity);
-            log.debug("new product with id {} was updated with unit data {}", productEntity.getId(), unitTypeValueCountOpt);
+            log.debug("new product with id {} was updated with unit data {}", productEntity.getId(),
+                    new UnitTypeValueCount(newProductInfo.getUnit(), newProductInfo.getUnitValue(), newProductInfo.getUnitPackageCount()));
         } else {
             log.warn("parsing failed for name {}", productEntity.getName());
             errorService.createError(ErrorCreateDto.builder()
@@ -136,7 +143,11 @@ public class NewProductServiceImpl implements NewProductService {
                     .eshopUuid(productEntity.getEshopUuid())
                     .additionalInfo(productEntity.getName())
                     .build());
+            return;
         }
+        productEntity.setPictureUrl(newProductInfo.getPictureUrl());
+        newProductEntityDao.update(productEntity);
+
     }
 
     @Override

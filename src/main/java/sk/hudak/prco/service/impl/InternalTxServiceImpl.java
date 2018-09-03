@@ -7,7 +7,7 @@ import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.ProductStatisticInfoDto;
-import sk.hudak.prco.dto.ProductUpdateData;
+import sk.hudak.prco.dto.ProductUpdateDataDto;
 import sk.hudak.prco.dto.UnitData;
 import sk.hudak.prco.dto.WatchDogAddDto;
 import sk.hudak.prco.dto.WatchDogDto;
@@ -30,6 +30,7 @@ import sk.hudak.prco.dto.product.ProductDetailInfo;
 import sk.hudak.prco.dto.product.ProductFilterUIDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.dto.product.ProductInActionDto;
+import sk.hudak.prco.dto.product.ProductUnitDataDto;
 import sk.hudak.prco.service.ErrorService;
 import sk.hudak.prco.service.GroupService;
 import sk.hudak.prco.service.InternalTxService;
@@ -152,8 +153,14 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional
-    public void updateProductData(ProductUpdateData productUpdateData) {
-        productService.updateProductData(productUpdateData);
+    public void updateProductData(ProductUpdateDataDto productUpdateDataDto) {
+        productService.updateProductData(productUpdateDataDto);
+    }
+
+    @Override
+    @Transactional
+    public void updateProductUnitData(ProductUnitDataDto productUnitDataDto) {
+        productService.updateProductUnitData(productUnitDataDto);
     }
 
     @Override

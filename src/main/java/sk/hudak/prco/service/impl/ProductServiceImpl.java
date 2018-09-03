@@ -9,7 +9,7 @@ import sk.hudak.prco.dao.db.GroupEntityDao;
 import sk.hudak.prco.dao.db.GroupOfProductFindEntityDao;
 import sk.hudak.prco.dao.db.ProductDataUpdateEntityDao;
 import sk.hudak.prco.dao.db.ProductEntityDao;
-import sk.hudak.prco.dto.ProductUpdateData;
+import sk.hudak.prco.dto.ProductUpdateDataDto;
 import sk.hudak.prco.dto.group.GroupIdNameDto;
 import sk.hudak.prco.dto.internal.StatisticForUpdateForEshopDto;
 import sk.hudak.prco.dto.product.ProductBestPriceInGroupDto;
@@ -17,6 +17,7 @@ import sk.hudak.prco.dto.product.ProductDetailInfo;
 import sk.hudak.prco.dto.product.ProductFilterUIDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.dto.product.ProductInActionDto;
+import sk.hudak.prco.dto.product.ProductUnitDataDto;
 import sk.hudak.prco.mapper.PrcoOrikaMapper;
 import sk.hudak.prco.model.ProductDataUpdateEntity;
 import sk.hudak.prco.model.ProductEntity;
@@ -301,7 +302,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProductData(ProductUpdateData updateData) {
+    public void updateProductData(ProductUpdateDataDto updateData) {
         notNull(updateData, "updateData");
         notNull(updateData.getId(), "id");
         notNullNotEmpty(updateData.getName(), "name");
@@ -333,6 +334,22 @@ public class ProductServiceImpl implements ProductService {
 
         log.debug("product with id {} has been updated with price for package {}",
                 productEntity.getId(), updateData.getPriceForPackage());
+    }
+
+    @Override
+    public void updateProductUnitData(ProductUnitDataDto productUnitDataDto) {
+        notNull(productUnitDataDto, "productUnitDataDto");
+        notNull(productUnitDataDto.getId(), "id");
+        notNull(productUnitDataDto.getUnit(), "unit");
+        notNull(productUnitDataDto.getUnitValue(), "unitValue");
+        notNull(productUnitDataDto.getUnitPackageCount(), "unitPackageCount");
+
+        ProductDataUpdateEntity entity = productDataUpdateEntityDao.findById(productUnitDataDto.getId());
+        entity.setUnit(productUnitDataDto.getUnit());
+        entity.setUnitValue(productUnitDataDto.getUnitValue());
+        entity.setUnitPackageCount(productUnitDataDto.getUnitPackageCount());
+        productDataUpdateEntityDao.update(entity);
+
     }
 
     @Override

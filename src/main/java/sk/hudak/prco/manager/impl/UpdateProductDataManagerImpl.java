@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.dto.ProductUpdateData;
+import sk.hudak.prco.dto.ProductUpdateDataDto;
 import sk.hudak.prco.dto.error.ErrorCreateDto;
 import sk.hudak.prco.dto.internal.ProductForUpdateData;
 import sk.hudak.prco.dto.product.ProductDetailInfo;
@@ -241,7 +241,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
         if (updateData.isProductAvailable()) {
             //FIXME premapovanie cez sk.hudak.prco mapper nie takto rucne, nech mam na jednom mieste tie preklapacky...
-            internalTxService.updateProductData(ProductUpdateData.builder()
+            internalTxService.updateProductData(ProductUpdateDataDto.builder()
                     .id(productDetailInfo.getId())
                     .name(updateData.getName())
                     .priceForPackage(updateData.getPriceForPackage())

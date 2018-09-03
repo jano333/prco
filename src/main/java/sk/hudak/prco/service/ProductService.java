@@ -1,13 +1,14 @@
 package sk.hudak.prco.service;
 
 import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.dto.ProductUpdateData;
+import sk.hudak.prco.dto.ProductUpdateDataDto;
 import sk.hudak.prco.dto.internal.StatisticForUpdateForEshopDto;
 import sk.hudak.prco.dto.product.ProductBestPriceInGroupDto;
 import sk.hudak.prco.dto.product.ProductDetailInfo;
 import sk.hudak.prco.dto.product.ProductFilterUIDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.dto.product.ProductInActionDto;
+import sk.hudak.prco.dto.product.ProductUnitDataDto;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -35,7 +36,9 @@ public interface ProductService {
 
     EshopUuid findEshopForProductId(Long productId);
 
-    void updateProductData(ProductUpdateData productUpdateData);
+    void updateProductData(ProductUpdateDataDto productUpdateDataDto);
+
+    void updateProductUnitData(ProductUnitDataDto productUnitDataDto);
 
     void updateCommonPrice(Long productId, BigDecimal newCommonPrice);
 

@@ -1,15 +1,10 @@
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-BUG: unit nevie
-https://www.pilulka.sk/pa-plienky-abd-giant-cube-plus-s5-78
-Pampers Active Baby-Dry Giant Cube Plus 5 (11-18kg) 78ks
+BUG:
+nedava obrazok pre:
+https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121218158
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
-BUG: unit nevie
-https://www.pilulka.sk/pa-plienky-abd-giant-cube-plus-s5-78
-Pampers Active Baby-Dry Giant Cube Plus 5 (11-18kg) 78ks
-----------------------------------------------------------------------------------------------------------------------------------------------------------
-BUG: unit nevie
-https://www.drmax.sk/pampers-plienky-premium-monthly-box-s4-168/
-1x168 ks
+BUG: unit parsing
+PAMPERS NEW BABY DRY 2 MINI 100KS
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 FEATURE:
 urobit reproces aby nie len unit, ale URL na obrazok, teda asi ako keby komplet update ale na new produt...
