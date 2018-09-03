@@ -40,6 +40,12 @@ public class UnitParserTest {
                 Unit.KUS, "70");
          addTestData(values, "pampers pants veľ. 4 (352 ks) – dvojmesačná zásoba",
                 Unit.KUS, "352");
+         addTestData(values, "1x136 ks",
+                Unit.KUS, "136");
+         addTestData(values, "Pampers Active Baby-Dry Giant Cube Plus 5 (11-18kg) 78ks",
+                Unit.KUS, "78");
+         addTestData(values, "PAMPERS NEW BABY DRY 2 MINI 100KS",
+                Unit.KUS, "100");
 
         // OBJEM
         addTestData(values, "Becherovka Original Bylinný likér 0,5 l",
@@ -52,8 +58,8 @@ public class UnitParserTest {
                 Unit.LITER, "0.70000");
         addTestData(values, "Velkopopovický Kozel pivo tmavé 6x4x500 ml PLECH",
                 Unit.LITER, "0.50000", 24);
-        addTestData(values, "absolut vodka 40% 1x1 l",
-                Unit.LITER, "1", 1);
+//        addTestData(values, "absolut vodka 40% 1x1 l",
+//                Unit.LITER, "1", 1);
 
         // VAHA
         addTestData(values, "Radoma Preto Filé z Aljašskej tresky 4 x 100 g",
@@ -84,8 +90,14 @@ public class UnitParserTest {
                 Unit.KILOGRAM, "0.01250", 8);
          addTestData(values, "Nutrilon Nutrilon 4 Pronutra - 6 × 800g + vlhčené obrúsky Oncle SENSITIVE",
                 Unit.KILOGRAM, "0.80000", 6);
-         addTestData(values, "Nutrilon 4 3x600 g nevie vyparsovat",
+         addTestData(values, "Nutrilon 4 3x600 g",
                 Unit.KILOGRAM, "0.60000", 3);
+         addTestData(values, "Nutrilon dojčenské mlieko 1 Pronutra Good Sleep 6x 800g",
+                Unit.KILOGRAM, "0.80000", 6);
+         addTestData(values, "2x800 g - mliečna výživa, 1x1 set",
+                Unit.KILOGRAM, "0.80000", 2);
+         addTestData(values, "Nutrilon 5 detská mliečna výživa v prášku 800 g 5+1 zdarma",
+                Unit.KILOGRAM, "0.80000", 6);
 
         for (String name : values.keySet()) {
             verify(name, values.get(name));

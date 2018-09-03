@@ -84,11 +84,16 @@ public class UnitParserImpl implements UnitParser {
         if (matcher.find()) {
             return createKus(convertToBigDecimal(matcher.group(2)), "1");
         }
-
         // 1x136 ks
         matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, " ks");
         if (matcher.find()) {
             return createKus(convertToBigDecimal(matcher.group(3)), matcher.group(1));
+        }
+
+        //pampers new baby dry 2 mini 100ks
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "ks");
+        if (matcher.find()) {
+            return createKus(convertToBigDecimal(matcher.group(2)), "1");
         }
 
 
@@ -223,7 +228,7 @@ public class UnitParserImpl implements UnitParser {
         // Hamé Májka Lahôdkový bravčový krém 75 g
         matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, " g|g");
         if (matcher.find()) {
-            return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(2))), "1");
+            return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(2))));
         }
 
 
@@ -244,6 +249,10 @@ public class UnitParserImpl implements UnitParser {
         return Pattern.compile("(" + stringJoiner.toString() + ")");
     }
 
+    private Optional<UnitTypeValueCount> createKus(BigDecimal value) {
+        return createKus(value, "1");
+    }
+
     private Optional<UnitTypeValueCount> createKus(BigDecimal value, String packageCount) {
         return Optional.of(new UnitTypeValueCount(Unit.KUS, value, Integer.valueOf(packageCount)));
     }
@@ -254,6 +263,10 @@ public class UnitParserImpl implements UnitParser {
 
     private Optional<UnitTypeValueCount> createObjem(BigDecimal value, String packageCount) {
         return Optional.of(new UnitTypeValueCount(Unit.LITER, value, Integer.valueOf(packageCount)));
+    }
+
+    private Optional<UnitTypeValueCount> createKilogram(BigDecimal value) {
+        return createKilogram(value, "1");
     }
 
     private Optional<UnitTypeValueCount> createKilogram(BigDecimal value, String packageCount) {

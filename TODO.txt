@@ -2,6 +2,7 @@
 BUG:
 nedava obrazok pre:
 https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121218158
+na soruce page src atribut je, ale v kode ked to natiahne tak to nie je
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 BUG: unit parsing
 PAMPERS NEW BABY DRY 2 MINI 100KS
