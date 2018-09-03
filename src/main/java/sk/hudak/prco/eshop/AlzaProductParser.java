@@ -107,6 +107,9 @@ public class AlzaProductParser extends JSoupProductParser {
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
 
         Elements first = documentDetailProduct.select("script[type=application/ld+json]");
+        if (first.size() < 2) {
+            return Optional.empty();
+        }
         Element element = first.get(1);
         List<Node> nodes = element.childNodes();
         DataNode node = (DataNode) nodes.get(0);
