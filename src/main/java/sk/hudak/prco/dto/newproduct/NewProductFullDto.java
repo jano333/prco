@@ -21,9 +21,9 @@ import java.util.Date;
 @ToString
 public class NewProductFullDto implements DtoAble {
 
+    private Long id;
     private Date created;
     private Date updated;
-    private Long id;
     private String url;
     private String name;
     private EshopUuid eshopUuid;
