@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 public class ProductUnitDataDto implements DtoAble {
     private Long id;
 
+    private String name;
     private Unit unit;
     private BigDecimal unitValue;
     private Integer unitPackageCount;
