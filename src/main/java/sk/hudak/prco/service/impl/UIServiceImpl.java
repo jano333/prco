@@ -38,6 +38,11 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
+    public NewProductFullDto getNewProduct(Long newProductId) {
+        return internalTxService.getNewProduct(newProductId);
+    }
+
+    @Override
     public void confirmUnitDataForNewProduct(Long newProductId) {
         internalTxService.confirmUnitDataForNewProducts(newProductId);
     }

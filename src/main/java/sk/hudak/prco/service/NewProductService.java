@@ -6,6 +6,7 @@ import sk.hudak.prco.dto.newproduct.NewProductCreateDto;
 import sk.hudak.prco.dto.newproduct.NewProductFilterUIDto;
 import sk.hudak.prco.dto.newproduct.NewProductFullDto;
 import sk.hudak.prco.dto.newproduct.NewProductInfoDetail;
+import sk.hudak.prco.dto.product.ProductUnitDataDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +24,8 @@ public interface NewProductService {
      * @return id novo vytvorenej entity {@link sk.hudak.prco.model.NewProductEntity}
      */
     Long createNewProduct(NewProductCreateDto newProductCreateDto);
+
+    NewProductFullDto getNewProduct(Long newProductId);
 
     /**
      * @return prvy nevalidny produkt, ktory treba opravit.<br>
@@ -76,4 +79,6 @@ public interface NewProductService {
     List<NewProductFullDto> findNewProducts(NewProductFilterUIDto filter);
 
     List<NewProductFullDto> findNewProductsForExport();
+
+    void updateProductUnitData(ProductUnitDataDto productUnitDataDto);
 }

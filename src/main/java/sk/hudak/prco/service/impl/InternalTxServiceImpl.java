@@ -92,6 +92,12 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional(readOnly = true)
+    public NewProductFullDto getNewProduct(Long newProductId) {
+        return newProductService.getNewProduct(newProductId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Optional<NewProductInfoDetail> findFirstInvalidNewProduct() {
         return newProductService.findFirstInvalidNewProduct();
     }
@@ -160,7 +166,7 @@ public class InternalTxServiceImpl implements InternalTxService {
     @Override
     @Transactional
     public void updateProductUnitData(ProductUnitDataDto productUnitDataDto) {
-        productService.updateProductUnitData(productUnitDataDto);
+        newProductService.updateProductUnitData(productUnitDataDto);
     }
 
     @Override

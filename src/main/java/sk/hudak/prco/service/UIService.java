@@ -34,6 +34,8 @@ public interface UIService {
      */
     List<NewProductFullDto> findNewProducts(NewProductFilterUIDto filter);
 
+    NewProductFullDto getNewProduct(Long newProductId);
+
     /**
      * Nastavi 'confirm' na 'novom' produkte na true. Co znamena, ze potvrdzujem data pre unit hodnoty su spravne.
      *

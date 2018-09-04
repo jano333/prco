@@ -13,6 +13,7 @@ import sk.hudak.prco.dto.newproduct.NewProductCreateDto;
 import sk.hudak.prco.dto.newproduct.NewProductFilterUIDto;
 import sk.hudak.prco.dto.newproduct.NewProductFullDto;
 import sk.hudak.prco.dto.newproduct.NewProductInfoDetail;
+import sk.hudak.prco.dto.product.ProductUnitDataDto;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.mapper.PrcoOrikaMapper;
 import sk.hudak.prco.model.NewProductEntity;
@@ -79,6 +80,12 @@ public class NewProductServiceImpl implements NewProductService {
             log.debug(errMsg, e);
             throw new PrcoRuntimeException(errMsg, e);
         }
+    }
+
+    @Override
+    public NewProductFullDto getNewProduct(Long newProductId) {
+        NewProductEntity byId = newProductEntityDao.findById(newProductId);
+        return mapper.map(byId, NewProductFullDto.class);
     }
 
     @Override
@@ -220,6 +227,22 @@ public class NewProductServiceImpl implements NewProductService {
     @Override
     public List<NewProductFullDto> findNewProductsForExport() {
         return mapper.mapAsList(newProductEntityDao.findAll(), NewProductFullDto.class);
+    }
+
+    @Override
+    public void updateProductUnitData(ProductUnitDataDto productUnitDataDto) {
+        notNull(productUnitDataDto, "productUnitDataDto");
+        notNull(productUnitDataDto.getId(), "id");
+        notNull(productUnitDataDto.getUnit(), "unit");
+        notNull(productUnitDataDto.getUnitValue(), "unitValue");
+        notNull(productUnitDataDto.getUnitPackageCount(), "unitPackageCount");
+
+        NewProductEntity entity = newProductEntityDao.findById(productUnitDataDto.getId());
+        entity.setUnit(productUnitDataDto.getUnit());
+        entity.setUnitValue(productUnitDataDto.getUnitValue());
+        entity.setUnitPackageCount(productUnitDataDto.getUnitPackageCount());
+        newProductEntityDao.update(entity);
+
     }
 
 

@@ -17,12 +17,14 @@
 </head>
 <body>
 <div class="container">
-    <h2>Update unit value of product: <span th:text="${productUnitDataDto.id}"></span></h2>
+    <h2>Update unit value of product:</h2>
+    <h3><span th:text="${productUnitDataDto.name}"></span></h3>
 
-    <form action="#" th:action="${'/product/'+productUnitDataDto.id+'/unitData'}" th:object="${productUnitDataDto}" method="post">
-        <p>Id: <input type="text" th:field="*{id}" /></p>
+    <form action="#" th:action="${'/product/unitData/save'}" th:object="${productUnitDataDto}" method="post">
+        <p>Id: <input type="text" th:field="${productUnitDataDto.id}" /></p>
 
-        <p>Unit: <input type="text" th:field="*{unit.name()}" /></p>
+        <!-- TODO combo na unit -->
+        <!--<p>Unit: <input type="text" th:field="${productUnitDataDto.unit!=null} ? ${productUnitDataDto.unit.name()} : '-'" /></p>-->
 
         <p>Unit value: <input type="text" th:field="*{unitValue}" /></p>
 

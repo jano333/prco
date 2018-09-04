@@ -3,16 +3,19 @@ package sk.hudak.prco.ui.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import sk.hudak.prco.dto.newproduct.NewProductFilterUIDto;
 import sk.hudak.prco.dto.newproduct.NewProductFullDto;
+import sk.hudak.prco.dto.product.ProductUnitDataDto;
 
 import java.util.List;
 
 import static sk.hudak.prco.ui.ViewNamesConstants.VIEW_NEW_PRODUCTS;
+import static sk.hudak.prco.ui.ViewNamesConstants.VIEW_NEW_PRODUCT_UNIT_DATA_EDIT;
 
 @Controller
-public class NewProductListController extends BasicController {
+public class NewProductController extends BasicController {
 
     /**
      * Zoznam novych produktov
@@ -55,16 +58,61 @@ public class NewProductListController extends BasicController {
         return new ModelAndView("redirect:/" + VIEW_NEW_PRODUCTS);
     }
 
+    /**
+     * Presunie new product do product
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping("/newProduct/{id}/interested")
     public ModelAndView interestedNewProducts(@PathVariable Long id) {
         getUiService().markNewProductAsInterested(id);
         return new ModelAndView("redirect:/" + VIEW_NEW_PRODUCTS);
     }
 
+    /**
+     * Presunie new product do not interested product
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping("/newProduct/{id}/notInterested")
     public ModelAndView notInterestedNewProducts(@PathVariable Long id) {
         getUiService().markNewProductAsNotInterested(id);
         return new ModelAndView("redirect:/" + VIEW_NEW_PRODUCTS);
+    }
+
+    /**
+     * Editacia(zobrazie) unit data
+     *
+     * @param newProductId
+     * @return
+     */
+    @RequestMapping(value = "/newProduct/{id}/unitData")
+    public ModelAndView editProductUnitData(@PathVariable(name = "id") Long newProductId) {
+        NewProductFullDto newProduct = getUiService().getNewProduct(newProductId);
+
+        ProductUnitDataDto productUnitDataDto = new ProductUnitDataDto();
+        productUnitDataDto.setId(newProduct.getId());
+        productUnitDataDto.setName(newProduct.getName());
+        productUnitDataDto.setUnit(newProduct.getUnit());
+        productUnitDataDto.setUnitPackageCount(newProduct.getUnitPackageCount());
+        productUnitDataDto.setUnitValue(newProduct.getUnitValue());
+
+        return new ModelAndView(VIEW_NEW_PRODUCT_UNIT_DATA_EDIT, "productUnitDataDto", productUnitDataDto);
+    }
+
+    /**
+     * Unit data save action
+     *
+     * @param unitData
+     * @return
+     */
+    @RequestMapping(value = "/newProduct/unitData/save", method = RequestMethod.POST)
+    public String saveProductUnitData(ProductUnitDataDto unitData) {
+        //TODO zle pozor to je novy product new product !!!
+        getUiService().updateProductUnitData(unitData);
+        return VIEW_NEW_PRODUCTS;
     }
 
 }

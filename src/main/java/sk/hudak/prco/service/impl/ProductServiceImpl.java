@@ -17,7 +17,6 @@ import sk.hudak.prco.dto.product.ProductDetailInfo;
 import sk.hudak.prco.dto.product.ProductFilterUIDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.dto.product.ProductInActionDto;
-import sk.hudak.prco.dto.product.ProductUnitDataDto;
 import sk.hudak.prco.mapper.PrcoOrikaMapper;
 import sk.hudak.prco.model.ProductDataUpdateEntity;
 import sk.hudak.prco.model.ProductEntity;
@@ -336,21 +335,7 @@ public class ProductServiceImpl implements ProductService {
                 productEntity.getId(), updateData.getPriceForPackage());
     }
 
-    @Override
-    public void updateProductUnitData(ProductUnitDataDto productUnitDataDto) {
-        notNull(productUnitDataDto, "productUnitDataDto");
-        notNull(productUnitDataDto.getId(), "id");
-        notNull(productUnitDataDto.getUnit(), "unit");
-        notNull(productUnitDataDto.getUnitValue(), "unitValue");
-        notNull(productUnitDataDto.getUnitPackageCount(), "unitPackageCount");
 
-        ProductDataUpdateEntity entity = productDataUpdateEntityDao.findById(productUnitDataDto.getId());
-        entity.setUnit(productUnitDataDto.getUnit());
-        entity.setUnitValue(productUnitDataDto.getUnitValue());
-        entity.setUnitPackageCount(productUnitDataDto.getUnitPackageCount());
-        productDataUpdateEntityDao.update(entity);
-
-    }
 
     @Override
     public void markProductAsUnavailable(Long productId) {
