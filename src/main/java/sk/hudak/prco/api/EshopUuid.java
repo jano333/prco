@@ -10,25 +10,23 @@ public enum EshopUuid {
     //TODO pridat prvy parameter boolean ktory bude hovorit o tom ci je alebo nie je enablovany dany eshop
 
 
-    // picture YES
     ALZA("https://www.alza.sk",
             "https://www.alza.sk/search.htm?exps={keyword}",
             "https://www.alza.sk/search-p{pageNumber}.htm?exps={keyword}",
-            3, 24),
+            3, 24, 5),
 
-    // picture YES
+    // TODO ANDREA_SHOP
+
     BAMBINO("https://www.bambino.sk",
             "https://www.bambino.sk/vyhladavanie?search={keyword}",
             "https://www.bambino.sk/vyhladavanie/{pageNumber}?search={keyword}",
-            3, 12),
+            3, 12, 5),
 
-    // picture YES
     DR_MAX("https://www.drmax.sk",
             "https://www.drmax.sk/catalog/search/?q={keyword}",
             "https://www.drmax.sk/catalog/search/?q={keyword}&offset={offset}&limit={limit}",
             3, 12, 24),
 
-    // picture YES
     FEEDO("https://www.feedo.sk",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/",
             // toto nefunguje: https://www.feedo.sk/vysledky-hladania/nutrilon%204/#page=2
@@ -41,7 +39,10 @@ public enum EshopUuid {
             "TODO nie je to cez parameter v stranke...",
             5, 24),
 
-    // picture YES
+    // TODO KID_MARKET
+    // TODO PERINBABA
+    //TODO  https://www.brendon.sk
+
     MALL("http://mall.sk",
             "https://www.mall.sk/hladaj?s={keyword}",
             "https://www.mall.sk/hladaj?page={pageNumber}&s={keyword}",
@@ -51,7 +52,6 @@ public enum EshopUuid {
             "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}",
             "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}&strana={pageNumber}",
             5, 24),
-
 
     METRO("https://sortiment.metro.sk",
             "https://sortiment.metro.sk/sk/search/?q={keyword}",
@@ -70,7 +70,6 @@ public enum EshopUuid {
             "https://www.pilulka.sk/hledat?q={keyword}&page={pageNumber}",
             5, 24),
 
-    // picture YES
     TESCO("https://potravinydomov.itesco.sk",
             "https://potravinydomov.itesco.sk/groceries/sk-SK/search?query={keyword}",
             "https://potravinydomov.itesco.sk/groceries/sk-SK/search?query={keyword}&page={pageNumber}",
@@ -78,19 +77,34 @@ public enum EshopUuid {
 
     @Getter
     private String productStartUrl;
+
     @Getter
     private String searchTemplateUrl;
+
     @Getter
     private String searchTemplateUrlWithPageNumber;
+
     @Getter
     private int maxCountOfNewPages;
+
     @Getter
     private int olderThanInHours;
+
     @Getter
     private int maxCountOfProductOnPage;
 
+    /**
+     *
+     * @param productStartUrl
+     * @param searchTemplateUrl
+     * @param searchTemplateUrlWithPageNumber
+     * @param maxCountOfNewPages
+     * @param olderThanInHours
+     * @param maxCountOfProductOnPage
+     */
     EshopUuid(String productStartUrl, String searchTemplateUrl, String searchTemplateUrlWithPageNumber,
               int maxCountOfNewPages, int olderThanInHours, int maxCountOfProductOnPage) {
+
         this.productStartUrl = productStartUrl;
         this.searchTemplateUrl = searchTemplateUrl;
         this.searchTemplateUrlWithPageNumber = searchTemplateUrlWithPageNumber;
