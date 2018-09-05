@@ -21,18 +21,25 @@
     <h3><span th:text="${productUnitDataDto.name}"></span></h3>
 
     <form action="#" th:action="${'/product/unitData/save'}" th:object="${productUnitDataDto}" method="post">
-        <p>Id: <input type="text" th:field="${productUnitDataDto.id}" /></p>
+        <p>Id: <input type="text" th:field="${productUnitDataDto.id}"/></p>
 
         <!-- TODO combo na unit -->
-        <!--<p>Unit: <input type="text" th:field="${productUnitDataDto.unit!=null} ? ${productUnitDataDto.unit.name()} : '-'" /></p>-->
+        <p>Unit:
+        <ul>
+            <li th:each="unitValue: ${allUnitValues}">
+                <input type="radio" th:field="*{unit}" th:value="${unitValue}"/>
+                <label th:for="${#ids.prev('unit')}" th:text="${unitValue}"></label>
+            </li>
+        </ul>
+        </p>
 
-        <p>Unit value: <input type="text" th:field="*{unitValue}" /></p>
+        <p>Unit value: <input type="text" th:field="*{unitValue}"/></p>
 
-        <p>Unit package count: <input type="text" th:field="*{unitPackageCount}" /></p>
+        <p>Unit package count: <input type="text" th:field="*{unitPackageCount}"/></p>
 
         <p>
-            <input type="submit" value="Submit" />
-            <input type="reset" value="Reset" />
+            <input type="submit" value="Save"/>
+            <input type="reset" value="Reset"/>
         </p>
     </form>
 

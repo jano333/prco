@@ -1,15 +1,19 @@
 package sk.hudak.prco.ui.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import sk.hudak.prco.api.Unit;
 import sk.hudak.prco.dto.newproduct.NewProductFilterUIDto;
 import sk.hudak.prco.dto.newproduct.NewProductFullDto;
 import sk.hudak.prco.dto.product.ProductUnitDataDto;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static sk.hudak.prco.ui.ViewNamesConstants.VIEW_NEW_PRODUCTS;
 import static sk.hudak.prco.ui.ViewNamesConstants.VIEW_NEW_PRODUCT_UNIT_DATA_EDIT;
@@ -95,7 +99,7 @@ public class NewProductController extends BasicController {
         ProductUnitDataDto productUnitDataDto = new ProductUnitDataDto();
         productUnitDataDto.setId(newProduct.getId());
         productUnitDataDto.setName(newProduct.getName());
-        productUnitDataDto.setUnit(newProduct.getUnit());
+        productUnitDataDto.setUnit(newProduct.getUnit() != null ? newProduct.getUnit().name() : null);
         productUnitDataDto.setUnitPackageCount(newProduct.getUnitPackageCount());
         productUnitDataDto.setUnitValue(newProduct.getUnitValue());
 
@@ -113,6 +117,19 @@ public class NewProductController extends BasicController {
         //TODO zle pozor to je novy product new product !!!
         getUiService().updateProductUnitData(unitData);
         return VIEW_NEW_PRODUCTS;
+    }
+
+    /**
+     * ZOznam vsetky Unit hodnot
+     *
+     * @return
+     */
+    @ModelAttribute("allUnitValues")
+    public String[] getMultiCheckboxAllValues() {
+        List<String> collect = Arrays.stream(Unit.values()).map(t -> t.name()).collect(Collectors.toList());
+        return collect.toArray(new String[collect.size()]);
+
+
     }
 
 }

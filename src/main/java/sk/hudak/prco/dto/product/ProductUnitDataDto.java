@@ -3,7 +3,6 @@ package sk.hudak.prco.dto.product;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import sk.hudak.prco.api.Unit;
 import sk.hudak.prco.dto.DtoAble;
 
 import java.math.BigDecimal;
@@ -12,10 +11,12 @@ import java.math.BigDecimal;
 @Setter
 @ToString
 public class ProductUnitDataDto implements DtoAble {
+    // read only
     private Long id;
-
     private String name;
-    private Unit unit;
+
+    // edit:
+    private String unit;
     private BigDecimal unitValue;
     private Integer unitPackageCount;
 }

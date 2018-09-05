@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.hudak.prco.api.ErrorType;
+import sk.hudak.prco.api.Unit;
 import sk.hudak.prco.dao.db.NewProductEntityDbDao;
 import sk.hudak.prco.dto.UnitData;
 import sk.hudak.prco.dto.UnitTypeValueCount;
@@ -233,12 +234,12 @@ public class NewProductServiceImpl implements NewProductService {
     public void updateProductUnitData(ProductUnitDataDto productUnitDataDto) {
         notNull(productUnitDataDto, "productUnitDataDto");
         notNull(productUnitDataDto.getId(), "id");
-        notNull(productUnitDataDto.getUnit(), "unit");
+        notNullNotEmpty(productUnitDataDto.getUnit(), "unit");
         notNull(productUnitDataDto.getUnitValue(), "unitValue");
         notNull(productUnitDataDto.getUnitPackageCount(), "unitPackageCount");
 
         NewProductEntity entity = newProductEntityDao.findById(productUnitDataDto.getId());
-        entity.setUnit(productUnitDataDto.getUnit());
+        entity.setUnit(Unit.valueOf(productUnitDataDto.getUnit()));
         entity.setUnitValue(productUnitDataDto.getUnitValue());
         entity.setUnitPackageCount(productUnitDataDto.getUnitPackageCount());
         newProductEntityDao.update(entity);
