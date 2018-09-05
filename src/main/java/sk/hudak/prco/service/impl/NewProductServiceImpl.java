@@ -238,11 +238,15 @@ public class NewProductServiceImpl implements NewProductService {
         notNull(productUnitDataDto.getUnitValue(), "unitValue");
         notNull(productUnitDataDto.getUnitPackageCount(), "unitPackageCount");
 
+        // name is ignored
+
         NewProductEntity entity = newProductEntityDao.findById(productUnitDataDto.getId());
         entity.setUnit(Unit.valueOf(productUnitDataDto.getUnit()));
         entity.setUnitValue(productUnitDataDto.getUnitValue());
         entity.setUnitPackageCount(productUnitDataDto.getUnitPackageCount());
         newProductEntityDao.update(entity);
+
+        log.debug("new product with id {} was updated for unit data values", productUnitDataDto.getId());
 
     }
 

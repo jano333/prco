@@ -114,9 +114,8 @@ public class NewProductController extends BasicController {
      */
     @RequestMapping(value = "/newProduct/unitData/save", method = RequestMethod.POST)
     public String saveProductUnitData(ProductUnitDataDto unitData) {
-        //TODO zle pozor to je novy product new product !!!
         getUiService().updateProductUnitData(unitData);
-        return VIEW_NEW_PRODUCTS;
+        return "redirect:/" + VIEW_NEW_PRODUCTS;
     }
 
     /**

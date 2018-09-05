@@ -20,7 +20,7 @@
     <h2>Update unit value of product:</h2>
     <h3><span th:text="${productUnitDataDto.name}"></span></h3>
 
-    <form action="#" th:action="${'/product/unitData/save'}" th:object="${productUnitDataDto}" method="post">
+    <form action="#" th:action="${'/newProduct/unitData/save'}" th:object="${productUnitDataDto}" method="post">
         <p>Id: <input type="text" th:field="${productUnitDataDto.id}"/></p>
 
         <!-- TODO combo na unit -->
