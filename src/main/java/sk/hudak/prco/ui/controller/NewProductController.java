@@ -15,8 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static sk.hudak.prco.ui.ViewNamesConstants.VIEW_NEW_PRODUCTS;
-import static sk.hudak.prco.ui.ViewNamesConstants.VIEW_NEW_PRODUCT_UNIT_DATA_EDIT;
+import static sk.hudak.prco.ui.MvcConstants.REDIRECT_TO_VIEW_NEW_PRODUCTS;
+import static sk.hudak.prco.ui.MvcConstants.VIEW_NEW_PRODUCTS;
+import static sk.hudak.prco.ui.MvcConstants.VIEW_NEW_PRODUCT_UNIT_DATA_EDIT;
 
 @Controller
 public class NewProductController extends BasicController {
@@ -35,8 +36,6 @@ public class NewProductController extends BasicController {
         return modelAndView;
     }
 
-    // ------------   ACTIONS --------------
-
     /**
      * Potvrdenie hodnoty pre unit
      *
@@ -47,7 +46,7 @@ public class NewProductController extends BasicController {
     public ModelAndView confirmNewProducts(@PathVariable Long id) {
         getUiService().confirmUnitDataForNewProduct(id);
         //reload zoznamu
-        return new ModelAndView("redirect:/" + VIEW_NEW_PRODUCTS);
+        return new ModelAndView(REDIRECT_TO_VIEW_NEW_PRODUCTS);
     }
 
     /**
@@ -59,7 +58,7 @@ public class NewProductController extends BasicController {
     @RequestMapping("/newProduct/{id}/reprocess")
     public ModelAndView reprocessNewProducts(@PathVariable Long id) {
         getUiService().tryToRepairInvalidUnitForNewProductByReprocessing(id);
-        return new ModelAndView("redirect:/" + VIEW_NEW_PRODUCTS);
+        return new ModelAndView(REDIRECT_TO_VIEW_NEW_PRODUCTS);
     }
 
     /**
@@ -71,7 +70,7 @@ public class NewProductController extends BasicController {
     @RequestMapping("/newProduct/{id}/interested")
     public ModelAndView interestedNewProducts(@PathVariable Long id) {
         getUiService().markNewProductAsInterested(id);
-        return new ModelAndView("redirect:/" + VIEW_NEW_PRODUCTS);
+        return new ModelAndView(REDIRECT_TO_VIEW_NEW_PRODUCTS);
     }
 
     /**
@@ -83,7 +82,7 @@ public class NewProductController extends BasicController {
     @RequestMapping("/newProduct/{id}/notInterested")
     public ModelAndView notInterestedNewProducts(@PathVariable Long id) {
         getUiService().markNewProductAsNotInterested(id);
-        return new ModelAndView("redirect:/" + VIEW_NEW_PRODUCTS);
+        return new ModelAndView(REDIRECT_TO_VIEW_NEW_PRODUCTS);
     }
 
     /**
@@ -115,11 +114,11 @@ public class NewProductController extends BasicController {
     @RequestMapping(value = "/newProduct/unitData/save", method = RequestMethod.POST)
     public String saveProductUnitData(ProductUnitDataDto unitData) {
         getUiService().updateProductUnitData(unitData);
-        return "redirect:/" + VIEW_NEW_PRODUCTS;
+        return REDIRECT_TO_VIEW_NEW_PRODUCTS;
     }
 
     /**
-     * ZOznam vsetky Unit hodnot
+     * Zoznam vsetky Unit hodnot
      *
      * @return
      */
@@ -127,8 +126,6 @@ public class NewProductController extends BasicController {
     public String[] getMultiCheckboxAllValues() {
         List<String> collect = Arrays.stream(Unit.values()).map(t -> t.name()).collect(Collectors.toList());
         return collect.toArray(new String[collect.size()]);
-
-
     }
 
 }

@@ -7,7 +7,7 @@ import sk.hudak.prco.dto.product.ProductFullDto;
 
 import java.util.List;
 
-import static sk.hudak.prco.ui.ViewNamesConstants.VIEW_PRODUCTS_NOT_IN_ANY_GROUP;
+import static sk.hudak.prco.ui.MvcConstants.VIEW_PRODUCTS_NOT_IN_ANY_GROUP;
 
 @Controller
 public class ProductController extends BasicController {
