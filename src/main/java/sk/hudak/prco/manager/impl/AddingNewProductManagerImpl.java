@@ -62,8 +62,8 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
             // spusti stahovanie pre dalsi
             addNewProductsByKeywordForEshop(eshopUuid, searchKeyword);
 
-            // kazdy dalsi spusti s 1 sekundovym oneskorenim
-            ThreadUtils.sleepSafe(1);
+            // kazdy dalsi spusti s 3 sekundovym oneskorenim
+            ThreadUtils.sleepSafe(3);
         }
     }
 
