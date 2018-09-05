@@ -13,7 +13,7 @@ public enum EshopUuid {
     ALZA("https://www.alza.sk",
             "https://www.alza.sk/search.htm?exps={keyword}",
             "https://www.alza.sk/search-p{pageNumber}.htm?exps={keyword}",
-            3, 24, 5),
+            3, 12, 5),
 
     // TODO ANDREA_SHOP
 
@@ -31,13 +31,13 @@ public enum EshopUuid {
             "https://www.feedo.sk/vysledky-hladania/{keyword}/",
             // toto nefunguje: https://www.feedo.sk/vysledky-hladania/nutrilon%204/#page=2
             "https://www.feedo.sk/vysledky-hladania/{keyword}/filter/?strana={pageNumber}",
-            5, 24),
+            5, 12),
 
     //TODO impl
     HORNBACH("https://www.hornbach.sk/",
             "https://www.hornbach.sk/shop/vyhladavanie/sortiment/{keyword}",
             "TODO nie je to cez parameter v stranke...",
-            5, 24),
+            5, 12),
 
     // TODO KID_MARKET
     // TODO PERINBABA
@@ -46,12 +46,12 @@ public enum EshopUuid {
     MALL("http://mall.sk",
             "https://www.mall.sk/hladaj?s={keyword}",
             "https://www.mall.sk/hladaj?page={pageNumber}&s={keyword}",
-            2, 24),
+            2, 12),
 
     MOJA_LEKAREN("https://www.mojalekaren.sk/",
             "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}",
             "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}&strana={pageNumber}",
-            5, 24),
+            5, 12),
 
     METRO("https://sortiment.metro.sk",
             "https://sortiment.metro.sk/sk/search/?q={keyword}",
@@ -62,13 +62,13 @@ public enum EshopUuid {
     OBI("https://www.obi.sk",
             "https://www.obi.sk/search/{keyword}/?isi=true",
             "https://www.obi.sk/search/{keyword}?page={pageNumber}",
-            5, 24),
+            5, 12),
 
     // TODO picture NOT yet
     PILULKA("https://www.pilulka.sk",
             "https://www.pilulka.sk/hledat?q={keyword}",
             "https://www.pilulka.sk/hledat?q={keyword}&page={pageNumber}",
-            5, 24),
+            5, 12),
 
     TESCO("https://potravinydomov.itesco.sk",
             "https://potravinydomov.itesco.sk/groceries/sk-SK/search?query={keyword}",
