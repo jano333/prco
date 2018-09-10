@@ -81,6 +81,10 @@ public class NewProductEntity extends DbEntity {
     @Column(nullable = false)
     private Boolean confirmValidity;
 
+    /**
+     * URL obrazku, k danemu produktu.
+     * nepovinne, lebo sa nemuselo podarit vyparsovat.
+     */
     private String pictureUrl;
 
 }

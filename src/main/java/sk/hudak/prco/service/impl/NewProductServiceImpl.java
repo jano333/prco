@@ -85,17 +85,15 @@ public class NewProductServiceImpl implements NewProductService {
 
     @Override
     public NewProductFullDto getNewProduct(Long newProductId) {
-        NewProductEntity byId = newProductEntityDao.findById(newProductId);
-        return mapper.map(byId, NewProductFullDto.class);
+        notNull(newProductId, "newProductId");
+
+        return mapper.map(newProductEntityDao.findById(newProductId), NewProductFullDto.class);
     }
 
     @Override
     public Optional<NewProductInfoDetail> findFirstInvalidNewProduct() {
-        Optional<NewProductEntity> invalid = newProductEntityDao.findFirstInvalid();
-        if (invalid.isPresent()) {
-            return Optional.of(mapper.map(invalid.get(), NewProductInfoDetail.class));
-        }
-        return Optional.empty();
+        return newProductEntityDao.findFirstInvalid()
+                .map(newProductEntity -> mapper.map(newProductEntity, NewProductInfoDetail.class));
     }
 
     public long getCountOfInvalidNewProduct() {
@@ -244,6 +242,7 @@ public class NewProductServiceImpl implements NewProductService {
         entity.setUnit(Unit.valueOf(productUnitDataDto.getUnit()));
         entity.setUnitValue(productUnitDataDto.getUnitValue());
         entity.setUnitPackageCount(productUnitDataDto.getUnitPackageCount());
+        entity.setValid(Boolean.TRUE);
         newProductEntityDao.update(entity);
 
         log.debug("new product with id {} was updated for unit data values", productUnitDataDto.getId());

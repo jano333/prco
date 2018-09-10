@@ -75,28 +75,21 @@ public class GroupEntityDaoImpl extends BaseDaoImpl<GroupEntity> implements Grou
     public List<GroupEntity> findGroups(GroupFilterDto groupFilterDto) {
         JPAQuery<GroupEntity> query = from(QGroupEntity.groupEntity);
         // ids
-        {
-            Long[] ids = groupFilterDto.getIds();
-            if (ids != null) {
-                query.where(QGroupEntity.groupEntity.id.in(ids));
-            }
+        Long[] ids = groupFilterDto.getIds();
+        if (ids != null) {
+            query.where(QGroupEntity.groupEntity.id.in(ids));
         }
         // name
-        {
-            String name = groupFilterDto.getName();
-            if (StringUtils.isNotBlank(name)) {
-                query.where(QGroupEntity.groupEntity.name.isNotNull());
-                query.where(QGroupEntity.groupEntity.name.eq(name));
-            }
+        String name = groupFilterDto.getName();
+        if (StringUtils.isNotBlank(name)) {
+            query.where(QGroupEntity.groupEntity.name.isNotNull());
+            query.where(QGroupEntity.groupEntity.name.eq(name));
         }
         // eshop only
-        {
-            EshopUuid eshopOnly = groupFilterDto.getEshopOnly();
-            if (eshopOnly != null) {
-
-            }
+        EshopUuid eshopOnly = groupFilterDto.getEshopOnly();
+        if (eshopOnly != null) {
+            //TODO
         }
-
         return query.fetch();
     }
 
@@ -110,6 +103,7 @@ public class GroupEntityDaoImpl extends BaseDaoImpl<GroupEntity> implements Grou
         }
         //FIXME cez DB urobit neaky komplikovany select..
         List<ProductEntity> products = groupEntity.getProducts();
+        //filter na tie, ktore maju cenu
         Stream<ProductEntity> productEntityStream = products.stream().filter(p -> p.getPriceForUnit() != null);
 
         if (eshopsToSkip != null) {

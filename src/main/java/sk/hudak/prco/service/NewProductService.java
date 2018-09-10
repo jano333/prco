@@ -17,14 +17,20 @@ import java.util.Optional;
 public interface NewProductService {
 
     /**
-     * Vytvori novy zaznam v databaze do DB, pridocom validata sa nastavuje ak su vyplnene vsetky jednotky,
-     * confirm na false, a interested na false
+     * Vytvori novy zaznam v databaze do DB, pricom<br>
+     * <code>valid</code> sa nastavuje na true, iba ak su vyplnene vsetky atributy okrem pictureURL,<br>
+     * <code>confirmValidity</code> na false, a interested na false<br>
      *
      * @param newProductCreateDto vstupne data pre vytvorenie
      * @return id novo vytvorenej entity {@link sk.hudak.prco.model.NewProductEntity}
      */
     Long createNewProduct(NewProductCreateDto newProductCreateDto);
 
+    /**
+     * NA zaklade id vrati cely novy produkt
+     * @param newProductId
+     * @return
+     */
     NewProductFullDto getNewProduct(Long newProductId);
 
     /**

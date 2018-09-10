@@ -10,6 +10,9 @@ public class ThreadUtils {
     private ThreadUtils() {
     }
 
+    /**
+     * Will sleep between 5 to 20 second
+     */
     public static void sleepRandomSafe() {
         sleepRandomSafeBetween(5, 20);
     }
