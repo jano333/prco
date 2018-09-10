@@ -1,5 +1,7 @@
 package sk.hudak.prco.dao.db.impl;
 
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,7 @@ public class GroupOfProductFindEntityDaoImpl implements GroupOfProductFindEntity
                 .select(QProductEntity.productEntity)
                 .from(QProductEntity.productEntity)
                 .where(QProductEntity.productEntity.id.notIn(getCountOfProductWhichAreInAtLeastOneGroup(queryFactory)))
+                .orderBy(new OrderSpecifier<>(Order.DESC, QProductEntity.productEntity.created))
                 .fetch();
     }
 
