@@ -22,6 +22,9 @@ public class PrcoSSLContants {
 
         ALLOWED_HOSTNAME.add("www.lekarna.cz");
         ALLOWED_HOSTNAME.add("www.mojalekaren.sk");
+
+
+        ALLOWED_HOSTNAME.add("www.drmax.sk");
     }
 
     private PrcoSSLContants() {
