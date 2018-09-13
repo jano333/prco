@@ -94,14 +94,6 @@ public class TescoProductParser extends JSoupProductParser {
         return notExistElement(documentDetailProduct, "button[class=button small add-control button-secondary]");
     }
 
-    // FIXME  parseProductNameFromList a parseProductNameFromDetail je vlastne to iste? ci nie? ak ano tak treba spojit
-
-    @Override
-    protected Optional<String> parseProductNameFromList(Document documentList) {
-        return parseProductNameFromDetail(documentList);
-
-    }
-
     @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
         return getTextFromFirstElementByClass(documentDetailProduct, "product-title__h1");

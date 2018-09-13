@@ -76,11 +76,6 @@ public class MetroProductParser extends JSoupProductParser {
     }
 
     @Override
-    protected Optional<String> parseProductNameFromList(Document documentList) {
-        return parseProductNameFromDetail(documentList);
-    }
-
-    @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
         Element select = documentDetailProduct.select("div.product-detail.clearfix > h1").first();
         if (select == null) {
@@ -106,13 +101,13 @@ public class MetroProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
-        //TODO action validity
+        //TODO impl action validity
         return Optional.empty();
     }
 
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        //TODO picture url
+        //TODO impl picture url
         return Optional.empty();
     }
 }

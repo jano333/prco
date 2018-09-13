@@ -181,6 +181,8 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
 
             // parsujem
             NewProductInfo newProductInfo = htmlParser.parseNewProductInfo(productUrl);
+            //FIXME pridat kontrolu na dostupnost proudku, alza nebol dostupny preto nevrati mene.... a padne toto
+            // je len tmp fix
             if (newProductInfo.getName() == null) {
                 log.debug("skipping to next product");
                 continue;

@@ -79,11 +79,6 @@ public class FeedoProductParser extends JSoupProductParser {
     }
 
     @Override
-    protected Optional<String> parseProductNameFromList(Document documentList) {
-        return parseProductNameFromDetail(documentList);
-    }
-
-    @Override
     protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
         // skusim -> premim cena
         Elements select = documentDetailProduct.select("div[class=price price-premium] span");

@@ -23,7 +23,6 @@ import java.util.Optional;
 
 import static sk.hudak.prco.api.EshopUuid.MALL;
 import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
-import static sk.hudak.prco.utils.JsoupUtils.getTextFromFirstElementByClass;
 import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
 
 @Slf4j
@@ -67,11 +66,6 @@ public class MallProductParser extends JSoupProductParser {
     @Override
     protected boolean isProductUnavailable(Document documentDetailProduct) {
         return notExistElement(documentDetailProduct, "button[id=add-to-cart]");
-    }
-
-    @Override
-    protected Optional<String> parseProductNameFromList(Document documentList) {
-        return getTextFromFirstElementByClass(documentList, "mt-5");
     }
 
     @Override

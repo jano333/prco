@@ -45,11 +45,6 @@ public class ObiProductParser extends JSoupProductParser implements WatchDogPars
     }
 
     @Override
-    protected Optional<String> parseProductNameFromList(Document documentList) {
-        return parseProductNameFromDetail(documentList);
-    }
-
-    @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
         Elements select = documentDetailProduct.select("h1[class=h2 overview__heading]");
         if (select.isEmpty()) {

@@ -76,10 +76,6 @@ public class BambinoProductParser extends JSoupProductParser {
         return notExistElement(documentDetailProduct, "span[class=o-add-to-cart__status]");
     }
 
-    @Override
-    protected Optional<String> parseProductNameFromList(Document documentList) {
-        return parseProductNameFromDetail(documentList);
-    }
 
     @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {

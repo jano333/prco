@@ -18,13 +18,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
 @Component
 public class MojaLekarenProductParser extends JSoupProductParser {
-
-    public static final int PAGING = 24;
 
     @Autowired
     public MojaLekarenProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder) {
@@ -40,10 +39,10 @@ public class MojaLekarenProductParser extends JSoupProductParser {
     protected int parseCountOfPages(Document documentList) {
         Element select = documentList.select("p.pagination__part.pagination__part--page").first();
         if (select == null) {
+            //FIXME move to parent as constants for one page only
             return 1;
         }
-        int pocetStran = Integer.valueOf(select.children().last().previousElementSibling().previousElementSibling().text());
-        return pocetStran;
+        return Integer.valueOf(select.children().last().previousElementSibling().previousElementSibling().text());
     }
 
     @Override
@@ -58,17 +57,10 @@ public class MojaLekarenProductParser extends JSoupProductParser {
     }
 
     @Override
-    protected Optional<String> parseProductNameFromList(Document documentList) {
-        return parseProductNameFromDetail(documentList);
-    }
-
-    @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        Element select = documentDetailProduct.select("body > main > div.detail-top.list > div > h1").first();
-        if (select == null) {
-            return Optional.empty();
-        }
-        return Optional.of(select.text());
+        return Optional.of(documentDetailProduct.select("body > main > div.detail-top.list > div > h1").first())
+                .filter(Objects::nonNull)
+                .map(Element::text);
     }
 
     @Override
@@ -89,9 +81,9 @@ public class MojaLekarenProductParser extends JSoupProductParser {
     @Override
     protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
         return Optional.of(documentDetailProduct.select("span[itemprop=price]").first())
-                .filter(element -> element != null)
+                .filter(Objects::nonNull)
                 .map(Element::text)
-                .map(text -> ConvertUtils.convertToBigDecimal(text));
+                .map(ConvertUtils::convertToBigDecimal);
     }
 
     @Override

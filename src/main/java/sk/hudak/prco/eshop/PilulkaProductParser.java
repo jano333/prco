@@ -55,11 +55,6 @@ public class PilulkaProductParser extends JSoupProductParser {
     }
 
     @Override
-    protected Optional<String> parseProductNameFromList(Document documentList) {
-        return parseProductNameFromDetail(documentList);
-    }
-
-    @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
         Element first = documentDetailProduct.select("div[id=product-info] > form > div > h1 > span[itemprop=name]").first();
         if (first == null) {

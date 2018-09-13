@@ -77,11 +77,6 @@ public class DrMaxProductParser extends JSoupProductParser {
     }
 
     @Override
-    protected Optional<String> parseProductNameFromList(Document documentList) {
-        return parseProductNameFromDetail(documentList);
-    }
-
-    @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
         Elements select = documentDetailProduct.select("#product-detail > div.row > div > div > div.col.data > div.redesign_desktop > div.redesign-product-detail-title.bold");
         Element first = select.first().children().first();

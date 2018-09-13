@@ -134,6 +134,8 @@ public class GroupServiceImpl implements GroupService {
         }
 
         groupEntityDao.update(groupEntity);
+
+        log.debug("products id {} removed from group {}", productIds, groupId);
     }
 
     @Override

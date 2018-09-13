@@ -34,6 +34,8 @@ import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
 @Component
 public class AlzaProductParser extends JSoupProductParser {
 
+    private static final int SECOND_10 = 10000;
+
     public AlzaProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder) {
         super(unitParser, userAgentDataHolder);
     }
@@ -41,7 +43,7 @@ public class AlzaProductParser extends JSoupProductParser {
     @Override
     protected int getTimeout() {
         // koli pomalym odozvam davam na 10 sekund
-        return 10000;
+        return SECOND_10;
     }
 
     @Override
@@ -67,7 +69,15 @@ public class AlzaProductParser extends JSoupProductParser {
         Elements select1 = documentList.select("a[class='name browsinglink']");
         List<String> urls = new ArrayList<>(select1.size());
         for (Element element : select1) {
-            urls.add(getEshopUuid().getProductStartUrl() + element.attr("href"));
+            String href = getEshopUuid().getProductStartUrl() + element.attr("href");
+            // from
+            // https://www.alza.sk/maxi/pampers-active-baby-dry-vel-4-maxi-152-ks-mesacne-balenie-d4842708.htm?o=8
+            // urobit
+            // https://www.alza.sk/maxi/pampers-active-baby-dry-vel-4-maxi-152-ks-mesacne-balenie-d4842708.htm
+            if (href.contains("?")) {
+                href = href.substring(0, href.lastIndexOf("?"));
+            }
+            urls.add(href);
         }
         return urls;
     }
@@ -99,13 +109,7 @@ public class AlzaProductParser extends JSoupProductParser {
     }
 
     @Override
-    protected Optional<String> parseProductNameFromList(Document documentList) {
-        return parseProductNameFromDetail(documentList);
-    }
-
-    @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-
         Elements first = documentDetailProduct.select("script[type=application/ld+json]");
         if (first.size() < 2) {
             return Optional.empty();

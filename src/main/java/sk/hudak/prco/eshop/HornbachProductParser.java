@@ -72,11 +72,6 @@ public class HornbachProductParser extends JSoupProductParser implements WatchDo
     }
 
     @Override
-    protected Optional<String> parseProductNameFromList(Document documentList) {
-        return parseProductNameFromDetail(documentList);
-    }
-
-    @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
         Elements select = documentDetailProduct.select("#article-details > h1");
         if (select.isEmpty()) {

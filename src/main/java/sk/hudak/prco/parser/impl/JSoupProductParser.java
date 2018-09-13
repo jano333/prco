@@ -90,8 +90,10 @@ public abstract class JSoupProductParser implements EshopProductsParser {
                 .url(productUrl)
                 .eshopUuid(getEshopUuid());
 
-        Optional<String> nameOpt = parseProductNameFromList(document);
+        Optional<String> nameOpt = parseProductNameFromDetail(document);
+        logWarningIfNull(nameOpt, "productName", document.location());
         if (!nameOpt.isPresent()) {
+            //TODO nemala by tu byt vynimka?
             return builder.build();
         }
         builder.name(nameOpt.get());
@@ -124,11 +126,13 @@ public abstract class JSoupProductParser implements EshopProductsParser {
                     .eshopUuid(getEshopUuid()).build();
         }
 
-        String productName = parseProductNameFromDetail(document)
-                .orElseThrow(() -> new ProductNameNotFoundException(productUrl));
+        Optional<String> productNameOpt = parseProductNameFromDetail(document);
+        logWarningIfNull(productNameOpt, "productName", document.location());
+        String productName = productNameOpt.orElseThrow(() -> new ProductNameNotFoundException(productUrl));
 
-        BigDecimal productPriceForPackage = parseProductPriceForPackage(document)
-                .orElseThrow(() -> new ProductPriceNotFoundException(productUrl));
+        Optional<BigDecimal> productPriceForPackageOpt = parseProductPriceForPackage(document);
+        logWarningIfNull(productPriceForPackageOpt, "priceForPackage", document.location());
+        BigDecimal productPriceForPackage = productPriceForPackageOpt.orElseThrow(() -> new ProductPriceNotFoundException(productUrl));
 
         Optional<ProductAction> productAction = internalParseProductAction(document, productUrl);
 
@@ -173,6 +177,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
 
 
         } catch (Exception e) {
+            //FIXME dane spracovanie urobit tak aby sa dalo v jednotlivych impl overigovat
             String errMsg = "error creating document for url '" + productUrl + "': ";
             if (e instanceof HttpStatusException) {
                 HttpStatusException se = (HttpStatusException) e;
@@ -181,7 +186,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
                 throw new HttpErrorPrcoRuntimeException(se.getStatusCode(), errMsg, e);
 
             } else if (e instanceof SocketTimeoutException) {
-                throw new HttpSocketTimeoutPrcoRuntimeException((SocketTimeoutException)e);
+                throw new HttpSocketTimeoutPrcoRuntimeException((SocketTimeoutException) e);
 
             } else {
                 log.error(errMsg, e);
@@ -223,15 +228,6 @@ public abstract class JSoupProductParser implements EshopProductsParser {
     protected Map<String, String> getCookie() {
         return Collections.emptyMap();
     }
-
-    /**
-     * Volane pri ziskavani noveho produktu
-     *
-     * @param documentList html document
-     * @return
-     */
-    @Deprecated
-    protected abstract Optional<String> parseProductNameFromList(Document documentList);
 
     private List<String> internalParsePageForProductUrls(Document firstPageDocument, String searchUrl) {
         try {
@@ -303,10 +299,17 @@ public abstract class JSoupProductParser implements EshopProductsParser {
     protected abstract Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct);
 
     //TODO nasledovne 2 metody spojit do jednej a urobit aj navratovy typ
+
     protected abstract Optional<ProductAction> parseProductAction(Document documentDetailProduct);
 
     protected abstract Optional<Date> parseProductActionValidity(Document documentDetailProduct);
 
     protected abstract Optional<String> parseProductPictureURL(Document documentDetailProduct);
 
+
+    private void logWarningIfNull(Optional<?> propertyValue, String propertyName, String productUrl) {
+        if (!propertyValue.isPresent()) {
+            log.warn("property {} is null for product url {}", propertyName, productUrl);
+        }
+    }
 }
