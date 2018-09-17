@@ -98,9 +98,9 @@ public abstract class JSoupProductParser implements EshopProductsParser {
         }
         builder.name(nameOpt.get());
 
-        Optional<String> pictureUrl = internalParseProductPictureURL(document, productUrl);
-        if (pictureUrl.isPresent()) {
-            builder.pictureUrl(pictureUrl.get());
+        Optional<String> pictureUrlOpt = internalParseProductPictureURL(document, productUrl);
+        if (pictureUrlOpt.isPresent()) {
+            builder.pictureUrl(pictureUrlOpt.get());
         }
 
         Optional<UnitTypeValueCount> unitTypeValueCountOpt = parseUnitValueCount(document, nameOpt.get());
