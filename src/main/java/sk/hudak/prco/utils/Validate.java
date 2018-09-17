@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.exception.RequiredParameterException;
 
+import java.util.Collection;
+
 public class Validate {
 
     private static final int ONE = 1;
@@ -21,6 +23,20 @@ public class Validate {
     public static void notNullNotEmpty(String value, String parameterName) {
         notNull(value, parameterName);
         if (StringUtils.isBlank(value)) {
+            throw new RequiredParameterException(parameterName);
+        }
+    }
+
+    public static void notNullNotEmpty(String[] value, String parameterName) {
+        notNull(value, parameterName);
+        if (value.length == 0) {
+            throw new RequiredParameterException(parameterName);
+        }
+    }
+
+    public static void notNullNotEmpty(Collection<?> value, String parameterName) {
+        notNull(value, parameterName);
+        if (value.isEmpty()) {
             throw new RequiredParameterException(parameterName);
         }
     }

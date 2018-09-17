@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static sk.hudak.prco.utils.Validate.notNull;
+import static sk.hudak.prco.utils.Validate.notNullNotEmpty;
 
 @Slf4j
 @Component
@@ -49,8 +50,8 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
     private List<EshopProductsParser> productsParsers;
 
     @Override
-    public void addNewProductsByKeywordForAllEshops(String searchKeyword) {
-        notNull(searchKeyword, "searchKeyWord");
+    public void addNewProductsByKeywordForAllEshops(String searchKeyWord) {
+        notNullNotEmpty(searchKeyWord, "searchKeyWord");
 
         for (EshopUuid eshopUuid : EshopUuid.values()) {
 
@@ -60,7 +61,7 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
                 continue;
             }
             // spusti stahovanie pre dalsi
-            addNewProductsByKeywordForEshop(eshopUuid, searchKeyword);
+            addNewProductsByKeywordForEshop(eshopUuid, searchKeyWord);
 
             // kazdy dalsi spusti s 3 sekundovym oneskorenim
             ThreadUtils.sleepSafe(3);
@@ -69,6 +70,9 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
 
     @Override
     public void addNewProductsByKeywordForEshop(EshopUuid eshopUuid, String searchKeyWord) {
+        notNull(eshopUuid, "eshopUuid");
+        notNullNotEmpty(searchKeyWord, "searchKeyWord");
+
         log.debug(">> addNewProductsByKeywordForEshop eshop: {}, searchKeyWord: {}", eshopUuid, searchKeyWord);
         taskManager.submitTask(eshopUuid, () -> {
 
@@ -93,38 +97,8 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
     }
 
     @Override
-    public void addNewProductByUrl(String productUrl) {
-        log.debug(">> addNewProductByUrl productUrl: {}", productUrl);
-
-        final EshopUuid eshopUuid = eshopUuidParser.parseEshopUuid(productUrl);
-
-        taskManager.submitTask(eshopUuid, () -> {
-
-            taskManager.markTaskAsRunning(eshopUuid);
-            boolean finishedWithError = false;
-            try {
-                // parsujem
-                NewProductInfo newProductInfo = htmlParser.parseNewProductInfo(productUrl);
-                // preklopim a pridavam do DB
-                internalTxService.createNewProduct(mapper.map(newProductInfo, NewProductCreateDto.class));
-
-            } catch (Exception e) {
-                log.error(ERROR_WHILE_CREATING_NEW_PRODUCT, e);
-                finishedWithError = true;
-
-            } finally {
-                taskManager.markTaskAsFinished(eshopUuid, finishedWithError);
-            }
-        });
-        log.debug("<< addNewProductByUrl productUrl: {}", productUrl);
-
-    }
-
-    @Override
     public void addNewProductsByUrl(String... productsUrl) {
-        //TODO spojit s predoslou metodou a urobit delegovanie... do tejto nech to je na jednom mieste
-
-        notNull(productsUrl, "productsUrl");
+        notNullNotEmpty(productsUrl, "productsUrl");
 
         int countOfUrls = productsUrl.length;
         log.debug(">> addNewProductsByUrl count of URLs: {}", countOfUrls);
@@ -145,12 +119,10 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
                 boolean finishedWithError = false;
 
                 try {
-                    List<String> urlList = eshopUrls.get(eshopUuid);
-
-                    createNewProducts(eshopUuid, urlList);
+                    createNewProducts(eshopUuid, eshopUrls.get(eshopUuid));
 
                 } catch (Exception e) {
-                    log.error("error while creating new product", e);
+                    log.error(ERROR_WHILE_CREATING_NEW_PRODUCT, e);
                     finishedWithError = true;
 
                 } finally {

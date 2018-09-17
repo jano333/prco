@@ -4,11 +4,6 @@ import sk.hudak.prco.api.EshopUuid;
 
 public interface AddingNewProductManager {
 
-    /**
-     * @param productUrl
-     */
-    void addNewProductByUrl(String productUrl);
-
     void addNewProductsByUrl(String... productsUrl);
 
     /**
@@ -22,7 +17,7 @@ public interface AddingNewProductManager {
     /**
      * Vyhlada produkty s danym klucovym slovom pre vsetky eshopy a ulozi ich do tabulky NEW_PRODUCT.
      *
-     * @param searchKeyword
+     * @param searchKeyWord
      */
-    void addNewProductsByKeywordForAllEshops(String searchKeyword);
+    void addNewProductsByKeywordForAllEshops(String searchKeyWord);
 }
