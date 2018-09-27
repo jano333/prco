@@ -56,15 +56,23 @@ public class FeedoProductParser extends JSoupProductParser {
 
         } catch (NullPointerException e) {
             //FIXME prerobit cez optional
-            log.warn("error while parsing count of page returning 1", e);
+            log.warn("error while parsing count of page returning 1, URL: " + documentList.location(), e);
             return 1;
         }
     }
 
     @Override
     protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
-        return documentList.select("article[class=box box-product]").stream()
-                .map(t -> t.children().first().children().first().attr("href"))
+        Elements select = documentList.select("article[class=box box-product]");
+        return select.stream()
+                .map(t -> {
+                    Element first = t.children().first();
+                    Element first1 = first.children().first();
+                    Element first2 = first1.children().first();
+                    String href = first2.attr("href");
+
+                    return href;
+                })
                 .collect(Collectors.toList());
     }
 
