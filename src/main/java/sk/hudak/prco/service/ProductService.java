@@ -3,6 +3,7 @@ package sk.hudak.prco.service;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.ProductUpdateDataDto;
 import sk.hudak.prco.dto.internal.StatisticForUpdateForEshopDto;
+import sk.hudak.prco.dto.product.ProductAddingToGroupDto;
 import sk.hudak.prco.dto.product.ProductBestPriceInGroupDto;
 import sk.hudak.prco.dto.product.ProductDetailInfo;
 import sk.hudak.prco.dto.product.ProductFilterUIDto;
@@ -15,6 +16,8 @@ import java.util.Optional;
 
 // TODO javadoc
 public interface ProductService {
+
+    ProductAddingToGroupDto getProduct(Long productId);
 
     boolean existProductWithUrl(String productURL);
 

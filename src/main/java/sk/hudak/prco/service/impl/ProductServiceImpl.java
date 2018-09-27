@@ -12,6 +12,7 @@ import sk.hudak.prco.dao.db.ProductEntityDao;
 import sk.hudak.prco.dto.ProductUpdateDataDto;
 import sk.hudak.prco.dto.group.GroupIdNameDto;
 import sk.hudak.prco.dto.internal.StatisticForUpdateForEshopDto;
+import sk.hudak.prco.dto.product.ProductAddingToGroupDto;
 import sk.hudak.prco.dto.product.ProductBestPriceInGroupDto;
 import sk.hudak.prco.dto.product.ProductDetailInfo;
 import sk.hudak.prco.dto.product.ProductFilterUIDto;
@@ -250,6 +251,11 @@ public class ProductServiceImpl implements ProductService {
         return mapper.mapAsList(
                 groupOfProductFindEntityDao.findProductsWitchAreNotInAnyGroup().toArray(),
                 ProductFullDto.class);
+    }
+
+    @Override
+    public ProductAddingToGroupDto getProduct(Long productId) {
+        return mapper.map(productEntityDao.findById(productId), ProductAddingToGroupDto.class);
     }
 
     @Override

@@ -1,3 +1,31 @@
+2018-09-27 11:41:09,304 WARN [FEEDO] [] s.h.p.e.FeedoProductParser [FeedoProductParser.java:59] error while parsing count of page returning 1
+java.lang.NullPointerException: null
+	at sk.hudak.prco.eshop.FeedoProductParser.parseCountOfPages(FeedoProductParser.java:54)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.internalGetCountOfPages(JSoupProductParser.java:267)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:56)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.searchProductUrls(JsoupHtmlParser.java:41)
+	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$0(AddingNewProductManagerImpl.java:84)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+2018-09-27 11:41:09,304 DEBUG [FEEDO] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:57] pages count: 1
+2018-09-27 11:41:09,304 INFO [FEEDO] [] s.h.p.p.i.JsoupHtmlParser [JsoupHtmlParser.java:43] count of products found for keyword 'nutrilon 5': 11
+2018-09-27 11:41:09,304 DEBUG [FEEDO] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:144] starting 1 of 11
+2018-09-27 11:41:09,304 DEBUG [FEEDO] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:148] checking existence of product URL
+2018-09-27 11:41:09,304 ERROR [FEEDO] [] s.h.p.m.ni.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:89] error while creating new product
+sk.hudak.prco.exception.RequiredParameterException: parameter productUrl is null/empty
+	at sk.hudak.prco.utils.Validate.notNullNotEmpty(Validate.java:26)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseNewProductInfo(JsoupHtmlParser.java:49)
+	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.java:155)
+	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$0(AddingNewProductManagerImpl.java:86)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+2018-09-27 11:41:09,304 DEBUG [FEEDO] [] s.h.p.t.i.TaskManagerImpl [TaskManagerImpl.java:109] marking task for eshop FEEDO as FINISHED_WITH_ERROR
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
 FEATURE:
 ak je mesiac po sebe produkt nedostupny teda 404 tak ho odstranit...

@@ -43,6 +43,12 @@ public enum EshopUuid {
     // TODO PERINBABA
     //TODO  https://www.brendon.sk
 
+    PERINBABA(
+            "http://www.perinbaba.sk/",
+            "http://www.perinbaba.sk/catalogsearch/result/?limit=48&q={keyword}",
+            "http://www.perinbaba.sk/catalogsearch/result/index/?limit=48&p={pageNumber}&q={keyword}",
+            5, 12),
+
     MALL("http://mall.sk",
             "https://www.mall.sk/hladaj?s={keyword}",
             "https://www.mall.sk/hladaj?page={pageNumber}&s={keyword}",
@@ -94,7 +100,6 @@ public enum EshopUuid {
     private int maxCountOfProductOnPage;
 
     /**
-     *
      * @param productStartUrl
      * @param searchTemplateUrl
      * @param searchTemplateUrlWithPageNumber

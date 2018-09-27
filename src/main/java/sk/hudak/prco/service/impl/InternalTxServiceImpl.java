@@ -25,6 +25,7 @@ import sk.hudak.prco.dto.newproduct.NewProductCreateDto;
 import sk.hudak.prco.dto.newproduct.NewProductFilterUIDto;
 import sk.hudak.prco.dto.newproduct.NewProductFullDto;
 import sk.hudak.prco.dto.newproduct.NewProductInfoDetail;
+import sk.hudak.prco.dto.product.ProductAddingToGroupDto;
 import sk.hudak.prco.dto.product.ProductBestPriceInGroupDto;
 import sk.hudak.prco.dto.product.ProductDetailInfo;
 import sk.hudak.prco.dto.product.ProductFilterUIDto;
@@ -233,6 +234,12 @@ public class InternalTxServiceImpl implements InternalTxService {
     @Transactional(readOnly = true)
     public List<ProductFullDto> findProductsNotInAnyGroup() {
         return productService.findProductsNotInAnyGroup();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProductAddingToGroupDto getProduct(Long productId) {
+        return productService.getProduct(productId);
     }
 
     @Override

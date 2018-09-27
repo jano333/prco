@@ -25,6 +25,7 @@
                 <td>Picture</td>
                 <td>Name</td>
                 <td>Id</td>
+                <td>Actions</td>
             </tr>
             <tr th:each="product : ${productsNotIntAnyGroup}">
                 <!-- eshop -->
@@ -41,6 +42,10 @@
                 </td>
 
                 <td th:text="${product.id}"></td>
+
+                <td>
+                    <a th:href="'/products/'+${product.id}+'/addToGroup'" th:text="${'Add to group'}"></a>
+                </td>
 
                 <!--<td>
                     <div class="controls">

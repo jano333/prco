@@ -124,8 +124,10 @@ public class NewProductController extends BasicController {
      */
     @ModelAttribute("allUnitValues")
     public String[] getMultiCheckboxAllValues() {
-        List<String> collect = Arrays.stream(Unit.values()).map(t -> t.name()).collect(Collectors.toList());
-        return collect.toArray(new String[collect.size()]);
+        List<String> result = Arrays.stream(Unit.values())
+                .map(t -> t.name())
+                .collect(Collectors.toList());
+        return result.toArray(new String[result.size()]);
     }
 
 }

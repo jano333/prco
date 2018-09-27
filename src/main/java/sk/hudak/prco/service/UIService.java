@@ -10,6 +10,7 @@ import sk.hudak.prco.dto.group.GroupListExtendedDto;
 import sk.hudak.prco.dto.group.GroupUpdateDto;
 import sk.hudak.prco.dto.newproduct.NewProductFilterUIDto;
 import sk.hudak.prco.dto.newproduct.NewProductFullDto;
+import sk.hudak.prco.dto.product.ProductAddingToGroupDto;
 import sk.hudak.prco.dto.product.ProductBestPriceInGroupDto;
 import sk.hudak.prco.dto.product.ProductFilterUIDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
@@ -65,6 +66,8 @@ public interface UIService {
     void markNewProductAsNotInterested(Long newProductId);
 
     //-------------- PRODUCTS -------------------
+
+    ProductAddingToGroupDto getProduct(Long productId);
 
     void updateProductUnitData(ProductUnitDataDto productUnitDataDto);
 
