@@ -56,14 +56,26 @@
 
                 <!-- actions -->
                 <td>
-                    <a th:href="${'/newProduct/'+newProduct.id+'/confirm'}">Confirm</a>
+                    <a th:href="${'/newProduct/'+newProduct.id+'/confirm'}"
+                       th:if="${not newProduct.confirmValidity.booleanValue()}">
+                        Confirm
+                    </a>
                     <br>
-                    <a th:href="${'/newProduct/'+newProduct.id+'/reprocess'}">Reprocess unit</a>
+
+                    <a th:href="${'/newProduct/'+newProduct.id+'/reprocess'}">
+                        Reprocess unit
+                    </a>
                     <br>
-                    <a th:href="${'/newProduct/'+newProduct.id+'/interested'}">Interested</a>
+
+                    <a th:href="${'/newProduct/'+newProduct.id+'/interested'}"
+                       th:if="${newProduct.confirmValidity.booleanValue()}">
+                        Interested
+                    </a>
                     <br>
+
                     <a th:href="${'/newProduct/'+newProduct.id+'/notInterested'}">Not interested</a>
                     <br>
+
                     <a th:href="${'/newProduct/'+newProduct.id+'/unitData'}">Edit unit data</a>
                 </td>
 
