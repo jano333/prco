@@ -45,16 +45,6 @@ public class TescoProductParser extends JSoupProductParser {
 
     @Override
     protected int parseCountOfPages(Document documentList) {
-        //<nav class="pagination--page-selector-wrapper" data-reactid="1752">
-        //  <ul data-reactid="1753">
-        //      <li class="pagination-btn-holder" data-reactid="1754"><a class="pagination--button prev-next" href="/groceries/sk-SK/search?query=pampers&amp;page=1"><span class="icon-icon_whitechevronleft"></span><span class="visually-hidden">Ísť na predchádzajúcu stranu výsledkov</span></a></li>
-        //      <li class="pagination-btn-holder" data-reactid="1758"><a class="pagination--button" href="/groceries/sk-SK/search?query=pampers&amp;page=1"><span>1</span><span class="visually-hidden">Prejsť na výsledky 1</span></a></li>
-        //      <li class="pagination-btn-holder" data-reactid="1762"><a class="pagination--button disabled highlight" data-reactid="1763"><span data-reactid="1764">2</span><span class="visually-hidden" data-reactid="1765">Aktuálna stránka výsledkov</span></a></li>
-        //      <li class="pagination-btn-holder" data-reactid="1766"><a class="pagination--button" href="/groceries/sk-SK/search?query=pampers&amp;page=3"><span>3</span><span class="visually-hidden">Prejsť na výsledky 3</span></a></li>
-        //      <li class="pagination-btn-holder" data-reactid="1770"><a class="pagination--button prev-next" href="/groceries/sk-SK/search?query=pampers&amp;page=3"><span class="icon-icon_whitechevronright"></span><span class="visually-hidden">Ísť na ďalšiu stranu výsledkov</span></a></li>
-        //  </ul>
-        // </nav>
-
         Element navEl = documentList.select("nav.pagination--page-selector-wrapper").first();
         if (navEl == null) {
             return 1;
@@ -96,7 +86,7 @@ public class TescoProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        return getTextFromFirstElementByClass(documentDetailProduct, "product-title__h1");
+        return getTextFromFirstElementByClass(documentDetailProduct, "product-details-tile__title");
     }
 
     @Override
@@ -131,7 +121,7 @@ public class TescoProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        Element element = documentDetailProduct.select("img[class=product-image]").get(0);
+        Element element = documentDetailProduct.select("img[class=product-image product-image-visible]").first();
         String src = element.attr("data-src");
         return Optional.ofNullable(src);
     }
