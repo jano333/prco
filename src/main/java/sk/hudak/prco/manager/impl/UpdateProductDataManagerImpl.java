@@ -62,21 +62,37 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
     }
 
     @Override
+    public void updateAllProductDataNotInAnyGroup(UpdateProductInfoListener listener) {
+        //TODO process listener
+
+        List<ProductFullDto> productsNotInAnyGroup = internalTxService.findProductsNotInAnyGroup();
+        if (productsNotInAnyGroup.isEmpty()) {
+            log.debug("nothing found for update");
+            return;
+        }
+        updateProductData(productsNotInAnyGroup, listener);
+    }
+
+    @Override
     public void updateAllProductsDataInGroup(Long groupId) {
-        //TODO bug !!!!!! nech nevracia tie ktore uz boli updatnute
+        //TODO bug !!!!!! nech nevracia len tie,  ktore uz boli updatnute
 
         // ziskam zoznam produktov v danej skupine
-        List<ProductFullDto> productsInGroup = internalTxService.findProductsInGroup(groupId/*, eshopsToSkip*/);
-//        List<ProductFullDto> productsInGroup = internalTxService.findProductsInGroupForUpdateOnly(groupId);
+        List<ProductFullDto> productsInGroup = internalTxService.findProductsInGroup(groupId);
         if (productsInGroup.isEmpty()) {
             log.debug("none products founds in group with id {}", groupId);
             return;
         }
+        updateProductData(productsInGroup, UpdateProductInfoListenerAdapter.INSTANCE);
+    }
+
+    private void updateProductData(List<ProductFullDto> productsForUpdate, UpdateProductInfoListener listener) {
 
         // vytvorim mapu, ktore produkty patrie ktoremu eshopu(FIXME urobit na to servis osobiny nech rovno navratova hodnota je mapa)
         Map<EshopUuid, List<Long>> productsInEshop = new EnumMap<>(EshopUuid.class);
-        productsInGroup.forEach(productFullDto -> productsInEshop.put(productFullDto.getEshopUuid(), new ArrayList<>()));
-        productsInGroup.forEach(productFullDto -> productsInEshop.get(productFullDto.getEshopUuid()).add(productFullDto.getId()));
+        productsForUpdate.forEach(productFullDto -> productsInEshop.put(productFullDto.getEshopUuid(), new ArrayList<>()));
+        productsForUpdate.forEach(productFullDto -> productsInEshop.get(productFullDto.getEshopUuid()).add(productFullDto.getId()));
+
 
         // iterujem cez jednotlive eshopy a spustam jeden task per eshop
         for (Map.Entry<EshopUuid, List<Long>> eshopUuidListEntry : productsInEshop.entrySet()) {
@@ -88,18 +104,31 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
                 boolean finishedWithError = false;
 
+                long countOfProductsAlreadyUpdated = 0;
+                long countOfProductsWaitingToBeUpdated = eshopUuidListEntry.getValue().size();
+
                 for (Long productId : eshopUuidListEntry.getValue()) {
                     ProductDetailInfo productDetailInfo = null;
+
                     try {
                         // nacitam detaily produktu
                         Optional<ProductDetailInfo> productForUpdateOpt = internalTxService.findProductForUpdate(productId);
                         if (!productForUpdateOpt.isPresent()) {
+
+                            countOfProductsAlreadyUpdated++;
+                            countOfProductsWaitingToBeUpdated--;
+                            listener.updateStatusInfo(new UpdateStatusInfo(countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated, eshopUuid));
+
                             continue;
                         }
                         productDetailInfo = productForUpdateOpt.get();
 
-                        // updatnem zaznamy
+                        // updatnem zaznam
                         processUpdate(productDetailInfo);
+
+                        countOfProductsAlreadyUpdated++;
+                        countOfProductsWaitingToBeUpdated--;
+                        listener.updateStatusInfo(new UpdateStatusInfo(countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated,  eshopUuid));
 
                         if (taskManager.isTaskShouldStopped(eshopUuid)) {
                             taskManager.markTaskAsStopped(eshopUuid);
@@ -124,11 +153,6 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
             // kazdy dalsi task pre eshop spusti s 5 sekundovym oneskorenim
             sleepSafe(5);
         }
-    }
-
-    @Override
-    public void updateAllProductsDataForEshop(EshopUuid eshopUuid) {
-        updateAllProductsDataForEshop(eshopUuid, UpdateProductInfoListenerAdapter.INSTANCE);
     }
 
     @Override
