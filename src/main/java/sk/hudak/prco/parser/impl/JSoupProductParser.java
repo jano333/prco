@@ -47,6 +47,42 @@ public abstract class JSoupProductParser implements EshopProductsParser {
         this.userAgentDataHolder = userAgentDataHolder;
     }
 
+    /**
+     * Metoda vrati pocet stranok(pagging) na kolkych sa dane vyhladavane slovo vyskytuje.
+     * <br><b>Pozor:</b> Nie je to celkovy pocet produktov, ale pocet stranok, v zavislosti od strankovanie
+     * daneho eshopu...
+     * <br>Volana 1 v poradi.
+     * <br> vynimky vyhadzovane touto metodu su odchytovane vyssie
+     *
+     * @param documentList
+     * @return
+     */
+    protected abstract int parseCountOfPages(Document documentList);
+
+    /**
+     * Volana 2 v poradi.<br>
+     * vynimky vyhadzovane touto metodu su odchytovane vyssie
+     *
+     * @param documentList aktualne parsovany dokument
+     * @param pageNumber   poradove cislo stranky(z pagingu)
+     * @return
+     */
+    protected abstract List<String> parsePageForProductUrls(Document documentList, int pageNumber);
+
+    protected abstract boolean isProductUnavailable(Document documentDetailProduct);
+
+    protected abstract Optional<String> parseProductNameFromDetail(Document documentDetailProduct);
+
+    protected abstract Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct);
+
+    //TODO nasledovne 2 metody spojit do jednej a urobit aj navratovy typ
+
+    protected abstract Optional<ProductAction> parseProductAction(Document documentDetailProduct);
+
+    protected abstract Optional<Date> parseProductActionValidity(Document documentDetailProduct);
+
+    protected abstract Optional<String> parseProductPictureURL(Document documentDetailProduct);
+
     @Override
     public List<String> parseUrlsOfProduct(@NonNull String searchKeyWord) {
         String searchUrl = buildSearchUrl(getEshopUuid(), searchKeyWord);
@@ -113,6 +149,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
                 .unitPackageCount(unitTypeValueCountOpt.get().getPackageCount())
                 .build();
     }
+
 
     @Override
     public ProductForUpdateData parseProductUpdateData(@NonNull String productUrl) {
@@ -259,7 +296,6 @@ public abstract class JSoupProductParser implements EshopProductsParser {
         } catch (Exception e) {
             throw new PrcoRuntimeException("error while parsing product action, URL: " + productUrl, e);
         }
-
     }
 
     private int internalGetCountOfPages(Document documentList, String searchUrl) {
@@ -269,43 +305,6 @@ public abstract class JSoupProductParser implements EshopProductsParser {
             throw new PrcoRuntimeException("error while parsing count of page for products, search URL: " + searchUrl, e);
         }
     }
-
-    /**
-     * Metoda vrati pocet stranok(pagging) na kolkych sa dane vyhladavane slovo vyskytuje.
-     * <br><b>Pozor:</b> Nie je to celkovy pocet produktov, ale pocet stranok, v zavislosti od strankovanie
-     * daneho eshopu...
-     * <br>Volana 1 v poradi.
-     * <br> vynimky vyhadzovane touto metodu su odchytovane vyssie
-     *
-     * @param documentList
-     * @return
-     */
-    protected abstract int parseCountOfPages(Document documentList);
-
-    /**
-     * Volana 2 v poradi.<br>
-     * vynimky vyhadzovane touto metodu su odchytovane vyssie
-     *
-     * @param documentList aktualne parsovany dokument
-     * @param pageNumber   poradove cislo stranky(z pagingu)
-     * @return
-     */
-    protected abstract List<String> parsePageForProductUrls(Document documentList, int pageNumber);
-
-    protected abstract boolean isProductUnavailable(Document documentDetailProduct);
-
-    protected abstract Optional<String> parseProductNameFromDetail(Document documentDetailProduct);
-
-    protected abstract Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct);
-
-    //TODO nasledovne 2 metody spojit do jednej a urobit aj navratovy typ
-
-    protected abstract Optional<ProductAction> parseProductAction(Document documentDetailProduct);
-
-    protected abstract Optional<Date> parseProductActionValidity(Document documentDetailProduct);
-
-    protected abstract Optional<String> parseProductPictureURL(Document documentDetailProduct);
-
 
     private void logWarningIfNull(Optional<?> propertyValue, String propertyName, String productUrl) {
         if (!propertyValue.isPresent()) {

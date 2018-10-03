@@ -3,6 +3,7 @@ package sk.hudak.prco.parser;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.internal.NewProductInfo;
 import sk.hudak.prco.dto.internal.ProductForUpdateData;
+import sk.hudak.prco.exception.ProductNameNotFoundException;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public interface EshopProductsParser {
     /**
      * @param productUrl url konkretneho produktu
      * @return
+     * @throws ProductNameNotFoundException, ProductPriceNotFoundException
      */
     ProductForUpdateData parseProductUpdateData(String productUrl);
 }
