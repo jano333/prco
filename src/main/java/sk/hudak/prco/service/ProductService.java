@@ -35,7 +35,6 @@ public interface ProductService {
 
     List<ProductFullDto> findProductsForExport();
 
-
     EshopUuid findEshopForProductId(Long productId);
 
     void updateProductData(ProductUpdateDataDto productUpdateDataDto);
