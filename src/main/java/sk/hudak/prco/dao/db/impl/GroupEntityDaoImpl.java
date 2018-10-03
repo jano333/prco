@@ -1,5 +1,7 @@
 package sk.hudak.prco.dao.db.impl;
 
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +39,35 @@ public class GroupEntityDaoImpl extends BaseDaoImpl<GroupEntity> implements Grou
     }
 
     @Override
+    public List<GroupEntity> findGroups(GroupFilterDto groupFilterDto) {
+        JPAQuery<GroupEntity> query = from(QGroupEntity.groupEntity);
+        // ids
+        Long[] ids = groupFilterDto.getIds();
+        if (ids != null) {
+            query.where(QGroupEntity.groupEntity.id.in(ids));
+        }
+        // name
+        String name = groupFilterDto.getName();
+        if (StringUtils.isNotBlank(name)) {
+            query.where(QGroupEntity.groupEntity.name.isNotNull());
+            query.where(QGroupEntity.groupEntity.name.eq(name));
+        }
+        // eshop only
+        EshopUuid eshopOnly = groupFilterDto.getEshopOnly();
+        if (eshopOnly != null) {
+            //TODO
+        }
+        query.orderBy(new OrderSpecifier<>(Order.ASC, QGroupEntity.groupEntity.name));
+        return query.fetch();
+    }
+
+    @Override
     public List<GroupEntity> findGroupsWithoutProduct(Long productId) {
         //FIXME optimalizovat
         ProductEntity byId = productEntityDao.findById(productId);
         JPAQuery<GroupEntity> query = from(QGroupEntity.groupEntity);
         query.where(QGroupEntity.groupEntity.products.contains(byId).not());
+        query.orderBy(new OrderSpecifier<>(Order.ASC, QGroupEntity.groupEntity.name));
         return query.distinct().fetch();
     }
 
@@ -69,28 +95,6 @@ public class GroupEntityDaoImpl extends BaseDaoImpl<GroupEntity> implements Grou
         query.where(QGroupEntity.groupEntity.name.eq(groupName));
         //FIXME optimalizovat na exist...
         return query.fetchFirst() != null;
-    }
-
-    @Override
-    public List<GroupEntity> findGroups(GroupFilterDto groupFilterDto) {
-        JPAQuery<GroupEntity> query = from(QGroupEntity.groupEntity);
-        // ids
-        Long[] ids = groupFilterDto.getIds();
-        if (ids != null) {
-            query.where(QGroupEntity.groupEntity.id.in(ids));
-        }
-        // name
-        String name = groupFilterDto.getName();
-        if (StringUtils.isNotBlank(name)) {
-            query.where(QGroupEntity.groupEntity.name.isNotNull());
-            query.where(QGroupEntity.groupEntity.name.eq(name));
-        }
-        // eshop only
-        EshopUuid eshopOnly = groupFilterDto.getEshopOnly();
-        if (eshopOnly != null) {
-            //TODO
-        }
-        return query.fetch();
     }
 
     @Override
