@@ -56,6 +56,7 @@ public class PrcoOrikaMapper extends ConfigurableMapper {
     private void config_NewProductEntity_To_ProductEntity(MapperFactory mapperFactory) {
         mapperFactory.classMap(NewProductEntity.class, ProductEntity.class)
                 .fieldMap("id").exclude().add()
+                .fieldMap("pictureUrl","productPictureUrl").add()
                 .byDefault()
                 .register();
     }
