@@ -123,9 +123,10 @@ public class TescoProductParser extends JSoupProductParser {
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
         Element element = documentDetailProduct.select("img[class=product-image product-image-visible]").first();
         return Optional.ofNullable(element)
-                .map( element1 -> element1.attr("data-src"));
+                .map(element1 -> element1.attr("data-src"));
     }
 
+    //FIXME je to vo viacerych miestach urobit na to UTIL class pre datumy
     private Date parseDate(String strDate, String format) {
         if (strDate == null) {
             return null;

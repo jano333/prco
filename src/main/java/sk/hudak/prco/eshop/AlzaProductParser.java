@@ -75,7 +75,7 @@ public class AlzaProductParser extends JSoupProductParser {
             // urobit
             // https://www.alza.sk/maxi/pampers-active-baby-dry-vel-4-maxi-152-ks-mesacne-balenie-d4842708.htm
             if (href.contains("?")) {
-                href = href.substring(0, href.lastIndexOf("?"));
+                href = href.substring(0, href.lastIndexOf('?'));
             }
             urls.add(href);
         }

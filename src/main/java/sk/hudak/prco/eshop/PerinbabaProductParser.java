@@ -1,6 +1,7 @@
 package sk.hudak.prco.eshop;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.parser.UnitParser;
 import sk.hudak.prco.parser.impl.JSoupProductParser;
+import sk.hudak.prco.utils.ConvertUtils;
 import sk.hudak.prco.utils.UserAgentDataHolder;
 
 import java.math.BigDecimal;
@@ -83,25 +85,26 @@ public class PerinbabaProductParser extends JSoupProductParser {
 
     @Override
     protected boolean isProductUnavailable(Document documentDetailProduct) {
-        //TODO
-        return true;
+        return documentDetailProduct.select("button[title=Kúpiť]").first() == null;
     }
 
     @Override
     protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        //TODO
-        return Optional.empty();
+        Element first = documentDetailProduct.select("span[class=price]").first();
+        return Optional.ofNullable(first)
+                .map(element -> StringUtils.removeEnd(element.text(), " €"))
+                .map(e -> ConvertUtils.convertToBigDecimal(e));
     }
 
     @Override
     protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
-        //TODO
+        //TODO impl
         return Optional.empty();
     }
 
     @Override
     protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
-        //TODO
+        //TODO impl
         return Optional.empty();
     }
 }
