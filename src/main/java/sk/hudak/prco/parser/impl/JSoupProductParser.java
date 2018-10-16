@@ -69,6 +69,12 @@ public abstract class JSoupProductParser implements EshopProductsParser {
      */
     protected abstract List<String> parsePageForProductUrls(Document documentList, int pageNumber);
 
+    /**
+     * Volane pri aktualizacii udajov, overuje sa ci je product dostupny
+     *
+     * @param documentDetailProduct
+     * @return
+     */
     protected abstract boolean isProductUnavailable(Document documentDetailProduct);
 
     protected abstract Optional<String> parseProductNameFromDetail(Document documentDetailProduct);
@@ -163,17 +169,20 @@ public abstract class JSoupProductParser implements EshopProductsParser {
                     .eshopUuid(getEshopUuid()).build();
         }
 
+        // product name
         Optional<String> productNameOpt = parseProductNameFromDetail(document);
         logWarningIfNull(productNameOpt, "productName", document.location());
         String productName = productNameOpt.orElseThrow(() -> new ProductNameNotFoundException(productUrl));
 
+        // product price for package
         Optional<BigDecimal> productPriceForPackageOpt = parseProductPriceForPackage(document);
         logWarningIfNull(productPriceForPackageOpt, "priceForPackage", document.location());
         BigDecimal productPriceForPackage = productPriceForPackageOpt.orElseThrow(() -> new ProductPriceNotFoundException(productUrl));
 
+        // product action
         Optional<ProductAction> productAction = internalParseProductAction(document, productUrl);
 
-        // platnost akcie
+        // validity of action
         Optional<Date> productActionValidity = Optional.empty();
         if (productAction.isPresent() && productAction.get().equals(ProductAction.IN_ACTION)) {
             productActionValidity = internalParseProductActionValidity(document, productUrl);
