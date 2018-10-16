@@ -92,6 +92,12 @@ public class MetroProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
+        return Optional.ofNullable(documentDetailProduct.select("div[class=img-center] img").first())
+                .map(element -> element.attr("src"));
+    }
+
+    @Override
     protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
         Elements select = documentDetailProduct.select("span[class=mic mic-action-sk is-32]");
         return Optional.of(select.isEmpty()
@@ -102,12 +108,6 @@ public class MetroProductParser extends JSoupProductParser {
     @Override
     protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
         //TODO impl action validity
-        return Optional.empty();
-    }
-
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        //TODO impl picture url
         return Optional.empty();
     }
 }
