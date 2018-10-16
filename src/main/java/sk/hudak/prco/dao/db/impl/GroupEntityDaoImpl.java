@@ -55,7 +55,7 @@ public class GroupEntityDaoImpl extends BaseDaoImpl<GroupEntity> implements Grou
         // eshop only
         EshopUuid eshopOnly = groupFilterDto.getEshopOnly();
         if (eshopOnly != null) {
-            //TODO
+            //TODO impl
         }
         query.orderBy(new OrderSpecifier<>(Order.ASC, QGroupEntity.groupEntity.name));
         return query.fetch();

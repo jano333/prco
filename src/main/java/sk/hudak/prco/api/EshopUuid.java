@@ -6,6 +6,12 @@ import lombok.Getter;
  * Created by jan.hudak on 9/29/2017.
  */
 public enum EshopUuid {
+    // TODO PERINBABA
+    // TODO KID_MARKET
+    // TODO https://eshop.mamaaja.sk
+    // TODO https://www.brendon.sk
+
+
 
     //TODO pridat prvy parameter boolean ktory bude hovorit o tom ci je alebo nie je enablovany dany eshop
 
@@ -39,9 +45,6 @@ public enum EshopUuid {
             "TODO nie je to cez parameter v stranke...",
             5, 12),
 
-    // TODO KID_MARKET
-    // TODO PERINBABA
-    //TODO  https://www.brendon.sk
 
     PERINBABA(
             "http://www.perinbaba.sk/",
