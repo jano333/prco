@@ -89,13 +89,13 @@ public class PilulkaProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
-        //TODO
+        //TODO impl
         return Optional.empty();
     }
 
     @Override
     protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
-        //TODO
+        //TODO impl
         return Optional.empty();
     }
 }
