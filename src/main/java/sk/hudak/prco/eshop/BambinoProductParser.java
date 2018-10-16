@@ -110,6 +110,16 @@ public class BambinoProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
+        Element first = documentDetailProduct.select("img[itemprop=image]").first();
+        if (first == null) {
+            return Optional.empty();
+        }
+        String src = first.attr("src");
+        return Optional.of(src);
+    }
+
+    @Override
     protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
         return existElement(documentDetailProduct, "span[class=m-badge m-badge--large bg-red o-product__labels__item]")
                 ? Optional.of(IN_ACTION)
@@ -120,15 +130,5 @@ public class BambinoProductParser extends JSoupProductParser {
     protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
         // not supported for this eshop
         return Optional.empty();
-    }
-
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        Element first = documentDetailProduct.select("img[itemprop=image]").first();
-        if (first == null) {
-            return Optional.empty();
-        }
-        String src = first.attr("src");
-        return Optional.of(src);
     }
 }

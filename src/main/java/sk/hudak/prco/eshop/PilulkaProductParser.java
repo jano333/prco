@@ -79,6 +79,15 @@ public class PilulkaProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
+        Element first = documentDetailProduct.select("#pr-img-carousel > ul > li > a > img").first();
+        if (first == null) {
+            return Optional.empty();
+        }
+        return Optional.of(getEshopUuid().getProductStartUrl() + "/" + first.attr("src"));
+    }
+
+    @Override
     protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
         //TODO
         return Optional.empty();
@@ -86,12 +95,6 @@ public class PilulkaProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
-        //TODO
-        return Optional.empty();
-    }
-
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
         //TODO
         return Optional.empty();
     }

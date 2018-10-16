@@ -115,6 +115,17 @@ public class FeedoProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
+        Elements select = documentDetailProduct.select("div[class=box-image]");
+        if (select.isEmpty()) {
+            return Optional.empty();
+        }
+        Element child = select.get(0).child(0);
+        String href = child.attr("href");
+        return Optional.ofNullable(href);
+    }
+
+    @Override
     protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
         // premium cena
         if (existElement(documentDetailProduct, "div[class=price price-premium]")) {
@@ -131,16 +142,5 @@ public class FeedoProductParser extends JSoupProductParser {
     protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
         // feedo nepodporuje
         return Optional.empty();
-    }
-
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("div[class=box-image]");
-        if (select.isEmpty()) {
-            return Optional.empty();
-        }
-        Element child = select.get(0).child(0);
-        String href = child.attr("href");
-        return Optional.ofNullable(href);
     }
 }

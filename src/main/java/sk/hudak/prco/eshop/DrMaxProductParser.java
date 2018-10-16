@@ -111,6 +111,15 @@ public class DrMaxProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
+        Elements select = documentDetailProduct.select("#productImg > img.image");
+        Element element = select.get(0);
+        String src = element.attr("src");
+        String s = getEshopUuid().getProductStartUrl() + src;
+        return Optional.of(s);
+    }
+
+    @Override
     protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
         //TODO impl
         return Optional.empty();
@@ -120,15 +129,6 @@ public class DrMaxProductParser extends JSoupProductParser {
     protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
         //TODO impl
         return Optional.empty();
-    }
-
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("#productImg > img.image");
-        Element element = select.get(0);
-        String src = element.attr("src");
-        String s = getEshopUuid().getProductStartUrl() + src;
-        return Optional.of(s);
     }
 
 

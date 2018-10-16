@@ -133,6 +133,17 @@ public class AlzaProductParser extends JSoupProductParser {
 
 
     @Override
+    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
+        Elements select = documentDetailProduct.select("#imgMain");
+        if (select.isEmpty()) {
+            return Optional.empty();
+        }
+        Element element = select.get(0);
+        String fullUrl = element.attr("data-src");
+        return Optional.of(fullUrl);
+    }
+
+    @Override
     protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
         //TODO dorobit parsovanie zlavy v percentach
         return Optional.of(
@@ -145,16 +156,5 @@ public class AlzaProductParser extends JSoupProductParser {
     protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
         //TODO
         return Optional.empty();
-    }
-
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("#imgMain");
-        if (select.isEmpty()) {
-            return Optional.empty();
-        }
-        Element element = select.get(0);
-        String fullUrl = element.attr("data-src");
-        return Optional.of(fullUrl);
     }
 }

@@ -122,8 +122,8 @@ public class TescoProductParser extends JSoupProductParser {
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
         Element element = documentDetailProduct.select("img[class=product-image product-image-visible]").first();
-        String src = element.attr("data-src");
-        return Optional.ofNullable(src);
+        return Optional.ofNullable(element)
+                .map( element1 -> element1.attr("data-src"));
     }
 
     private Date parseDate(String strDate, String format) {
