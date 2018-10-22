@@ -34,6 +34,7 @@ import sk.hudak.prco.utils.CalculationUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -78,10 +79,14 @@ public class Starter {
 
     public void run() {
 
-        //TODO
+        //init ssl
         PrcoSslManager.getInstance().init();
 
+        // start thred for showing statistics
         theadStatisticManager.startShowingStatistics();
+
+        //TODO
+        internalTxService.startErrorCleanUp();
 
 //        System.out.println(ToStringBuilder.reflectionToString(uiService.getStatisticsOfProducts(), ToStringStyle.MULTI_LINE_STYLE));
 
@@ -93,27 +98,58 @@ public class Starter {
 
 
         // --- GROUPY --
-//        createNewGroup("olej");
+//        createNewGroup("pampers 5 zelene");
 //        updateGroupName(1L, "pampers 4 zelene");
-//        uiService.addProductsToGroup(1L, 961L, 962L, 963L, 964L, 965L);
-//        uiService.removeProductsFromGroup(1L, 965L);
-//        showAllGroups();
+        //nutrilon 4
+//        uiService.addProductsToGroup(33L, 1697L);
+        //nutrilon 5
+//        uiService.addProductsToGroup(257L, 1700L);
+        // pampers zelene 4
+//        uiService.addProductsToGroup(1L, 1669L, 1668L, 1667L, 1666L, 1665L);
+        // pampers zelene 5
+//        uiService.addProductsToGroup(321L,1698L, 1699L);
+
+        showAllGroups();
+
+        // pampers 4
+//        uiService.removeProductsFromGroup(1L, 994L, 1226L);
+//        uiService.deleteProducts(994L, 1226L);
+//
+        // pampers 5
+//        uiService.removeProductsFromGroup(321L, 1569L);
+//        uiService.deleteProducts(1569L);
+//
+        // nutrilon 4
+//        uiService.removeProductsFromGroup(33L, 995L, 1090L, 1094L);
+//        uiService.deleteProducts(995L, 1090L, 1094L);
+
+        // nutrilon 5
+//        uiService.removeProductsFromGroup(257L, 1093L, 1121L);
+//        uiService.deleteProducts(1093L, 1121L);
 
         // --- PRODUCTS ---
 //        showAllProducts();
-        // pampers
-//        showProductsInGroup(1L);
-        // nutrilon
-//        showProductsInGroup(33L);
+
+        // pampers 4
+        showProductsInGroup(1L, EshopUuid.METRO);
+        // pampers 5
+        showProductsInGroup(321L);
+
+        // nutrilon 4
+        showProductsInGroup(33L);
+        // nutrilon 5
+        showProductsInGroup(257L);
+
+
         // olej
 //        showProductsInGroup(225L);
 
+
 //        showAllProductsInAllGroups();
-//        showProductsNotInAnyGroup();
+        showProductsNotInAnyGroup();
 
 
 //        existProduct("https://www.feedo.sk/pampers-active-baby-4-box-120ks-9-16-kg-jednorazove-plienky/");
-//        uiService.deleteProducts(129L, 134L);
 //        showProductsInEshop(EshopUuid.TESCO);
 //        showProductsInEshop(EshopUuid.METRO);
 //        showProductsInEshopInAction(EshopUuid.TESCO);
@@ -126,6 +162,13 @@ public class Starter {
 
 //        watchDogService.notifyByEmail(Collections.emptyList());
 
+//        List<ErrorListDto> byTypes = internalTxService.findByTypes(ErrorType.PARSING_PRODUCT_INFO_ERR);
+//        System.out.println("Errors:");
+//        for (ErrorListDto errorListDto : byTypes) {
+//            System.out.println("id " + errorListDto.getId() + " name " + errorListDto.getAdditionalInfo() + " url " +
+//                    errorListDto.getUrl());
+//        }
+
 
         // --- UPDATE PRICE DATA ---
         UpdateProductInfoListener listener = updateStatusInfo ->
@@ -133,8 +176,9 @@ public class Starter {
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
 //        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
-//        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.PILULKA, listener);
-        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.FEEDO, listener);
+//        updateProductDataManager.updateAllProductDataNotInAnyGroup(listener);
+
+//        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.PERINBABA, listener);
         // updatne vsetky produkty v danej skupine
 //        updateProductDataManager.updateAllProductsDataInGroup(33L);
 //        updateProductDataManager.updateProductData(103L);
@@ -142,8 +186,13 @@ public class Starter {
 //        uiService.updateCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-//        newProductManager.addNewProductsByKeywordForAllEshops("pampers 4");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "pampers 4");
+        newProductManager.addNewProductsByKeywordForAllEshops("pampers 5");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.KID_MARKET, "pampers 5");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PERINBABA, "pampers 5");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "pampers 4");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "pampers 5");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "nutrilon 4");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "nutrilon 5");
 //        newProductManager.addNewProductsByUrl(
 //                  "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120575818",
 //                  "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120307521",
@@ -298,7 +347,9 @@ public class Starter {
         for (ProductFullDto product : products) {
             System.out.println("id " + product.getId() + ", " +
                     "name: " + product.getName() + ", " +
-                    "url: " + product.getUrl());
+                    "url: " + product.getUrl() + ", " +
+                    "unit: " + product.getUnitValue() + " " + product.getUnit() + " count: " + product.getUnitPackageCount());
+
         }
         if (products.isEmpty()) {
             System.out.println("ziadny");
@@ -312,14 +363,25 @@ public class Starter {
         // vypis
         System.out.println();
         System.out.println("'" + group.getName() + "' id " + groupId + " count " + productsInGroup.size());
+        if (!Arrays.asList(eshopsToSkip).isEmpty()) {
+            System.out.println("Preskakujem eshopy: " + Arrays.asList(eshopsToSkip));
+        }
         for (ProductFullDto product : productsInGroup) {
             System.out.println("eshop: " + product.getEshopUuid().name() +
                     " price for unit " + product.getPriceForUnit() +
                     ", price for one item " + formatPrice(product.getPriceForOneItemInPackage()) +
                     ", id " + product.getId() +
                     ", '" + product.getName() +
-                    "', " + product.getUrl());
+                    "', " + product.getUrl() +
+                    ", last updated " + formatDate(product.getLastTimeDataUpdated()));
         }
+    }
+
+    private String formatDate(Date date) {
+        if (date == null) {
+            return "";
+        }
+        return new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(date);
     }
 
     private void showAllProducts() {
