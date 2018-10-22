@@ -90,10 +90,9 @@ public class PerinbabaProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        Element first = documentDetailProduct.select("span[class=price]").first();
-        return Optional.ofNullable(first)
+        return Optional.ofNullable(documentDetailProduct.select("span[class=price]").first())
                 .map(element -> StringUtils.removeEnd(element.text(), " €"))
-                .map(e -> ConvertUtils.convertToBigDecimal(e));
+                .map(text -> ConvertUtils.convertToBigDecimal(text));
     }
 
     @Override
