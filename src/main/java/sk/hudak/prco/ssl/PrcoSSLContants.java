@@ -25,6 +25,9 @@ public class PrcoSSLContants {
 
 
         ALLOWED_HOSTNAME.add("www.drmax.sk");
+
+        ALLOWED_HOSTNAME.add("kidmarket.sk");
+        ALLOWED_HOSTNAME.add("admin.asdata.sk");
     }
 
     private PrcoSSLContants() {

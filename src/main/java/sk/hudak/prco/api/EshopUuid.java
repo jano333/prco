@@ -6,22 +6,17 @@ import lombok.Getter;
  * Created by jan.hudak on 9/29/2017.
  */
 public enum EshopUuid {
-    // TODO PERINBABA
     // TODO KID_MARKET
+    // TODO ANDREA_SHOP
     // TODO https://eshop.mamaaja.sk
     // TODO https://www.brendon.sk
 
-
-
     //TODO pridat prvy parameter boolean ktory bude hovorit o tom ci je alebo nie je enablovany dany eshop
-
 
     ALZA("https://www.alza.sk",
             "https://www.alza.sk/search.htm?exps={keyword}",
             "https://www.alza.sk/search-p{pageNumber}.htm?exps={keyword}",
             3, 12, 5),
-
-    // TODO ANDREA_SHOP
 
     BAMBINO("https://www.bambino.sk",
             "https://www.bambino.sk/vyhladavanie?search={keyword}",
@@ -45,6 +40,10 @@ public enum EshopUuid {
             "TODO nie je to cez parameter v stranke...",
             5, 12),
 
+    KID_MARKET("https://kidmarket.sk/",
+            "https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query={keyword}&submit_search=",
+            "https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query={keyword}&submit_search=&p={pageNumber}",
+            3, 12, 5),
 
     PERINBABA(
             "http://www.perinbaba.sk/",
@@ -93,7 +92,7 @@ public enum EshopUuid {
     @Getter
     private String searchTemplateUrlWithPageNumber;
 
-    @Getter
+//    @Getter
     private int maxCountOfNewPages;
 
     @Getter
