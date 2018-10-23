@@ -6,7 +6,6 @@ import lombok.Getter;
  * Created by jan.hudak on 9/29/2017.
  */
 public enum EshopUuid {
-    // TODO KID_MARKET
     // TODO ANDREA_SHOP
     // TODO https://eshop.mamaaja.sk
     // TODO https://www.brendon.sk
@@ -92,7 +91,6 @@ public enum EshopUuid {
     @Getter
     private String searchTemplateUrlWithPageNumber;
 
-//    @Getter
     private int maxCountOfNewPages;
 
     @Getter

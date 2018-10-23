@@ -58,13 +58,10 @@ public class ErrorEntityDaoImpl extends BaseDaoImpl<ErrorEntity> implements Erro
 
     @Override
     public List<ErrorEntity> findOlderThan(int unitCount, TimeUnit timeUnit) {
-        Date right = calculateDate(unitCount, timeUnit);
-        System.out.println(">> right " + right);
-
         return getQueryFactory()
                 .select(QErrorEntity.errorEntity)
                 .from(QErrorEntity.errorEntity)
-                .where(QErrorEntity.errorEntity.updated.lt(right))
+                .where(QErrorEntity.errorEntity.updated.lt(calculateDate(unitCount, timeUnit)))
                 .fetch();
     }
 

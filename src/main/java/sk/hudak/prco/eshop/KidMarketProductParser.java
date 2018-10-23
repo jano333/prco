@@ -51,7 +51,7 @@ public class KidMarketProductParser extends JSoupProductParser {
         }
 
         List<String> urls = new ArrayList<>();
-        first.children().stream().forEach(element ->
+        first.children().forEach(element ->
                 urls.add(element.select("h5 a").first().attr("href"))
         );
         return urls;
@@ -79,7 +79,7 @@ public class KidMarketProductParser extends JSoupProductParser {
         return Optional.ofNullable(documentDetailProduct.select("#our_price_display").first())
                 .map(Element::text)
                 .map(text -> StringUtils.removeEnd(text, "€"))
-                .map(number -> ConvertUtils.convertToBigDecimal(number));
+                .map(ConvertUtils::convertToBigDecimal);
     }
 
     @Override

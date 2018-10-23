@@ -14,7 +14,7 @@ import sk.hudak.prco.service.ErrorService;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -118,7 +118,7 @@ public class ErrorServiceImpl implements ErrorService {
 
     @Override
     public Map<ErrorType, Long> getStatisticForErrors() {
-        Map<ErrorType, Long> result = new HashMap<>();
+        Map<ErrorType, Long> result = new EnumMap(ErrorType.class);
         for (ErrorType type : ErrorType.values()) {
             result.put(type, errorEntityDao.getCountOfType(type));
         }

@@ -50,7 +50,7 @@ public class DrMaxProductParser extends JSoupProductParser {
         String text = select.text();
         text = StringUtils.remove(text, "Vyhľadávanie (");
         text = StringUtils.remove(text, ")");
-        int allProductsSize = Integer.valueOf(text);
+        int allProductsSize = Integer.parseInt(text);
         int maxCountOfNewPages = getEshopUuid().getMaxCountOfProductOnPage();
 
         int cout = allProductsSize / maxCountOfNewPages;
