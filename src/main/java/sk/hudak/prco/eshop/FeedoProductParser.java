@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
+import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.parser.UnitParser;
 import sk.hudak.prco.parser.impl.JSoupProductParser;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -29,8 +30,8 @@ import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
 public class FeedoProductParser extends JSoupProductParser {
 
     @Autowired
-    public FeedoProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder) {
-        super(unitParser, userAgentDataHolder);
+    public FeedoProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
+        super(unitParser, userAgentDataHolder, searchUrlBuilder);
     }
 
     @Override

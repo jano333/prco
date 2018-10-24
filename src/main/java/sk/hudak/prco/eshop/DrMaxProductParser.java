@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
+import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.dto.UnitTypeValueCount;
 import sk.hudak.prco.parser.UnitParser;
 import sk.hudak.prco.parser.impl.JSoupProductParser;
@@ -21,18 +22,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static sk.hudak.prco.api.EshopUuid.DR_MAX;
+
 @Slf4j
 @Component
 public class DrMaxProductParser extends JSoupProductParser {
 
     @Autowired
-    public DrMaxProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder) {
-        super(unitParser, userAgentDataHolder);
+    public DrMaxProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
+        super(unitParser, userAgentDataHolder, searchUrlBuilder);
     }
 
     @Override
     public EshopUuid getEshopUuid() {
-        return EshopUuid.DR_MAX;
+        return DR_MAX;
     }
 
     @Override

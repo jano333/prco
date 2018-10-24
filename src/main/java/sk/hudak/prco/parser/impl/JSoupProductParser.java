@@ -7,6 +7,7 @@ import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import sk.hudak.prco.api.ProductAction;
+import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.dto.UnitTypeValueCount;
 import sk.hudak.prco.dto.internal.NewProductInfo;
 import sk.hudak.prco.dto.internal.ProductForUpdateData;
@@ -19,6 +20,7 @@ import sk.hudak.prco.parser.EshopProductsParser;
 import sk.hudak.prco.parser.UnitParser;
 import sk.hudak.prco.utils.UserAgentDataHolder;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
@@ -29,7 +31,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static sk.hudak.prco.utils.ThreadUtils.sleepRandomSafeBetween;
-import static sk.hudak.prco.utils.URLUtils.buildSearchUrl;
 
 /**
  * Created by jan.hudak on 9/29/2017.
@@ -37,14 +38,18 @@ import static sk.hudak.prco.utils.URLUtils.buildSearchUrl;
 @Slf4j
 public abstract class JSoupProductParser implements EshopProductsParser {
 
-    public static final int DEFAULT_TIMOUT_IN_MILIS = 3000;
+    public static final int DEFAULT_TIMEOUT_IN_MILIS = 3000;
 
     protected UnitParser unitParser;
     protected UserAgentDataHolder userAgentDataHolder;
+    protected SearchUrlBuilder searchUrlBuilder;
 
-    public JSoupProductParser(@NonNull UnitParser unitParser, @NonNull UserAgentDataHolder userAgentDataHolder) {
+    public JSoupProductParser(@NonNull UnitParser unitParser,
+                              @NonNull UserAgentDataHolder userAgentDataHolder,
+                              @NotNull SearchUrlBuilder searchUrlBuilder) {
         this.unitParser = unitParser;
         this.userAgentDataHolder = userAgentDataHolder;
+        this.searchUrlBuilder = searchUrlBuilder;
     }
 
     /**
@@ -65,19 +70,21 @@ public abstract class JSoupProductParser implements EshopProductsParser {
      *
      * @param documentList aktualne parsovany dokument
      * @param pageNumber   poradove cislo stranky(z pagingu)
-     * @return
+     * @return zoznam URL produktov
      */
     protected abstract List<String> parsePageForProductUrls(Document documentList, int pageNumber);
 
     /**
      * Volane pri aktualizacii udajov, overuje sa ci je product dostupny
      *
-     * @param documentDetailProduct
-     * @return
+     * @param documentDetailProduct html document
+     * @return true, ak je produkct nedostupny
      */
     protected abstract boolean isProductUnavailable(Document documentDetailProduct);
 
     protected abstract Optional<String> parseProductNameFromDetail(Document documentDetailProduct);
+
+    protected abstract Optional<String> parseProductPictureURL(Document documentDetailProduct);
 
     protected abstract Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct);
 
@@ -87,21 +94,20 @@ public abstract class JSoupProductParser implements EshopProductsParser {
 
     protected abstract Optional<Date> parseProductActionValidity(Document documentDetailProduct);
 
-    protected abstract Optional<String> parseProductPictureURL(Document documentDetailProduct);
-
     @Override
     public List<String> parseUrlsOfProduct(@NonNull String searchKeyWord) {
-        String searchUrl = buildSearchUrl(getEshopUuid(), searchKeyWord);
+        String searchUrl = searchUrlBuilder.buildSearchUrl(getEshopUuid(), searchKeyWord);
         Document firstPageDocument = retrieveDocument(searchUrl);
 
         // 1. krok - zistim paging(pocet stranok)
         int countOfAllPages = internalGetCountOfPages(firstPageDocument, searchUrl);
-        log.debug("pages count: {}", countOfAllPages);
+        log.debug("new pages count: {}", countOfAllPages);
 
         // checking for max size
-        if (countOfAllPages > getEshopUuid().getMaxCountOfNewPages()) {
-            countOfAllPages = getEshopUuid().getMaxCountOfNewPages();
-            log.debug("new pages count: {}", countOfAllPages);
+        int maxCountOfNewPages = getEshopUuid().getMaxCountOfNewPages();
+        if (countOfAllPages > maxCountOfNewPages) {
+            countOfAllPages = maxCountOfNewPages;
+            log.debug("count of new pages changed to maxim: {}", countOfAllPages);
         }
 
         // 2. krok - parsujem prvu stranku
@@ -110,8 +116,8 @@ public abstract class JSoupProductParser implements EshopProductsParser {
             log.warn("none products URL found for keyword {}", searchKeyWord);
             return Collections.emptyList();
         }
-        List<String> resultUrls = new ArrayList<>();
-        resultUrls.addAll(firstPageUrls);
+
+        List<String> resultUrls = new ArrayList<>(firstPageUrls);
 
         // 3. krok - ak existuju dalsie stranky parsujem aj tie
         if (countOfAllPages > 1) {
@@ -242,18 +248,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
     }
 
     protected List<String> parseNextPage(String searchKeyWord, int currentPageNumber) {
-        //FIXME presunut tuto logiku do utils...
-        String searchTemplateUrlWithPageNumber = getEshopUuid().getSearchTemplateUrlWithPageNumber();
-        String searchUrl;
-        if (searchTemplateUrlWithPageNumber.contains("{offset}")) {
-            searchUrl = buildSearchUrl(getEshopUuid(), searchKeyWord,
-                    (currentPageNumber - 1) * getEshopUuid().getMaxCountOfProductOnPage(),
-                    getEshopUuid().getMaxCountOfProductOnPage());
-        } else {
-            searchUrl = buildSearchUrl(getEshopUuid(), searchKeyWord, currentPageNumber);
-        }
-
-
+        String searchUrl = searchUrlBuilder.buildSearchUrl(getEshopUuid(), searchKeyWord, currentPageNumber);
         // FIXME 5 a 20 dat nech nacita od konfiguracie pre konkretny eshop
         sleepRandomSafeBetween(5, 20);
         return parsePageForProductUrls(retrieveDocument(searchUrl), currentPageNumber);
@@ -268,7 +263,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
     }
 
     protected int getTimeout() {
-        return DEFAULT_TIMOUT_IN_MILIS;
+        return DEFAULT_TIMEOUT_IN_MILIS;
     }
 
     protected Map<String, String> getCookie() {

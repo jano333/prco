@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
+import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.parser.UnitParser;
 import sk.hudak.prco.parser.impl.JSoupProductParser;
@@ -33,8 +34,8 @@ public class MallProductParser extends JSoupProductParser {
     private static final String DATE_FORMAT_HH_MM_YYYY = "dd.MM.yyyy";
 
     @Autowired
-    public MallProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder) {
-        super(unitParser, userAgentDataHolder);
+    public MallProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
+        super(unitParser, userAgentDataHolder, searchUrlBuilder);
     }
 
     @Override

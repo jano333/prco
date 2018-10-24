@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
+import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.parser.UnitParser;
 import sk.hudak.prco.parser.WatchDogParser;
@@ -29,8 +30,8 @@ public class ObiProductParser extends JSoupProductParser implements WatchDogPars
     // TODO doriesit aby bralo len kosicku pobocku? pozor su 2...
 
     @Autowired
-    public ObiProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder) {
-        super(unitParser, userAgentDataHolder);
+    public ObiProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
+        super(unitParser, userAgentDataHolder, searchUrlBuilder);
     }
 
     @Override
