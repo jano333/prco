@@ -1,6 +1,7 @@
 package sk.hudak.prco.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.hudak.prco.api.ErrorType;
@@ -127,33 +128,35 @@ public class NewProductServiceImpl implements NewProductService {
     public void repairInvalidUnitForNewProductByReprocessing(Long newProductId) {
         notNull(newProductId, "newProductId");
         NewProductEntity productEntity = newProductEntityDao.findById(newProductId);
-
-
         // parsujem
         NewProductInfo newProductInfo = htmlParser.parseNewProductInfo(productEntity.getUrl());
 
-//        Optional<UnitTypeValueCount> unitTypeValueCountOpt = unitParser.parseUnitTypeValueCount(productEntity.getName());
-//        Optional<UnitTypeValueCount> unitTypeValueCountOpt = Optional.ofNullable(newProductInfo.getUnit());
-        if (newProductInfo.getUnit() != null) {
-            productEntity.setUnit(newProductInfo.getUnit());
-            productEntity.setUnitValue(newProductInfo.getUnitValue());
-            productEntity.setUnitPackageCount(newProductInfo.getUnitPackageCount());
-            productEntity.setValid(Boolean.TRUE);
-            log.debug("new product with id {} was updated with unit data {}", productEntity.getId(),
-                    new UnitTypeValueCount(newProductInfo.getUnit(), newProductInfo.getUnitValue(), newProductInfo.getUnitPackageCount()));
-        } else {
-            log.warn("parsing failed for name {}", productEntity.getName());
+        if (newProductInfo.getUnit() == null) {
+            if (StringUtils.isBlank(productEntity.getPictureUrl()) && newProductInfo.getPictureUrl() != null) {
+                log.debug("updating product picture url to {}", newProductInfo.getPictureUrl());
+                productEntity.setPictureUrl(newProductInfo.getPictureUrl());
+                newProductEntityDao.update(productEntity);
+            }
+
+            log.warn("parsing unit data failed for name {}", productEntity.getName());
             errorService.createError(ErrorCreateDto.builder()
                     .errorType(ErrorType.PARSING_PRODUCT_INFO_ERR)
                     .url(productEntity.getUrl())
                     .eshopUuid(productEntity.getEshopUuid())
                     .additionalInfo(productEntity.getName())
                     .build());
-            return;
-        }
-        productEntity.setPictureUrl(newProductInfo.getPictureUrl());
-        newProductEntityDao.update(productEntity);
 
+
+        } else {
+            productEntity.setUnit(newProductInfo.getUnit());
+            productEntity.setUnitValue(newProductInfo.getUnitValue());
+            productEntity.setUnitPackageCount(newProductInfo.getUnitPackageCount());
+            productEntity.setValid(Boolean.TRUE);
+            log.debug("new product with id {} was updated with unit data {}", productEntity.getId(),
+                    new UnitTypeValueCount(newProductInfo.getUnit(), newProductInfo.getUnitValue(), newProductInfo.getUnitPackageCount()));
+            productEntity.setPictureUrl(newProductInfo.getPictureUrl());
+            newProductEntityDao.update(productEntity);
+        }
     }
 
     @Override
