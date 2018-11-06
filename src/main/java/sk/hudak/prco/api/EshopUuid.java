@@ -8,7 +8,6 @@ import static sk.hudak.prco.api.SearchTemplateConstants.KEYWORD_TEMP;
 public enum EshopUuid {
 
     // TODO ANDREA_SHOP -> neviem pagging ako...
-    // TODO https://www.brendon.sk
 
     //TODO pridat prvy parameter boolean ktory bude hovorit o tom ci je alebo nie je enablovany dany eshop
 
