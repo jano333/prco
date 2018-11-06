@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.DrMaxProductParser;
+import sk.hudak.prco.eshop.MamaAJaProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -20,7 +20,13 @@ public class ProductParserTest {
 
         SearchUrlBuilder searchUrlBuilder = new SearchUrlBuilderImpl();
 
-        //KidMarket
+//        MamaAJa
+        System.out.println(new MamaAJaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers 5"));
+//                .parseNewProductInfo("https://eshop.mamaaja.sk/pampers-premium-care-1-newborn-22ks/"));
+                .parseProductUpdateData("https://eshop.mamaaja.sk/pampers-premium-care-1-newborn-22ks/"));
+//
+// KidMarket
 //        System.out.println(new KidMarketProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 5"));
 //                .parseNewProductInfo("https://kidmarket.sk/jednorazove-plienky/176-pampers-active-baby-dry-vel6-extra-large-56ks-4015400736394.html?search_query=pampers+5&results=46"));
@@ -46,8 +52,8 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.bambino.sk/jednorazove-plienky/abd-mega-box-plus-4-174ks-1"),
 
         // Dx max
-        System.out.println(new DrMaxProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-                .parseUrlsOfProduct("pampers 5"));
+//        System.out.println(new DrMaxProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers 5"));
 //                .parseNewProductInfo("https://www.drmax.sk/nutrilon-4-bez-prichute-akciove-balenie/"));
 //                .parseProductUpdateData("https://www.drmax.sk/pampers-mega-maxi-132/"));
         // Feedo

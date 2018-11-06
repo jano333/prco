@@ -34,10 +34,10 @@ public enum EshopUuid {
             "https://www.drmax.sk/catalog/search/?q={keyword}&offset={offset}&limit={limit}",
             3, 12, 24),
 
-//    ESHOP_MAMA_A_JA("https://eshop.mamaaja.sk",
-//            "https://eshop.mamaaja.sk/catalog/search/?q={keyword}",
-//            "https://eshop.mamaaja.sk/catalog/search/?q={keyword}&offset={offset}",
-//            3, 12, 24),
+    MAMA_A_JA("https://eshop.mamaaja.sk",
+            "https://eshop.mamaaja.sk/catalog/search/?q={keyword}",
+            "https://eshop.mamaaja.sk/catalog/search/?q={keyword}&offset={offset}",
+            3, 12, 24),
 
     FEEDO("https://www.feedo.sk",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/",

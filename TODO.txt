@@ -1,4 +1,76 @@
 BUG:
+2018-11-05 22:16:57,391 WARN [http-nio-8080-exec-4] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:235] unit info not found for '174 ks'
+-----------------------------
+FEATURE:
+newProduct page ked kliknem na obrazok tak nech sa zobrazi v novej stranke
+--------------------------------------------------------------------------------
+2018-11-03 17:16:52,998 ERROR [PERINBABA] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:200] error while updating product data
+org.springframework.dao.DataIntegrityViolationException: could not execute statement; SQL [n/a]; nested exception is org.hibernate.exception.DataException: could not execute statement
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:263)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:225)
+	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:540)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:746)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:714)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:532)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:304)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:98)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688)
+	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$EnhancerBySpringCGLIB$$db7c4815.createError(<generated>)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.save404Error(UpdateProductDataManagerImpl.java:293)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.processUpdate(UpdateProductDataManagerImpl.java:256)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateAllProductsDataForEshop$6(UpdateProductDataManagerImpl.java:173)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.hibernate.exception.DataException: could not execute statement
+	at org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:118)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:42)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:111)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:97)
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:178)
+	at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:3032)
+	at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:3547)
+	at org.hibernate.action.internal.EntityInsertAction.execute(EntityInsertAction.java:89)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:600)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:474)
+	at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:337)
+	at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:39)
+	at org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1437)
+	at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:494)
+	at org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:3245)
+	at org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:2451)
+	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:473)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:156)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.access$100(JdbcResourceLocalTransactionCoordinatorImpl.java:38)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:231)
+	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:68)
+	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:536)
+	... 16 common frames omitted
+Caused by: org.h2.jdbc.JdbcSQLException: Value too long for column "MESSAGE VARCHAR(255)": "'error creating document for url ''http://www.perinbaba.sk/plienky-active-baby-5-junior-11-18-kg-150-ks-mesacna-zasoba-darcek-zd... (313)"; SQL statement:
+insert into error (created, updated, additional_info, error_type, eshop_uuid, full_msg, message, status_code, url, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) [22001-196]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.table.Column.validateConvertUpdateSequence(Column.java:369)
+	at org.h2.table.Table.validateConvertUpdateSequence(Table.java:797)
+	at org.h2.command.dml.Insert.insertRows(Insert.java:151)
+	at org.h2.command.dml.Insert.update(Insert.java:114)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:101)
+	at org.h2.command.Command.executeUpdate(Command.java:260)
+	at org.h2.jdbc.JdbcPreparedStatement.executeUpdateInternal(JdbcPreparedStatement.java:164)
+	at org.h2.jdbc.JdbcPreparedStatement.executeUpdate(JdbcPreparedStatement.java:150)
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:175)
+	... 33 common frames omitted
+2018-11-03 17:16:53,014 DEBUG [PERINBABA] [] s.h.p.t.i.TaskManagerImpl [TaskManagerImpl.java:109] marking task for eshop PERINBABA as FINISHED_WITH_ERROR
+2018-11-03 17:16:53,076 DEBUG [ALZA] [] s.h.p.s.Starter [Starter.java:175] >> eshop: ALZA, updated/waiting: 1/10
+2018-11-03 17:16:53,076 DEBUG [ALZA] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:248] start updating data for product https://www.alza.sk/maxi/pampers-active-baby-midpack-vel-4-36-ks-d4457263.htm?o=18
+2018-11-03 17:16:53,076 DEBUG [ALZA] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:215] request URL: https://www.alza.sk/maxi/pampers-active-baby-midpack-vel-4-36-ks-d4457263.htm?o=18
+2018-11-03 17:16:53,076 DEBU
+BUG:
 2018-09-27 15:37:04,049 ERROR [TESCO] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:176] error while updating product data
 sk.hudak.prco.exception.ProductNameNotFoundException: Product name for url 'https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002017045669' not found.
 	at sk.hudak.prco.parser.impl.JSoupProductParser.lambda$parseProductUpdateData$0(JSoupProductParser.java:168)
