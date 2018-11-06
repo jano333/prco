@@ -96,6 +96,11 @@ public class UnitParserImpl implements UnitParser {
             return createKus(convertToBigDecimal(matcher.group(2)), "1");
         }
 
+        //174 ks
+        matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, SPACE, "ks$");
+        if (matcher.find()) {
+            return createKus(convertToBigDecimal(matcher.group(1)), "1");
+        }
 
         // --- OBJEM ---
 

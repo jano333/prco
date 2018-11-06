@@ -46,6 +46,9 @@ public class UnitParserTest {
                 Unit.KUS, "78");
          addTestData(values, "PAMPERS NEW BABY DRY 2 MINI 100KS",
                 Unit.KUS, "100");
+        addTestData(values, "174 ks",
+                Unit.KUS, "174");
+
 
         // OBJEM
         addTestData(values, "Becherovka Original Bylinný likér 0,5 l",
