@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Optional.ofNullable;
 import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
 import static sk.hudak.prco.utils.JsoupUtils.getTextFromFirstElementByClass;
 import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
@@ -91,9 +92,20 @@ public class TescoProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
+        Optional<Element> first = ofNullable(documentDetailProduct.select("img[class=product-image product-image-visible]").first());
+        Optional<String> pictureOpt = first.map(element1 -> element1.attr("data-src"));
+        // niekedy je aj takto
+        if (!pictureOpt.isPresent()|| pictureOpt.get().isEmpty()) {
+            pictureOpt = first.map(element -> element.attr("src"));
+        }
+        return pictureOpt;
+    }
+
+    @Override
     protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
         Elements elements = documentDetailProduct.select("div[class=price-per-sellable-unit price-per-sellable-unit--price price-per-sellable-unit--price-per-item] div span span[class=value]");
-        return Optional.ofNullable(convertToBigDecimal(elements.get(0).text()));
+        return ofNullable(convertToBigDecimal(elements.get(0).text()));
     }
 
     @Override
@@ -117,14 +129,7 @@ public class TescoProductParser extends JSoupProductParser {
 
         StringBuilder sb = new StringBuilder(documentDetailProduct.select(htmlTree.toString()).get(0).text());
         sb = sb.delete(0, "Cena je platná pri dodaní do ".length());
-        return Optional.ofNullable(parseDate(sb.toString(), DATE_FORMAT_HH_MM_YYYY));
-    }
-
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        Element element = documentDetailProduct.select("img[class=product-image product-image-visible]").first();
-        return Optional.ofNullable(element)
-                .map(element1 -> element1.attr("data-src"));
+        return ofNullable(parseDate(sb.toString(), DATE_FORMAT_HH_MM_YYYY));
     }
 
     //FIXME je to vo viacerych miestach urobit na to UTIL class pre datumy
