@@ -1,4 +1,7 @@
 BUG:
+ unit info not found for 'pampers jednorázové plienky premium care 0 before newborn 30 pcs'
+------------------------------------------
+BUG:
 2018-11-05 22:16:57,391 WARN [http-nio-8080-exec-4] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:235] unit info not found for '174 ks'
 -----------------------------
 FEATURE:

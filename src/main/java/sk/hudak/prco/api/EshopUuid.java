@@ -8,7 +8,6 @@ import static sk.hudak.prco.api.SearchTemplateConstants.KEYWORD_TEMP;
 public enum EshopUuid {
 
     // TODO ANDREA_SHOP -> neviem pagging ako...
-    // TODO https://eshop.mamaaja.sk
     // TODO https://www.brendon.sk
 
     //TODO pridat prvy parameter boolean ktory bude hovorit o tom ci je alebo nie je enablovany dany eshop
@@ -29,6 +28,11 @@ public enum EshopUuid {
             "https://www.bambino.sk/vyhladavanie/{pageNumber}?search={keyword}",
             3, 12, -1),
 
+    BRENDON("https://www.brendon.sk",
+            "https://www.brendon.sk/Products/List?searchtext={keyword}",
+            "https://www.brendon.sk/Products/List?SearchText={keyword}&&Page={pageNumber}&Order=onweb&ProdNo=30",
+            5, 12, 30),
+
     DR_MAX("https://www.drmax.sk",
             "https://www.drmax.sk/catalog/search/?q={keyword}",
             "https://www.drmax.sk/catalog/search/?q={keyword}&offset={offset}&limit={limit}",
@@ -41,7 +45,6 @@ public enum EshopUuid {
 
     FEEDO("https://www.feedo.sk",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/",
-            // toto nefunguje: https://www.feedo.sk/vysledky-hladania/nutrilon%204/#page=2
             "https://www.feedo.sk/vysledky-hladania/{keyword}/filter/?strana={pageNumber}",
             5, 12, -1),
 

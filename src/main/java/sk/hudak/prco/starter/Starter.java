@@ -187,7 +187,7 @@ public class Starter {
 
         // --- ADD NEW PRODUCTS ---
 //        newProductManager.addNewProductsByKeywordForAllEshops("pampers 5");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.MAMA_A_JA, "pampers");
+        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BRENDON, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PERINBABA, "pampers 5");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "pampers 4");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "pampers 5");

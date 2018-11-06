@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.MamaAJaProductParser;
+import sk.hudak.prco.eshop.BrendonProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -20,11 +20,18 @@ public class ProductParserTest {
 
         SearchUrlBuilder searchUrlBuilder = new SearchUrlBuilderImpl();
 
+        //        Brendon
+        System.out.println(new BrendonProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers"));
+//                .parseNewProductInfo("https://www.brendon.sk/Products/Details/84545"));
+                .parseProductUpdateData("https://www.brendon.sk/Products/Details/84545"));
+//
+
 //        MamaAJa
-        System.out.println(new MamaAJaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new MamaAJaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 5"));
 //                .parseNewProductInfo("https://eshop.mamaaja.sk/pampers-premium-care-1-newborn-22ks/"));
-                .parseProductUpdateData("https://eshop.mamaaja.sk/pampers-premium-care-1-newborn-22ks/"));
+//                .parseProductUpdateData("https://eshop.mamaaja.sk/pampers-premium-care-1-newborn-22ks/"));
 //
 // KidMarket
 //        System.out.println(new KidMarketProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
