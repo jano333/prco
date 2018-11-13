@@ -1,6 +1,7 @@
 package sk.hudak.prco.api;
 
 import static sk.hudak.prco.api.SearchTemplateConstants.KEYWORD_TEMP;
+import static sk.hudak.prco.api.SearchTemplateConstants.PAGE_NUMBER_TEMP;
 
 /**
  * Created by jan.hudak on 9/29/2017.
@@ -45,10 +46,15 @@ public enum EshopUuid {
 
     //TODO pridat prvy parameter boolean ktory bude hovorit o tom ci je alebo nie je enablovany dany eshop
 
+    FOUR_KIDS("https://www.4kids.sk",
+            "https://www.4kids.sk/vyhledavani?search=" + KEYWORD_TEMP,
+            "https://www.4kids.sk/vyhledavani?page=" + PAGE_NUMBER_TEMP + "&search=" + KEYWORD_TEMP,
+            3, 12, -1),
+
     ALZA("https://www.alza.sk",
             "https://www.alza.sk/search.htm?exps=" + KEYWORD_TEMP,
-            "https://www.alza.sk/search-p{pageNumber}.htm?exps=" + KEYWORD_TEMP,
-            3, 12, -1),
+            "https://www.alza.sk/search-p" + PAGE_NUMBER_TEMP + ".htm?exps=" + KEYWORD_TEMP,
+            3, 12, 24),
 
 //    ANDREA_SHOP("https://www.andreashop.sk",
 //            "https://www.andreashop.sk/vyhladavanie?op=search&search={keyword}",
@@ -71,17 +77,12 @@ public enum EshopUuid {
             "https://www.drmax.sk/catalog/search/?q={keyword}&offset={offset}&limit={limit}",
             3, 12, 24),
 
-    MAMA_A_JA("https://eshop.mamaaja.sk",
-            "https://eshop.mamaaja.sk/catalog/search/?q={keyword}",
-            "https://eshop.mamaaja.sk/catalog/search/?q={keyword}&offset={offset}",
-            3, 12, 24),
-
     FEEDO("https://www.feedo.sk",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/filter/?strana={pageNumber}",
             5, 12, -1),
 
-    //TODO impl
+    //TODO impl,
     HORNBACH("https://www.hornbach.sk/",
             "https://www.hornbach.sk/shop/vyhladavanie/sortiment/{keyword}",
             "TODO nie je to cez parameter v stranke...",
@@ -102,6 +103,11 @@ public enum EshopUuid {
             "https://www.mall.sk/hladaj?s={keyword}",
             "https://www.mall.sk/hladaj?page={pageNumber}&s={keyword}",
             2, 12, -1),
+
+    MAMA_A_JA("https://eshop.mamaaja.sk",
+            "https://eshop.mamaaja.sk/catalog/search/?q={keyword}",
+            "https://eshop.mamaaja.sk/catalog/search/?q={keyword}&offset={offset}",
+            3, 12, 24),
 
     MOJA_LEKAREN("https://www.mojalekaren.sk/",
             "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}",

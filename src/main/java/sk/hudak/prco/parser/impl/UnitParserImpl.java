@@ -102,6 +102,12 @@ public class UnitParserImpl implements UnitParser {
             return createKus(convertToBigDecimal(matcher.group(1)), "1");
         }
 
+        //152 ks, (9 - 16 kg)
+        matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, SPACE, "ks, ");
+        if (matcher.find()) {
+            return createKus(convertToBigDecimal(matcher.group(1)), "1");
+        }
+
         // --- OBJEM ---
 
         // Velkopopovický Kozel pivo tmavé 6x4x500 ml PLECH

@@ -31,6 +31,10 @@ public class PrcoSSLContants {
 
         ALLOWED_HOSTNAME.add("www.brendon.sk");
         ALLOWED_HOSTNAME.add("brendon.hu");
+
+        ALLOWED_HOSTNAME.add("www.4kids.sk");
+
+
     }
 
     private PrcoSSLContants() {
