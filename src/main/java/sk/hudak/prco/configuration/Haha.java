@@ -21,7 +21,7 @@ public class Haha {
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
 //        sender.setHost("smtp.gmail.com");
 //        sender.setUsername("hudakjan83@gmail.com");
-//        sender.setPassword("GmailKaciatko80");
+//        sender.setPassword("???");
 //        sender.setProtocol("smtp");
 //        sender.setPort(465);
 
@@ -31,7 +31,7 @@ public class Haha {
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.user", "hudakjan83@gmail.com"); // User name
-        properties.put("mail.smtp.password", "GmailKaciatko80"); // password
+        properties.put("mail.smtp.password", "???"); // password
         properties.put("mail.smtp.port", "587");
         properties.put("mail.smtp.auth", "true");
 
