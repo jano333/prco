@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.BrendonProductParser;
+import sk.hudak.prco.eshop.MaxikovyHrackyProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -20,18 +20,21 @@ public class ProductParserTest {
 
         SearchUrlBuilder searchUrlBuilder = new SearchUrlBuilderImpl();
 
+        //        FourKids
+        System.out.println(new MaxikovyHrackyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+                .parseUrlsOfProduct("lego"));
+//                .parseNewProductInfo("https://www.maxikovy-hracky.cz/pampers-active-baby-3-midi-174ks"));
+//                .parseProductUpdateData("https://www.maxikovy-hracky.cz/pampers-active-baby-3-midi-174ks?zmena_meny=EUR"));
+
+
+
         //        Brendon
-        System.out.println(new BrendonProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new BrendonProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.brendon.sk/Products/Details/84545"));
-                .parseProductUpdateData("https://www.brendon.sk/Products/Details/84545"));
+//                .parseProductUpdateData("https://www.brendon.sk/Products/Details/84545"));
 //
 
-//        MamaAJa
-//        System.out.println(new MamaAJaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                .parseUrlsOfProduct("pampers 5"));
-//                .parseNewProductInfo("https://eshop.mamaaja.sk/pampers-premium-care-1-newborn-22ks/"));
-//                .parseProductUpdateData("https://eshop.mamaaja.sk/pampers-premium-care-1-newborn-22ks/"));
 //
 // KidMarket
 //        System.out.println(new KidMarketProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -61,7 +64,7 @@ public class ProductParserTest {
         // Dx max
 //        System.out.println(new DrMaxProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 5"));
-//                .parseNewProductInfo("https://www.drmax.sk/nutrilon-4-bez-prichute-akciove-balenie/"));
+//                .parseNewProductInfo("https://www.drmax.sk/pampers-plienky-s5-active-baby-monthly-box-150/"));
 //                .parseProductUpdateData("https://www.drmax.sk/pampers-mega-maxi-132/"));
         // Feedo
 //        System.out.println(new FeedoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -84,7 +87,7 @@ public class ProductParserTest {
 
         // Tesco
 //        System.out.println(new TescoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                 .parseProductUpdateData("https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002017045669"));
+//                 .parseProductUpdateData("https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120650706"));
 //                .parseNewProductInfo("https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121218158")); //Tesco
 
 
@@ -93,6 +96,13 @@ public class ProductParserTest {
 //                .parseUrlsOfProduct("pampers 4"));
 //                .parseNewProductInfo("https://www.mall.sk/detske-mlieka/nutrilon-4-6-x-800g"));
 //                .parseProductUpdateData("http://mall.sk/plienky-pampers-7-18-kg/pampers-active-baby-4-maxi-7-14kg-giant-box-90ks"));
+
+        //        MamaAJa
+//        System.out.println(new MamaAJaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers 5"));
+//                .parseNewProductInfo("https://eshop.mamaaja.sk/pampers-premium-care-1-newborn-22ks/"));
+//                .parseProductUpdateData("https://eshop.mamaaja.sk/pampers-premium-care-1-newborn-22ks/"));
+
 
         // Metro
 //        System.out.println(new MetroProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)

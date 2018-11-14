@@ -7,8 +7,6 @@ import static sk.hudak.prco.api.SearchTemplateConstants.PAGE_NUMBER_TEMP;
  * Created by jan.hudak on 9/29/2017.
  */
 public enum EshopUuid {
-    //TODO https://www.4kids.sk/pampers-active-baby-monthly-box-s4-174ks
-    //TODO https://www.maxikovy-hracky.cz/pampers-active-baby-monthly-box-s4-174ks
     //TODO https://www.funkids.cz/pampers-active-baby-monthly-box-s4-174ks
     //TODO https://edigital.sk/plienky/pampers-activebaby-dry-monthly-box-4-maxi-plienky-174-ks-p510052
     //TODO https://www.pompo.sk/1/pSOL%2081603989-1/?utm_campaign=20-40&utm_content=Hracky+a+vsetko+pre+baby+%7C+Plienky+a+prebalovanie&utm_medium=cpc&utm_source=heureka.sk&utm_term=Pampers+Active+Baby-Dry+Vel.+4%2C+174+ks
@@ -46,10 +44,6 @@ public enum EshopUuid {
 
     //TODO pridat prvy parameter boolean ktory bude hovorit o tom ci je alebo nie je enablovany dany eshop
 
-    FOUR_KIDS("https://www.4kids.sk",
-            "https://www.4kids.sk/vyhledavani?search=" + KEYWORD_TEMP,
-            "https://www.4kids.sk/vyhledavani?page=" + PAGE_NUMBER_TEMP + "&search=" + KEYWORD_TEMP,
-            3, 12, -1),
 
     ALZA("https://www.alza.sk",
             "https://www.alza.sk/search.htm?exps=" + KEYWORD_TEMP,
@@ -82,6 +76,11 @@ public enum EshopUuid {
             "https://www.feedo.sk/vysledky-hladania/{keyword}/filter/?strana={pageNumber}",
             5, 12, -1),
 
+    FOUR_KIDS("https://www.4kids.sk",
+            "https://www.4kids.sk/vyhledavani?search=" + KEYWORD_TEMP,
+            "https://www.4kids.sk/vyhledavani?page=" + PAGE_NUMBER_TEMP + "&search=" + KEYWORD_TEMP,
+            3, 12, -1),
+
     //TODO impl,
     HORNBACH("https://www.hornbach.sk/",
             "https://www.hornbach.sk/shop/vyhladavanie/sortiment/{keyword}",
@@ -108,6 +107,11 @@ public enum EshopUuid {
             "https://eshop.mamaaja.sk/catalog/search/?q={keyword}",
             "https://eshop.mamaaja.sk/catalog/search/?q={keyword}&offset={offset}",
             3, 12, 24),
+
+    MAXIKOVY_HRACKY("https://www.maxikovy-hracky.cz",
+            "https://www.maxikovy-hracky.cz/vyhledavani?search=" + KEYWORD_TEMP,
+            "https://www.maxikovy-hracky.cz/vyhledavani?page=" + PAGE_NUMBER_TEMP + "&search=" + KEYWORD_TEMP,
+            3, 12, 60),
 
     MOJA_LEKAREN("https://www.mojalekaren.sk/",
             "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}",

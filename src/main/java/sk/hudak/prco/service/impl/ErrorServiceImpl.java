@@ -60,6 +60,9 @@ public class ErrorServiceImpl implements ErrorService {
         if (createDto.getFullMsg() != null && createDto.getFullMsg().length() >= 4000) {
             createDto.setFullMsg(createDto.getFullMsg().substring(0, 4000));
         }
+        if (createDto.getMessage().length() >= 250) {
+            createDto.setMessage(createDto.getMessage().substring(0, 250));
+        }
 
         if (createDto.getUrl() != null) {
             ErrorEntity entity = errorEntityDao.findByUrl(createDto.getUrl());

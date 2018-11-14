@@ -1,9 +1,22 @@
 BUG:
+unit info not found for 'pampers ubrousky sensitive 2x56ks'
+Nevyparsuje
+	Pampers jednorázové plienky ActiveBaby Mega Box S5 110 pcs 2018
+--------------------------------------------------------------
+BUG:
+zle unit vyparsuje:
+https://www.drmax.sk/pampers-plienky-s5-active-baby-monthly-box-150/
+https://www.drmax.sk/pampers-plienky-s4-active-baby-monthly-box-174/
+----------------------------------------------------------------------
+BUG:
  unit info not found for 'pampers jednorázové plienky premium care 0 before newborn 30 pcs'
 ------------------------------------------
 BUG:
-2018-11-05 22:16:57,391 WARN [http-nio-8080-exec-4] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:235] unit info not found for '174 ks'
------------------------------
+Caused by: org.h2.jdbc.JdbcSQLException: Value too long for column "MESSAGE VARCHAR(255)": "'error creating document for url ''http://www.perinbaba.sk/plienky-active-baby-5-junior-11-18-kg-150-ks-mesacna-zasoba-darcek-zd... (313)"; SQL statement:
+insert into error (created, updated, additional_info, error_type, eshop_uuid, full_msg, message, status_code, url, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) [22001-196]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+---------------------------------------------------------------------------
 FEATURE:
 newProduct page ked kliknem na obrazok tak nech sa zobrazi v novej stranke
 --------------------------------------------------------------------------------

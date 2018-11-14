@@ -186,8 +186,9 @@ public class Starter {
 //        uiService.updateCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-//        newProductManager.addNewProductsByKeywordForAllEshops("pampers 5");
-        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BRENDON, "pampers");
+//        newProductManager.addNewProductsByKeywordForAllEshops("pampers");
+//        newProductManager.addNewProductsByKeywordForAllEshops("nutrilon 5");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.MAXIKOVY_HRACKY, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PERINBABA, "pampers 5");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "pampers 4");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "pampers 5");
