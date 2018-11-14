@@ -48,7 +48,6 @@ public class FourKidsProductParser extends JSoupProductParser {
             return 1;
         }
 
-
         int hh = countOfProductsOpt.get() % getEshopUuid().getMaxCountOfProductOnPage();
 
         if (hh > 0) {
