@@ -1,0 +1,22 @@
+pridat keywords do tabluky pre produkty a vyhladavat v nej... podla klucov, (mozu to byt slova z nazvu oddelene)
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+pridat na stranku pocet produktov: 'List of products not in any group'
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+vymysielt asi conting alebo datumovo ak je produkt viac ako 10x mysli sa tym 10 dni  tak ho rovno dat prec?
+ak je mesiac po sebe produkt nedostupny teda 404 tak ho odstranit...
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+newProduct page ked kliknem na obrazok tak nech sa zobrazi v novej stranke
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+toto uz asi je:(overit)
+urobit reproces aby nie len unit, ale URL na obrazok, teda asi ako keby komplet update ale na new produt...
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+toto je rovnaky produkt:(urobit servic, ktory vyhlada v danom esope produkty ktore maju rovnaky price for unit, pricie for one item a aj nazov, teda lisia sa len URL)
+eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 169, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-pronutra-800g-dojcenske-mlieko/
+eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 996, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-800g-dojcenske-mlieko/
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+pridat automaticke parsovanie default ceny z daneho eshopu pri vytvarani a nasledne aj aktualizaciu ....
+otazka znie ci potom ako budem mat ja potom default cenu, lebo napr. 14,99 nutrilon... nie vsade je to bezna cena pre nutrilon
+------------------------------------------------------------------------------------------------------------------------
+
+
+
