@@ -13,10 +13,12 @@ import sk.hudak.prco.parser.impl.JSoupProductParser;
 import sk.hudak.prco.utils.UserAgentDataHolder;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
 import static sk.hudak.prco.utils.JsoupUtils.getFirstElementByClass;
@@ -46,13 +48,19 @@ public class PilulkaProductParser extends JSoupProductParser {
 
     @Override
     protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
-        Elements allElements = documentList.select("div[class=product-list]").first().children().first().children();
-        List<String> resultUrls = new ArrayList<>();
-        for (Element liEls : allElements) {
-            Element a = liEls.select("div > h3 > a").first();
-            resultUrls.add(getEshopUuid().getProductStartUrl() + a.attr("href"));
+        Optional<Elements> allElementsOpt = Optional.ofNullable(documentList.select("div[class=product-list]").first())
+                .map(Element::children)
+                .map(Elements::first)
+                .map(Element::children)
+                .map(elements -> elements.select("div > h3 > a"));
+        if (!allElementsOpt.isPresent()) {
+            return Collections.emptyList();
         }
-        return resultUrls;
+        return allElementsOpt.get().stream()
+                .map(element -> element.select("div > h3 > a").first())
+                .filter(Objects::nonNull)
+                .map(a -> getEshopUuid().getProductStartUrl() + a.attr("href"))
+                .collect(Collectors.toList());
     }
 
     @Override
