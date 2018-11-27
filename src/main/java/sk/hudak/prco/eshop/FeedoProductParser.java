@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.builder.SearchUrlBuilder;
+import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.parser.UnitParser;
 import sk.hudak.prco.parser.impl.JSoupProductParser;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -47,33 +48,34 @@ public class FeedoProductParser extends JSoupProductParser {
 
     @Override
     protected int parseCountOfPages(Document documentList) {
-        Element select = documentList.select("div.product-list-pagination").first();
-        if (select == null) {
-            return 1;
-        }
-        try {
-            Elements lis = select.children().first().children().first().children().first().select("li");
-            return lis.size() - 2;
+        String countOfProductString = Optional.ofNullable(documentList.select("#content > div.clearfix.mb-2 > h1:nth-child(1) > span").first())
+                .map(Element::text)
+                .filter(text -> text.indexOf("(") != -1)
+                .filter(text -> text.indexOf(")") != -1)
+                .map(text -> text.substring(text.indexOf("(") + 1, text.indexOf(")")))
+                .orElseThrow(() -> new PrcoRuntimeException("None product count found for: " + documentList.location()));
 
-        } catch (NullPointerException e) {
-            //FIXME prerobit cez optional
-            log.warn("error while parsing count of page returning 1, URL: " + documentList.location(), e);
-            return 1;
+        return calculateCountOfPages(Integer.valueOf(countOfProductString), getEshopUuid().getMaxCountOfProductOnPage());
+    }
+
+    //TODO move to utils...
+    public static int calculateCountOfPages(int countOfProduct, int pagging) {
+        int hh = countOfProduct % pagging;
+
+        int result = countOfProduct / pagging;
+
+        if (hh > 0) {
+            return result + 1;
+        } else {
+            return result;
         }
     }
 
     @Override
     protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
-        Elements select = documentList.select("article[class=box box-product]");
-        return select.stream()
-                .map(t -> {
-                    Element first = t.children().first();
-                    Element first1 = first.children().first();
-                    Element first2 = first1.children().first();
-                    String href = first2.attr("href");
-
-                    return href;
-                })
+        return documentList.select("div[class=box-product__top]").stream()
+                .map(element -> element.select("h1 a").first())
+                .map(element -> element.attr("href"))
                 .collect(Collectors.toList());
     }
 
