@@ -117,6 +117,22 @@ public class UnitParserImpl implements UnitParser {
                     String.valueOf(Integer.valueOf(matcher.group(1)).intValue() * Integer.valueOf(matcher.group(3)).intValue()));
         }
 
+        // Lovela white prací gél 50 praní 1x4,7 l
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, ",", NUMBER_AT_LEAST_ONE, SPACE, "l");
+        if (matcher.find()) {
+            return createObjem(convertToBigDecimal(matcher.group(4)+matcher.group(5)+matcher.group(6)),
+                    matcher.group(2));
+        }
+
+
+        // Lovela 2x Gél biela, 4,7 l / 50 pracích dávok
+//        matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, "x", SPACE, "[a-z]*", SPACE);//, "[a-z]{1,}");//,",",SPACE,   NUMBER_AT_LEAST_ONE/*, ",", NUMBER_AT_LEAST_ONE, " l"*/);
+//        if (matcher.find()) {
+//            String group = matcher.group(4);
+//
+//            return createObjem(recalculateToLites(convertToBigDecimal(matcher.group(3))), matcher.group(1));
+//        }
+
         // "Becherovka Original Bylinný likér 0,5 l"
         // "Becherovka Original Bylinný likér 0,5l"
         matcher = craeteMatcher(productName, SPACE, "[0-9]{1,},[0-9]{1,}", " l|l");
