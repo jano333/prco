@@ -52,7 +52,9 @@ public class ProductController extends BasicController {
      * @return
      */
     @RequestMapping(value = "/products/{productId}/addToGroup", method = RequestMethod.POST)
-    public ModelAndView addProductToGroupSave(@PathVariable Long productId, @ModelAttribute(value = "groupId") Long selectedGroupId) {
+    public ModelAndView addProductToGroupSave(@PathVariable Long productId,
+                                              @ModelAttribute(value = "groupId") Long selectedGroupId) {
+
         getUiService().addProductsToGroup(selectedGroupId, productId);
         return listProductsWitchAreNotInAnyGroup();
     }
