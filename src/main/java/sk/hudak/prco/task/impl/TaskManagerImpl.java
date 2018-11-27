@@ -30,7 +30,7 @@ public class TaskManagerImpl implements TaskManager {
     @PostConstruct
     public void init() {
         for (EshopUuid eshopUuid : EshopUuid.values()) {
-            executors.put(eshopUuid, createThreadForEshop(eshopUuid));
+            executors.put(eshopUuid, createExecutorServiceForEshop(eshopUuid));
             tasks.put(eshopUuid, TaskStatus.STOPPED);
         }
     }
@@ -68,7 +68,7 @@ public class TaskManagerImpl implements TaskManager {
         });
     }
 
-    private ExecutorService createThreadForEshop(EshopUuid value) {
+    private ExecutorService createExecutorServiceForEshop(EshopUuid value) {
         return Executors.newSingleThreadExecutor(r -> new Thread(r, value.name()));
     }
 
