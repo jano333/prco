@@ -18,6 +18,7 @@ import sk.hudak.prco.task.TaskManager;
 import sk.hudak.prco.utils.ThreadUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,11 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
 
     @Autowired
     private List<EshopProductsParser> productsParsers;
+
+    @Override
+    public void addNewProductsByKeywordsForAllEshops(String... searchKeyWords) {
+        Arrays.asList(searchKeyWords).forEach(this::addNewProductsByKeywordForAllEshops);
+    }
 
     @Override
     public void addNewProductsByKeywordForAllEshops(String searchKeyWord) {
@@ -86,6 +92,7 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
                 createNewProducts(eshopUuid, urlList);
 
             } catch (Exception e) {
+                logErrorParsingProductUrls(eshopUuid, searchKeyWord);
                 log.error(ERROR_WHILE_CREATING_NEW_PRODUCT, e);
                 finishedWithError = true;
 
@@ -160,7 +167,7 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
                 continue;
             }
             if (newProductInfo.getUnit() == null) {
-                logErrorParsingUnit(productUrl, newProductInfo.getName());
+                logErrorParsingUnit(eshopUuid, productUrl, newProductInfo.getName());
             }
 
             // preklopim a pridavam do DB
@@ -172,9 +179,18 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
         }
     }
 
-    private void logErrorParsingUnit(String productUrl, String productName) {
+    private void logErrorParsingProductUrls(EshopUuid eshopUuid, String searchKeyWord) {
+        internalTxService.createError(ErrorCreateDto.builder()
+                .errorType(ErrorType.PARSING_PRODUCT_URLS)
+                .eshopUuid(eshopUuid)
+                .additionalInfo(searchKeyWord)
+                .build());
+    }
+
+    private void logErrorParsingUnit(EshopUuid eshopUuid,  String productUrl, String productName) {
         internalTxService.createError(ErrorCreateDto.builder()
                 .errorType(ErrorType.PARSING_PRODUCT_INFO_ERR)
+                .eshopUuid(eshopUuid)
                 .url(productUrl)
                 .additionalInfo(productName)
                 .build());

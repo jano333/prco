@@ -20,4 +20,6 @@ public interface AddingNewProductManager {
      * @param searchKeyWord
      */
     void addNewProductsByKeywordForAllEshops(String searchKeyWord);
+
+    void addNewProductsByKeywordsForAllEshops(String... searchKeyWords);
 }
