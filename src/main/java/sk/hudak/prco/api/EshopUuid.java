@@ -48,7 +48,7 @@ public enum EshopUuid {
     ALZA("https://www.alza.sk",
             "https://www.alza.sk/search.htm?exps=" + KEYWORD_TEMP,
             "https://www.alza.sk/search-p" + PAGE_NUMBER_TEMP + ".htm?exps=" + KEYWORD_TEMP,
-            3, 12, 24),
+            5, 12, 24),
 
 //    ANDREA_SHOP("https://www.andreashop.sk",
 //            "https://www.andreashop.sk/vyhladavanie?op=search&search={keyword}",
@@ -59,7 +59,7 @@ public enum EshopUuid {
     BAMBINO("https://www.bambino.sk",
             "https://www.bambino.sk/vyhladavanie?search=" + KEYWORD_TEMP,
             "https://www.bambino.sk/vyhladavanie/{pageNumber}?search={keyword}",
-            3, 12, -1),
+            4, 12, -1),
 
     BRENDON("https://www.brendon.sk",
             "https://www.brendon.sk/Products/List?searchtext={keyword}",
@@ -69,17 +69,17 @@ public enum EshopUuid {
     DR_MAX("https://www.drmax.sk",
             "https://www.drmax.sk/catalog/search/?q={keyword}",
             "https://www.drmax.sk/catalog/search/?q={keyword}&offset={offset}&limit={limit}",
-            3, 12, 24),
+            5, 12, 24),
 
     FEEDO("https://www.feedo.sk",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/filter/?strana={pageNumber}",
-            5, 12, -1),
+            5, 12, 20),
 
     FOUR_KIDS("https://www.4kids.sk",
             "https://www.4kids.sk/vyhledavani?search=" + KEYWORD_TEMP,
             "https://www.4kids.sk/vyhledavani?page=" + PAGE_NUMBER_TEMP + "&search=" + KEYWORD_TEMP,
-            3, 12, -1),
+            5, 12, -1),
 
     //TODO impl,
     HORNBACH("https://www.hornbach.sk/",
@@ -106,7 +106,7 @@ public enum EshopUuid {
     MAMA_A_JA("https://eshop.mamaaja.sk",
             "https://eshop.mamaaja.sk/catalog/search/?q={keyword}",
             "https://eshop.mamaaja.sk/catalog/search/?q={keyword}&offset={offset}",
-            3, 12, 24),
+            5, 12, 24),
 
     MAXIKOVY_HRACKY("https://www.maxikovy-hracky.cz",
             "https://www.maxikovy-hracky.cz/vyhledavani?search=" + KEYWORD_TEMP,
