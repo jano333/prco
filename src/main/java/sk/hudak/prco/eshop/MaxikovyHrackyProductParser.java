@@ -46,7 +46,7 @@ public class MaxikovyHrackyProductParser extends JSoupProductParser {
         if (!countOfProductsOpt.isPresent()) {
             return 1;
         }
-
+        //TODO podla mna to je ZLE pozri Feedo
         int hh = countOfProductsOpt.get() % getEshopUuid().getMaxCountOfProductOnPage();
 
         if (hh > 0) {
