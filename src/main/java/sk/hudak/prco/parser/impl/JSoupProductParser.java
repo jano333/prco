@@ -272,7 +272,21 @@ public abstract class JSoupProductParser implements EshopProductsParser {
 
     private List<String> internalParsePageForProductUrls(Document firstPageDocument, String searchUrl) {
         try {
-            return parsePageForProductUrls(firstPageDocument, 1);
+            List<String> urls = parsePageForProductUrls(firstPageDocument, 1);
+            if (urls == null) {
+                throw new PrcoRuntimeException("urls is null");
+            }
+            if (urls.isEmpty()) {
+                throw new PrcoRuntimeException("urls is empty");
+            }
+            urls.stream()
+                    .filter(value -> (value == null) || (value.isEmpty()))
+                    .findAny()
+                    .ifPresent(s -> {
+                        throw new PrcoRuntimeException("at least one url is null or empty");
+                    });
+
+            return urls;
         } catch (Exception e) {
             throw new PrcoRuntimeException("error while parsing pages of products, search URL: " + searchUrl, e);
         }
