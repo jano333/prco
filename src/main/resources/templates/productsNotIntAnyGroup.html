@@ -17,7 +17,7 @@
 </head>
 <body>
 <div class="container">
-    <h2>List of products not in any group</h2>
+    <h2>List of products not in any group: <span th:text="${countOfProductsNotInAnyGroup}"></span>ks</h2>
     <div th:if="${not #lists.isEmpty(productsNotIntAnyGroup)}">
         <table class="table table-striped">
             <tr>

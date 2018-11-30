@@ -12,6 +12,7 @@ import sk.hudak.prco.dto.product.ProductFullDto;
 import java.util.Collections;
 import java.util.List;
 
+import static sk.hudak.prco.ui.MvcConstants.ATTRIBUTE_COUNT_OF_PRODUCTS_NOT_IN_ANY_GROUP;
 import static sk.hudak.prco.ui.MvcConstants.VIEW_PRODUCTS_IN_GROUP;
 import static sk.hudak.prco.ui.MvcConstants.VIEW_PRODUCTS_NOT_IN_ANY_GROUP;
 import static sk.hudak.prco.ui.MvcConstants.VIEW_PRODUCT_ADD_TO_GROUP;
@@ -28,28 +29,23 @@ public class ProductController extends BasicController {
     @RequestMapping("/productsNotIntAnyGroup")
     public ModelAndView listProductsWitchAreNotInAnyGroup() {
         List<ProductFullDto> products = getUiService().findProductsWitchAreNotInAnyGroup();
-        return new ModelAndView(VIEW_PRODUCTS_NOT_IN_ANY_GROUP, "productsNotIntAnyGroup", products);
+        ModelAndView modelAndView = new ModelAndView(VIEW_PRODUCTS_NOT_IN_ANY_GROUP, "productsNotIntAnyGroup", products);
+        modelAndView.addObject(ATTRIBUTE_COUNT_OF_PRODUCTS_NOT_IN_ANY_GROUP, products.size());
+        return modelAndView;
     }
 
     /**
      * Pohlad pre pridanie produktu do skupiny
-     *
-     * @param id
-     * @return
      */
-    @RequestMapping("/products/{id}/addToGroup")
-    public ModelAndView addProductToGroupView(@PathVariable Long id) {
-        ModelAndView modelAndView = new ModelAndView(VIEW_PRODUCT_ADD_TO_GROUP, "product", getUiService().getProduct(id));
-        modelAndView.addObject("groupsWithoutProduct", getUiService().getGroupsWithoutProduct(id));
+    @RequestMapping("/products/{productId}/addToGroup")
+    public ModelAndView addProductToGroupView(@PathVariable Long productId) {
+        ModelAndView modelAndView = new ModelAndView(VIEW_PRODUCT_ADD_TO_GROUP, "product", getUiService().getProduct(productId));
+        modelAndView.addObject("groupsWithoutProduct", getUiService().getGroupsWithoutProduct(productId));
         return modelAndView;
     }
 
     /**
      * Save produktu do skupiny
-     *
-     * @param productId
-     * @param selectedGroupId
-     * @return
      */
     @RequestMapping(value = "/products/{productId}/addToGroup", method = RequestMethod.POST)
     public ModelAndView addProductToGroupSave(@PathVariable Long productId,
