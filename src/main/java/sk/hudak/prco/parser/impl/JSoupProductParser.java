@@ -276,9 +276,6 @@ public abstract class JSoupProductParser implements EshopProductsParser {
             if (urls == null) {
                 throw new PrcoRuntimeException("urls is null");
             }
-            if (urls.isEmpty()) {
-                throw new PrcoRuntimeException("urls is empty");
-            }
             urls.stream()
                     .filter(value -> (value == null) || (value.isEmpty()))
                     .findAny()

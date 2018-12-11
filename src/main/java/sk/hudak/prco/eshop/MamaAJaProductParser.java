@@ -47,9 +47,11 @@ public class MamaAJaProductParser extends JSoupProductParser {
     protected int parseCountOfPages(Document documentList) {
         Integer countOfProducts = ofNullable(documentList.select("#category-header > div:nth-child(1) > h1").first())
                 .map(element -> element.text())
+                .filter(text -> text.contains("Vyhľadávanie ("))
                 .map(text -> StringUtils.removeStart(text, "Vyhľadávanie ("))
                 .map(text -> StringUtils.removeEnd(text, ")"))
-                .map(text -> Integer.valueOf(text)).orElse(0);
+                .map(text -> Integer.valueOf(text))
+                .orElse(0);
 
         if (countOfProducts.intValue() == 0) {
             return 0;
