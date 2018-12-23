@@ -59,7 +59,7 @@ public class MojaLekarenProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        return Optional.of(documentDetailProduct.select("body > main > div.detail-top.list > div > h1").first())
+        return Optional.ofNullable(documentDetailProduct.select("body > main > div.detail-top.list > div > h1").first())
                 .filter(Objects::nonNull)
                 .map(Element::text);
     }
