@@ -1,8 +1,27 @@
-BUG:
-No unit data:
-LOVELA Color 3,25 kg (26 dávok) - prací prášok
-LOVELA Biela 1,625 kg (13 dávok) - prací prášok
----------------------------------------------------------------------------------------------------------------------------------------------------------
+2018-12-11 10:01:44,515 DEBUG [MOJA_LEKAREN] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:215] request URL: https://www.mojalekaren.sk//nutrilon-comfort-1-400g/
+2018-12-11 10:01:44,515 DEBUG [MOJA_LEKAREN] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:218] userAgent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1
+2018-12-11 10:01:44,706 DEBUG [MOJA_LEKAREN] [] s.h.p.s.PrcoCustomTrustManager [PrcoCustomTrustManager.java:43] server cert subject name CN=www.lekarna.cz
+2018-12-11 10:01:44,706 DEBUG [MOJA_LEKAREN] [] s.h.p.s.PrcoCustomTrustManager [PrcoCustomTrustManager.java:48] ignoring server cert
+2018-12-11 10:01:44,707 DEBUG [MOJA_LEKAREN] [] s.h.p.s.PrcoCustomTrustManager [PrcoCustomTrustManager.java:58] getAcceptedIssuers()
+2018-12-11 10:01:44,730 DEBUG [MOJA_LEKAREN] [] s.h.p.s.PrcoCustomHostnameVerifier [PrcoCustomHostnameVerifier.java:25] verify www.mojalekaren.sk
+2018-12-11 10:01:44,870 DEBUG [MOJA_LEKAREN] [] s.h.p.s.i.ErrorServiceImpl [ErrorServiceImpl.java:101] create entity ErrorEntity with id 2540
+2018-12-11 10:01:44,871 ERROR [MOJA_LEKAREN] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:96] error while creating new product
+java.lang.NullPointerException: null
+	at java.util.Objects.requireNonNull(Objects.java:203)
+	at java.util.Optional.<init>(Optional.java:96)
+	at java.util.Optional.of(Optional.java:108)
+	at sk.hudak.prco.eshop.MojaLekarenProductParser.parseProductNameFromDetail(MojaLekarenProductParser.java:62)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseNewProductInfo(JSoupProductParser.java:141)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseNewProductInfo(JsoupHtmlParser.java:51)
+	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.java:162)
+	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$5(AddingNewProductManagerImpl.java:92)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+2018-12-11 10:01:44,871 DEBUG [MOJA_LEKAREN] [] s.h.p.t.i.TaskManagerImpl [TaskManagerImpl.java:109] marking task for eshop MOJA_LEKAREN as FINISHED_WITH_ERROR
+------------------------------------------------------------------------------
 BUG:
 chyba 2x
 Lovela 2x Gél color, 4,7 l / 50 pracích dávok
