@@ -258,6 +258,11 @@ public class UnitParserImpl implements UnitParser {
             return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(2))));
         }
 
+        // LOVELA Color 3,25 kg (26 dávok) - prací prášok
+        matcher = craeteMatcher(productName, SPACE, "[0-9]{1,},[0-9]{1,}", " kg|kg", SPACE);
+        if (matcher.find()) {
+            return createKilogram(convertToBigDecimal(matcher.group(2)));
+        }
 
         log.warn("unit info not found for '{}'", productName);
 
