@@ -25,10 +25,7 @@ public class CalculationUtils {
         notNull(militers, "militers");
 
         return militers.divide(VALUE_1000, SCALE, RoundingMode.HALF_UP);
-
     }
-
-//    11.99/14.59
 
     public static int calculatePercetage(BigDecimal actionValue, BigDecimal defaultValue) {
         notNull(actionValue, "actionValue");
