@@ -1,4 +1,4 @@
-FEATURE:
+BUG:
 https://www.mojalekaren.sk//nutrilon-comfort-1-400g/
 tento produkt neexistuje a vrati 302 na https://www.mojalekaren.sk/, potrebujem urobit to aby som to odchytil
 ------------------------------------------------------------------------------
@@ -6,76 +6,6 @@ BUG:
 chyba 2x
 Lovela 2x Gél color, 4,7 l / 50 pracích dávok
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
-BUG:
-2018-11-16 08:31:38,716 DEBUG [http-nio-8080-exec-2] [] s.h.p.p.i.UnitParserImpl [UnitParserImpl.java:34]
-parsing product name to retrieve unit info: Lovela 2x Gél biela, 4,7 l / 50 pracích dávok
-chyba to 2x vyparsovanie
----------------------------------------------------------------------------------------------------------------------------------------------------------
-BUG:
-2018-09-27 15:37:04,049 ERROR [TESCO] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:176] error while updating product data
-sk.hudak.prco.exception.ProductNameNotFoundException: Product name for url 'https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002017045669' not found.
-	at sk.hudak.prco.parser.impl.JSoupProductParser.lambda$parseProductUpdateData$0(JSoupProductParser.java:168)
-	at java.util.Optional.orElseThrow(Optional.java:290)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:168)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.processUpdate(UpdateProductDataManagerImpl.java:227)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateAllProductsDataForEshop$33(UpdateProductDataManagerImpl.java:149)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-2018-09-27 15:37:04,049 DEBUG [TESCO] [] s.h.p.t.i.TaskManagerImpl [Tas
----------------------------------------------------------------------------------------------------------------------------------------------------------
-BUG:
-2018-09-17 09:54:32,993 ERROR [TESCO] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:176] error while updating product data
-sk.hudak.prco.exception.ProductNameNotFoundException: Product name for url 'https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002017045669' not found.
-	at sk.hudak.prco.parser.impl.JSoupProductParser.lambda$parseProductUpdateData$0(JSoupProductParser.java:131)
-	at java.util.Optional.orElseThrow(Optional.java:290)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:131)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.processUpdate(UpdateProductDataManagerImpl.java:227)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateAllProductsDataForEshop$40(UpdateProductDataManagerImpl.java:149)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
----------------------------------------------------------------------------------------------------------------------------------------------------------
-BUG:
-2018-09-05 10:05:29,929 ERROR [HORNBACH] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:85] error while creating new product
-sk.hudak.prco.exception.PrcoRuntimeException: error while downloading/parsing content for url https://www.hornbach.sk/shop/vyhladavanie/sortiment/pampers%205
-	at sk.hudak.prco.eshop.HornbachProductParser.retrieveDocument(HornbachProductParser.java:70)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:53)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParser.searchProductUrls(JsoupHtmlParser.java:41)
-	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$8(AddingNewProductManagerImpl.java:80)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.NullPointerException: null
-	at org.apache.http.impl.cookie.PublicSuffixDomainFilter.match(PublicSuffixDomainFilter.java:93)
-	at org.apache.http.impl.cookie.CookieSpecBase.match(CookieSpecBase.java:136)
-	at org.apache.http.impl.cookie.DefaultCookieSpec.match(DefaultCookieSpec.java:178)
-	at org.apache.http.client.protocol.RequestAddCookies.process(RequestAddCookies.java:166)
-	at org.apache.http.protocol.ImmutableHttpProcessor.process(ImmutableHttpProcessor.java:133)
-	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:183)
-	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:89)
-	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:111)
-	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:185)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:72)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:221)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:165)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:140)
-	at sk.hudak.prco.eshop.HornbachProductParser.retrieveDocument(HornbachProductParser.java:67)
-	... 8 common frames omitted
-----------------------------------------------------------------------------------------------------------------------------------------------------------
-BUG:
-nedava obrazok pre:
-https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121218158
-na soruce page src atribut je, ale v kode ked to natiahne tak to nie je
-----------------------------------------------------------------------------------------------------------------------------------------------------------
 BUG:
 Pilluka obrazky nedava napr
 https://www.pilulka.sk/pampers-11-18kg-junior-ab-50-5-act-b-487858
@@ -210,3 +140,32 @@ org.jsoup.HttpStatusException: HTTP error fetching URL
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
 	at java.lang.Thread.run(Thread.java:745)
 ------------------------------------------------------------------------------------------------------------------------
+BUG:
+2018-09-05 10:05:29,929 ERROR [HORNBACH] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:85] error while creating new product
+sk.hudak.prco.exception.PrcoRuntimeException: error while downloading/parsing content for url https://www.hornbach.sk/shop/vyhladavanie/sortiment/pampers%205
+	at sk.hudak.prco.eshop.HornbachProductParser.retrieveDocument(HornbachProductParser.java:70)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:53)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.searchProductUrls(JsoupHtmlParser.java:41)
+	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$8(AddingNewProductManagerImpl.java:80)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.NullPointerException: null
+	at org.apache.http.impl.cookie.PublicSuffixDomainFilter.match(PublicSuffixDomainFilter.java:93)
+	at org.apache.http.impl.cookie.CookieSpecBase.match(CookieSpecBase.java:136)
+	at org.apache.http.impl.cookie.DefaultCookieSpec.match(DefaultCookieSpec.java:178)
+	at org.apache.http.client.protocol.RequestAddCookies.process(RequestAddCookies.java:166)
+	at org.apache.http.protocol.ImmutableHttpProcessor.process(ImmutableHttpProcessor.java:133)
+	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:183)
+	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:89)
+	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:111)
+	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:185)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:72)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:221)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:165)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:140)
+	at sk.hudak.prco.eshop.HornbachProductParser.retrieveDocument(HornbachProductParser.java:67)
+	... 8 common frames omitted
+----------------------------------------------------------------------------------------------------------------------------------------------------------
