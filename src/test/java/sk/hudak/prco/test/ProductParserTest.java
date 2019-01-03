@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.MaxikovyHrackyProductParser;
+import sk.hudak.prco.eshop.BrendonProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -20,40 +20,35 @@ public class ProductParserTest {
 
         SearchUrlBuilder searchUrlBuilder = new SearchUrlBuilderImpl();
 
-        //        FourKids
-        System.out.println(new MaxikovyHrackyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-                .parseUrlsOfProduct("lego"));
-//                .parseNewProductInfo("https://www.maxikovy-hracky.cz/pampers-active-baby-3-midi-174ks"));
-//                .parseProductUpdateData("https://www.maxikovy-hracky.cz/pampers-active-baby-3-midi-174ks?zmena_meny=EUR"));
-
-
-
-        //        Brendon
-//        System.out.println(new BrendonProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        // Alza
+//        System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers 4"));
+//                .parseNewProductInfo("https://www.alza.sk/maxi/pampers-active-baby-dry-vel-4-maxi-174-ks-d4593569.htm"));
+//                .parseProductUpdateData("https://www.alza.sk/maxi/lovela-gel-color-4-7-l-50-pranie-d4849185.htm"));
+//
+//        //        Brendon
+        System.out.println(new BrendonProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
-//                .parseNewProductInfo("https://www.brendon.sk/Products/Details/84545"));
+                .parseNewProductInfo("https://www.brendon.sk/Products/Details/118437"));
 //                .parseProductUpdateData("https://www.brendon.sk/Products/Details/84545"));
 //
-
+//        //        FourKids
+//        System.out.println(new MaxikovyHrackyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("lego"));
+//                .parseNewProductInfo("https://www.maxikovy-hracky.cz/pampers-active-baby-3-midi-174ks"));
+//                .parseProductUpdateData("https://www.maxikovy-hracky.cz/pampers-active-baby-3-midi-174ks?zmena_meny=EUR"));
 //
-// KidMarket
+//        // KidMarket
 //        System.out.println(new KidMarketProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 5"));
 //                .parseNewProductInfo("https://kidmarket.sk/jednorazove-plienky/176-pampers-active-baby-dry-vel6-extra-large-56ks-4015400736394.html?search_query=pampers+5&results=46"));
 //                .parseProductUpdateData("https://kidmarket.sk/jednorazove-plienky/176-pampers-active-baby-dry-vel6-extra-large-56ks-4015400736394.html?search_query=pampers+5&results=46"));
 
-        //Perinbaba
+        // Perinbaba
 //        System.out.println(new PerinbabaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 4"));
 //                .parseNewProductInfo("http://www.perinbaba.sk/plienky-active-baby-dry-3-midi-4-9kg-mega-box-plus-174kg.html"));
 //                .parseProductUpdateData("http://www.perinbaba.sk/plienky-active-baby-dry-3-midi-4-9kg-mega-box-plus-174kg.html"));
-
-
-        // Alza
-//        System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                .parseUrlsOfProduct("pampers 4"));
-//                System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                .parseNewProductInfo("https://www.alza.sk/maxi/pampers-active-baby-dry-vel-4-maxi-174-ks-d4593569.htm"));
 
         //Bambino
 //        System.out.println(new BambinoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -64,7 +59,7 @@ public class ProductParserTest {
         // Dx max
 //        System.out.println(new DrMaxProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 5"));
-//                .parseNewProductInfo("https://www.drmax.sk/pampers-plienky-s5-active-baby-monthly-box-150/"));
+//                .parseNewProductInfo("https://www.drmax.sk/pampers-plienky-s4-active-baby-monthly-box-174/"));
 //                .parseProductUpdateData("https://www.drmax.sk/pampers-mega-maxi-132/"));
         // Feedo
 //        System.out.println(new FeedoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -99,7 +94,7 @@ public class ProductParserTest {
 
         //        MamaAJa
 //        System.out.println(new MamaAJaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                .parseUrlsOfProduct("pampers 5"));
+//                .parseUrlsOfProduct("lovela"));
 //                .parseNewProductInfo("https://eshop.mamaaja.sk/pampers-premium-care-1-newborn-22ks/"));
 //                .parseProductUpdateData("https://eshop.mamaaja.sk/pampers-premium-care-1-newborn-22ks/"));
 
@@ -113,8 +108,8 @@ public class ProductParserTest {
         // Moja Lekaren
 //        System.out.println(new MojaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 4"));
-//                .parseNewProductInfo("https://www.mojalekaren.sk/pampers-nohavickove-plienky-jumbo-pack-velkost-4-9-14kg-52-kusov/"));
-//                .parseProductUpdateData("https://www.mojalekaren.sk/pampers-nohavickove-plienky-jumbo-pack-velkost-4-9-14kg-52-kusov/"));
+//                .parseNewProductInfo("https://www.mojalekaren.sk//nutrilon-comfort-1-400g/"));
+//                .parseProductUpdateData("https://www.mojalekaren.sk//nutrilon-comfort-1-400g/"));
 
         // Pilulka
 //        System.out.println(new PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -124,4 +119,5 @@ public class ProductParserTest {
 
 
     }
+
 }

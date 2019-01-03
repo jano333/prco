@@ -54,6 +54,12 @@ public class UnitParserTest {
                 KUS, "174");
         addTestData(values, "Pampers Baby Vlhčené obrúsky Sensitive 9x56ks",
                 KUS, "56", 9);
+        addTestData(values, "pampers ubrousky sensitive 2x56ks",
+                KUS, "56", 2);
+        addTestData(values, "pampers jednorázové plienky activebaby mega box s5 110 pcs",
+                KUS, "110", 1);
+        addTestData(values, "pampers jednorázové plienky premium care 0 before newborn 30 pcs",
+                KUS, "30", 1);
 
 
 

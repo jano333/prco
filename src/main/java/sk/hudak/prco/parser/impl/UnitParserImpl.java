@@ -45,7 +45,6 @@ public class UnitParserImpl implements UnitParser {
 //        System.out.println(chars);
 
 
-
         productName = productName.toLowerCase();
 
         // --- KUS --
@@ -54,67 +53,72 @@ public class UnitParserImpl implements UnitParser {
         //"PAMPERS Active Baby 4 MAXI 174 ks (8-14kg), MESAČNÁ ZÁSOBA - jednorazové plienky"
         Matcher matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "ks| ks", SPACE);
         if (matcher.find()) {
-            return createKus(convertToBigDecimal(matcher.group(2)), "1");
+            return createKus(matcher.group(2), "1");
         }
         // "Pampers Fresh Clean Čistiace Obrúsky 4x64 Kusov"
         // "Pampers Obrúsky Natural Clean 6×64 ks"
         matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "x|×", NUMBER_AT_LEAST_ONE, SPACE, "kusov|ks");
         if (matcher.find()) {
-            return createKus(convertToBigDecimal(matcher.group(4)), matcher.group(2));
+            return createKus(matcher.group(4), matcher.group(2));
         }
         // "Pampers Premium Care Detské Jednorazové Plienky, Veľkosť 4 (Maxi) 8 - 14 kg, 52 Kusov"
         // "Pampers Active Baby 6 Extra large 15 + kg, 56 ks GIANTPACK"
         matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, SPACE, "kusov|ks");
         if (matcher.find()) {
-            return createKus(convertToBigDecimal(matcher.group(2)), "1");
+            return createKus(matcher.group(2), "1");
         }
         // "Pampers Active Baby 3 Midi (4-9kg) Giant Box -108ks"
         // "Pampers Active Baby 4+ Maxi (9-16kg) Giant Pack - 70ks"
         matcher = craeteMatcher(productName, " -|-| - ", NUMBER_AT_LEAST_ONE, "kusov|ks");
         if (matcher.find()) {
-            return createKus(convertToBigDecimal(matcher.group(2)), "1");
+            return createKus(matcher.group(2), "1");
         }
 
         // pampers pants veľ. 4 (352 ks) – dvojmesačná zásoba
         matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, " ks\\)");
         if (matcher.find()) {
-            return createKus(convertToBigDecimal(matcher.group(1)), "1");
+            return createKus(matcher.group(1), "1");
         }
         // Pampers Active Baby-Dry Giant Cube Plus 5 (11-18kg) 78ks
         matcher = craeteMatcher(productName, "\\) ", NUMBER_AT_LEAST_ONE, "ks");
         if (matcher.find()) {
-            return createKus(convertToBigDecimal(matcher.group(2)), "1");
+            return createKus(matcher.group(2), "1");
         }
         // 1x136 ks
         matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, " ks");
         if (matcher.find()) {
-            return createKus(convertToBigDecimal(matcher.group(3)), matcher.group(1));
+            return createKus(matcher.group(3), matcher.group(1));
         }
 
         //pampers new baby dry 2 mini 100ks
         matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "ks");
         if (matcher.find()) {
-            return createKus(convertToBigDecimal(matcher.group(2)), "1");
+            return createKus(matcher.group(2));
         }
 
         //174 ks
         matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, SPACE, "ks$");
         if (matcher.find()) {
-            return createKus(convertToBigDecimal(matcher.group(1)), "1");
+            return createKus(matcher.group(1));
         }
 
         //152 ks, (9 - 16 kg)
         matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, SPACE, "ks, ");
         if (matcher.find()) {
-            return createKus(convertToBigDecimal(matcher.group(1)), "1");
+            return createKus(matcher.group(1));
         }
 
         // 'Pampers Baby Vlhčené obrúsky Sensitive 9x56ks'
         matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, "ks");
         if (matcher.find()) {
-            return createKus(convertToBigDecimal(matcher.group(4)), matcher.group(2));
+            return createKus(matcher.group(4), matcher.group(2));
         }
 
+        // 'pampers jednorázové plienky activebaby mega box s5 110 pcs'
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, SPACE, "pcs");
+        if (matcher.find()) {
+            return createKus(matcher.group(2));
+        }
 
 
         // --- OBJEM ---
@@ -129,7 +133,7 @@ public class UnitParserImpl implements UnitParser {
         // Lovela white prací gél 50 praní 1x4,7 l
         matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, ",", NUMBER_AT_LEAST_ONE, SPACE, "l");
         if (matcher.find()) {
-            return createObjem(convertToBigDecimal(matcher.group(4)+matcher.group(5)+matcher.group(6)),
+            return createObjem(convertToBigDecimal(matcher.group(4) + matcher.group(5) + matcher.group(6)),
                     matcher.group(2));
         }
 
@@ -288,6 +292,14 @@ public class UnitParserImpl implements UnitParser {
             stringJoiner.add(group);
         }
         return Pattern.compile("(" + stringJoiner.toString() + ")");
+    }
+
+    private Optional<UnitTypeValueCount> createKus(String value) {
+        return createKus(value, "1");
+    }
+
+    private Optional<UnitTypeValueCount> createKus(String value, String packageCount) {
+        return createKus(convertToBigDecimal(value), packageCount);
     }
 
     private Optional<UnitTypeValueCount> createKus(BigDecimal value, String packageCount) {
