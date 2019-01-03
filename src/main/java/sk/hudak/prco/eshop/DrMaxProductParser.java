@@ -90,11 +90,14 @@ public class DrMaxProductParser extends JSoupProductParser {
     @Override
     protected Optional<UnitTypeValueCount> parseUnitValueCount(Document document, String productName) {
         Elements select = document.select("div.redesign-product-detail-slogan");
-        if (select.isEmpty()) {
-            return Optional.empty();
+        if (!select.isEmpty()) {
+            String text = select.get(0).child(0).text();
+            if (StringUtils.isNotBlank(text)) {
+                return unitParser.parseUnitTypeValueCount(text);
+            }
         }
-        String text = select.get(0).child(0).text();
-        return unitParser.parseUnitTypeValueCount(text);
+        // ak nie je tak skusit z product name
+        return super.parseUnitValueCount(document, productName);
     }
 
     @Override
