@@ -128,7 +128,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
                         countOfProductsAlreadyUpdated++;
                         countOfProductsWaitingToBeUpdated--;
-                        listener.updateStatusInfo(new UpdateStatusInfo(countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated,  eshopUuid));
+                        listener.updateStatusInfo(new UpdateStatusInfo(countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated, eshopUuid));
 
                         if (taskManager.isTaskShouldStopped(eshopUuid)) {
                             taskManager.markTaskAsStopped(eshopUuid);
@@ -173,15 +173,9 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
                     UpdateProcessResult updateProcessResult = processUpdate(productDetailInfo);
 
                     if (UpdateProcessResult.ERR_HTML_PARSING_FAILED_404_ERROR.equals(updateProcessResult)) {
-                        if (EshopUuid.TESCO.equals(eshopUuid)) {
-                            finishedWithError = true;
-                            internalTxService.markProductAsUnavailable(productDetailInfo.getId());
-                        } else {
-                            //FIXME inak vymysliet
-//                            throw new HttpErrorPrcoRuntimeException(404, "http 404");
-                            finishedWithError = true;
-                            internalTxService.markProductAsUnavailable(productDetailInfo.getId());
-                        }
+//                        finishedWithError = true;
+//                        internalTxService.markProductAsUnavailable(productDetailInfo.getId());
+                        internalTxService.removeProduct(productDetailInfo.getId());
 
                     }
 

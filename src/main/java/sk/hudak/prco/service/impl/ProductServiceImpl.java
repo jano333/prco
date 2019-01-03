@@ -19,6 +19,7 @@ import sk.hudak.prco.dto.product.ProductFilterUIDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.dto.product.ProductInActionDto;
 import sk.hudak.prco.mapper.PrcoOrikaMapper;
+import sk.hudak.prco.model.GroupEntity;
 import sk.hudak.prco.model.ProductDataUpdateEntity;
 import sk.hudak.prco.model.ProductEntity;
 import sk.hudak.prco.service.ProductService;
@@ -45,8 +46,9 @@ import static sk.hudak.prco.utils.Validate.notNullNotEmpty;
 @Service("productService")
 public class ProductServiceImpl implements ProductService {
 
-    public static final String PRODUCT_ID = "productId";
-    public static final String ESHOP_UUID = "eshopUuid";
+    private static final String PRODUCT_ID = "productId";
+    private static final String ESHOP_UUID = "eshopUuid";
+    private static final String PRODUCT_URL = "productURL";
 
     @Autowired
     private ProductEntityDao productEntityDao;
@@ -233,7 +235,16 @@ public class ProductServiceImpl implements ProductService {
     public void removeProduct(Long productId) {
         notNull(productId, PRODUCT_ID);
 
-        productEntityDao.delete(productEntityDao.findById(productId));
+        ProductEntity productEntity = productEntityDao.findById(productId);
+
+        List<GroupEntity> groupsForProduct = groupEntityDao.findGroupsForProduct(productEntity.getId());
+        for (GroupEntity groupEntity : groupsForProduct) {
+            groupEntity.getProducts().remove(productEntity);
+            groupEntityDao.update(groupEntity);
+            log.debug("removed product '{}' from group '{}'", productEntity.getName(), groupEntity.getName());
+        }
+
+        productEntityDao.delete(productEntity);
         log.debug("product with id {} was deleted", productId);
     }
 
@@ -260,7 +271,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean existProductWithUrl(String productURL) {
-        notNullNotEmpty(productURL, "productURL");
+        notNullNotEmpty(productURL, PRODUCT_URL);
 
         return productEntityDao.existWithUrl(productURL);
     }
@@ -340,7 +351,6 @@ public class ProductServiceImpl implements ProductService {
         log.debug("product with id {} has been updated with price for package {}",
                 productEntity.getId(), updateData.getPriceForPackage());
     }
-
 
 
     @Override
