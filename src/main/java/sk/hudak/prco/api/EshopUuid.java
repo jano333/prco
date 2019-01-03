@@ -33,7 +33,6 @@ public enum EshopUuid {
     //TODO https://www.lekarenvkocke.sk/zq7b441326fad7a1ce98481e5344efbb5f-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x88-ks
     //TODO https://www.lekarna-oaza.cz/3230449-pampers-premium-care-1-newborn-88ks
     //TODO https://www.lekaren-doktorka.sk/3230449-pampers-premium-care-1-newborn-88ks
-    //TODO https://www.lekaren-doktorka.sk/3230449-pampers-premium-care-1-newborn-88ks
     //TODO https://www.lekarentriveze.sk/z7b441326fad7a1ce98481e5344efbb5f-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x88-ks
     //TODO https://www.mujlekarnik.cz/pampers-premium-care-1-newborn-88ks_detail/?currency=EUR
     //TODO https://www.liekyrazdva.sk/zq7b441326fad7a1ce98481e5344efbb5f-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x88-ks
@@ -69,7 +68,7 @@ public enum EshopUuid {
     DR_MAX("https://www.drmax.sk",
             "https://www.drmax.sk/catalog/search/?q={keyword}",
             "https://www.drmax.sk/catalog/search/?q={keyword}&offset={offset}&limit={limit}",
-            5, 12, 24),
+            4, 12, 24),
 
     FEEDO("https://www.feedo.sk",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/",
