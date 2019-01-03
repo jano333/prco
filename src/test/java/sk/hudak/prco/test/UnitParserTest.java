@@ -116,6 +116,10 @@ public class UnitParserTest {
                 KILOGRAM, "0.80000", 6);
          addTestData(values, "LOVELA Color 3,25 kg (26 dávok) - prací prášok",
                 KILOGRAM, "3.25", 1);
+        addTestData(values,"Nutrilon 5 mlieko pre deti od 36. m 800 g",
+                KILOGRAM, "0.80000", 1);
+        addTestData(values,"nutrilon 4 3x600 g",
+                KILOGRAM, "0.60000", 3);
 
 
 

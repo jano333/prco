@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.BrendonProductParser;
+import sk.hudak.prco.eshop.TescoProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -26,13 +26,31 @@ public class ProductParserTest {
 //                .parseNewProductInfo("https://www.alza.sk/maxi/pampers-active-baby-dry-vel-4-maxi-174-ks-d4593569.htm"));
 //                .parseProductUpdateData("https://www.alza.sk/maxi/lovela-gel-color-4-7-l-50-pranie-d4849185.htm"));
 //
-//        //        Brendon
-        System.out.println(new BrendonProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        // Bambino
+//        System.out.println(new BambinoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers 4"));
+//                .parseNewProductInfo("https://www.bambino.sk/jednorazove-plienky/plienkove-nohavicky-premium-pants-4-maxi-44-ks-1"));
+//                .parseProductUpdateData("https://www.bambino.sk/jednorazove-plienky/abd-mega-box-plus-4-174ks-1"),
+//
+//        // Brendon
+//        System.out.println(new BrendonProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
-                .parseNewProductInfo("https://www.brendon.sk/Products/Details/118437"));
+//                .parseNewProductInfo("https://www.brendon.sk/Products/Details/118437"));
 //                .parseProductUpdateData("https://www.brendon.sk/Products/Details/84545"));
 //
-//        //        FourKids
+//        // Dx max
+//        System.out.println(new DrMaxProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers 5"));
+//                .parseNewProductInfo("https://www.drmax.sk/pampers-plienky-premium-monthly-box-s5-136/"));
+//                .parseProductUpdateData("https://www.drmax.sk/pampers-mega-maxi-132/"));
+//
+//        // Feedo
+//        System.out.println(new FeedoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers 4"));
+//                .parseNewProductInfo("https://www.feedo.sk/pampers-active-baby-4-maxi-174ks-8-14kg-mesacna-zasoba-jednorazove-plienky/"));
+//                .parseProductUpdateData("https://www.feedo.sk/pampers-active-baby-4-maxi-174ks-8-14kg-mesacna-zasoba-jednorazove-plienky/"));
+//
+//        // FourKids
 //        System.out.println(new MaxikovyHrackyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("lego"));
 //                .parseNewProductInfo("https://www.maxikovy-hracky.cz/pampers-active-baby-3-midi-174ks"));
@@ -43,29 +61,14 @@ public class ProductParserTest {
 //                .parseUrlsOfProduct("pampers 5"));
 //                .parseNewProductInfo("https://kidmarket.sk/jednorazove-plienky/176-pampers-active-baby-dry-vel6-extra-large-56ks-4015400736394.html?search_query=pampers+5&results=46"));
 //                .parseProductUpdateData("https://kidmarket.sk/jednorazove-plienky/176-pampers-active-baby-dry-vel6-extra-large-56ks-4015400736394.html?search_query=pampers+5&results=46"));
-
-        // Perinbaba
+//
+//        // Perinbaba
 //        System.out.println(new PerinbabaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 4"));
 //                .parseNewProductInfo("http://www.perinbaba.sk/plienky-active-baby-dry-3-midi-4-9kg-mega-box-plus-174kg.html"));
 //                .parseProductUpdateData("http://www.perinbaba.sk/plienky-active-baby-dry-3-midi-4-9kg-mega-box-plus-174kg.html"));
 
-        //Bambino
-//        System.out.println(new BambinoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                .parseUrlsOfProduct("pampers 4"));
-//                .parseNewProductInfo("https://www.bambino.sk/jednorazove-plienky/plienkove-nohavicky-premium-pants-4-maxi-44-ks-1"));
-//                .parseProductUpdateData("https://www.bambino.sk/jednorazove-plienky/abd-mega-box-plus-4-174ks-1"),
 
-        // Dx max
-//        System.out.println(new DrMaxProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                .parseUrlsOfProduct("pampers 5"));
-//                .parseNewProductInfo("https://www.drmax.sk/pampers-plienky-s4-active-baby-monthly-box-174/"));
-//                .parseProductUpdateData("https://www.drmax.sk/pampers-mega-maxi-132/"));
-        // Feedo
-//        System.out.println(new FeedoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                .parseUrlsOfProduct("pampers 4"));
-//                .parseNewProductInfo("https://www.feedo.sk/pampers-active-baby-4-maxi-174ks-8-14kg-mesacna-zasoba-jednorazove-plienky/"));
-//                .parseProductUpdateData("https://www.feedo.sk/pampers-active-baby-4-maxi-174ks-8-14kg-mesacna-zasoba-jednorazove-plienky/"));
 
 
         // HORNBACH
@@ -81,9 +84,10 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.mall.sk/detske-mlieka/nutrilon-4-6-x-800g"));
 
         // Tesco
-//        System.out.println(new TescoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                 .parseProductUpdateData("https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120650706"));
-//                .parseNewProductInfo("https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121218158")); //Tesco
+        System.out.println(new TescoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers 4"));
+                .parseNewProductInfo("https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120523541"));
+//                 .parseProductUpdateData("https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002017045669"));
 
 
         // MALL
@@ -114,7 +118,7 @@ public class ProductParserTest {
         // Pilulka
 //        System.out.println(new PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("nutrilon"));
-//                .parseNewProductInfo("https://www.pilulka.sk/pa-plienky-abd-giant-cube-plus-s5-78"));
+//                .parseNewProductInfo("https://www.pilulka.sk/pampers-11-18kg-junior-ab-50-5-act-b-487858"));
 //                .parseProductUpdateData("https://www.pilulka.sk/nutrilon-3-ha-800g-5-1-zdarma"));
 
 

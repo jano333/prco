@@ -153,7 +153,7 @@ public class UnitParserImpl implements UnitParser {
             return createObjem(matcher.group(2), "1");
         }
         // Velkopopovický Kozel 10% pivo výčapné svetlé 500 ml
-        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, " ml|ml");
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, " ml$|ml$");
         if (matcher.find()) {
             return createObjem(recalculateToLites(convertToBigDecimal(matcher.group(2))), "1");
         }
