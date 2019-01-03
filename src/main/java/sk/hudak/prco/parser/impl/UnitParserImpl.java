@@ -31,7 +31,9 @@ public class UnitParserImpl implements UnitParser {
 
     @Override
     public Optional<UnitTypeValueCount> parseUnitTypeValueCount(String productName) {
+        notNullNotEmpty(productName, "productName");
         log.debug("parsing product name to retrieve unit info: {}", productName);
+
 //        // TODO remove log...
 //        log.debug("hash " + productName.hashCode());
 //        char[] chars = productName.toCharArray();
@@ -43,7 +45,6 @@ public class UnitParserImpl implements UnitParser {
 //        System.out.println(chars);
 
 
-        notNullNotEmpty(productName, "productName");
 
         productName = productName.toLowerCase();
 
@@ -108,13 +109,21 @@ public class UnitParserImpl implements UnitParser {
             return createKus(convertToBigDecimal(matcher.group(1)), "1");
         }
 
+        // 'Pampers Baby Vlhčené obrúsky Sensitive 9x56ks'
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, "ks");
+        if (matcher.find()) {
+            return createKus(convertToBigDecimal(matcher.group(4)), matcher.group(2));
+        }
+
+
+
         // --- OBJEM ---
 
         // Velkopopovický Kozel pivo tmavé 6x4x500 ml PLECH
         matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, SPACE, "ml");
         if (matcher.find()) {
             return createObjem(recalculateToLites(convertToBigDecimal(matcher.group(5))),
-                    String.valueOf(Integer.valueOf(matcher.group(1)).intValue() * Integer.valueOf(matcher.group(3)).intValue()));
+                    String.valueOf(Integer.valueOf(matcher.group(1)) * Integer.valueOf(matcher.group(3))));
         }
 
         // Lovela white prací gél 50 praní 1x4,7 l
@@ -169,7 +178,7 @@ public class UnitParserImpl implements UnitParser {
             String group2 = matcher.group(6);
             String group3 = matcher.group(8);
             return createKilogram(recalculateToKilograms(convertToBigDecimal(group3)),
-                    "" + (Integer.valueOf(group).intValue() * Integer.valueOf(group2).intValue()));
+                    "" + (Integer.valueOf(group) * Integer.valueOf(group2)));
         }
         // "Radoma Preto Filé z Aljašskej tresky 4 x 100 g"
         // "Radoma Preto Filé z Aljašskej tresky 4 x 100g"
@@ -213,7 +222,7 @@ public class UnitParserImpl implements UnitParser {
         if (matcher.find()) {
             return createKilogram(
                     recalculateToKilograms(convertToBigDecimal(matcher.group(2))),
-                    "" + (Integer.valueOf(matcher.group(7)).intValue() + Integer.valueOf(matcher.group(9)).intValue()));
+                    "" + (Integer.valueOf(matcher.group(7)) + Integer.valueOf(matcher.group(9))));
         }
         // "Babičkina Voľba Múka polohrubá pšeničná 1 kg"
         matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, SPACE, "kg");
@@ -248,7 +257,7 @@ public class UnitParserImpl implements UnitParser {
             String group2 = matcher.group(8);
             return createKilogram(recalculateToKilograms(
                     convertToBigDecimal(group)),
-                    String.valueOf((Integer.valueOf(group1).intValue() + Integer.valueOf(group2).intValue()))
+                    String.valueOf((Integer.valueOf(group1) + Integer.valueOf(group2)))
             );
         }
 
@@ -279,10 +288,6 @@ public class UnitParserImpl implements UnitParser {
             stringJoiner.add(group);
         }
         return Pattern.compile("(" + stringJoiner.toString() + ")");
-    }
-
-    private Optional<UnitTypeValueCount> createKus(BigDecimal value) {
-        return createKus(value, "1");
     }
 
     private Optional<UnitTypeValueCount> createKus(BigDecimal value, String packageCount) {

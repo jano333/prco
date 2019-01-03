@@ -1,3 +1,7 @@
+--------------------
+BUG
+'Pampers Baby Vlhčené obrúsky Sensitive 9x56ks' no unit data
+--------------------
 2018-12-11 10:01:44,515 DEBUG [MOJA_LEKAREN] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:215] request URL: https://www.mojalekaren.sk//nutrilon-comfort-1-400g/
 2018-12-11 10:01:44,515 DEBUG [MOJA_LEKAREN] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:218] userAgent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1
 2018-12-11 10:01:44,706 DEBUG [MOJA_LEKAREN] [] s.h.p.s.PrcoCustomTrustManager [PrcoCustomTrustManager.java:43] server cert subject name CN=www.lekarna.cz
