@@ -1,17 +1,13 @@
+--------------------------------------------------------------------------------------------------------------------
 BUG:
-duplicita v grupe:
-eshop: FEEDO price for unit 0.21993, price for one item 32.99, id 1956, 'PAMPERS Active Baby 5 (11-16 kg) 150 ks MESAČNÁ ZÁSOBA – jednorazové plienky', https://www.feedo.sk/pampers-active-baby-5-11-16-kg-150-ks-mesacna-zasoba-jednorazove-plienky/, last updated 03-01-2019 15:00:15
-eshop: FEEDO price for unit 0.21993, price for one item 32.99, id 2788, 'PAMPERS Active Baby 5 (11-16 kg) 150 ks MESAČNÁ ZÁSOBA – jednorazové plienky', https://www.feedo.sk/pampers-active-baby-5-11-16-kg-150-ks-mesacna-zasoba-jednorazove-plienky, last updated 03-01-2019 14:59:00
-
-eshop: FEEDO price for unit 14.36250, price for one item 11.49, id 1185, '8x NUTRILON 5 (800g) - dojčenské mlieko', https://www.feedo.sk/8x-nutrilon-5-800g-dojcenske-mlieko/, last updated 03-01-2019 14:59:45
-eshop: FEEDO price for unit 14.36250, price for one item 11.49, id 2757, '8x NUTRILON 5 (800g) - dojčenské mlieko', https://www.feedo.sk/8x-nutrilon-5-800g-dojcenske-mlieko, last updated 03-01-2019 14:56:42
-
-eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 1027, '3x NUTRILON 5 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-5-800g-dojcenske-mlieko/, last updated 03-01-2019 14:59:10
-eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 2755, '3x NUTRILON 5 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-5-800g-dojcenske-mlieko, last updated 03-01-2019 14:55:39
-
-eshop: FEEDO price for unit 19.23750, price for one item 15.39, id 1026, 'NUTRILON 5 (800g) - dojčenské mlieko', https://www.feedo.sk/nutrilon-5-800g-dojcenske-mlieko/, last updated 03-01-2019 14:54:06
-eshop: FEEDO price for unit 19.23750, price for one item 15.39, id 2756, 'NUTRILON 5 (800g) - dojčenské mlieko', https://www.feedo.sk/nutrilon-5-800g-dojcenske-mlieko, last updated 03-01-2019 14:55:57
-
+nevie vyparsovat unit
+https://www.drmax.sk/pampers-plienky-active-baby-dry-mega-quad-s4p/
+https://www.drmax.sk/pampers-plienky-active-baby-dry-mega-quad-s5/
+--------------------------------------------------------------------------------------------------------------------
+BUG
+tieto dva produkty to su to iste... lebo na jednom z nich je tam redirect... skusit neako poriesit... na zaklade nazvu, pripadne vyslednej(redirect url)
+eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 169, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-pronutra-800g-dojcenske-mlieko/, last updated 03-01-2019 14:47:56
+eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 996, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-800g-dojcenske-mlieko/, last updated 03-01-2019 14:48:28
 --------------------------------------------------------------------------------------------------------------------
 BUG
 duplicita v grupe:

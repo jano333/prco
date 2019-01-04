@@ -52,8 +52,10 @@ public class KidMarketProductParser extends JSoupProductParser {
         }
 
         List<String> urls = new ArrayList<>();
-        first.children().forEach(element ->
-                urls.add(element.select("h5 a").first().attr("href"))
+        first.children().forEach(element -> {
+                    String href = element.select("h5 a").first().attr("href");
+                    urls.add(href.substring(0, href.lastIndexOf("?")));
+                }
         );
         return urls;
     }

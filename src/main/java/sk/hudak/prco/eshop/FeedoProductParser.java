@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static sk.hudak.prco.api.EshopUuid.FEEDO;
 import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
 import static sk.hudak.prco.utils.JsoupUtils.existElement;
 import static sk.hudak.prco.utils.JsoupUtils.getTextFromFirstElementByClass;
@@ -37,7 +38,7 @@ public class FeedoProductParser extends JSoupProductParser {
 
     @Override
     public EshopUuid getEshopUuid() {
-        return EshopUuid.FEEDO;
+        return FEEDO;
     }
 
     @Override
@@ -50,9 +51,9 @@ public class FeedoProductParser extends JSoupProductParser {
     protected int parseCountOfPages(Document documentList) {
         String countOfProductString = Optional.ofNullable(documentList.select("#content > div.clearfix.mb-2 > h1:nth-child(1) > span").first())
                 .map(Element::text)
-                .filter(text -> text.indexOf("(") != -1)
-                .filter(text -> text.indexOf(")") != -1)
-                .map(text -> text.substring(text.indexOf("(") + 1, text.indexOf(")")))
+                .filter(text -> text.contains("("))
+                .filter(text -> text.contains(")"))
+                .map(text -> text.substring(text.indexOf('(') + 1, text.indexOf(')')))
                 .orElseThrow(() -> new PrcoRuntimeException("None product count found for: " + documentList.location()));
 
         return calculateCountOfPages(Integer.valueOf(countOfProductString), getEshopUuid().getMaxCountOfProductOnPage());
@@ -76,6 +77,14 @@ public class FeedoProductParser extends JSoupProductParser {
         return documentList.select("div[class=box-product__top]").stream()
                 .map(element -> element.select("h1 a").first())
                 .map(element -> element.attr("href"))
+                .filter(StringUtils::isNotBlank)
+                .map(href -> {
+                    if (href.endsWith("/")) {
+                        return href.substring(0, href.length() - 1);
+                    } else {
+                        return href;
+                    }
+                })
                 .collect(Collectors.toList());
     }
 
