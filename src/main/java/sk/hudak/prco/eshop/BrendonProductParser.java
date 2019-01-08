@@ -105,17 +105,21 @@ public class BrendonProductParser extends JSoupProductParser {
         return Optional.ofNullable(documentDetailProduct.select("span[class='margin-right40']").first())
                 .map(Element::text)
                 .map(String::trim)
+                .filter(StringUtils::isNotBlank)
                 .map(text -> StringUtils.removeEnd(text, " €"))
+                .filter(StringUtils::isNotBlank)
                 .map(ConvertUtils::convertToBigDecimal);
     }
 
     @Override
     protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
+        //TODO
         return Optional.empty();
     }
 
     @Override
     protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
+        //TODO
         return Optional.empty();
     }
 }

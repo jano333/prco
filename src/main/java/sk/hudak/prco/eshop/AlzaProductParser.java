@@ -97,7 +97,7 @@ public class AlzaProductParser extends JSoupProductParser {
             // inde tak
             elements = documentDetailProduct.select("span[class=bigPrice price_withVat]");
         }
-        if(elements.isEmpty()){
+        if (elements.isEmpty()) {
             elements = documentDetailProduct.select("#prices > tbody > tr.pricenormal > td.c2 > span");
         }
 
@@ -159,7 +159,7 @@ public class AlzaProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
-        //TODO
+        // not supported for this eshop
         return Optional.empty();
     }
 }
