@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.TescoProductParser;
+import sk.hudak.prco.eshop.AmdDrogeriaProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -19,6 +19,12 @@ public class ProductParserTest {
         UnitParserImpl unitParser = new UnitParserImpl();
 
         SearchUrlBuilder searchUrlBuilder = new SearchUrlBuilderImpl();
+
+        // Amd drogeria
+        System.out.println(new AmdDrogeriaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers"));
+//                .parseNewProductInfo("https://www.amddrogeria.sk/pampers-active-baby-plienky-4-maxi-7-14-kg-76-ks/"));
+                .parseProductUpdateData("https://www.amddrogeria.sk/pampers-active-baby-plienky-4-maxi-7-14-kg-76-ks/"));
 
 //        // Alza
 //        System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -41,12 +47,13 @@ public class ProductParserTest {
 //        // Dx max
 //        System.out.println(new DrMaxProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 5"));
-//                .parseNewProductInfo("https://www.drmax.sk/pampers-plienky-premium-monthly-box-s5-136/"));
+//                .parseNewProductInfo("https://www.drmax.sk/pampers-baby-wipes-fresh-clean-64ks/"));
+//                .parseNewProductInfo("https://www.drmax.sk/pampers-mega-maxi-132/"));
 //                .parseProductUpdateData("https://www.drmax.sk/pampers-mega-maxi-132/"));
 //
 //        // Feedo
 //        System.out.println(new FeedoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                .parseUrlsOfProduct("pampers 4"));
+//                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.feedo.sk/pampers-active-baby-4-maxi-174ks-8-14kg-mesacna-zasoba-jednorazove-plienky/"));
 //                .parseProductUpdateData("https://www.feedo.sk/pampers-active-baby-4-maxi-174ks-8-14kg-mesacna-zasoba-jednorazove-plienky/"));
 //
@@ -58,7 +65,7 @@ public class ProductParserTest {
 //
 //        // KidMarket
 //        System.out.println(new KidMarketProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                .parseUrlsOfProduct("pampers 5"));
+//                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://kidmarket.sk/jednorazove-plienky/176-pampers-active-baby-dry-vel6-extra-large-56ks-4015400736394.html?search_query=pampers+5&results=46"));
 //                .parseProductUpdateData("https://kidmarket.sk/jednorazove-plienky/176-pampers-active-baby-dry-vel6-extra-large-56ks-4015400736394.html?search_query=pampers+5&results=46"));
 //
@@ -84,9 +91,9 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.mall.sk/detske-mlieka/nutrilon-4-6-x-800g"));
 
         // Tesco
-        System.out.println(new TescoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new TescoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 4"));
-                .parseNewProductInfo("https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120523541"));
+//                .parseNewProductInfo("https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120523541"));
 //                 .parseProductUpdateData("https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002017045669"));
 
 
@@ -96,9 +103,9 @@ public class ProductParserTest {
 //                .parseNewProductInfo("https://www.mall.sk/detske-mlieka/nutrilon-4-6-x-800g"));
 //                .parseProductUpdateData("http://mall.sk/plienky-pampers-7-18-kg/pampers-active-baby-4-maxi-7-14kg-giant-box-90ks"));
 
-        //        MamaAJa
+        //        MamaAJa(UZ neexistuje)
 //        System.out.println(new MamaAJaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                .parseUrlsOfProduct("lovela"));
+//                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://eshop.mamaaja.sk/pampers-premium-care-1-newborn-22ks/"));
 //                .parseProductUpdateData("https://eshop.mamaaja.sk/pampers-premium-care-1-newborn-22ks/"));
 

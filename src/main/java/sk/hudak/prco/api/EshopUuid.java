@@ -1,42 +1,52 @@
 package sk.hudak.prco.api;
 
 import static sk.hudak.prco.api.SearchTemplateConstants.KEYWORD_TEMP;
+import static sk.hudak.prco.api.SearchTemplateConstants.OFFSET_TEMP;
 import static sk.hudak.prco.api.SearchTemplateConstants.PAGE_NUMBER_TEMP;
 
 /**
  * Created by jan.hudak on 9/29/2017.
  */
 public enum EshopUuid {
+
+    // -- DROGERIE --
+    //TODO https://www.amddrogeria.sk/pampers-active-baby-junior-5-plienky-64-ks/
+    //TODO https://www.drogeria-vmd.sk/pampers-prem-1-newbor-88ks-2-5kg-1602/
+    //TODO https://www.diskontdrogerie.cz/plenky/pampers-premium-care-1-new-born-88ks.html
+
+    //TODO https://www.drogerka.sk/pampers-premium-care-detske-plienky-newborn-88-ks // nie su tam pampers 5
+
+    // -- LEKARNE --
+    //TODO http://www.internetovalekaren.eu/akcia-pampers-plienky-premuim-utierky-sensitive/?utm_source=heureka&utm_medium=porovnavac&utm_campaign=heureka
+    //TODO http://www.gigalekaren.sk/produkt/pampers-premium-care-newborn-2-5kg-88ks/
+    //TODO https://www.mojalekaren.sk/pampers-premium-care-1-newborn-2-5kg-88-kusov/?utm_source=heureka.sk&utm_medium=product&utm_campaign=heureka.sk
+    //TODO http://www.novalekarna.eu/index.php?detail=3230449&jazyk=sk
+    //TODO https://www.prva-lekaren.sk/zbozi/3230449/pampers-premium-care-1-newborn-88ks
+    //TODO https://www.lekarenvkocke.sk/zq7b441326fad7a1ce98481e5344efbb5f-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x88-ks
+    //TODO https://www.lekaren-bella.sk/zbozi/3230449/pampers-premium-care-1-newborn-88ks
+    //TODO https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-premium-care-1-newborn-88ks-18815.html
+    //TODO http://www.sos-lekaren.sk/tehotne-a-kojici-deti/pampers-premium-care-newborn-2-5kg-88ks/
+    //TODO https://www.lekaren-doktorka.sk/3230449-pampers-premium-care-1-newborn-88ks
+    //TODO https://www.liekyrazdva.sk/zq7b441326fad7a1ce98481e5344efbb5f-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x88-ks
+    //TODO https://www.lekarensedmokraska.sk/kategorie/kozmetika-a-drogeria/pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-88-ks.html#16920
+    //TODO https://www.lekarentriveze.sk/z7b441326fad7a1ce98481e5344efbb5f-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x88-ks
+
+    // -- LEKARNE CZ --
+    //TODO http://www.lekynadosah.cz/index.php?detail=3230449&mena=eu
+    //TODO https://www.lekarna-oaza.cz/3230449-pampers-premium-care-1-newborn-88ks
+    //TODO https://www.mujlekarnik.cz/pampers-premium-care-1-newborn-88ks_detail/?currency=EUR
+
+    // -- INE --
     //TODO https://www.funkids.cz/pampers-active-baby-monthly-box-s4-174ks
     //TODO https://edigital.sk/plienky/pampers-activebaby-dry-monthly-box-4-maxi-plienky-174-ks-p510052
     //TODO https://www.pompo.sk/1/pSOL%2081603989-1/?utm_campaign=20-40&utm_content=Hracky+a+vsetko+pre+baby+%7C+Plienky+a+prebalovanie&utm_medium=cpc&utm_source=heureka.sk&utm_term=Pampers+Active+Baby-Dry+Vel.+4%2C+174+ks
-    //TODO https://www.diskontdrogerie.cz/plenky/pampers-premium-care-1-new-born-88ks.html?utm_source=xml_feed&utm_medium=xml&utm_campaign=vyhledavac_zbozi_heureka
-    //TODO https://www.amddrogeria.sk/pampers-premium-newborn-88ks/?utm_source=heureka&utm_medium=porovnavac&utm_campaign=heureka
-    //TODO https://www.drogerka.sk/pampers-premium-care-detske-plienky-newborn-88-ks
-    //TODO http://www.internetovalekaren.eu/akcia-pampers-plienky-premuim-utierky-sensitive/?utm_source=heureka&utm_medium=porovnavac&utm_campaign=heureka
-    //TODO https://www.lekaren-bella.sk/zbozi/3230449/pampers-premium-care-1-newborn-88ks
-    //TODO https://www.mojalekaren.sk/pampers-premium-care-1-newborn-2-5kg-88-kusov/?utm_source=heureka.sk&utm_medium=product&utm_campaign=heureka.sk
     //TODO http://www.bugy.sk/static/produkt/36496/PAMPERS-Premium-Care-1-Najhebkejsie-jednorazove-plienky-pre-deti-od-2kg-do-5kg-88ks/
     //TODO https://www.babyplace.sk/detske-plienky-88-ks-2-5-kg-pampers-premium-newborn-1/
     //TODO https://www.parfemomania.sk/pampers-premium-care-1-newborn-2-5-kg-plenkove-kalhotky-88-kusu/
-    //TODO https://www.drogeria-vmd.sk/pampers-prem-1-newbor-88ks-2-5kg-1602/
-    //TODO http://www.gigalekaren.sk/produkt/pampers-premium-care-newborn-2-5kg-88ks/
     //TODO https://www.vitalek.sk/detske-plienky/pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-k+36344/
     //TODO https://www.vitazenit.sk/plienky/pampers-premium-care-1-newborn-88-ks--2-5-kg-/
-    //TODO http://www.novalekarna.eu/index.php?detail=3230449&jazyk=sk
-    //TODO http://www.lekynadosah.cz/index.php?detail=3230449&mena=eu
-    //TODO https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-premium-care-1-newborn-88ks-18815.html
-    //TODO https://www.prva-lekaren.sk/zbozi/3230449/pampers-premium-care-1-newborn-88ks
-    //TODO http://www.sos-lekaren.sk/tehotne-a-kojici-deti/pampers-premium-care-newborn-2-5kg-88ks/
-    //TODO https://www.elixi.sk/pampers-premium-care-1-newborn-88-ks-2-5-kg-p49163/?utm_campaign=Heureka&utm_medium=product&utm_source=heureka.sk
+    //TODO https://www.elixi.cz/jednorazove-pleny-2/pampers-active-baby-dry-3-midi-4-9kg--66ks/
     //TODO https://apateka.sk/produkt/pampers-premium-care-1-newborn-2-5-kg-88-kusov/
-    //TODO https://www.lekarenvkocke.sk/zq7b441326fad7a1ce98481e5344efbb5f-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x88-ks
-    //TODO https://www.lekarna-oaza.cz/3230449-pampers-premium-care-1-newborn-88ks
-    //TODO https://www.lekaren-doktorka.sk/3230449-pampers-premium-care-1-newborn-88ks
-    //TODO https://www.lekarentriveze.sk/z7b441326fad7a1ce98481e5344efbb5f-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x88-ks
-    //TODO https://www.mujlekarnik.cz/pampers-premium-care-1-newborn-88ks_detail/?currency=EUR
-    //TODO https://www.liekyrazdva.sk/zq7b441326fad7a1ce98481e5344efbb5f-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x88-ks
-    //TODO https://www.lekarensedmokraska.sk/kategorie/kozmetika-a-drogeria/pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-88-ks.html#16920
     //TODO https://www.farby.sk/210477/pampers-premium-newborn-88/
 
     // TODO ANDREA_SHOP -> neviem pagging ako...
@@ -54,6 +64,10 @@ public enum EshopUuid {
 //            "??",
 //            3, 12, -1),
 
+    AMD_DROGERIA("https://www.amddrogeria.sk",
+            "https://www.amddrogeria.sk/catalog/search/?q=" + KEYWORD_TEMP,
+            "https://www.amddrogeria.sk/catalog/search/?q={keyword}&offset=" + OFFSET_TEMP,
+            5, 12, 24),
 
     BAMBINO("https://www.bambino.sk",
             "https://www.bambino.sk/vyhladavanie?search=" + KEYWORD_TEMP,
@@ -102,6 +116,7 @@ public enum EshopUuid {
             "https://www.mall.sk/hladaj?page={pageNumber}&s={keyword}",
             2, 12, -1),
 
+    //TODO tento skoncil
     MAMA_A_JA("https://eshop.mamaaja.sk",
             "https://eshop.mamaaja.sk/catalog/search/?q={keyword}",
             "https://eshop.mamaaja.sk/catalog/search/?q={keyword}&offset={offset}",

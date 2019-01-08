@@ -34,6 +34,12 @@ public class PrcoSSLContants {
 
         ALLOWED_HOSTNAME.add("www.4kids.sk");
 
+        ALLOWED_HOSTNAME.add("mamaaja.sk");
+        ALLOWED_HOSTNAME.add("orbi-02.webglobe.sk");
+
+        ALLOWED_HOSTNAME.add("www.amddrogeria.sk");
+
+
 
     }
 
