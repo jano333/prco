@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.builder.SearchUrlBuilder;
@@ -26,7 +25,7 @@ import static java.util.Optional.ofNullable;
 import static sk.hudak.prco.api.EshopUuid.MAMA_A_JA;
 
 @Slf4j
-@Component
+//@Component
 public class MamaAJaProductParser extends JSoupProductParser {
 
     public MamaAJaProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, @NotNull SearchUrlBuilder searchUrlBuilder) {
