@@ -60,8 +60,10 @@ public class UnitParserTest {
                 KUS, "110", 1);
         addTestData(values, "pampers jednorázové plienky premium care 0 before newborn 30 pcs",
                 KUS, "30", 1);
-
-
+        addTestData(values,"Pampers Active Baby Dry 5 Junior 11-18 kg jednorázové plenky 64 kusů",
+                KUS, "64", 1);
+        addTestData(values,"1x132 kusov",
+                KUS, "132", 1);
 
         // OBJEM
         addTestData(values, "Becherovka Original Bylinný likér 0,5 l",
@@ -120,6 +122,9 @@ public class UnitParserTest {
                 KILOGRAM, "0.80000", 1);
         addTestData(values,"nutrilon 4 3x600 g",
                 KILOGRAM, "0.60000", 3);
+        addTestData(values, "Lovela Barevné prádlo Hypoalergenní prací prášek 26 dávek 3,25 kg",
+                KILOGRAM, "3.25", 1);
+
 
 
 

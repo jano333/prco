@@ -63,7 +63,7 @@ public class UnitParserImpl implements UnitParser {
         }
         // "Pampers Premium Care Detské Jednorazové Plienky, Veľkosť 4 (Maxi) 8 - 14 kg, 52 Kusov"
         // "Pampers Active Baby 6 Extra large 15 + kg, 56 ks GIANTPACK"
-        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, SPACE, "kusov|ks");
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, SPACE, "kusov|ks|kusů");
         if (matcher.find()) {
             return createKus(matcher.group(2), "1");
         }
@@ -120,6 +120,11 @@ public class UnitParserImpl implements UnitParser {
             return createKus(matcher.group(2));
         }
 
+        // '1x132 kusov'
+        matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, "x", NUMBER_AT_LEAST_ONE, SPACE, "kusov");
+        if (matcher.find()) {
+            return createKus(matcher.group(3), matcher.group(1));
+        }
 
         // --- OBJEM ---
 
@@ -273,6 +278,12 @@ public class UnitParserImpl implements UnitParser {
 
         // LOVELA Color 3,25 kg (26 dávok) - prací prášok
         matcher = craeteMatcher(productName, SPACE, "[0-9]{1,},[0-9]{1,}", " kg|kg", SPACE);
+        if (matcher.find()) {
+            return createKilogram(convertToBigDecimal(matcher.group(2)));
+        }
+
+        // Lovela Barevné prádlo Hypoalergenní prací prášek 26 dávek 3,25 kg
+        matcher = craeteMatcher(productName, SPACE, "[0-9]{1,},[0-9]{1,}", " kg|kg");
         if (matcher.find()) {
             return createKilogram(convertToBigDecimal(matcher.group(2)));
         }
