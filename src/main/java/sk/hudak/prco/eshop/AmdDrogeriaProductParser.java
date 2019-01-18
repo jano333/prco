@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static sk.hudak.prco.api.EshopUuid.AMD_DROGERIA;
+
 @Slf4j
 @Component
 public class AmdDrogeriaProductParser extends JSoupProductParser {
@@ -32,7 +34,7 @@ public class AmdDrogeriaProductParser extends JSoupProductParser {
 
     @Override
     public EshopUuid getEshopUuid() {
-        return EshopUuid.AMD_DROGERIA;
+        return AMD_DROGERIA;
     }
 
     @Override

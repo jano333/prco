@@ -83,7 +83,7 @@ public class DrMaxProductParser extends JSoupProductParser {
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
         Elements select = documentDetailProduct.select("#product-detail > div.row > div > div > div.col.data > div.redesign_desktop > div.redesign-product-detail-title.bold");
         Element first = select.first().children().first();
-        String text = first.text();
+        String text = first.text().trim();
         return Optional.of(text);
     }
 
