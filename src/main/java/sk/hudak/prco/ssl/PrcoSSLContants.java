@@ -39,6 +39,9 @@ public class PrcoSSLContants {
 
         ALLOWED_HOSTNAME.add("www.amddrogeria.sk");
 
+        ALLOWED_HOSTNAME.add("www.drogeria-vmd.sk");
+        ALLOWED_HOSTNAME.add("b2bexchange.vmd-drogerie.cz");
+
 
 
     }

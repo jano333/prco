@@ -10,7 +10,6 @@ import static sk.hudak.prco.api.SearchTemplateConstants.PAGE_NUMBER_TEMP;
 public enum EshopUuid {
 
     // -- DROGERIE --
-    //TODO https://www.amddrogeria.sk/pampers-active-baby-junior-5-plienky-64-ks/
     //TODO https://www.drogeria-vmd.sk/pampers-prem-1-newbor-88ks-2-5kg-1602/
     //TODO https://www.diskontdrogerie.cz/plenky/pampers-premium-care-1-new-born-88ks.html
 
@@ -75,14 +74,20 @@ public enum EshopUuid {
             4, 12, -1),
 
     BRENDON("https://www.brendon.sk",
-            "https://www.brendon.sk/Products/List?searchtext={keyword}",
+            "https://www.brendon.sk/Products/List?searchtext=" + KEYWORD_TEMP,
             "https://www.brendon.sk/Products/List?SearchText={keyword}&&Page={pageNumber}&Order=onweb&ProdNo=30",
             5, 12, 30),
 
     DR_MAX("https://www.drmax.sk",
-            "https://www.drmax.sk/catalog/search/?q={keyword}",
+            "https://www.drmax.sk/catalog/search/?q=" + KEYWORD_TEMP,
             "https://www.drmax.sk/catalog/search/?q={keyword}&offset={offset}&limit={limit}",
             4, 12, 24),
+
+    DROGERIA_VMD("https://www.drogeria-vmd.sk",
+            "https://www.drogeria-vmd.sk/hladanie/?q=" + KEYWORD_TEMP,
+            "https://www.drogeria-vmd.sk/hladanie-stranka-{pageNumber}/?q=" + KEYWORD_TEMP,
+            4, 12, 12),
+
 
     FEEDO("https://www.feedo.sk",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/",
