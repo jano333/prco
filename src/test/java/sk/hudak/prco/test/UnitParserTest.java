@@ -124,6 +124,8 @@ public class UnitParserTest {
                 KILOGRAM, "0.60000", 3);
         addTestData(values, "Lovela Barevné prádlo Hypoalergenní prací prášek 26 dávek 3,25 kg",
                 KILOGRAM, "3.25", 1);
+        addTestData(values, "LOVELA 5.4 KG + LOVELA AVIÁŽ.",
+                KILOGRAM, "5.4", 1);
 
 
 

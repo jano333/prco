@@ -1,12 +1,9 @@
-FEATURE:
-na stranke new produkty pridat link na odmazanie produktu z novych produktov, lebo su take ktore uz neexistuju
---------------------------------------------------------------------------------------------------------------------
-BUG:
-unit: LOVELA 5.4 KG + LOVELA AVIÁŽ. nevie vyparsovat
---------------------------------------------------------------------------------------------------------------------
 BUG:
 PAMPERS Plienky Active Baby-Dry Mega Quad S4
 ma na konci nieco co vyzera ako medzera ale nie je to medzera
+--------------------------------------------------------------------------------------------------------------------
+FEATURE:
+na stranke new produkty pridat link na odmazanie produktu z novych produktov, lebo su take ktore uz neexistuju
 --------------------------------------------------------------------------------------------------------------------
 BUG
 tieto dva produkty to su to iste... lebo na jednom z nich je tam redirect... skusit neako poriesit... na zaklade nazvu, pripadne vyslednej(redirect url)

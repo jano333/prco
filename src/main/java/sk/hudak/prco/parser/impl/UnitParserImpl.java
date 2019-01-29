@@ -261,12 +261,9 @@ public class UnitParserImpl implements UnitParser {
         // Nutrilon 5 detská mliečna výživa v prášku 800 g 5+1 zdarma
         matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, SPACE, "g", SPACE, NUMBER_AT_LEAST_ONE, "\\+", NUMBER_AT_LEAST_ONE, SPACE);
         if (matcher.find()) {
-            String group = matcher.group(2);
-            String group1 = matcher.group(6);
-            String group2 = matcher.group(8);
             return createKilogram(recalculateToKilograms(
-                    convertToBigDecimal(group)),
-                    String.valueOf((Integer.valueOf(group1) + Integer.valueOf(group2)))
+                    convertToBigDecimal(matcher.group(2))),
+                    String.valueOf((Integer.valueOf(matcher.group(6)) + Integer.valueOf(matcher.group(8))))
             );
         }
 
@@ -288,6 +285,11 @@ public class UnitParserImpl implements UnitParser {
             return createKilogram(convertToBigDecimal(matcher.group(2)));
         }
 
+        // lovela 5.4 kg + lovela aviáž.
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, ".", NUMBER_AT_LEAST_ONE, SPACE, " kg|kg", SPACE);
+        if (matcher.find()) {
+            return createKilogram(convertToBigDecimal(matcher.group(2) + matcher.group(3) + matcher.group(4)));
+        }
         log.warn("unit info not found for '{}'", productName);
 
         return Optional.empty();
