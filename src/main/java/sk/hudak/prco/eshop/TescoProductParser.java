@@ -1,5 +1,6 @@
 package sk.hudak.prco.eshop;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -16,11 +17,10 @@ import sk.hudak.prco.utils.UserAgentDataHolder;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
@@ -60,24 +60,12 @@ public class TescoProductParser extends JSoupProductParser {
 
     @Override
     protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
-        Elements elementsByClass = documentList.getElementsByClass("product-list grid");
-        if (elementsByClass.isEmpty()) {
-            return Collections.emptyList();
-        }
-        Element ulElement = elementsByClass.get(0);
-        Elements liElements = ulElement.children();
-        if (liElements.isEmpty()) {
-            return Collections.emptyList();
-        }
-        List<String> resultUrls = new ArrayList<>(liElements.size());
-        // zoznam najdenych produktov
-        for (Element liElement : liElements) {
-            Element divTag = liElement.select("div > div > div > div").first();
-            Element aTag = divTag.child(0);
-            String endPartUrl = aTag.attr("href");
-            resultUrls.add(getEshopUuid().getProductStartUrl() + endPartUrl);
-        }
-        return resultUrls;
+        return documentList.select("div[class=product-details--content] a[class='product-tile--title product-tile--browsable']")
+                .stream()
+                .map(a -> a.attr("href"))
+                .filter(StringUtils::isNotBlank)
+                .map(href -> getEshopUuid().getProductStartUrl() + href)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -96,7 +84,7 @@ public class TescoProductParser extends JSoupProductParser {
         Optional<Element> first = ofNullable(documentDetailProduct.select("img[class=product-image product-image-visible]").first());
         Optional<String> pictureOpt = first.map(element1 -> element1.attr("data-src"));
         // niekedy je aj takto
-        if (!pictureOpt.isPresent()|| pictureOpt.get().isEmpty()) {
+        if (!pictureOpt.isPresent() || pictureOpt.get().isEmpty()) {
             pictureOpt = first.map(element -> element.attr("src"));
         }
         return pictureOpt;
