@@ -71,7 +71,7 @@ public class AmdDrogeriaProductParser extends JSoupProductParser {
 
     @Override
     protected boolean isProductUnavailable(Document documentDetailProduct) {
-        return documentDetailProduct.select("a[title='Vložiť do košíka']").isEmpty();
+        return documentDetailProduct.select("div.product__buy div.product__add-to-cart > a").isEmpty();
     }
 
     @Override
