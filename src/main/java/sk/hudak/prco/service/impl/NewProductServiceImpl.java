@@ -252,5 +252,12 @@ public class NewProductServiceImpl implements NewProductService {
 
     }
 
+    @Override
+    public void deleteNewProducts(Long... newProductIds) {
+        for (Long newProductId : newProductIds) {
+            newProductEntityDao.delete(newProductEntityDao.findById(newProductId));
+        }
+    }
+
 
 }

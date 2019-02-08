@@ -174,4 +174,9 @@ public class UIServiceImpl implements UIService {
     public List<ProductBestPriceInGroupDto> findProductsBestPriceInGroupDto(EshopUuid eshopUuid) {
         return internalTxService.findProductsBestPriceInGroupDto(eshopUuid);
     }
+
+    @Override
+    public void deleteNewProducts(Long... newProductIds) {
+        internalTxService.deleteNewProducts(newProductIds);
+    }
 }

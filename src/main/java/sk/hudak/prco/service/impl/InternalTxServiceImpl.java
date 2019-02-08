@@ -172,6 +172,12 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional
+    public void deleteNewProducts(Long... newProductIds) {
+        newProductService.deleteNewProducts(newProductIds);
+    }
+
+    @Override
+    @Transactional
     public void markProductAsUnavailable(Long productId) {
         productService.markProductAsUnavailable(productId);
     }

@@ -87,4 +87,6 @@ public interface NewProductService {
     List<NewProductFullDto> findNewProductsForExport();
 
     void updateProductUnitData(ProductUnitDataDto productUnitDataDto);
+
+    void deleteNewProducts(Long... newProductIds);
 }

@@ -189,4 +189,6 @@ public interface UIService {
     List<ProductInActionDto> findProductsInAction(EshopUuid eshopUuid);
 
     List<ProductBestPriceInGroupDto> findProductsBestPriceInGroupDto(EshopUuid eshopUuid);
+
+    void deleteNewProducts(Long... newProductIds);
 }
