@@ -10,7 +10,6 @@ import static sk.hudak.prco.api.SearchTemplateConstants.PAGE_NUMBER_TEMP;
 public enum EshopUuid {
 
     // -- DROGERIE --
-    //TODO https://www.drogeria-vmd.sk/pampers-prem-1-newbor-88ks-2-5kg-1602/
     //TODO https://www.diskontdrogerie.cz/plenky/pampers-premium-care-1-new-born-88ks.html
 
     //TODO https://www.drogerka.sk/pampers-premium-care-detske-plienky-newborn-88-ks // nie su tam pampers 5
@@ -104,6 +103,11 @@ public enum EshopUuid {
             "https://www.hornbach.sk/shop/vyhladavanie/sortiment/{keyword}",
             "TODO nie je to cez parameter v stranke...",
             5, 12, -1),
+
+    INTERNETOVA_LEKAREN("http://www.internetovalekaren.eu",
+            "http://www.internetovalekaren.eu/catalog/search/?q=" + KEYWORD_TEMP,
+            "http://www.internetovalekaren.eu/catalog/search/?q=" + KEYWORD_TEMP + "&offset=" + OFFSET_TEMP,
+            5, 12, 22),
 
     KID_MARKET("https://kidmarket.sk/",
             "https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query={keyword}&submit_search=",
