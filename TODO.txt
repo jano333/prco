@@ -31,27 +31,6 @@ sk.hudak.prco.exception.ProductPriceNotFoundException: Product price for url 'ht
 1:59,308 ERROR [BRENDON] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:96] error while creating new product
 sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException: timeout
 -------------------------------------
-2019-02-08 12:41:11,807 ERROR [FOUR_KIDS] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:96] error while creating new product
-sk.hudak.prco.exception.PrcoRuntimeException: error while parsing count of page for products, search URL: https://www.4kids.sk/vyhledavani?search=pampers
-	at sk.hudak.prco.parser.impl.JSoupProductParser.internalGetCountOfPages(JSoupProductParser.java:320)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:103)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParser.searchProductUrls(JsoupHtmlParser.java:41)
-	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$5(AddingNewProductManagerImpl.java:90)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.NumberFormatException: For input string: "38 produktů"
-	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
-	at java.lang.Integer.parseInt(Integer.java:580)
-	at java.lang.Integer.valueOf(Integer.java:766)
-	at java.util.Optional.map(Optional.java:215)
-	at sk.hudak.prco.eshop.FourKidsProductParser.parseCountOfPages(FourKidsProductParser.java:45)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.internalGetCountOfPages(JSoupProductParser.java:318)
-	... 8 common frames omitted
-2019-02-08 12:41:11,807 DEBUG [FOUR_KIDS] [] s.h.p.t.i.TaskManagerImpl [TaskManagerI
-----------------------------------------------------------------------------------------------------------
 BUG:
 PAMPERS Plienky Active Baby-Dry Mega Quad S4
 ma na konci nieco co vyzera ako medzera ale nie je to medzera

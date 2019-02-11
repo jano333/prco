@@ -40,6 +40,7 @@ public class FourKidsProductParser extends JSoupProductParser {
                 .map(Element::text)
                 .filter(text -> text.indexOf(" z ") != -1)
                 .map(text -> removeEnd(text, "produktov"))
+                .map(text -> removeEnd(text, "produktů"))
                 .map(text -> removeStart(text, text.substring(0, text.indexOf(" z ") + 3)))
                 .map(String::trim)
                 .map(Integer::valueOf);
