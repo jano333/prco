@@ -1,3 +1,57 @@
+--------
+toto uz neesictuje 404 dava...
+2019-02-11 11:46:43,281 ERROR [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:244] error creating document for url 'https://www.brendon.sk/Products/List?searchtext=pampers':
+java.net.SocketException: Connection reset
+---------------------
+2019-02-08 12:58:13,873 ERROR [KID_MARKET] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
+sk.hudak.prco.exception.ProductPriceNotFoundException: Product price for url 'https://kidmarket.sk/jednorazove-plienky/183-pampers-active-baby-4-maxi-pack-58ks.html' not found.
+	at sk.hudak.prco.parser.impl.JSoupProductParser.lambda$parseProductUpdateData$3(JSoupProductParser.java:186)
+	at java.util.Optional.orElseThrow(Optional.java:290)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:186)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.processUpdate(UpdateProductDataManagerImpl.java:245)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateAllProductsDataForEshop$21(UpdateProductDataManagerImpl.java:173)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+2019-02-08 12:58:13,873 DEBUG [KID_MARKET] [] s.h.p.t.i.TaskManagerImpl [TaskManagerImpl.java:109] marking task for eshop KID_MARKET as FINISHED_WITH_ERROR
+2019-02-08 12:58:16,201 DEBUG [main] [] s.h.p.u.ThreadUtils [ThreadUtils.java:26] start sleeping for 3 sec
+2019-02-08 12:58:16,201 DEBUG [PERINBABA] [] s.h.p.t.i.TaskManagerImpl [TaskManagerImpl.java:103] marking task for eshop PERINBABA as RUNNING
+2019-02-08 12:58:16,201 DEBUG [PERINBABA] [] s.h.p.s.Starter [Starter.java:179] >> eshop: PERINBABA, updated/waiting: 4/0
+2019-02-08 12:58:16,201 DEBUG [PERINBABA] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:191] none product found for update
+2019-02-08 12:58:16,201 DEBUG [PERINBABA] [] s.h.p.t.i.TaskManagerImpl [TaskManagerImpl.java:109] marking task for eshop PERINBABA as FINISHED_OK
+2019-02-08 12:58:19,214 DEBUG [main] [] s.h.p.u.ThreadUtils [ThreadUtils.java:26] start sleeping for 3 sec
+2019-02-08 12:58:19,214 DEBUG [MALL] [] s.h.p.t.i.TaskManagerImpl [TaskManagerImpl.java:103] marking task for eshop MALL as RUNNING
+2019-02-08 12:58:19,214 DEBUG [MALL] [] s.h.p.s.Starter [Starter.java:179] >> eshop: MALL, updated/waiting: 39/0
+2019-02-08 12:58:19,214 DEBUG [MALL] [] s.h.p.m
+-------------------------------------------------------------------
+
+1:59,308 ERROR [BRENDON] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:96] error while creating new product
+sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException: timeout
+-------------------------------------
+2019-02-08 12:41:11,807 ERROR [FOUR_KIDS] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:96] error while creating new product
+sk.hudak.prco.exception.PrcoRuntimeException: error while parsing count of page for products, search URL: https://www.4kids.sk/vyhledavani?search=pampers
+	at sk.hudak.prco.parser.impl.JSoupProductParser.internalGetCountOfPages(JSoupProductParser.java:320)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:103)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.searchProductUrls(JsoupHtmlParser.java:41)
+	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$5(AddingNewProductManagerImpl.java:90)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.NumberFormatException: For input string: "38 produktů"
+	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+	at java.lang.Integer.parseInt(Integer.java:580)
+	at java.lang.Integer.valueOf(Integer.java:766)
+	at java.util.Optional.map(Optional.java:215)
+	at sk.hudak.prco.eshop.FourKidsProductParser.parseCountOfPages(FourKidsProductParser.java:45)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.internalGetCountOfPages(JSoupProductParser.java:318)
+	... 8 common frames omitted
+2019-02-08 12:41:11,807 DEBUG [FOUR_KIDS] [] s.h.p.t.i.TaskManagerImpl [TaskManagerI
+----------------------------------------------------------------------------------------------------------
 BUG:
 PAMPERS Plienky Active Baby-Dry Mega Quad S4
 ma na konci nieco co vyzera ako medzera ale nie je to medzera

@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.AmdDrogeriaProductParser;
+import sk.hudak.prco.eshop.GigaLekarenProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -20,11 +20,32 @@ public class ProductParserTest {
 
         SearchUrlBuilder searchUrlBuilder = new SearchUrlBuilderImpl();
 
+        // Giga lekaren
+        System.out.println(new GigaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers"));
+//                .parseNewProductInfo("https://www.gigalekaren.sk/produkt/pampers-premium-care-newborn-2-5kg-88ks/"));
+                .parseProductUpdateData("https://www.gigalekaren.sk/produkt/pampers-premium-care-newborn-2-5kg-88ks/"));
+
+
+        // Internetova lekaren
+//        System.out.println(new InternetovaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers"));
+//                .parseNewProductInfo("http://www.internetovalekaren.eu/pampers-premium-newborn-1-2-5kg-88-ks-pampers-premium-newborn-1-2-5kg-88ks-mesacna-zasoba-plienok-darceky-zdarma/"));
+//                .parseProductUpdateData("http://www.internetovalekaren.eu/pampers-premium-newborn-1-2-5kg-88-ks-pampers-premium-newborn-1-2-5kg-88ks-mesacna-zasoba-plienok-darceky-zdarma/"));
+
+
         // Amd drogeria
-        System.out.println(new AmdDrogeriaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new AmdDrogeriaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.amddrogeria.sk/pampers-active-baby-plienky-4-maxi-7-14-kg-76-ks/"));
-                .parseProductUpdateData("https://www.amddrogeria.sk/pampers-active-baby-plienky-4-maxi-7-14-kg-76-ks/"));
+//                .parseProductUpdateData("https://www.amddrogeria.sk/pampers-giant-pack-junior-5-150-ks/"));
+//                .parseProductUpdateData("https://www.amddrogeria.sk/pampers-active-baby-plienky-4-maxi-7-14-kg-76-ks/"));
+
+        // Drogeria Vmd
+//        System.out.println(new DrogeriaVmdProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers"));
+//                .parseNewProductInfo("https://www.drogeria-vmd.sk/pampers-maxi-pack-4-9-14kg-58ks-0819/"));
+//                .parseProductUpdateData("https://www.drogeria-vmd.sk/pampers-maxi-pack-4-9-14kg-58ks-0819/"));
 
 //        // Alza
 //        System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -43,13 +64,6 @@ public class ProductParserTest {
 //                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.brendon.sk/Products/Details/118437"));
 //                .parseProductUpdateData("https://www.brendon.sk/Products/Details/84545"));
-//
-//        // Dx max
-//        System.out.println(new DrMaxProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                .parseUrlsOfProduct("pampers 5"));
-//                .parseNewProductInfo("https://www.drmax.sk/pampers-baby-wipes-fresh-clean-64ks/"));
-//                .parseNewProductInfo("https://www.drmax.sk/pampers-mega-maxi-132/"));
-//                .parseProductUpdateData("https://www.drmax.sk/pampers-mega-maxi-132/"));
 //
 //        // Feedo
 //        System.out.println(new FeedoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)

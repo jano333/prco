@@ -15,7 +15,6 @@ public enum EshopUuid {
     //TODO https://www.drogerka.sk/pampers-premium-care-detske-plienky-newborn-88-ks // nie su tam pampers 5
 
     // -- LEKARNE --
-    //TODO http://www.internetovalekaren.eu/akcia-pampers-plienky-premuim-utierky-sensitive/?utm_source=heureka&utm_medium=porovnavac&utm_campaign=heureka
     //TODO http://www.gigalekaren.sk/produkt/pampers-premium-care-newborn-2-5kg-88ks/
     //TODO https://www.mojalekaren.sk/pampers-premium-care-1-newborn-2-5kg-88-kusov/?utm_source=heureka.sk&utm_medium=product&utm_campaign=heureka.sk
     //TODO http://www.novalekarna.eu/index.php?detail=3230449&jazyk=sk
@@ -97,6 +96,11 @@ public enum EshopUuid {
             "https://www.4kids.sk/vyhledavani?search=" + KEYWORD_TEMP,
             "https://www.4kids.sk/vyhledavani?page=" + PAGE_NUMBER_TEMP + "&search=" + KEYWORD_TEMP,
             5, 12, -1),
+
+    GIGA_LEKAREN("https://www.gigalekaren.sk",
+            "https://www.gigalekaren.sk/vyhledavani/?phrase=" + KEYWORD_TEMP,
+            "https://www.gigalekaren.sk/vyhledavani/?phrase=" + KEYWORD_TEMP + "&strana=" + PAGE_NUMBER_TEMP,
+            5, 12, 24),
 
     //TODO impl,
     HORNBACH("https://www.hornbach.sk/",
