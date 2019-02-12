@@ -15,7 +15,6 @@ public enum EshopUuid {
     //TODO https://www.drogerka.sk/pampers-premium-care-detske-plienky-newborn-88-ks // nie su tam pampers 5
 
     // -- LEKARNE --
-    //TODO http://www.gigalekaren.sk/produkt/pampers-premium-care-newborn-2-5kg-88ks/
     //TODO https://www.mojalekaren.sk/pampers-premium-care-1-newborn-2-5kg-88-kusov/?utm_source=heureka.sk&utm_medium=product&utm_campaign=heureka.sk
     //TODO http://www.novalekarna.eu/index.php?detail=3230449&jazyk=sk
     //TODO https://www.prva-lekaren.sk/zbozi/3230449/pampers-premium-care-1-newborn-88ks
@@ -120,8 +119,8 @@ public enum EshopUuid {
 
     PERINBABA(
             "http://www.perinbaba.sk/",
-            "http://www.perinbaba.sk/catalogsearch/result/?limit=48&q={keyword}",
-            "http://www.perinbaba.sk/catalogsearch/result/index/?limit=48&p={pageNumber}&q={keyword}",
+            "http://www.perinbaba.sk/catalogsearch/result/?limit=48&q=" + KEYWORD_TEMP,
+            "http://www.perinbaba.sk/catalogsearch/result/index/?limit=48&p={pageNumber}&q=" + KEYWORD_TEMP,
             5, 12, -1),
 
     MALL("http://mall.sk",
