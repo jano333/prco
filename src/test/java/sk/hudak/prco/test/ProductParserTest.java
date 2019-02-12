@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.FourKidsProductParser;
+import sk.hudak.prco.eshop.PrvaLekarenProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -78,9 +78,8 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.maxikovy-hracky.cz/pampers-active-baby-3-midi-174ks?zmena_meny=EUR"));
 
 //        // FourKids
-//
-        System.out.println(new FourKidsProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-                .parseUrlsOfProduct("pampers"));
+//        System.out.println(new FourKidsProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.maxikovy-hracky.cz/pampers-active-baby-3-midi-174ks"));
 //                .parseProductUpdateData("https://www.maxikovy-hracky.cz/pampers-active-baby-3-midi-174ks?zmena_meny=EUR"));
 //
@@ -95,11 +94,14 @@ public class ProductParserTest {
 //                .parseUrlsOfProduct("pampers 4"));
 //                .parseNewProductInfo("http://www.perinbaba.sk/plienky-active-baby-dry-3-midi-4-9kg-mega-box-plus-174kg.html"));
 //                .parseProductUpdateData("http://www.perinbaba.sk/plienky-active-baby-dry-3-midi-4-9kg-mega-box-plus-174kg.html"));
-
-
-
-
-        // HORNBACH
+//
+        // Prva Lekaren
+        System.out.println(new PrvaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers"));
+//                .parseNewProductInfo("https://www.prva-lekaren.sk/zbozi/3376796/pampers-premium-care-pack-s0-30-ks-newborn"));
+                .parseProductUpdateData("https://www.prva-lekaren.sk/zbozi/3376796/pampers-premium-care-pack-s0-30-ks-newborn"));
+//
+//        // HORNBACH
 //        System.out.println(new HornbachProductParser(new UnitParserImpl(), userAgentDataHolder, searchUrlBuilder)
 ////                .parseProductUpdateData("https://www.hornbach.sk/shop/Bosch-GBH-2-28-F-s-funkciou-Kick-Back-Control-vr-dlata-a-vrtaka/6348699/artikel.html"));
 //                .parseProductUpdateData("https://www.hornbach.sk/shop/Zahradny-domcek-Duramax-Colossus-plechovy/6147837/artikel.html"));

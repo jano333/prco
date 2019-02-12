@@ -45,6 +45,8 @@ public class PrcoSSLContants {
         ALLOWED_HOSTNAME.add("amy.onebit.cz");
         ALLOWED_HOSTNAME.add("www.gigalekaren.sk");
 
+        ALLOWED_HOSTNAME.add("www.prva-lekaren.sk");
+
 
 
     }

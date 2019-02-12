@@ -15,8 +15,6 @@ public enum EshopUuid {
     //TODO https://www.drogerka.sk/pampers-premium-care-detske-plienky-newborn-88-ks // nie su tam pampers 5
 
     // -- LEKARNE --
-    //TODO https://www.mojalekaren.sk/pampers-premium-care-1-newborn-2-5kg-88-kusov/?utm_source=heureka.sk&utm_medium=product&utm_campaign=heureka.sk
-    //TODO http://www.novalekarna.eu/index.php?detail=3230449&jazyk=sk
     //TODO https://www.prva-lekaren.sk/zbozi/3230449/pampers-premium-care-1-newborn-88ks
     //TODO https://www.lekarenvkocke.sk/zq7b441326fad7a1ce98481e5344efbb5f-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x88-ks
     //TODO https://www.lekaren-bella.sk/zbozi/3230449/pampers-premium-care-1-newborn-88ks
@@ -28,6 +26,7 @@ public enum EshopUuid {
     //TODO https://www.lekarentriveze.sk/z7b441326fad7a1ce98481e5344efbb5f-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x88-ks
 
     // -- LEKARNE CZ --
+    //TODO http://www.novalekarna.eu/index.php?detail=3230449&jazyk=sk
     //TODO http://www.lekynadosah.cz/index.php?detail=3230449&mena=eu
     //TODO https://www.lekarna-oaza.cz/3230449-pampers-premium-care-1-newborn-88ks
     //TODO https://www.mujlekarnik.cz/pampers-premium-care-1-newborn-88ks_detail/?currency=EUR
@@ -117,11 +116,15 @@ public enum EshopUuid {
             "https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query={keyword}&submit_search=&p={pageNumber}",
             5, 12, -1),
 
-    PERINBABA(
-            "http://www.perinbaba.sk/",
+    PERINBABA("http://www.perinbaba.sk/",
             "http://www.perinbaba.sk/catalogsearch/result/?limit=48&q=" + KEYWORD_TEMP,
             "http://www.perinbaba.sk/catalogsearch/result/index/?limit=48&p={pageNumber}&q=" + KEYWORD_TEMP,
             5, 12, -1),
+
+    PRVA_LEKAREN("https://www.prva-lekaren.sk",
+            "https://www.prva-lekaren.sk/search?q=" + KEYWORD_TEMP,
+            "https://www.prva-lekaren.sk/search?lm=12&st=" + PAGE_NUMBER_TEMP + "&q=" + KEYWORD_TEMP,
+            5, 12, 12),
 
     MALL("http://mall.sk",
             "https://www.mall.sk/hladaj?s={keyword}",
