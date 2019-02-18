@@ -15,9 +15,8 @@ public enum EshopUuid {
     //TODO https://www.drogerka.sk/pampers-premium-care-detske-plienky-newborn-88-ks // nie su tam pampers 5
 
     // -- LEKARNE --
-    //TODO https://www.prva-lekaren.sk/zbozi/3230449/pampers-premium-care-1-newborn-88ks
-    //TODO https://www.lekarenvkocke.sk/zq7b441326fad7a1ce98481e5344efbb5f-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x88-ks
     //TODO https://www.lekaren-bella.sk/zbozi/3230449/pampers-premium-care-1-newborn-88ks
+    //TODO https://www.lekarenvkocke.sk/zq7b441326fad7a1ce98481e5344efbb5f-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x88-ks
     //TODO https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-premium-care-1-newborn-88ks-18815.html
     //TODO http://www.sos-lekaren.sk/tehotne-a-kojici-deti/pampers-premium-care-newborn-2-5kg-88ks/
     //TODO https://www.lekaren-doktorka.sk/3230449-pampers-premium-care-1-newborn-88ks
@@ -116,6 +115,45 @@ public enum EshopUuid {
             "https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query={keyword}&submit_search=&p={pageNumber}",
             5, 12, -1),
 
+    LEKAREN_BELLA("https://www.lekaren-bella.sk",
+            "https://www.lekaren-bella.sk/search/?query=" + KEYWORD_TEMP,
+            "https://www.lekaren-bella.sk/search:" + PAGE_NUMBER_TEMP + ":12/" + KEYWORD_TEMP,
+            5, 12, 12),
+
+    MALL("http://mall.sk",
+            "https://www.mall.sk/hladaj?s={keyword}",
+            "https://www.mall.sk/hladaj?page={pageNumber}&s=" + KEYWORD_TEMP,
+            2, 12, -1),
+
+    //TODO tento skoncil
+    MAMA_A_JA("https://eshop.mamaaja.sk",
+            "https://eshop.mamaaja.sk/catalog/search/?q=" + KEYWORD_TEMP,
+            "https://eshop.mamaaja.sk/catalog/search/?q={keyword}&offset={offset}",
+            5, 12, 24),
+
+    MAXIKOVY_HRACKY("https://www.maxikovy-hracky.cz",
+            "https://www.maxikovy-hracky.cz/vyhledavani?search=" + KEYWORD_TEMP,
+            "https://www.maxikovy-hracky.cz/vyhledavani?page=" + PAGE_NUMBER_TEMP + "&search=" + KEYWORD_TEMP,
+            3, 12, 60),
+
+    METRO("https://sortiment.metro.sk",
+            "https://sortiment.metro.sk/sk/search/?q={keyword}",
+            "https://sortiment.metro.sk/sk/search/?p={pageNumber}&search_by_price=dph_without&category_id=0&ownbrand=0&product_type_id=0&inaction=0&mysort=0&pcheck=0&local=0&orderby=wght&direction=asc&q={keyword}&extorder=0&onstock=0",
+            5, 12, -1),
+
+    MOJA_LEKAREN("https://www.mojalekaren.sk/",
+            "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}",
+            "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}&strana={pageNumber}",
+            5, 12, -1),
+
+
+    //TODO impl
+    OBI("https://www.obi.sk",
+            "https://www.obi.sk/search/{keyword}/?isi=true",
+            "https://www.obi.sk/search/{keyword}?page={pageNumber}",
+            5, 12, -1),
+
+
     PERINBABA("http://www.perinbaba.sk/",
             "http://www.perinbaba.sk/catalogsearch/result/?limit=48&q=" + KEYWORD_TEMP,
             "http://www.perinbaba.sk/catalogsearch/result/index/?limit=48&p={pageNumber}&q=" + KEYWORD_TEMP,
@@ -126,37 +164,6 @@ public enum EshopUuid {
             "https://www.prva-lekaren.sk/search?lm=12&st=" + PAGE_NUMBER_TEMP + "&q=" + KEYWORD_TEMP,
             5, 12, 12),
 
-    MALL("http://mall.sk",
-            "https://www.mall.sk/hladaj?s={keyword}",
-            "https://www.mall.sk/hladaj?page={pageNumber}&s={keyword}",
-            2, 12, -1),
-
-    //TODO tento skoncil
-    MAMA_A_JA("https://eshop.mamaaja.sk",
-            "https://eshop.mamaaja.sk/catalog/search/?q={keyword}",
-            "https://eshop.mamaaja.sk/catalog/search/?q={keyword}&offset={offset}",
-            5, 12, 24),
-
-    MAXIKOVY_HRACKY("https://www.maxikovy-hracky.cz",
-            "https://www.maxikovy-hracky.cz/vyhledavani?search=" + KEYWORD_TEMP,
-            "https://www.maxikovy-hracky.cz/vyhledavani?page=" + PAGE_NUMBER_TEMP + "&search=" + KEYWORD_TEMP,
-            3, 12, 60),
-
-    MOJA_LEKAREN("https://www.mojalekaren.sk/",
-            "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}",
-            "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}&strana={pageNumber}",
-            5, 12, -1),
-
-    METRO("https://sortiment.metro.sk",
-            "https://sortiment.metro.sk/sk/search/?q={keyword}",
-            "https://sortiment.metro.sk/sk/search/?p={pageNumber}&search_by_price=dph_without&category_id=0&ownbrand=0&product_type_id=0&inaction=0&mysort=0&pcheck=0&local=0&orderby=wght&direction=asc&q={keyword}&extorder=0&onstock=0",
-            5, 12, -1),
-
-    //TODO impl
-    OBI("https://www.obi.sk",
-            "https://www.obi.sk/search/{keyword}/?isi=true",
-            "https://www.obi.sk/search/{keyword}?page={pageNumber}",
-            5, 12, -1),
 
     // TODO picture NOT yet
     PILULKA("https://www.pilulka.sk",

@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.PrvaLekarenProductParser;
+import sk.hudak.prco.eshop.LekarenBellaProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -19,6 +19,13 @@ public class ProductParserTest {
         UnitParserImpl unitParser = new UnitParserImpl();
 
         SearchUrlBuilder searchUrlBuilder = new SearchUrlBuilderImpl();
+
+        // Lekaren Bella
+        System.out.println(new LekarenBellaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers"));
+//                .parseNewProductInfo("https://www.lekaren-bella.sk/zbozi/3134039/pampers-active-baby-vpp-4-maxi-58ks"));
+                .parseProductUpdateData("https://www.lekaren-bella.sk/zbozi/3134039/pampers-active-baby-vpp-4-maxi-58ks"));
+
 
         // Giga lekaren
 //        System.out.println(new GigaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -96,10 +103,10 @@ public class ProductParserTest {
 //                .parseProductUpdateData("http://www.perinbaba.sk/plienky-active-baby-dry-3-midi-4-9kg-mega-box-plus-174kg.html"));
 //
         // Prva Lekaren
-        System.out.println(new PrvaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new PrvaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.prva-lekaren.sk/zbozi/3376796/pampers-premium-care-pack-s0-30-ks-newborn"));
-                .parseProductUpdateData("https://www.prva-lekaren.sk/zbozi/3376796/pampers-premium-care-pack-s0-30-ks-newborn"));
+//                .parseProductUpdateData("https://www.prva-lekaren.sk/zbozi/3376796/pampers-premium-care-pack-s0-30-ks-newborn"));
 //
 //        // HORNBACH
 //        System.out.println(new HornbachProductParser(new UnitParserImpl(), userAgentDataHolder, searchUrlBuilder)

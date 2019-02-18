@@ -47,6 +47,8 @@ public class PrcoSSLContants {
 
         ALLOWED_HOSTNAME.add("www.prva-lekaren.sk");
 
+        ALLOWED_HOSTNAME.add("www.lekaren-bella.sk");
+
 
 
     }
