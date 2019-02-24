@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Optional.ofNullable;
 import static sk.hudak.prco.api.EshopUuid.KID_MARKET;
 import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
 
@@ -38,7 +39,7 @@ public class KidMarketProductParser extends JSoupProductParser {
 
     @Override
     protected int parseCountOfPages(Document documentList) {
-        return Optional.ofNullable(documentList.select("span[class=heading-counter]").first())
+        return ofNullable(documentList.select("span[class=heading-counter]").first())
                 .map(Element::text)
                 .map(textValue -> Integer.valueOf(StringUtils.removeStart(textValue, "Nájdené výsledky: ")))
                 .orElse(0);
@@ -46,6 +47,7 @@ public class KidMarketProductParser extends JSoupProductParser {
 
     @Override
     protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
+        //FIXME prepisat cez strem
         Element first = documentList.select("#product_list").first();
         if (first == null) {
             return Collections.emptyList();
@@ -62,24 +64,24 @@ public class KidMarketProductParser extends JSoupProductParser {
 
     @Override
     protected boolean isProductUnavailable(Document documentDetailProduct) {
-        return notExistElement(documentDetailProduct, "#add_to_cart");
+        return notExistElement(documentDetailProduct, "div[class='box-info-product'] p[id=add_to_cart]");
     }
 
     @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        return Optional.ofNullable(documentDetailProduct.select("h1[class=page-heading]").first())
+        return ofNullable(documentDetailProduct.select("h1[class=page-heading]").first())
                 .map(Element::text);
     }
 
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        return Optional.ofNullable(documentDetailProduct.select("#bigpic").first())
+        return ofNullable(documentDetailProduct.select("#bigpic").first())
                 .map(element -> element.attr("src"));
     }
 
     @Override
     protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        return Optional.ofNullable(documentDetailProduct.select("#our_price_display").first())
+        return ofNullable(documentDetailProduct.select("#our_price_display").first())
                 .map(Element::text)
                 .map(text -> StringUtils.removeEnd(text, "€"))
                 .map(ConvertUtils::convertToBigDecimal);
