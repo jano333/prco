@@ -16,6 +16,7 @@ import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.parser.UnitParser;
 import sk.hudak.prco.parser.impl.JSoupProductParser;
+import sk.hudak.prco.utils.ConvertUtils;
 import sk.hudak.prco.utils.UserAgentDataHolder;
 
 import java.io.IOException;
@@ -108,9 +109,9 @@ public class AlzaProductParser extends JSoupProductParser {
         if (StringUtils.isBlank(text)) {
             return Optional.empty();
         }
-        StringBuilder sb = new StringBuilder(text);
-        sb = sb.deleteCharAt(0);
-        return Optional.of(new BigDecimal(sb.toString().replace(",", ".")));
+        return Optional.of(text)
+                .map(value -> StringUtils.removeEnd(value, " €"))
+                .map(ConvertUtils::convertToBigDecimal);
     }
 
     @Override

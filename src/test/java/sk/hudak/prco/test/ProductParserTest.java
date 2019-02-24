@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.KidMarketProductParser;
+import sk.hudak.prco.eshop.AlzaProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -55,10 +55,10 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.drogeria-vmd.sk/pampers-maxi-pack-4-9-14kg-58ks-0819/"));
 
 //        // Alza
-//        System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+        System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 4"));
 //                .parseNewProductInfo("https://www.alza.sk/maxi/pampers-active-baby-dry-vel-4-maxi-174-ks-d4593569.htm"));
-//                .parseProductUpdateData("https://www.alza.sk/maxi/lovela-gel-color-4-7-l-50-pranie-d4849185.htm"));
+                .parseProductUpdateData("https://www.alza.sk/maxi/lovela-gel-color-4-7-l-50-pranie-d4849185.htm"));
 //
 //        // Bambino
 //        System.out.println(new BambinoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -91,11 +91,11 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.maxikovy-hracky.cz/pampers-active-baby-3-midi-174ks?zmena_meny=EUR"));
 //
 //        // KidMarket
-        System.out.println(new KidMarketProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new KidMarketProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://kidmarket.sk/jednorazove-plienky/176-pampers-active-baby-dry-vel6-extra-large-56ks-4015400736394.html?search_query=pampers+5&results=46"));
 //                .parseProductUpdateData("https://kidmarket.sk/jednorazove-plienky/183-pampers-active-baby-4-maxi-pack-58ks.html"));
-                .parseProductUpdateData("https://kidmarket.sk/jednorazove-plienky/177-pampers-active-baby-5-giant-pack-64ks.html?search_query=pampers&results=64"));
+//                .parseProductUpdateData("https://kidmarket.sk/jednorazove-plienky/177-pampers-active-baby-5-giant-pack-64ks.html?search_query=pampers&results=64"));
 //
 //        // Perinbaba
 //        System.out.println(new PerinbabaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
