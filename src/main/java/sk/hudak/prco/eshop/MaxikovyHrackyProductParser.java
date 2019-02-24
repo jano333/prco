@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.removeStart;
 import static sk.hudak.prco.api.EshopUuid.MAXIKOVY_HRACKY;
 
@@ -36,7 +37,7 @@ public class MaxikovyHrackyProductParser extends JSoupProductParser {
     @Override
     protected int parseCountOfPages(Document documentList) {
         //Optional[Zobrazuji 1-60 z 807 produktů]
-        Optional<Integer> countOfProductsOpt = Optional.ofNullable(documentList.select("div.line-sort > div > div.col-sm-4.text-right.top-12.font-12").first())
+        Optional<Integer> countOfProductsOpt = ofNullable(documentList.select("div.line-sort > div > div.col-sm-4.text-right.top-12.font-12").first())
                 .map(Element::text)
                 .map(text -> StringUtils.removeEnd(text, " produktů"))
                 .map(text -> removeStart(text, text.substring(0, text.indexOf(" z ") + 3)))
@@ -67,26 +68,29 @@ public class MaxikovyHrackyProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        Optional<String> s = Optional.ofNullable(documentDetailProduct.select("#product-info > div.col-xs-12.col-md-5 > h1").first())
+        return ofNullable(documentDetailProduct.select("#product-info > div.col-xs-12.col-md-5 > h1").first())
                 .map(Element::text);
-        return s;
     }
 
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        return Optional.ofNullable(documentDetailProduct.select("#product-info > div.col-xs-12.col-md-7 > div.main-image > a > img").first())
+        return ofNullable(documentDetailProduct.select("#product-info > div.col-xs-12.col-md-7 > div.main-image > a > img").first())
                 .map(element -> element.attr("src"));
     }
 
     @Override
     protected boolean isProductUnavailable(Document documentDetailProduct) {
-        return !Optional.ofNullable(documentDetailProduct.select("button[class='insert-cart btn btn-default']").first())
+        return !ofNullable(documentDetailProduct.select("button[class='insert-cart btn btn-default']").first())
                 .isPresent();
     }
 
     @Override
     protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        return Optional.ofNullable(documentDetailProduct.select("div[class='price text-red text-right']").first())
+        Element first = documentDetailProduct.select("div[class='price text-red text-right']").first();
+        if(first == null){
+            first = documentDetailProduct.select("div[class='price text-red text-right simple']").first();
+        }
+        return ofNullable(first)
                 .map(Element::text)
                 .map(text -> StringUtils.removeEnd(text, " €"))
                 .map(ConvertUtils::convertToBigDecimal);
