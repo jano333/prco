@@ -2,44 +2,9 @@
 2019-02-20 14:58:39,257 ERROR [MAMA_A_JA] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
 sk.hudak.prco.exception.PrcoRuntimeException: Parser implementation for eshop MAMA_A_JAnot found.
 ---------------------------------------------------------------------------------------------------------------------------------
-toto uz neesictuje 404 dava...
-2019-02-11 11:46:43,281 ERROR [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:244] error creating document for url 'https://www.brendon.sk/Products/List?searchtext=pampers':
-java.net.SocketException: Connection reset
----------------------
-2019-02-08 12:58:13,873 ERROR [KID_MARKET] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
-sk.hudak.prco.exception.ProductPriceNotFoundException: Product price for url 'https://kidmarket.sk/jednorazove-plienky/183-pampers-active-baby-4-maxi-pack-58ks.html' not found.
-	at sk.hudak.prco.parser.impl.JSoupProductParser.lambda$parseProductUpdateData$3(JSoupProductParser.java:186)
-	at java.util.Optional.orElseThrow(Optional.java:290)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:186)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.processUpdate(UpdateProductDataManagerImpl.java:245)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateAllProductsDataForEshop$21(UpdateProductDataManagerImpl.java:173)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-2019-02-08 12:58:13,873 DEBUG [KID_MARKET] [] s.h.p.t.i.TaskManagerImpl [TaskManagerImpl.java:109] marking task for eshop KID_MARKET as FINISHED_WITH_ERROR
-2019-02-08 12:58:16,201 DEBUG [main] [] s.h.p.u.ThreadUtils [ThreadUtils.java:26] start sleeping for 3 sec
-2019-02-08 12:58:16,201 DEBUG [PERINBABA] [] s.h.p.t.i.TaskManagerImpl [TaskManagerImpl.java:103] marking task for eshop PERINBABA as RUNNING
-2019-02-08 12:58:16,201 DEBUG [PERINBABA] [] s.h.p.s.Starter [Starter.java:179] >> eshop: PERINBABA, updated/waiting: 4/0
-2019-02-08 12:58:16,201 DEBUG [PERINBABA] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:191] none product found for update
-2019-02-08 12:58:16,201 DEBUG [PERINBABA] [] s.h.p.t.i.TaskManagerImpl [TaskManagerImpl.java:109] marking task for eshop PERINBABA as FINISHED_OK
-2019-02-08 12:58:19,214 DEBUG [main] [] s.h.p.u.ThreadUtils [ThreadUtils.java:26] start sleeping for 3 sec
-2019-02-08 12:58:19,214 DEBUG [MALL] [] s.h.p.t.i.TaskManagerImpl [TaskManagerImpl.java:103] marking task for eshop MALL as RUNNING
-2019-02-08 12:58:19,214 DEBUG [MALL] [] s.h.p.s.Starter [Starter.java:179] >> eshop: MALL, updated/waiting: 39/0
-2019-02-08 12:58:19,214 DEBUG [MALL] [] s.h.p.m
--------------------------------------------------------------------
-
-1:59,308 ERROR [BRENDON] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:96] error while creating new product
-sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException: timeout
--------------------------------------
 BUG:
 PAMPERS Plienky Active Baby-Dry Mega Quad S4
 ma na konci nieco co vyzera ako medzera ale nie je to medzera
---------------------------------------------------------------------------------------------------------------------
-FEATURE:
-na stranke new produkty pridat link na odmazanie produktu z novych produktov, lebo su take ktore uz neexistuju
 --------------------------------------------------------------------------------------------------------------------
 BUG
 tieto dva produkty to su to iste... lebo na jednom z nich je tam redirect... skusit neako poriesit... na zaklade nazvu, pripadne vyslednej(redirect url)
