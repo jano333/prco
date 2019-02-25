@@ -1,9 +1,9 @@
 package sk.hudak.prco.eshop;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static java.util.Optional.ofNullable;
 
 @Slf4j
 @Component
@@ -59,15 +61,14 @@ public class MojaLekarenProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        return Optional.ofNullable(documentDetailProduct.select("body > main > div.detail-top.list > div > h1").first())
-                .filter(Objects::nonNull)
-                .map(Element::text);
+        return ofNullable(documentDetailProduct.select("div.detail-top.list > div > h1").first())
+                .map(Element::text)
+                .filter(StringUtils::isNotBlank);
     }
 
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("div.product__img > a > picture > img");
-        Element first = select.first();
+        Element first = documentDetailProduct.select("div.product__img > a > picture > img").first();
         if (first == null) {
             return Optional.empty();
         }

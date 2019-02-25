@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.LekarenVKockeProductParser;
+import sk.hudak.prco.eshop.MojaLekarenProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -78,10 +78,10 @@ public class ProductParserTest {
 //                .parseNewProductInfo("https://www.feedo.sk/pampers-active-baby-4-maxi-174ks-8-14kg-mesacna-zasoba-jednorazove-plienky/"));
 //                .parseProductUpdateData("https://www.feedo.sk/pampers-active-baby-4-maxi-174ks-8-14kg-mesacna-zasoba-jednorazove-plienky/"));
         // Lekaren v kocke
-        System.out.println(new LekarenVKockeProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new LekarenVKockeProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.lekarenvkocke.sk/zq63a34d05b2ee15854983854d75bc3696-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x22-ks"));
-                .parseProductUpdateData("https://www.lekarenvkocke.sk/zq63a34d05b2ee15854983854d75bc3696-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x22-ks"));
+//                .parseProductUpdateData("https://www.lekarenvkocke.sk/zq63a34d05b2ee15854983854d75bc3696-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x22-ks"));
 //
 //        // MaxikovyHracky
 //        System.out.println(new MaxikovyHrackyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -163,9 +163,9 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://sortiment.metro.sk/sk/pampers-abd-mb-s4p-152ks/241760p/"));
 
         // Moja Lekaren
-//        System.out.println(new MojaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+        System.out.println(new MojaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 4"));
-//                .parseNewProductInfo("https://www.mojalekaren.sk//nutrilon-comfort-1-400g/"));
+                .parseNewProductInfo("https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/"));
 //                .parseProductUpdateData("https://www.mojalekaren.sk//nutrilon-comfort-1-400g/"));
 
         // Pilulka
