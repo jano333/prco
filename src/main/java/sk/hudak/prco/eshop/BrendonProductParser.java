@@ -42,6 +42,12 @@ public class BrendonProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 15 sekund
+        return 15000;
+    }
+
+    @Override
     protected int parseCountOfPages(Document documentList) {
         return ofNullable(documentList.select("ul[class='pagermenu'] li[class='bluelink'] span").first())
                 .map(Element::text)

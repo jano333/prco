@@ -41,6 +41,12 @@ public class DrogeriaVmdProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 15 sekund
+        return 15000;
+    }
+
+    @Override
     protected int parseCountOfPages(Document documentList) {
         return ofNullable(documentList.select("span.pages a").last())
                 .map(Element::text)
