@@ -245,7 +245,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
             updateData = htmlParser.parseProductUpdateData(productDetailInfo.getUrl());
 
         } catch (HttpErrorPrcoRuntimeException e) {
-            log.error("error while updating", e);
+            log.error("error while updating product, http status: " + e.getHttpStatus(), e);
             if (404 == e.getHttpStatus()) {
                 save404Error(productDetailInfo.getEshopUuid(), productDetailInfo.getUrl(), e.getMessage(), e);
                 return ERR_HTML_PARSING_FAILED_404_ERROR;
@@ -255,8 +255,6 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
             saveTimeout4Error(productDetailInfo.getEshopUuid(), productDetailInfo.getUrl(), e.getMessage(), e);
             throw e;
         }
-
-
         if (updateData.isProductAvailable()) {
             //FIXME premapovanie cez sk.hudak.prco mapper nie takto rucne, nech mam na jednom mieste tie preklapacky...
             internalTxService.updateProductData(ProductUpdateDataDto.builder()
