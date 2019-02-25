@@ -2,9 +2,6 @@
 2019-02-20 14:58:39,257 ERROR [MAMA_A_JA] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
 sk.hudak.prco.exception.PrcoRuntimeException: Parser implementation for eshop MAMA_A_JAnot found.
 ---------------------------------------------------------------------------------------------------------------------------------
-Nevie rozparsovat unit
-https://www.drmax.sk/pampers-plienky-s4p-active-baby-monthly-box-152/
---------------------
 019-02-18 14:17:47,117 ERROR [DROGERIA_VMD] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:96] error while creating new product
 sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException: timeout
 	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:241)

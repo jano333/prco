@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.LekarenBellaProductParser;
+import sk.hudak.prco.eshop.DrMaxProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -21,9 +21,9 @@ public class ProductParserTest {
         SearchUrlBuilder searchUrlBuilder = new SearchUrlBuilderImpl();
 
         // Lekaren Bella
-        System.out.println(new LekarenBellaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new LekarenBellaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
-                .parseNewProductInfo("https://www.lekaren-bella.sk/zbozi/3616340/pampers-kalhotkove-plenky-jumbo-pack-s3-60ks"));
+//                .parseNewProductInfo("https://www.lekaren-bella.sk/zbozi/3616340/pampers-kalhotkove-plenky-jumbo-pack-s3-60ks"));
 //                .parseProductUpdateData("https://www.lekaren-bella.sk/zbozi/3134039/pampers-active-baby-vpp-4-maxi-58ks"));
 
 
@@ -113,6 +113,15 @@ public class ProductParserTest {
 //        System.out.println(new HornbachProductParser(new UnitParserImpl(), userAgentDataHolder, searchUrlBuilder)
 ////                .parseProductUpdateData("https://www.hornbach.sk/shop/Bosch-GBH-2-28-F-s-funkciou-Kick-Back-Control-vr-dlata-a-vrtaka/6348699/artikel.html"));
 //                .parseProductUpdateData("https://www.hornbach.sk/shop/Zahradny-domcek-Duramax-Colossus-plechovy/6147837/artikel.html"));
+
+// Dx max
+        System.out.println(new DrMaxProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers/ 5"));
+                .parseNewProductInfo("https://www.drmax.sk/pampers-plienky-s4p-active-baby-monthly-box-152/"));
+//                .parseNewProductInfo("https://www.drmax.sk/pampers-baby-wipes-fresh-clean-64ks/"));
+//                .parseNewProductInfo("https://www.drmax.sk/pampers-mega-maxi-132/"));
+//                .parseProductUpdateData("https://www.drmax.sk/pampers-mega-maxi-132/"));
+
 
 
         // OBI

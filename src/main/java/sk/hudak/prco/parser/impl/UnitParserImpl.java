@@ -126,6 +126,12 @@ public class UnitParserImpl implements UnitParser {
             return createKus(matcher.group(3), matcher.group(1));
         }
 
+        // 152 kusov
+        matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, SPACE, "kusov$");
+        if (matcher.find()) {
+            return createKus(matcher.group(1));
+        }
+
         // --- OBJEM ---
 
         // Velkopopovický Kozel pivo tmavé 6x4x500 ml PLECH
