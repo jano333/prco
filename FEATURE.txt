@@ -1,5 +1,13 @@
+---------------------------------------------------------------------------------------------------------------------------------
+Feature:
+prest vsetky eshop uid konfiguraciu na pocet stran, ci nie je malo lebo ked dam pampers tak to moze byt aj viac stran ako napr 5
+---------------------------------------------------------------------------------------------------------------------------------
+Feature:
+update spustit tak ze naprv pampers 5, potom nutrilon, a az potom ostatne
+---------------------------------------------------------------------------------------------------------------------------------
 pridat keywords do tabluky pre produkty a vyhladavat v nej... podla klucov, (mozu to byt slova z nazvu oddelene)
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
+toto uz tiez asi je:
 pridat na stranku pocet produktov: 'List of products not in any group'
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
 vymysielt asi conting alebo datumovo ak je produkt viac ako 10x mysli sa tym 10 dni  tak ho rovno dat prec?

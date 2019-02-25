@@ -1,32 +1,7 @@
 ---------------------------------------------------------------------------------------------------------------------------------
-Feature:
-prest vsetky eshop uid konfiguraciu na pocet stran, ci nie je malo lebo ked dam pampers tak to moze byt aj viac stran ako napr 5
----------------------------------------------------------------------------------------------------------------------------------
-Feature:
-update spustit tak ze naprv pampers 5, potom nutrilon, a az potom ostatne
----------------------------------------------------------------------------------------------------------------------------------
 2019-02-20 14:58:39,257 ERROR [MAMA_A_JA] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
 sk.hudak.prco.exception.PrcoRuntimeException: Parser implementation for eshop MAMA_A_JAnot found.
 ---------------------------------------------------------------------------------------------------------------------------------
-2019-02-20 14:52:17,000 DEBUG [LEKAREN_BELLA] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:215] request URL: https://www.lekaren-bella.sk/zbozi/3616340/pampers-kalhotkove-plenky-jumbo-pack-s3-60ks
-2019-02-20 14:52:17,000 DEBUG [LEKAREN_BELLA] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:218] userAgent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36
-2019-02-20 14:52:17,079 DEBUG [LEKAREN_BELLA] [] s.h.p.s.i.ErrorServiceImpl [ErrorServiceImpl.java:101] create entity ErrorEntity with id 3716
-2019-02-20 14:52:17,079 ERROR [LEKAREN_BELLA] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:96] error while creating new product
-sk.hudak.prco.exception.RequiredParameterException: parameter productName is null/empty
-	at sk.hudak.prco.utils.Validate.notNullNotEmpty(Validate.java:26)
-	at sk.hudak.prco.parser.impl.UnitParserImpl.parseUnitTypeValueCount(UnitParserImpl.java:34)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseUnitValueCount(JSoupProductParser.java:258)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseNewProductInfo(JSoupProductParser.java:154)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseNewProductInfo(JsoupHtmlParser.java:51)
-	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.java:162)
-	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$5(AddingNewProductManagerImpl.java:92)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-2019-02-20 14:52:17,079 DEBUG [LEKAREN_BELLA] [] s.h.p.t.i.TaskManagerImpl [TaskManagerImpl.java:109] marking task for eshop LEKAREN_BELLA as FINISHED_WITH_ERROR
--------------------------
 Nevie rozparsovat unit
 https://www.drmax.sk/pampers-plienky-s4p-active-baby-monthly-box-152/
 --------------------

@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.AlzaProductParser;
+import sk.hudak.prco.eshop.LekarenBellaProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -21,9 +21,9 @@ public class ProductParserTest {
         SearchUrlBuilder searchUrlBuilder = new SearchUrlBuilderImpl();
 
         // Lekaren Bella
-//        System.out.println(new LekarenBellaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+        System.out.println(new LekarenBellaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
-//                .parseNewProductInfo("https://www.lekaren-bella.sk/zbozi/3134039/pampers-active-baby-vpp-4-maxi-58ks"));
+                .parseNewProductInfo("https://www.lekaren-bella.sk/zbozi/3616340/pampers-kalhotkove-plenky-jumbo-pack-s3-60ks"));
 //                .parseProductUpdateData("https://www.lekaren-bella.sk/zbozi/3134039/pampers-active-baby-vpp-4-maxi-58ks"));
 
 
@@ -55,10 +55,10 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.drogeria-vmd.sk/pampers-maxi-pack-4-9-14kg-58ks-0819/"));
 
 //        // Alza
-        System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 4"));
 //                .parseNewProductInfo("https://www.alza.sk/maxi/pampers-active-baby-dry-vel-4-maxi-174-ks-d4593569.htm"));
-                .parseProductUpdateData("https://www.alza.sk/maxi/lovela-gel-color-4-7-l-50-pranie-d4849185.htm"));
+//                .parseProductUpdateData("https://www.alza.sk/maxi/lovela-gel-color-4-7-l-50-pranie-d4849185.htm"));
 //
 //        // Bambino
 //        System.out.println(new BambinoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)

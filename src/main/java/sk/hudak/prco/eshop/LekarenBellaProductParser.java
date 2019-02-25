@@ -3,6 +3,7 @@ package sk.hudak.prco.eshop;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
@@ -53,8 +54,13 @@ public class LekarenBellaProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        return ofNullable(documentDetailProduct.select("h1[class='product-detail-title title-sm']"))
-                .map(Elements::text);
+        Element first = documentDetailProduct.select("h1[class='product-detail-title title-sm']").first();
+        if (first == null) {
+            first = documentDetailProduct.select("h1[class='product-detail-title title-xs']").first();
+        }
+        return ofNullable(first)
+                .map(Element::text)
+                .filter(StringUtils::isNotBlank);
     }
 
     @Override
@@ -81,13 +87,13 @@ public class LekarenBellaProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
-        //TODO
+        //TODO impl
         return Optional.empty();
     }
 
     @Override
     protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
-        //TODO
+        //TODO impl
         return Optional.empty();
     }
 }
