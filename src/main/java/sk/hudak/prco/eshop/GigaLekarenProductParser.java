@@ -67,12 +67,12 @@ public class GigaLekarenProductParser extends JSoupProductParser {
 
     @Override
     protected boolean isProductUnavailable(Document documentDetailProduct) {
-        return documentDetailProduct.select("#detail_block_form_cart").first() == null;
+        return null == documentDetailProduct.select("#detail_block_form_cart").first();
     }
 
     @Override
     protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        return ofNullable(documentDetailProduct.select("#rw_det1 > table > tbody > tr:nth-child(5) > td.color > strong"))
+        return ofNullable(documentDetailProduct.select("td.color > strong"))
                 .map(Elements::text)
                 .filter(StringUtils::isNotBlank)
                 .map(value -> StringUtils.removeEnd(value, " €"))
@@ -81,11 +81,13 @@ public class GigaLekarenProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
+        //TODO impl
         return Optional.empty();
     }
 
     @Override
     protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
+        //TODO impl
         return Optional.empty();
     }
 }

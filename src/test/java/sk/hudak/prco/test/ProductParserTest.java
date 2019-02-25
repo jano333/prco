@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.MojaLekarenProductParser;
+import sk.hudak.prco.eshop.GigaLekarenProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -28,10 +28,10 @@ public class ProductParserTest {
 
 
         // Giga lekaren
-//        System.out.println(new GigaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+        System.out.println(new GigaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.gigalekaren.sk/produkt/pampers-premium-care-newborn-2-5kg-88ks/"));
-//                .parseProductUpdateData("https://www.gigalekaren.sk/produkt/pampers-premium-care-newborn-2-5kg-88ks/"));
+                .parseProductUpdateData("https://www.gigalekaren.sk/produkt/pampers-active-baby-vpp-junior-11-18kg-50ks/"));
 
 
         // Internetova lekaren
@@ -163,9 +163,9 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://sortiment.metro.sk/sk/pampers-abd-mb-s4p-152ks/241760p/"));
 
         // Moja Lekaren
-        System.out.println(new MojaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new MojaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 4"));
-                .parseNewProductInfo("https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/"));
+//                .parseNewProductInfo("https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/"));
 //                .parseProductUpdateData("https://www.mojalekaren.sk//nutrilon-comfort-1-400g/"));
 
         // Pilulka
