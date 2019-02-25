@@ -43,6 +43,12 @@ public class BambinoProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 15 sekund
+        return 15000;
+    }
+
+    @Override
     protected int parseCountOfPages(Document documentList) {
         Optional<String> text = getTextFromFirstElementByClass(documentList, "o-header-section__info");
         if (!text.isPresent()) {

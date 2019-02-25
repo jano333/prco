@@ -44,6 +44,12 @@ public class MallProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 15 sekund
+        return 15000;
+    }
+
+    @Override
     protected int parseCountOfPages(Document documentList) {
         StringBuilder htmlTree = new StringBuilder()
                 .append("span[data-sel=productCountNumber]");
