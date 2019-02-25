@@ -15,7 +15,6 @@ public enum EshopUuid {
     //TODO https://www.drogerka.sk/pampers-premium-care-detske-plienky-newborn-88-ks // nie su tam pampers 5
 
     // -- LEKARNE --
-    //TODO https://www.lekaren-bella.sk/zbozi/3230449/pampers-premium-care-1-newborn-88ks
     //TODO https://www.lekarenvkocke.sk/zq7b441326fad7a1ce98481e5344efbb5f-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x88-ks
     //TODO https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-premium-care-1-newborn-88ks-18815.html
     //TODO http://www.sos-lekaren.sk/tehotne-a-kojici-deti/pampers-premium-care-newborn-2-5kg-88ks/
@@ -118,6 +117,11 @@ public enum EshopUuid {
     LEKAREN_BELLA("https://www.lekaren-bella.sk",
             "https://www.lekaren-bella.sk/search/?query=" + KEYWORD_TEMP,
             "https://www.lekaren-bella.sk/search:" + PAGE_NUMBER_TEMP + ":12/" + KEYWORD_TEMP,
+            5, 12, 12),
+
+    LEKAREN_V_KOCKE("https://www.lekarenvkocke.sk",
+            "https://www.lekarenvkocke.sk/vyhladavanie?q=" + KEYWORD_TEMP,
+            "https://www.lekarenvkocke.sk/vyhladavanie:" + PAGE_NUMBER_TEMP + ":12:00/" + KEYWORD_TEMP,
             5, 12, 12),
 
     MALL("http://mall.sk",
