@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.GigaLekarenProductParser;
+import sk.hudak.prco.eshop.ManagoProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -26,12 +26,17 @@ public class ProductParserTest {
 //                .parseNewProductInfo("https://www.lekaren-bella.sk/zbozi/3616340/pampers-kalhotkove-plenky-jumbo-pack-s3-60ks"));
 //                .parseProductUpdateData("https://www.lekaren-bella.sk/zbozi/3134039/pampers-active-baby-vpp-4-maxi-58ks"));
 
-
         // Giga lekaren
-        System.out.println(new GigaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new GigaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.gigalekaren.sk/produkt/pampers-premium-care-newborn-2-5kg-88ks/"));
-                .parseProductUpdateData("https://www.gigalekaren.sk/produkt/pampers-active-baby-vpp-junior-11-18kg-50ks/"));
+//                .parseProductUpdateData("https://www.gigalekaren.sk/produkt/pampers-active-baby-vpp-junior-11-18kg-50ks/"));
+//
+        // Manago
+        System.out.println(new ManagoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers"));
+//                .parseNewProductInfo("https://www.magano.sk/pampers-pants-midi-60ks-6-11kg-velkost-3"));
+                .parseProductUpdateData("https://www.magano.sk/pampers-pants-midi-60ks-6-11kg-velkost-3"));
 
 
         // Internetova lekaren
@@ -127,7 +132,6 @@ public class ProductParserTest {
 //                .parseNewProductInfo("https://www.drmax.sk/pampers-baby-wipes-fresh-clean-64ks/"));
 //                .parseNewProductInfo("https://www.drmax.sk/pampers-mega-maxi-132/"));
 //                .parseProductUpdateData("https://www.drmax.sk/pampers-mega-maxi-132/"));
-
 
 
         // OBI

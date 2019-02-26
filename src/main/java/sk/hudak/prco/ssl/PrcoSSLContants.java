@@ -50,6 +50,9 @@ public class PrcoSSLContants {
 
         ALLOWED_HOSTNAME.add("www.lekarenvkocke.sk");
 
+        ALLOWED_HOSTNAME.add("elbiahosting.sk");
+        ALLOWED_HOSTNAME.add("www.magano.sk");
+
 
 
     }

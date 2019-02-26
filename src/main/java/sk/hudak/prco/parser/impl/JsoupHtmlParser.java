@@ -70,6 +70,6 @@ public class JsoupHtmlParser implements HtmlParser {
         return productParsers.stream()
                 .filter(f -> f.getEshopUuid().equals(eshopUuid))
                 .findFirst()
-                .orElseThrow(() -> new PrcoRuntimeException("Parser implementation for eshop " + eshopUuid + "not found."));
+                .orElseThrow(() -> new PrcoRuntimeException("Parser implementation for eshop " + eshopUuid + " not found."));
     }
 }

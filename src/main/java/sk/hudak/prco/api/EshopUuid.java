@@ -1,5 +1,9 @@
 package sk.hudak.prco.api;
 
+import lombok.Getter;
+
+import static sk.hudak.prco.api.EshopCategory.DRUGSTORE;
+import static sk.hudak.prco.api.EshopCategory.PHARMACY;
 import static sk.hudak.prco.api.SearchTemplateConstants.KEYWORD_TEMP;
 import static sk.hudak.prco.api.SearchTemplateConstants.OFFSET_TEMP;
 import static sk.hudak.prco.api.SearchTemplateConstants.PAGE_NUMBER_TEMP;
@@ -9,13 +13,22 @@ import static sk.hudak.prco.api.SearchTemplateConstants.PAGE_NUMBER_TEMP;
  */
 public enum EshopUuid {
 
+    //magano.sk
+    // EsoDrogéria
+//    diskontdrogerie.cz
+    // Drogerka
+    // Demro
+    // FunKids
+    // Babyplace
+    // CKD market.sk
+//    predeti.sk
+
     // -- DROGERIE --
     //TODO https://www.diskontdrogerie.cz/plenky/pampers-premium-care-1-new-born-88ks.html
 
     //TODO https://www.drogerka.sk/pampers-premium-care-detske-plienky-newborn-88-ks // nie su tam pampers 5
 
     // -- LEKARNE --
-    //TODO https://www.lekarenvkocke.sk/zq7b441326fad7a1ce98481e5344efbb5f-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x88-ks
     //TODO https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-premium-care-1-newborn-88ks-18815.html
     //TODO http://www.sos-lekaren.sk/tehotne-a-kojici-deti/pampers-premium-care-newborn-2-5kg-88ks/
     //TODO https://www.lekaren-doktorka.sk/3230449-pampers-premium-care-1-newborn-88ks
@@ -72,7 +85,9 @@ public enum EshopUuid {
             "https://www.brendon.sk/Products/List?SearchText={keyword}&&Page={pageNumber}&Order=onweb&ProdNo=30",
             5, 12, 30),
 
-    DR_MAX("https://www.drmax.sk",
+    DR_MAX(
+            PHARMACY,
+            "https://www.drmax.sk",
             "https://www.drmax.sk/catalog/search/?q=" + KEYWORD_TEMP,
             "https://www.drmax.sk/catalog/search/?q={keyword}&offset={offset}&limit={limit}",
             4, 12, 24),
@@ -81,7 +96,6 @@ public enum EshopUuid {
             "https://www.drogeria-vmd.sk/hladanie/?q=" + KEYWORD_TEMP,
             "https://www.drogeria-vmd.sk/hladanie-stranka-{pageNumber}/?q=" + KEYWORD_TEMP,
             4, 12, 12),
-
 
     FEEDO("https://www.feedo.sk",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/",
@@ -93,7 +107,9 @@ public enum EshopUuid {
             "https://www.4kids.sk/vyhledavani?page=" + PAGE_NUMBER_TEMP + "&search=" + KEYWORD_TEMP,
             5, 12, -1),
 
-    GIGA_LEKAREN("https://www.gigalekaren.sk",
+    GIGA_LEKAREN(
+            PHARMACY,
+            "https://www.gigalekaren.sk",
             "https://www.gigalekaren.sk/vyhledavani/?phrase=" + KEYWORD_TEMP,
             "https://www.gigalekaren.sk/vyhledavani/?phrase=" + KEYWORD_TEMP + "&strana=" + PAGE_NUMBER_TEMP,
             5, 12, 24),
@@ -104,7 +120,9 @@ public enum EshopUuid {
             "TODO nie je to cez parameter v stranke...",
             5, 12, -1),
 
-    INTERNETOVA_LEKAREN("http://www.internetovalekaren.eu",
+    INTERNETOVA_LEKAREN(
+            PHARMACY,
+            "http://www.internetovalekaren.eu",
             "http://www.internetovalekaren.eu/catalog/search/?q=" + KEYWORD_TEMP,
             "http://www.internetovalekaren.eu/catalog/search/?q=" + KEYWORD_TEMP + "&offset=" + OFFSET_TEMP,
             5, 12, 22),
@@ -114,14 +132,25 @@ public enum EshopUuid {
             "https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query={keyword}&submit_search=&p={pageNumber}",
             5, 12, -1),
 
-    LEKAREN_BELLA("https://www.lekaren-bella.sk",
+    LEKAREN_BELLA(
+            PHARMACY,
+            "https://www.lekaren-bella.sk",
             "https://www.lekaren-bella.sk/search/?query=" + KEYWORD_TEMP,
             "https://www.lekaren-bella.sk/search:" + PAGE_NUMBER_TEMP + ":12/" + KEYWORD_TEMP,
             5, 12, 12),
 
-    LEKAREN_V_KOCKE("https://www.lekarenvkocke.sk",
+    LEKAREN_V_KOCKE(
+            PHARMACY,
+            "https://www.lekarenvkocke.sk",
             "https://www.lekarenvkocke.sk/vyhladavanie?q=" + KEYWORD_TEMP,
             "https://www.lekarenvkocke.sk/vyhladavanie:" + PAGE_NUMBER_TEMP + ":12:00/" + KEYWORD_TEMP,
+            5, 12, 12),
+
+    MAGANO(
+            DRUGSTORE,
+            "https://www.magano.sk",
+            "https://www.magano.sk/produkty/search?term=" + KEYWORD_TEMP,
+            "https://www.magano.sk/produkty/search/" + PAGE_NUMBER_TEMP + "?term=" + KEYWORD_TEMP,
             5, 12, 12),
 
     MALL("http://mall.sk",
@@ -130,6 +159,7 @@ public enum EshopUuid {
             2, 12, -1),
 
     //TODO tento skoncil
+    @Deprecated
     MAMA_A_JA("https://eshop.mamaaja.sk",
             "https://eshop.mamaaja.sk/catalog/search/?q=" + KEYWORD_TEMP,
             "https://eshop.mamaaja.sk/catalog/search/?q={keyword}&offset={offset}",
@@ -145,7 +175,9 @@ public enum EshopUuid {
             "https://sortiment.metro.sk/sk/search/?p={pageNumber}&search_by_price=dph_without&category_id=0&ownbrand=0&product_type_id=0&inaction=0&mysort=0&pcheck=0&local=0&orderby=wght&direction=asc&q={keyword}&extorder=0&onstock=0",
             5, 12, -1),
 
-    MOJA_LEKAREN("https://www.mojalekaren.sk/",
+    MOJA_LEKAREN(
+            PHARMACY,
+            "https://www.mojalekaren.sk/",
             "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}",
             "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}&strana={pageNumber}",
             5, 12, -1),
@@ -157,20 +189,23 @@ public enum EshopUuid {
             "https://www.obi.sk/search/{keyword}?page={pageNumber}",
             5, 12, -1),
 
-
     PERINBABA("http://www.perinbaba.sk/",
             "http://www.perinbaba.sk/catalogsearch/result/?limit=48&q=" + KEYWORD_TEMP,
             "http://www.perinbaba.sk/catalogsearch/result/index/?limit=48&p={pageNumber}&q=" + KEYWORD_TEMP,
             5, 12, -1),
 
-    PRVA_LEKAREN("https://www.prva-lekaren.sk",
+    PRVA_LEKAREN(
+            PHARMACY,
+            "https://www.prva-lekaren.sk",
             "https://www.prva-lekaren.sk/search?q=" + KEYWORD_TEMP,
             "https://www.prva-lekaren.sk/search?lm=12&st=" + PAGE_NUMBER_TEMP + "&q=" + KEYWORD_TEMP,
             5, 12, 12),
 
 
     // TODO picture NOT yet
-    PILULKA("https://www.pilulka.sk",
+    PILULKA(
+            PHARMACY,
+            "https://www.pilulka.sk",
             "https://www.pilulka.sk/hledat?q={keyword}",
             "https://www.pilulka.sk/hledat?q={keyword}&page={pageNumber}",
             5, 12, -1),
@@ -191,6 +226,20 @@ public enum EshopUuid {
     private int olderThanInHours;
 
     private int maxCountOfProductOnPage;
+
+    @Getter
+    private EshopCategory category;
+
+    EshopUuid(EshopCategory category, String productStartUrl, String searchTemplateUrl, String searchTemplateUrlWithPageNumber,
+              int maxCountOfNewPages, int olderThanInHours, int maxCountOfProductOnPage) {
+        this.category = category;
+        this.productStartUrl = productStartUrl;
+        this.searchTemplateUrl = searchTemplateUrl;
+        this.searchTemplateUrlWithPageNumber = searchTemplateUrlWithPageNumber;
+        this.maxCountOfNewPages = maxCountOfNewPages;
+        this.olderThanInHours = olderThanInHours;
+        this.maxCountOfProductOnPage = maxCountOfProductOnPage;
+    }
 
     EshopUuid(String productStartUrl, String searchTemplateUrl, String searchTemplateUrlWithPageNumber,
               int maxCountOfNewPages, int olderThanInHours, int maxCountOfProductOnPage) {
