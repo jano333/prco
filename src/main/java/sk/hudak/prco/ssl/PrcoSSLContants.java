@@ -53,6 +53,10 @@ public class PrcoSSLContants {
         ALLOWED_HOSTNAME.add("elbiahosting.sk");
         ALLOWED_HOSTNAME.add("www.magano.sk");
 
+        ALLOWED_HOSTNAME.add("www.esodrogeria.eu");
+
+
+
 
 
     }
