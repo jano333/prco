@@ -15,7 +15,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.builder.SearchUrlBuilder;
@@ -39,7 +38,7 @@ import static sk.hudak.prco.api.EshopUuid.HORNBACH;
 import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
 
 @Slf4j
-@Component
+//@Component
 public class HornbachProductParser extends JSoupProductParser implements WatchDogParser {
 
     public HornbachProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {

@@ -6,7 +6,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.builder.SearchUrlBuilder;
@@ -25,7 +24,7 @@ import static sk.hudak.prco.api.EshopUuid.OBI;
 import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
 
 @Slf4j
-@Component
+//@Component
 public class ObiProductParser extends JSoupProductParser implements WatchDogParser {
     // TODO doriesit aby bralo len kosicku pobocku? pozor su 2...
 
