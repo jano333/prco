@@ -1,3 +1,34 @@
+BUG:
+2019-03-02 14:15:05,724 ERROR [FEEDO] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
+sk.hudak.prco.exception.ProductPriceNotFoundException: Product price for url 'https://www.feedo.sk/pampers-active-baby-4-10-15-kg-70-ks-giant-pack-jednorazove-plienky/' not found.
+	at sk.hudak.prco.parser.impl.JSoupProductParser.lambda$parseProductUpdateData$3(JSoupProductParser.java:186)
+	at java.util.Optional.orElseThrow(Optional.java:290)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:186)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.processUpdate(UpdateProductDataManagerImpl.java:245)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateAllProductsDataForEshop$3(UpdateProductDataManagerImpl.java:173)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+----------------------------------------------------
+BUG:
+2019-03-02 14:10:56,330 DEBUG [GIGA_LEKAREN] [] s.h.p.t.i.TaskManagerImpl [TaskManagerImpl.java:103] marking task for eshop GIGA_LEKAREN as RUNNING
+2019-03-02 14:10:56,330 DEBUG [GIGA_LEKAREN] [] s.h.p.s.Starter [Starter.java:179] >> eshop: GIGA_LEKAREN, updated/waiting: 0/6
+2019-03-02 14:10:56,330 DEBUG [GIGA_LEKAREN] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:242] start updating data for product https://www.gigalekaren.sk/produkt/pampers-active-baby-vpp-junior-11-18kg-50ks/
+2019-03-02 14:10:56,334 DEBUG [GIGA_LEKAREN] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:215] request URL: https://www.gigalekaren.sk/produkt/pampers-active-baby-vpp-junior-11-18kg-50ks/
+2019-03-02 14:10:56,334 DEBUG [GIGA_LEKAREN] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:218] userAgent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36
+2019-03-02 14:10:56,478 DEBUG [GIGA_LEKAREN] [] s.h.p.s.PrcoCustomTrustManager [PrcoCustomTrustManager.java:43] server cert subject name CN=dave.onebit.cz,OU=dave,O=ONEsolution s.r.o.,ST=Czech Republic,C=CZ
+2019-03-02 14:10:56,478 DEBUG [GIGA_LEKAREN] [] s.h.p.s.PrcoCustomTrustManager [PrcoCustomTrustManager.java:52] delegating checking to java default trust manager
+2019-03-02 14:10:56,494 ERROR [GIGA_LEKAREN] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:244] error creating document for url 'https://www.gigalekaren.sk/produkt/pampers-active-baby-vpp-junior-11-18kg-50ks/':
+javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLSocketImpl.fatal(SSLSocketImpl.java:1949)
+----------------------------------
+BUG:
+unit info not found for 'lovela color 5kg'
+---------------------------------------------
 BUG: dvojite lomitka:
 https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/
 ----------------------------------
