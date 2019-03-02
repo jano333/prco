@@ -1,7 +1,3 @@
-BUG:
-nevie stiahnut obrazok ale len tento ostatne obrazky su ok
-https://www.magano.sk/pampers-detske-vlhcene-utierky-64ks-fresh-clean
----------------------
 BUG: dvojite lomitka:
 https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/
 ----------------------------------

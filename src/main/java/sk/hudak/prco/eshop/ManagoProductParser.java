@@ -54,7 +54,11 @@ public class ManagoProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        return ofNullable(documentDetailProduct.select("div[class='images single-image'] a img").first())
+        Element first = documentDetailProduct.select("div[class='images single-image'] a img").first();
+        if (first == null) {
+            first = documentDetailProduct.select("div[class='img-holder'] img").first();
+        }
+        return ofNullable(first)
                 .map(element -> element.attr("src"))
                 .filter(StringUtils::isNotBlank)
                 .map(src -> getEshopUuid().getProductStartUrl() + src);

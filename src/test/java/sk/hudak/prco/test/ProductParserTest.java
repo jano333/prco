@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.EsoDrogeriaProductParser;
+import sk.hudak.prco.eshop.ManagoProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -33,9 +33,9 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.gigalekaren.sk/produkt/pampers-active-baby-vpp-junior-11-18kg-50ks/"));
 //
         // Manago
-//        System.out.println(new ManagoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+        System.out.println(new ManagoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
-//                .parseNewProductInfo("https://www.magano.sk/pampers-pants-midi-60ks-6-11kg-velkost-3"));
+                .parseNewProductInfo("https://www.magano.sk/pampers-detske-vlhcene-utierky-64ks-fresh-clean"));
 //                .parseProductUpdateData("https://www.magano.sk/pampers-pants-midi-60ks-6-11kg-velkost-3"));
 
 
@@ -47,10 +47,10 @@ public class ProductParserTest {
 
 
 //        Eso drogeria
-        System.out.println(new EsoDrogeriaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new EsoDrogeriaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.esodrogeria.eu/PAMPERS-ACTIVE-BABY-DRY-3-MIDI-4-9KG-GIANT-PACK-90KS-d435.htm"));
-                .parseProductUpdateData("https://www.esodrogeria.eu/PAMPERS-ACTIVE-BABY-DRY-3-MIDI-4-9KG-GIANT-PACK-90KS-d435.htm"));
+//                .parseProductUpdateData("https://www.esodrogeria.eu/PAMPERS-ACTIVE-BABY-DRY-3-MIDI-4-9KG-GIANT-PACK-90KS-d435.htm"));
 
         // Amd drogeria
 //        System.out.println(new AmdDrogeriaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
