@@ -1,8 +1,4 @@
 BUG:
-neviem rozparsovat unit name
-https://www.magano.sk/lovela-color-praci-prasok-5kg-40-pd
-------------------------------------
-BUG:
 nevie stiahnut obrazok ale len tento ostatne obrazky su ok
 https://www.magano.sk/pampers-detske-vlhcene-utierky-64ks-fresh-clean
 ---------------------

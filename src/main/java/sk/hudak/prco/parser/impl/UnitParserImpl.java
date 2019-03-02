@@ -296,6 +296,13 @@ public class UnitParserImpl implements UnitParser {
         if (matcher.find()) {
             return createKilogram(convertToBigDecimal(matcher.group(2) + matcher.group(3) + matcher.group(4)));
         }
+        // Lovela Color prací prášok 5kg - 40 PD
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "kg", SPACE);
+        if (matcher.find()) {
+            return createKilogram(convertToBigDecimal(matcher.group(2)));
+        }
+
+
         log.warn("unit info not found for '{}'", productName);
 
         return Optional.empty();
