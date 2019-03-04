@@ -80,8 +80,8 @@ public enum EshopUuid {
             4, 12, -1),
 
     BRENDON("https://www.brendon.sk",
-            "https://www.brendon.sk/Products/List?searchtext=" + KEYWORD_TEMP,
-            "https://www.brendon.sk/Products/List?SearchText={keyword}&&Page={pageNumber}&Order=onweb&ProdNo=30",
+            "https://www.brendon.sk/search?q=" + KEYWORD_TEMP,
+            "https://www.brendon.sk/search?q=" + KEYWORD_TEMP + "&pagenumber=" + PAGE_NUMBER_TEMP,
             5, 12, 30),
 
     DR_MAX(
