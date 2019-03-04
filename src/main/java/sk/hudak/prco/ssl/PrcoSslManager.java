@@ -52,7 +52,7 @@ public class PrcoSslManager {
                 return sslContext;
 
             } catch (Exception e) {
-                throw new RuntimeException("SSL inicialization error.", e);
+                throw new RuntimeException("SSL initialization error.", e);
             }
         }
 
