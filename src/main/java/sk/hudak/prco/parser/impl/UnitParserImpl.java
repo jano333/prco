@@ -301,7 +301,11 @@ public class UnitParserImpl implements UnitParser {
         if (matcher.find()) {
             return createKilogram(convertToBigDecimal(matcher.group(2)));
         }
-
+        // lovela color 5kg
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "kg");
+        if (matcher.find()) {
+            return createKilogram(convertToBigDecimal(matcher.group(2)));
+        }
 
         log.warn("unit info not found for '{}'", productName);
 

@@ -1,6 +1,3 @@
-BUG:
-unit info not found for 'lovela color 5kg'
----------------------------------------------
 BUG: dvojite lomitka:
 https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/
 ----------------------------------
