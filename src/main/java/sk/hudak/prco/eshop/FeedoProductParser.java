@@ -109,7 +109,11 @@ public class FeedoProductParser extends JSoupProductParser {
                 // ak sa nenajde tak skusim -> normalna cena
                 select = documentDetailProduct.select("div[class=price price-base] span");
                 if (select.isEmpty()) {
-                    return Optional.empty();
+                    // a este novinka
+                    select = documentDetailProduct.select("div[class=price] span[class=price-base]");
+                    if (select.isEmpty()) {
+                        return Optional.empty();
+                    }
                 }
             }
         }
