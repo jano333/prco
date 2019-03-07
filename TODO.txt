@@ -1,3 +1,4 @@
+-----------------
 2019-03-04 13:24:06,970 ERROR [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:244] error creating document for url 'https://www.brendon.sk/search?q=pampers':
 java.net.SocketException: Connection reset
 	at java.net.SocketInputStream.read(SocketInputStream.java:209)

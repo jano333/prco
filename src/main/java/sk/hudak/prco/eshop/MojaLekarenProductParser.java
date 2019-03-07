@@ -23,6 +23,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
+import static sk.hudak.prco.api.EshopUuid.MOJA_LEKAREN;
 
 @Slf4j
 @Component
@@ -35,7 +36,13 @@ public class MojaLekarenProductParser extends JSoupProductParser {
 
     @Override
     public EshopUuid getEshopUuid() {
-        return EshopUuid.MOJA_LEKAREN;
+        return MOJA_LEKAREN;
+    }
+
+    @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 15 sekund
+        return 15000;
     }
 
     @Override
