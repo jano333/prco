@@ -16,7 +16,7 @@ public interface ErrorService {
 
     List<ErrorListDto> findAll();
 
-    List<ErrorListDto> findByTypes(ErrorType... errorTypes);
+    List<ErrorListDto> findErrorsByTypes(ErrorType... errorTypes);
 
     Map<ErrorType, Long> getStatisticForErrors();
 

@@ -110,7 +110,7 @@ public class ErrorServiceImpl implements ErrorService {
     }
 
     @Override
-    public List<ErrorListDto> findByTypes(ErrorType... errorTypes) {
+    public List<ErrorListDto> findErrorsByTypes(ErrorType... errorTypes) {
         notNull(errorTypes, "errorTypes");
         //TODO not empty
 

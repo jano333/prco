@@ -391,8 +391,8 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ErrorListDto> findByTypes(ErrorType... errorTypes) {
-        return errorService.findByTypes(errorTypes);
+    public List<ErrorListDto> findErrorsByTypes(ErrorType... errorTypes) {
+        return errorService.findErrorsByTypes(errorTypes);
     }
 
     @Override

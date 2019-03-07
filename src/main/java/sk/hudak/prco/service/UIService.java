@@ -35,6 +35,12 @@ public interface UIService {
      */
     List<NewProductFullDto> findNewProducts(NewProductFilterUIDto filter);
 
+    /**
+     * Nacita informacie o novom produkte na zaklade jeho id.
+     *
+     * @param newProductId
+     * @return
+     */
     NewProductFullDto getNewProduct(Long newProductId);
 
     /**
