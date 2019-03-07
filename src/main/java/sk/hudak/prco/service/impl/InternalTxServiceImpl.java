@@ -391,6 +391,12 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<ErrorListDto> findErrorByMaxCount(int limit, ErrorType errorType) {
+        return errorService.findErrorByMaxCount(limit, errorType);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<ErrorListDto> findErrorsByTypes(ErrorType... errorTypes) {
         return errorService.findErrorsByTypes(errorTypes);
     }

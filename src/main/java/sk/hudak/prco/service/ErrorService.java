@@ -16,6 +16,13 @@ public interface ErrorService {
 
     List<ErrorListDto> findAll();
 
+    /**
+     * Najde maximalne <code>limit</code> error zotriedenych od najnovsieho po najstarsi
+     * @param limit
+     * @return
+     */
+    List<ErrorListDto> findErrorByMaxCount(int limit, ErrorType errorType);
+
     List<ErrorListDto> findErrorsByTypes(ErrorType... errorTypes);
 
     Map<ErrorType, Long> getStatisticForErrors();

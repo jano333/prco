@@ -1,5 +1,8 @@
 package sk.hudak.prco.dao.db.impl;
 
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.dao.db.ErrorEntityDao;
@@ -63,6 +66,18 @@ public class ErrorEntityDaoImpl extends BaseDaoImpl<ErrorEntity> implements Erro
                 .from(QErrorEntity.errorEntity)
                 .where(QErrorEntity.errorEntity.updated.lt(calculateDate(unitCount, timeUnit)))
                 .fetch();
+    }
+
+    @Override
+    public List<ErrorEntity> findByMaxCount(int limit, ErrorType errorType) {
+        JPAQuery<ErrorEntity> from = getQueryFactory()
+                .select(QErrorEntity.errorEntity)
+                .from(QErrorEntity.errorEntity);
+        if (errorType != null) {
+            from.where(QErrorEntity.errorEntity.errorType.eq(errorType));
+        }
+        from.orderBy(new OrderSpecifier<>(Order.DESC, QErrorEntity.errorEntity.created));
+        return from.limit(limit).fetch();
     }
 
     private Date calculateDate(int unitCount, TimeUnit timeUnit) {

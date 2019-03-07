@@ -33,4 +33,6 @@ public interface ErrorEntityDao extends BaseDao<ErrorEntity> {
     List<ErrorEntity> findOlderThan(int unitCount, TimeUnit timeUnit);
 
     List<ErrorEntity> findByUrls(List<String> urls);
+
+    List<ErrorEntity> findByMaxCount(int limit, ErrorType errorType);
 }

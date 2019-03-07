@@ -110,6 +110,13 @@ public class ErrorServiceImpl implements ErrorService {
     }
 
     @Override
+    public List<ErrorListDto> findErrorByMaxCount(int limit, ErrorType errorType) {
+        return errorEntityDao.findByMaxCount(limit, errorType).stream()
+                .map(entity -> prcoMapper.map(entity, ErrorListDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<ErrorListDto> findErrorsByTypes(ErrorType... errorTypes) {
         notNull(errorTypes, "errorTypes");
         //TODO not empty
