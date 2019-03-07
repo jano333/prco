@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.builder.SearchUrlBuilder;
@@ -26,7 +25,7 @@ import static java.util.Optional.ofNullable;
 import static sk.hudak.prco.api.EshopUuid.BRENDON;
 
 @Slf4j
-@Component
+//@Component
 public class BrendonProductParser extends JSoupProductParser {
 
     public BrendonProductParser(UnitParser unitParser,
