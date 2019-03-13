@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
+import sk.hudak.prco.api.GroupProductKeywords;
 import sk.hudak.prco.api.Unit;
 import sk.hudak.prco.dto.UnitData;
 import sk.hudak.prco.dto.group.GroupCreateDto;
@@ -20,6 +21,7 @@ import sk.hudak.prco.dto.product.ProductInActionDto;
 import sk.hudak.prco.manager.AddingNewProductManager;
 import sk.hudak.prco.manager.DbExportImportManager;
 import sk.hudak.prco.manager.EshopThreadStatisticManager;
+import sk.hudak.prco.manager.GroupProductResolver;
 import sk.hudak.prco.manager.HtmlExportManager;
 import sk.hudak.prco.manager.UpdateProductDataManager;
 import sk.hudak.prco.manager.UpdateProductInfoListener;
@@ -77,6 +79,9 @@ public class Starter {
     @Autowired
     private EshopThreadStatisticManager theadStatisticManager;
 
+    @Autowired
+    private GroupProductResolver groupProductResolver;
+
     public void run() {
 
         //init ssl
@@ -87,6 +92,23 @@ public class Starter {
 
         //TODO
         internalTxService.startErrorCleanUp();
+
+        System.out.println(">> --------");
+//        for (ProductFullDto productFullDto : internalTxService.findProductsInGroup(321L)) {
+        for (ProductFullDto productFullDto : internalTxService.findProductsInGroup(257L)) {
+            Optional<GroupProductKeywords> groupProductKeywords = groupProductResolver.resolveGroup(productFullDto.getName());
+            StringBuilder sb = new StringBuilder();
+            if (groupProductKeywords.isPresent()) {
+                sb.append(groupProductKeywords.get().name());
+            } else {
+                sb.append("NONE");
+            }
+            sb.append(" " + productFullDto.getName());
+            sb.append(" " + productFullDto.getUrl());
+            System.out.println(sb.toString());
+        }
+        System.out.println("<< --------");
+
 
 //        System.out.println(ToStringBuilder.reflectionToString(uiService.getStatisticsOfProducts(), ToStringStyle.MULTI_LINE_STYLE));
 
@@ -110,33 +132,22 @@ public class Starter {
 //        uiService.addProductsToGroup(321L,1698L, 1699L);
 
         showAllGroups();
-
-        // pampers 4
 //        uiService.removeProductsFromGroup(1L, 994L, 1226L);
-//        uiService.deleteProducts(994L, 1226L);
-//
-        // pampers 5
-//        uiService.removeProductsFromGroup(321L, 1569L);
-//        uiService.deleteProducts(1569L);
-//
-        // nutrilon 4
-//        uiService.removeProductsFromGroup(33L, 995L, 1090L, 1094L);
-//        uiService.deleteProducts(995L, 1090L, 1094L);
 
-        // nutrilon 5
-//        uiService.removeProductsFromGroup(257L, 1093L, 1121L);
-//        uiService.deleteProducts(1093L, 1121L);
+
+//        uiService.deleteNewProducts(5505L);
+//        uiService.deleteProducts(1569L);
 
         // --- PRODUCTS ---
 //        showAllProducts();
 
         // pampers 4
-        showProductsInGroup(1L, EshopUuid.METRO);
+//        showProductsInGroup(1L, EshopUuid.METRO);
         // pampers 5
         showProductsInGroup(321L);
 
         // nutrilon 4
-        showProductsInGroup(33L);
+//        showProductsInGroup(33L);
         // nutrilon 5
         showProductsInGroup(257L);
 
@@ -152,7 +163,7 @@ public class Starter {
 //        existProduct("https://www.feedo.sk/pampers-active-baby-4-box-120ks-9-16-kg-jednorazove-plienky/");
 //        showProductsInEshop(EshopUuid.TESCO);
 //        showProductsInEshop(EshopUuid.METRO);
-//        showProductsInEshopInAction(EshopUuid.TESCO);
+        showProductsInEshopInAction(EshopUuid.TESCO);
 //        showProductsInEshopInAction(EshopUuid.METRO);
 //        showProductInActionAll();
 
@@ -162,11 +173,15 @@ public class Starter {
 
 //        watchDogService.notifyByEmail(Collections.emptyList());
 
-//        List<ErrorListDto> byTypes = internalTxService.findByTypes(ErrorType.PARSING_PRODUCT_INFO_ERR);
+//        List<ErrorListDto> byTypes = internalTxService.findErrorByMaxCount(50, null);
 //        System.out.println("Errors:");
 //        for (ErrorListDto errorListDto : byTypes) {
-//            System.out.println("id " + errorListDto.getId() + " name " + errorListDto.getAdditionalInfo() + " url " +
-//                    errorListDto.getUrl());
+//            System.out.println("[" + errorListDto.getId() + "] " +
+//                    "type " + errorListDto.getErrorType() + " " +
+//                    "status " + errorListDto.getStatusCode() + " " +
+//                    "message " + errorListDto.getMessage() + " " +
+//                    "fullMessage " + errorListDto.getFullMsg() + " " +
+//                    "url " + errorListDto.getUrl());
 //        }
 
 
@@ -186,9 +201,9 @@ public class Starter {
 //        uiService.updateCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-//        newProductManager.addNewProductsByKeywordForAllEshops("pampers");
+//        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
 //        newProductManager.addNewProductsByKeywordForAllEshops("nutrilon 5");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.MAXIKOVY_HRACKY, "pampers");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.MAGANO, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PERINBABA, "pampers 5");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "pampers 4");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "pampers 5");
@@ -260,13 +275,13 @@ public class Starter {
 
         for (ProductInActionDto product : uiService.findProductsInAction(eshopUuid)) {
             System.out.println("id " + product.getId() + ", "
-                    + formatPrice(product.getPriceForOneItemInPackage(), 2) + " "
                     + formatPrice(product.getPriceForPackage()) + "/"
                     + formatPrice(product.getCommonPrice()) + " "
-                    + formatPercentage(product.getPriceForPackage(), product.getCommonPrice()) +
-                    "(" + formatValidTo(product.getActionValidTo()) + ") "
-                    + product.getBestPriceInGroup()
+                    + formatPercentage(product.getPriceForPackage(), product.getCommonPrice())
                     + " '" + product.getName() + "', "
+                    + formatPrice(product.getPriceForOneItemInPackage(), 2) + " " +
+                    "(" + formatValidTo(product.getActionValidTo()) + ") "
+                    + product.getBestPriceInGroup() + " "
                     + product.getUrl());
         }
     }
@@ -346,7 +361,8 @@ public class Starter {
 
         List<ProductFullDto> products = uiService.findProductsWitchAreNotInAnyGroup();
         for (ProductFullDto product : products) {
-            System.out.println("id " + product.getId() + ", " +
+            System.out.println("eshop " + product.getEshopUuid() + ", " +
+                    "id " + product.getId() + ", " +
                     "name: " + product.getName() + ", " +
                     "url: " + product.getUrl() + ", " +
                     "unit: " + product.getUnitValue() + " " + product.getUnit() + " count: " + product.getUnitPackageCount());
