@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.ManagoProductParser;
+import sk.hudak.prco.eshop.BrendonProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -26,16 +26,16 @@ public class ProductParserTest {
 //                .parseNewProductInfo("https://www.lekaren-bella.sk/zbozi/3616340/pampers-kalhotkove-plenky-jumbo-pack-s3-60ks"));
 //                .parseProductUpdateData("https://www.lekaren-bella.sk/zbozi/3134039/pampers-active-baby-vpp-4-maxi-58ks"));
 
-        // Giga lekaren
+         // Giga lekaren
 //        System.out.println(new GigaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.gigalekaren.sk/produkt/pampers-premium-care-newborn-2-5kg-88ks/"));
 //                .parseProductUpdateData("https://www.gigalekaren.sk/produkt/pampers-active-baby-vpp-junior-11-18kg-50ks/"));
 //
         // Manago
-        System.out.println(new ManagoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new ManagoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
-                .parseNewProductInfo("https://www.magano.sk/pampers-detske-vlhcene-utierky-64ks-fresh-clean"));
+//                .parseNewProductInfo("https://www.magano.sk/pampers-detske-vlhcene-utierky-64ks-fresh-clean"));
 //                .parseProductUpdateData("https://www.magano.sk/pampers-pants-midi-60ks-6-11kg-velkost-3"));
 
 
@@ -78,8 +78,8 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.bambino.sk/jednorazove-plienky/abd-mega-box-plus-4-174ks-1"),
 //
 //        // Brendon
-//        System.out.println(new BrendonProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                .parseUrlsOfProduct("pampers"));
+        System.out.println(new BrendonProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.brendon.sk/Products/Details/118437"));
 //                .parseProductUpdateData("https://www.brendon.sk/Products/Details/84545"));
 //
@@ -87,7 +87,7 @@ public class ProductParserTest {
 //        System.out.println(new FeedoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.feedo.sk/pampers-active-baby-4-maxi-174ks-8-14kg-mesacna-zasoba-jednorazove-plienky/"));
-//                .parseProductUpdateData("https://www.feedo.sk/pampers-active-baby-4-maxi-174ks-8-14kg-mesacna-zasoba-jednorazove-plienky/"));
+//                .parseProductUpdateData("https://www.feedo.sk/pampers-active-baby-4-10-15-kg-70-ks-giant-pack-jednorazove-plienky/"));
         // Lekaren v kocke
 //        System.out.println(new LekarenVKockeProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
