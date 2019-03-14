@@ -33,9 +33,6 @@ java.net.SocketException: Connection reset
 BUG: dvojite lomitka:
 https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/
 ----------------------------------
-Lekaren bella
-- nezobrazuje obrazok, pravdepodobne zla url
-------------------------
 BUG:
 https://www.mojalekaren.sk//nutrilon-comfort-1-400g/
 tento produkt neexistuje a vrati 302 na https://www.mojalekaren.sk/, potrebujem urobit to aby som to odchytil
