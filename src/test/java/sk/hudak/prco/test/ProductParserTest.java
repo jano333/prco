@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.BrendonProductParser;
+import sk.hudak.prco.eshop.LekarenBellaProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -20,10 +20,10 @@ public class ProductParserTest {
 
         SearchUrlBuilder searchUrlBuilder = new SearchUrlBuilderImpl();
 
-        // Lekaren Bella
-//        System.out.println(new LekarenBellaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//         Lekaren Bella
+        System.out.println(new LekarenBellaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
-//                .parseNewProductInfo("https://www.lekaren-bella.sk/zbozi/3616340/pampers-kalhotkove-plenky-jumbo-pack-s3-60ks"));
+                .parseNewProductInfo("https://www.lekaren-bella.sk/zbozi/3616340/pampers-kalhotkove-plenky-jumbo-pack-s3-60ks"));
 //                .parseProductUpdateData("https://www.lekaren-bella.sk/zbozi/3134039/pampers-active-baby-vpp-4-maxi-58ks"));
 
          // Giga lekaren
@@ -78,8 +78,8 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.bambino.sk/jednorazove-plienky/abd-mega-box-plus-4-174ks-1"),
 //
 //        // Brendon
-        System.out.println(new BrendonProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-                .parseUrlsOfProduct("pampers"));
+//        System.out.println(new BrendonProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.brendon.sk/Products/Details/118437"));
 //                .parseProductUpdateData("https://www.brendon.sk/Products/Details/84545"));
 //

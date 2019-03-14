@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.GroupProductKeywords;
 import sk.hudak.prco.api.Unit;
 import sk.hudak.prco.dto.UnitData;
 import sk.hudak.prco.dto.group.GroupCreateDto;
@@ -94,19 +93,44 @@ public class Starter {
         internalTxService.startErrorCleanUp();
 
         System.out.println(">> --------");
-//        for (ProductFullDto productFullDto : internalTxService.findProductsInGroup(321L)) {
-        for (ProductFullDto productFullDto : internalTxService.findProductsInGroup(257L)) {
-            Optional<GroupProductKeywords> groupProductKeywords = groupProductResolver.resolveGroup(productFullDto.getName());
-            StringBuilder sb = new StringBuilder();
-            if (groupProductKeywords.isPresent()) {
-                sb.append(groupProductKeywords.get().name());
-            } else {
-                sb.append("NONE");
-            }
-            sb.append(" " + productFullDto.getName());
-            sb.append(" " + productFullDto.getUrl());
-            System.out.println(sb.toString());
-        }
+
+//        Optional<GroupProductKeywords> groupProductKeywords = groupProductResolver.resolveGroup("Pampers Plienky S4P Active Baby mesačné balenie");
+
+        System.out.println("");
+
+//        for (ProductFullDto productFullDto : internalTxService.findProductsInGroup(257L)) {
+//            Optional<GroupProductKeywords> groupProductKeywords = groupProductResolver.resolveGroup(productFullDto.getName());
+//            StringBuilder sb = new StringBuilder();
+//            if (groupProductKeywords.isPresent()) {
+//                sb.append(groupProductKeywords.get().name());
+//            } else {
+//                sb.append("NONE");
+//            }
+//            sb.append(" " + productFullDto.getName());
+//            sb.append(" " + productFullDto.getUrl());
+//            System.out.println(sb.toString());
+//        }
+
+//        List<ProductFullDto> products = internalTxService.findProductsNotInAnyGroup();
+//        for (ProductFullDto product : products) {
+//            Optional<GroupProductKeywords> groupProductKeywords = groupProductResolver.resolveGroup(product.getName());
+//            StringBuilder sb = new StringBuilder();
+//            if (groupProductKeywords.isPresent()) {
+//                if(!PAMPERS_ZELENE_4.equals(groupProductKeywords.get())){
+//                    continue;
+//                }
+//                sb.append(groupProductKeywords.get().name());
+//            } else {
+//                sb.append("NONE");
+//            }
+//            sb.append(" [" + product.getId()+"]");
+//            sb.append(" " + product.getName());
+//            sb.append(" " + product.getUrl());
+//            System.out.println(sb.toString());
+//        }
+
+
+
         System.out.println("<< --------");
 
 

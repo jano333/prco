@@ -115,6 +115,7 @@ public class GroupServiceImpl implements GroupService {
             }
 
             groupEntity.getProducts().add(productEntity);
+            log.debug("adding product {} to group {}", productEntity.getName(), groupEntity.getName());
         }
 
         groupEntityDao.update(groupEntity);

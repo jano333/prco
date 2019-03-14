@@ -45,6 +45,14 @@
 
                 <td>
                     <a th:href="'/products/'+${product.id}+'/addToGroup'" th:text="${'Add to group'}"></a>
+                    <br/>
+                    <br/>
+                    <span th:text="${product.keywords!=null} ? ${product.keywords.name()} : 'none'"></span>
+                    <br/>
+                    <a th:href="'/products/'+${product.id}+'/addToGroupAutomaticaly/'+${product.keywords}" th:text="${'Add automaticaly'}"
+                        th:if="${product.keywords!=null}">
+
+                    </a>
                 </td>
 
                 <!--<td>
