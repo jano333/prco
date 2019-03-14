@@ -7,6 +7,8 @@ import java.util.List;
 
 public enum GroupProductKeywords {
 
+//    TODO pridat zoznam ktore nesmie mat, data aby do nutrilon 4 nam nedava nutrilon 4 profutura
+
     PAMPERS_ZELENE_4(
             Arrays.asList("pampers", "active", "baby", "4"),
             Arrays.asList("pampers", "active", "baby", "4,"),
