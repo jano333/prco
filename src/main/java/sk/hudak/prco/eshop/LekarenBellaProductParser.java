@@ -47,7 +47,8 @@ public class LekarenBellaProductParser extends JSoupProductParser {
 
     @Override
     protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
-        return documentList.select("div[class='product-items '] > div[class='row'] > div > a").stream()
+        return documentList.select("div[class='product-items '] > div[class='row'] > div > a")
+                .stream()
                 .map(element -> element.attr("href"))
                 .collect(Collectors.toList());
     }
@@ -68,8 +69,7 @@ public class LekarenBellaProductParser extends JSoupProductParser {
         Elements select = documentDetailProduct.select("img[class='img-responsive']");
         return ofNullable(select)
                 .map(elements -> elements.attr("src"))
-                .filter(StringUtils::isNotBlank)
-                .map(value -> value.substring(2));
+                .filter(StringUtils::isNotBlank);
     }
 
     @Override
