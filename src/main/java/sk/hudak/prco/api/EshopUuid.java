@@ -13,7 +13,6 @@ import static sk.hudak.prco.api.SearchTemplateConstants.PAGE_NUMBER_TEMP;
  */
 public enum EshopUuid {
 
-    // EsoDrogéria
 //    diskontdrogerie.cz
     // Drogerka
     // Demro
@@ -41,8 +40,7 @@ public enum EshopUuid {
     //TODO https://www.lekarna-oaza.cz/3230449-pampers-premium-care-1-newborn-88ks
     //TODO https://www.mujlekarnik.cz/pampers-premium-care-1-newborn-88ks_detail/?currency=EUR
 
-    // -- INE --
-    //TODO https://www.funkids.cz/pampers-active-baby-monthly-box-s4-174ks
+    // -- INE SK--
     //TODO https://edigital.sk/plienky/pampers-activebaby-dry-monthly-box-4-maxi-plienky-174-ks-p510052
     //TODO https://www.pompo.sk/1/pSOL%2081603989-1/?utm_campaign=20-40&utm_content=Hracky+a+vsetko+pre+baby+%7C+Plienky+a+prebalovanie&utm_medium=cpc&utm_source=heureka.sk&utm_term=Pampers+Active+Baby-Dry+Vel.+4%2C+174+ks
     //TODO http://www.bugy.sk/static/produkt/36496/PAMPERS-Premium-Care-1-Najhebkejsie-jednorazove-plienky-pre-deti-od-2kg-do-5kg-88ks/
@@ -50,9 +48,11 @@ public enum EshopUuid {
     //TODO https://www.parfemomania.sk/pampers-premium-care-1-newborn-2-5-kg-plenkove-kalhotky-88-kusu/
     //TODO https://www.vitalek.sk/detske-plienky/pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-k+36344/
     //TODO https://www.vitazenit.sk/plienky/pampers-premium-care-1-newborn-88-ks--2-5-kg-/
-    //TODO https://www.elixi.cz/jednorazove-pleny-2/pampers-active-baby-dry-3-midi-4-9kg--66ks/
     //TODO https://apateka.sk/produkt/pampers-premium-care-1-newborn-2-5-kg-88-kusov/
     //TODO https://www.farby.sk/210477/pampers-premium-newborn-88/
+    // -- INE CZ--
+    //TODO https://www.funkids.cz/pampers-active-baby-monthly-box-s4-174ks
+    //TODO https://www.elixi.cz/jednorazove-pleny-2/pampers-active-baby-dry-3-midi-4-9kg--66ks/
 
     // TODO ANDREA_SHOP -> neviem pagging ako...
 
@@ -91,10 +91,19 @@ public enum EshopUuid {
             "https://www.drmax.sk/catalog/search/?q={keyword}&offset={offset}&limit={limit}",
             4, 12, 24),
 
-    DROGERIA_VMD("https://www.drogeria-vmd.sk",
+    DROGERIA_VMD(
+            DRUGSTORE,
+            "https://www.drogeria-vmd.sk",
             "https://www.drogeria-vmd.sk/hladanie/?q=" + KEYWORD_TEMP,
             "https://www.drogeria-vmd.sk/hladanie-stranka-{pageNumber}/?q=" + KEYWORD_TEMP,
             4, 12, 12),
+
+    DROGERKA(
+            DRUGSTORE,
+            "https://www.drogerka.sk",
+            "https://www.drogerka.sk/index.php?route=product/search&search=" + KEYWORD_TEMP,
+            "https://www.drogerka.sk/vyhladavanie?search=" + KEYWORD_TEMP + "&page=" + PAGE_NUMBER_TEMP,
+            5, 12, 48),
 
     ESO_DROGERIA(
             DRUGSTORE,
@@ -172,7 +181,8 @@ public enum EshopUuid {
             "https://eshop.mamaaja.sk/catalog/search/?q={keyword}&offset={offset}",
             5, 12, 24),
 
-    MAXIKOVY_HRACKY("https://www.maxikovy-hracky.cz",
+    MAXIKOVY_HRACKY(
+            "https://www.maxikovy-hracky.cz",
             "https://www.maxikovy-hracky.cz/vyhledavani?search=" + KEYWORD_TEMP,
             "https://www.maxikovy-hracky.cz/vyhledavani?page=" + PAGE_NUMBER_TEMP + "&search=" + KEYWORD_TEMP,
             3, 12, 60),
@@ -208,12 +218,10 @@ public enum EshopUuid {
             "https://www.prva-lekaren.sk/search?lm=12&st=" + PAGE_NUMBER_TEMP + "&q=" + KEYWORD_TEMP,
             5, 12, 12),
 
-
-    // TODO picture NOT yet
     PILULKA(
             PHARMACY,
             "https://www.pilulka.sk",
-            "https://www.pilulka.sk/hledat?q={keyword}",
+            "https://www.pilulka.sk/hledat?q=" + KEYWORD_TEMP,
             "https://www.pilulka.sk/hledat?q={keyword}&page={pageNumber}",
             5, 12, -1),
 

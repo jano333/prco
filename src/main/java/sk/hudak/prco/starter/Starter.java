@@ -225,7 +225,7 @@ public class Starter {
 //        uiService.updateCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-//        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
+        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
 //        newProductManager.addNewProductsByKeywordForAllEshops("nutrilon 5");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.MAGANO, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PERINBABA, "pampers 5");

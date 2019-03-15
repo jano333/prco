@@ -56,6 +56,8 @@ public class PrcoSSLContants {
 
         ALLOWED_HOSTNAME.add("www.esodrogeria.eu");
 
+        ALLOWED_HOSTNAME.add("drogerka.sk");
+
 
 
 
