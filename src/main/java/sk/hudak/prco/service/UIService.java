@@ -98,12 +98,8 @@ public interface UIService {
 
     /**
      * Zoznam vsetkych produktov v danej skupine zoradenych podla najlepsej ceny hore...
-     *
-     * @param groupId
-     * @param eshopsToSkip
-     * @return
      */
-    List<ProductFullDto> findProductsInGroup(Long groupId, EshopUuid... eshopsToSkip);
+    List<ProductFullDto> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip);
 
     /**
      * Zoznam produktov, ktore nie su v ziadnej skupine

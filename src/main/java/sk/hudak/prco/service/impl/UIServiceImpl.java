@@ -89,8 +89,8 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public List<ProductFullDto> findProductsInGroup(Long groupId, EshopUuid... eshopsToSkip) {
-        return internalTxService.findProductsInGroup(groupId, eshopsToSkip);
+    public List<ProductFullDto> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip) {
+        return internalTxService.findProductsInGroup(groupId,withPriceOnly, eshopsToSkip);
     }
 
     @Override

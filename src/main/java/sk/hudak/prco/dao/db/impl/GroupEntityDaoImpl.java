@@ -16,6 +16,7 @@ import sk.hudak.prco.model.GroupEntity;
 import sk.hudak.prco.model.ProductEntity;
 import sk.hudak.prco.model.QGroupEntity;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -98,7 +99,7 @@ public class GroupEntityDaoImpl extends BaseDaoImpl<GroupEntity> implements Grou
     }
 
     @Override
-    public List<ProductEntity> findProductsInGroup(Long groupId, EshopUuid... eshopsToSkip) {
+    public List<ProductEntity> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip) {
         JPAQuery<GroupEntity> query = from(QGroupEntity.groupEntity);
         query.where(QGroupEntity.groupEntity.id.eq(groupId));
         GroupEntity groupEntity = query.fetchFirst();
@@ -108,8 +109,10 @@ public class GroupEntityDaoImpl extends BaseDaoImpl<GroupEntity> implements Grou
         //FIXME cez DB urobit neaky komplikovany select..
         List<ProductEntity> products = groupEntity.getProducts();
         //filter na tie, ktore maju cenu
-        Stream<ProductEntity> productEntityStream = products.stream().filter(p -> p.getPriceForUnit() != null);
-
+        Stream<ProductEntity> productEntityStream = products.stream();
+        if (withPriceOnly) {
+            productEntityStream = productEntityStream.filter(p -> p.getPriceForUnit() != null);
+        }
         if (eshopsToSkip != null) {
             productEntityStream = productEntityStream.filter(p -> !Arrays.asList(eshopsToSkip).contains(p.getEshopUuid()));
         }
@@ -117,7 +120,10 @@ public class GroupEntityDaoImpl extends BaseDaoImpl<GroupEntity> implements Grou
         List<ProductEntity> withValidPriceForPackage = productEntityStream.collect(Collectors.toList());
 
         // FIXME cez db query
-        Collections.sort(withValidPriceForPackage, Comparator.comparing(ProductEntity::getPriceForUnit));
+//        Collections.sort(withValidPriceForPackage, Comparator.comparing(ProductEntity::getPriceForUnit));
+        Collections.sort(withValidPriceForPackage, Comparator.comparing(
+                productEntity -> productEntity.getPriceForUnit() != null ? productEntity.getPriceForUnit() : BigDecimal.ZERO)
+        );
 
         return withValidPriceForPackage;
     }

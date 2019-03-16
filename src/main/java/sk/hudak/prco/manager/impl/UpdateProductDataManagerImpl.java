@@ -78,7 +78,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
         //TODO bug !!!!!! nech nevracia len tie,  ktore uz boli updatnute
 
         // ziskam zoznam produktov v danej skupine
-        List<ProductFullDto> productsInGroup = internalTxService.findProductsInGroup(groupId);
+        List<ProductFullDto> productsInGroup = internalTxService.findProductsInGroup(groupId, true);
         if (productsInGroup.isEmpty()) {
             log.debug("none products founds in group with id {}", groupId);
             return;

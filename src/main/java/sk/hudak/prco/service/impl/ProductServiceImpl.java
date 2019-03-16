@@ -249,11 +249,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductFullDto> findProductsInGroup(Long groupId, EshopUuid... eshopsToSkip) {
+    public List<ProductFullDto> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip) {
         notNull(groupId, "groupId");
 
         return mapper.mapAsList(
-                groupEntityDao.findProductsInGroup(groupId, eshopsToSkip).toArray(),
+                groupEntityDao.findProductsInGroup(groupId,withPriceOnly , eshopsToSkip).toArray(),
                 ProductFullDto.class);
     }
 

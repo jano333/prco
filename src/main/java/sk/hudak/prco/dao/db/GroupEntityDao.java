@@ -21,7 +21,7 @@ public interface GroupEntityDao extends BaseDao<GroupEntity> {
     List<GroupEntity> findGroups(GroupFilterDto groupFilterDto);
 
     //TODO move to ProductService...
-    List<ProductEntity> findProductsInGroup(Long groupId, EshopUuid... eshopsToSkip);
+    List<ProductEntity> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip);
 
     List<String> findAllGroupNames();
 

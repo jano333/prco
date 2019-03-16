@@ -91,7 +91,7 @@ public class ProductController extends BasicController {
 
     @RequestMapping("/products/groups/{groupId}")
     public ModelAndView productInGroupView(@PathVariable Long groupId) {
-        List<ProductFullDto> productsInGroup = getUiService().findProductsInGroup(groupId);
+        List<ProductFullDto> productsInGroup = getUiService().findProductsInGroup(groupId, true);
         ModelAndView modelAndView = new ModelAndView(VIEW_PRODUCTS_IN_GROUP, "productsInGroup", productsInGroup);
         modelAndView.addObject("groupListDtos", getUiService().findGroups(new GroupFilterDto()));
         return modelAndView;

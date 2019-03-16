@@ -9,7 +9,6 @@ import sk.hudak.prco.dto.UnitData;
 import sk.hudak.prco.dto.group.GroupCreateDto;
 import sk.hudak.prco.dto.group.GroupFilterDto;
 import sk.hudak.prco.dto.group.GroupIdNameDto;
-import sk.hudak.prco.dto.group.GroupListDto;
 import sk.hudak.prco.dto.group.GroupListExtendedDto;
 import sk.hudak.prco.dto.group.GroupUpdateDto;
 import sk.hudak.prco.dto.newproduct.NewProductInfoDetail;
@@ -130,7 +129,6 @@ public class Starter {
 //        }
 
 
-
         System.out.println("<< --------");
 
 
@@ -166,14 +164,14 @@ public class Starter {
 //        showAllProducts();
 
         // pampers 4
-//        showProductsInGroup(1L, EshopUuid.METRO);
+//        showProductsInGroup(1L, true, EshopUuid.METRO);
         // pampers 5
-        showProductsInGroup(321L);
+        showProductsInGroup(321L, true);
 
         // nutrilon 4
 //        showProductsInGroup(33L);
         // nutrilon 5
-        showProductsInGroup(257L);
+//        showProductsInGroup(257L, true);
 
 
         // olej
@@ -225,7 +223,7 @@ public class Starter {
 //        uiService.updateCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
+//        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
 //        newProductManager.addNewProductsByKeywordForAllEshops("nutrilon 5");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.MAGANO, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PERINBABA, "pampers 5");
@@ -274,9 +272,9 @@ public class Starter {
 
     }
 
-    private void showAllProductsInAllGroups() {
-        List<GroupListDto> groups = uiService.findGroups(new GroupFilterDto());
-        groups.forEach(group -> showProductsInGroup(group.getId()));
+    private void showAllProductsInAllGroups(boolean withPriceOnly) {
+        uiService.findGroups(new GroupFilterDto())
+                .forEach(group -> showProductsInGroup(group.getId(), withPriceOnly));
     }
 
     private void showProductInActionAll() {
@@ -397,13 +395,13 @@ public class Starter {
         }
     }
 
-    private void showProductsInGroup(long groupId, EshopUuid... eshopsToSkip) {
+    private void showProductsInGroup(long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip) {
         GroupIdNameDto group = uiService.getGroupById(groupId);
-        List<ProductFullDto> productsInGroup = uiService.findProductsInGroup(groupId, eshopsToSkip);
+        List<ProductFullDto> productsInGroup = uiService.findProductsInGroup(groupId, withPriceOnly, eshopsToSkip);
 
         // vypis
         System.out.println();
-        System.out.println("'" + group.getName() + "' id " + groupId + " count " + productsInGroup.size());
+        System.out.println("'" + group.getName() + "' id " + groupId + " count " + productsInGroup.size() + " withPriceOnly " + withPriceOnly);
         if (!Arrays.asList(eshopsToSkip).isEmpty()) {
             System.out.println("Preskakujem eshopy: " + Arrays.asList(eshopsToSkip));
         }

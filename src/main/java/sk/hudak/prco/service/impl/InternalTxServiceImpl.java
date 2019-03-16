@@ -232,8 +232,8 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ProductFullDto> findProductsInGroup(Long groupId, EshopUuid... eshopsToSkip) {
-        return productService.findProductsInGroup(groupId, eshopsToSkip);
+    public List<ProductFullDto> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip) {
+        return productService.findProductsInGroup(groupId, withPriceOnly, eshopsToSkip);
     }
 
     @Override

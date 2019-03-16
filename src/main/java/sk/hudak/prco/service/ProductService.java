@@ -25,7 +25,7 @@ public interface ProductService {
 
     List<ProductInActionDto> findProductsInAction(EshopUuid eshopUuid);
 
-    List<ProductFullDto> findProductsInGroup(Long groupId, EshopUuid... eshopsToSkip);
+    List<ProductFullDto> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip);
 
     List<ProductFullDto> findProductsNotInAnyGroup();
 
