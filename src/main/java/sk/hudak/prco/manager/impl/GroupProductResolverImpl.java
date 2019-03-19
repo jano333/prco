@@ -31,7 +31,7 @@ public class GroupProductResolverImpl implements GroupProductResolver {
     }
 
     private boolean resolve(GroupProductKeywords keyword, Set<String> productNameWords) {
-        return keyword.getChoises().stream()
+        return keyword.getChoices().stream()
                 .filter(choice -> productNameWords.containsAll(choice))
                 .findFirst()
                 .isPresent();
