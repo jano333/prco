@@ -12,17 +12,22 @@ public enum GroupProductKeywords {
 
     LOVELA_GEL_WHITE(
             353L,
-            Arrays.asList("lovela", "gel", "biele")
+            Arrays.asList("lovela", "gel", "biele"),
+            Arrays.asList("lovela", "gel", "biela"),
+            Arrays.asList("lovela", "gel", "white")
     ),
 
     LOVELA_GEL_COLOR(
             417L,
-            Arrays.asList("lovela", "gel", "color")
+            Arrays.asList("lovela", "gel", "color"),
+            Arrays.asList("lovela", "gel", "farebne")
     ),
 
     LOVELA_PRASOK_BIELE(
             386L,
-            Arrays.asList("lovela", "prasok", "biele")
+            Arrays.asList("lovela", "prasok", "biele"),
+            Arrays.asList("lovela", "prasok", "biela"),
+            Arrays.asList("lovela", "prasek", "bile")
     ),
 
     PAMPERS_PREMIUM_0(
