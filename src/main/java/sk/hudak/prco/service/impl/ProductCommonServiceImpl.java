@@ -12,9 +12,10 @@ import sk.hudak.prco.dao.db.NotInterestedProductDbDao;
 import sk.hudak.prco.dao.db.ProductDataUpdateEntityDao;
 import sk.hudak.prco.dao.db.ProductEntityDao;
 import sk.hudak.prco.dto.EshopProductInfoDto;
-import sk.hudak.prco.dto.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.ProductStatisticInfoDto;
 import sk.hudak.prco.dto.newproduct.NewProductFullDto;
+import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFindDto;
+import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.mapper.PrcoOrikaMapper;
@@ -131,8 +132,8 @@ public class ProductCommonServiceImpl implements ProductCommonService {
 
 
     @Override
-    public List<NotInterestedProductFullDto> findNotInterestedProductsForExport() {
-        return mapper.mapAsList(notInterestedProductDbDao.findAll(), NotInterestedProductFullDto.class);
+    public List<NotInterestedProductFullDto> findNotInterestedProducts(NotInterestedProductFindDto findDto) {
+        return mapper.mapAsList(notInterestedProductDbDao.findAll(findDto), NotInterestedProductFullDto.class);
     }
 
     @Override

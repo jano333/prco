@@ -1,8 +1,9 @@
 package sk.hudak.prco.service;
 
-import sk.hudak.prco.dto.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.ProductStatisticInfoDto;
 import sk.hudak.prco.dto.newproduct.NewProductFullDto;
+import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFindDto;
+import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public interface ProductCommonService {
      */
     void markNewProductAsNotInterested(Long... newProductIds);
 
-    List<NotInterestedProductFullDto> findNotInterestedProductsForExport();
+    List<NotInterestedProductFullDto> findNotInterestedProducts(NotInterestedProductFindDto findDto);
 
     /**
      * Importne pokial tam taky este nie je...,

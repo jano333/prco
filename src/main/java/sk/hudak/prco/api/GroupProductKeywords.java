@@ -9,6 +9,58 @@ public enum GroupProductKeywords {
 
 //    TODO pridat zoznam ktore nesmie mat, data aby do nutrilon 4 nam nedava nutrilon 4 profutura
 
+
+    LOVELA_GEL_WHITE(
+            353L,
+            Arrays.asList("lovela", "gel", "biele")
+    ),
+
+    LOVELA_GEL_COLOR(
+            417L,
+            Arrays.asList("lovela", "gel", "color")
+    ),
+
+    LOVELA_PRASOK_BIELE(
+            386L,
+            Arrays.asList("lovela", "prasok", "biele")
+    ),
+
+    PAMPERS_PREMIUM_0(
+            449L,
+            Arrays.asList("pampers", "premium", "care", "newborn", "0")
+    ),
+
+    PAMPERS_PREMIUM_1(
+            450L,
+            Arrays.asList("pampers", "premium", "care", "newborn", "1"),
+            Arrays.asList("pampers", "premium", "care", "newborn", "(1)")
+    ),
+
+    PAMPERS_PREMIUM_2(
+            451L,
+            Arrays.asList("pampers", "premium", "care", "mini", "2"),
+            Arrays.asList("pampers", "premium", "care", "mini", "(2)")
+    ),
+
+    PAMPERS_PREMIUM_3(
+            452L,
+            Arrays.asList("pampers", "premium", "care", "midi", "3"),
+            Arrays.asList("pampers", "premium", "care", "midi", "(3)")
+    ),
+
+    PAMPERS_PREMIUM_4(
+            453L,
+            Arrays.asList("pampers", "premium", "care", "maxi", "4"),
+            Arrays.asList("pampers", "premium", "care", "maxi", "(4)")
+    ),
+
+    PAMPERS_PREMIUM_5(
+            481L,
+            Arrays.asList("pampers", "premium", "care", "junior", "5"),
+            Arrays.asList("pampers", "premium", "care", "junior", "(5)")
+    ),
+
+
     PAMPERS_ZELENE_4(
             1L,
             Arrays.asList("pampers", "active", "baby", "4"),

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.dto.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.ProductStatisticInfoDto;
 import sk.hudak.prco.dto.ProductUpdateDataDto;
 import sk.hudak.prco.dto.UnitData;
@@ -25,6 +24,8 @@ import sk.hudak.prco.dto.newproduct.NewProductCreateDto;
 import sk.hudak.prco.dto.newproduct.NewProductFilterUIDto;
 import sk.hudak.prco.dto.newproduct.NewProductFullDto;
 import sk.hudak.prco.dto.newproduct.NewProductInfoDetail;
+import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFindDto;
+import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.product.ProductAddingToGroupDto;
 import sk.hudak.prco.dto.product.ProductBestPriceInGroupDto;
 import sk.hudak.prco.dto.product.ProductDetailInfo;
@@ -36,6 +37,7 @@ import sk.hudak.prco.service.ErrorService;
 import sk.hudak.prco.service.GroupService;
 import sk.hudak.prco.service.InternalTxService;
 import sk.hudak.prco.service.NewProductService;
+import sk.hudak.prco.service.NotInterestedProductService;
 import sk.hudak.prco.service.ProductCommonService;
 import sk.hudak.prco.service.ProductService;
 import sk.hudak.prco.service.WatchDogService;
@@ -66,6 +68,10 @@ public class InternalTxServiceImpl implements InternalTxService {
     @Inject
     @Named("productService")
     private ProductService productService;
+
+    @Inject
+    @Named("notInterestedProductService")
+    private NotInterestedProductService notInterestedProductService;
 
     @Inject
     @Named("groupService")
@@ -280,8 +286,8 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<NotInterestedProductFullDto> findNotInterestedProductsForExport() {
-        return productCommonService.findNotInterestedProductsForExport();
+    public List<NotInterestedProductFullDto> findNotInterestedProducts(NotInterestedProductFindDto findDto) {
+        return productCommonService.findNotInterestedProducts(findDto);
     }
 
     @Override
@@ -411,6 +417,12 @@ public class InternalTxServiceImpl implements InternalTxService {
     @Transactional
     public Future<Void> startErrorCleanUp() {
         return errorService.startErrorCleanUp();
+    }
+
+    @Override
+    @Transactional
+    public void deleteNotInterestedProducts(Long... notInterestedProductIds) {
+        notInterestedProductService.deleteNotInterestedProducts(notInterestedProductIds);
     }
 
     // tests

@@ -1,4 +1,4 @@
-package sk.hudak.prco.dto;
+package sk.hudak.prco.dto.notinteretedproduct;
 
 import lombok.Builder;
 import lombok.Getter;

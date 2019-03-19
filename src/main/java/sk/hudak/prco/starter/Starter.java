@@ -12,6 +12,8 @@ import sk.hudak.prco.dto.group.GroupIdNameDto;
 import sk.hudak.prco.dto.group.GroupListExtendedDto;
 import sk.hudak.prco.dto.group.GroupUpdateDto;
 import sk.hudak.prco.dto.newproduct.NewProductInfoDetail;
+import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFindDto;
+import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.product.ProductBestPriceInGroupDto;
 import sk.hudak.prco.dto.product.ProductFilterUIDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
@@ -142,7 +144,11 @@ public class Starter {
 
 
         // --- GROUPY --
-//        createNewGroup("pampers 5 zelene");
+//        createNewGroup("pampers 0 premium");
+//        createNewGroup("pampers 1 premium");
+//        createNewGroup("pampers 2 premium");
+//        createNewGroup("pampers 3 premium");
+//        createNewGroup("pampers 5 premium");
 //        updateGroupName(1L, "pampers 4 zelene");
         //nutrilon 4
 //        uiService.addProductsToGroup(33L, 1697L);
@@ -156,6 +162,10 @@ public class Starter {
         showAllGroups();
 //        uiService.removeProductsFromGroup(1L, 994L, 1226L);
 
+
+//internalTxService.deleteNotInterestedProducts(1206L,
+//        2929L,
+//        3626L);
 
 //        uiService.deleteNewProducts(5505L);
 //        uiService.deleteProducts(1569L);
@@ -173,6 +183,7 @@ public class Starter {
         // nutrilon 5
 //        showProductsInGroup(257L, true);
 
+        showProductNotInterested(EshopUuid.ALZA);
 
         // olej
 //        showProductsInGroup(225L);
@@ -180,6 +191,7 @@ public class Starter {
 
 //        showAllProductsInAllGroups();
         showProductsNotInAnyGroup();
+
 
 
 //        existProduct("https://www.feedo.sk/pampers-active-baby-4-box-120ks-9-16-kg-jednorazove-plienky/");
@@ -212,7 +224,7 @@ public class Starter {
                 log.debug(">> eshop: {}, updated/waiting: {}/{}",
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
-//        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
+        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
 //        updateProductDataManager.updateAllProductDataNotInAnyGroup(listener);
 
 //        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.PERINBABA, listener);
@@ -270,6 +282,17 @@ public class Starter {
 //                348L,
 //                new UnitData(Unit.KILOGRAM, new BigDecimal(5.6), Integer.valueOf(1)));
 
+    }
+
+    private void showProductNotInterested(EshopUuid eshopUuid) {
+        List<NotInterestedProductFullDto> notInterestedProducts = internalTxService.findNotInterestedProducts(new NotInterestedProductFindDto(eshopUuid));
+        System.out.println("Not interested product for eshop :" + eshopUuid);
+        for (NotInterestedProductFullDto product : notInterestedProducts) {
+            System.out.println("id " + product.getId() + ", "
+                    + product.getEshopUuid() + " "
+                    + " '" + product.getName() + "', "
+                    + product.getUrl());
+        }
     }
 
     private void showAllProductsInAllGroups(boolean withPriceOnly) {

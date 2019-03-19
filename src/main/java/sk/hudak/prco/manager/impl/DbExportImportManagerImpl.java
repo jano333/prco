@@ -7,8 +7,9 @@ import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.api.Unit;
-import sk.hudak.prco.dto.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.newproduct.NewProductFullDto;
+import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFindDto;
+import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.manager.DbExportImportManager;
@@ -181,7 +182,7 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
         CSVPrinter csvFilePrinter = null;
         try {
             exportPath = createExportPath(NOT_INTERESTED_PRODUCT_FILE_NAME_PREFIX);
-            List<NotInterestedProductFullDto> notInterestedProductsForExport = internalTxService.findNotInterestedProductsForExport();
+            List<NotInterestedProductFullDto> notInterestedProductsForExport = internalTxService.findNotInterestedProducts(new NotInterestedProductFindDto());
             printWriter = createPrintWriter(exportPath);
             csvFilePrinter = createCSVPrinter(printWriter);
 

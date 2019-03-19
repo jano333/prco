@@ -21,6 +21,7 @@ public class GroupProductResolverImpl implements GroupProductResolver {
                 .filter(StringUtils::isNotBlank)
                 .map(String::trim)
                 .map(String::toLowerCase)
+                .map(StringUtils::stripAccents)
                 .collect(Collectors.toSet());
 
 
