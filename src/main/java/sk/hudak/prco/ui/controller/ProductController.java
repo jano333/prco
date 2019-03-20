@@ -70,9 +70,7 @@ public class ProductController extends BasicController {
             @PathVariable GroupProductKeywords keyword) {
 
         getUiService().addProductsToGroup(keyword.getGroupId(), productId);
-
-        //FIXME redirect
-        return listProductsWitchAreNotInAnyGroup();
+        return new ModelAndView(REDIRECT_TO_VIEW_PRODUCTS_NOT_IN_ANY_GROUP);
     }
 
     /**
@@ -83,7 +81,7 @@ public class ProductController extends BasicController {
                                               @ModelAttribute(value = "groupId") Long selectedGroupId) {
 
         getUiService().addProductsToGroup(selectedGroupId, productId);
-        return listProductsWitchAreNotInAnyGroup();
+        return new ModelAndView(REDIRECT_TO_VIEW_PRODUCTS_NOT_IN_ANY_GROUP);
     }
 
     @RequestMapping("/products/groups")
