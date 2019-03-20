@@ -75,30 +75,56 @@ public enum GroupProductKeywords {
             asList("pampers", "pure", "protection", "s5,"),
             asList("pampers", "giant", "pack", "maxi", "5")
     ),
+    PAMPERS_ZELENE_6(
+            513L,
+            asList("pampers", "active", "baby", "6"),
+            asList("pampers", "active", "baby", "6,"),
+            asList("pampers", "active", "baby", "6+"),
+            asList("pampers", "active", "baby", "6+,"),
+            asList("pampers", "active", "baby", "s6"),
+            asList("pampers", "active", "baby", "s6+"),
+            asList("pampers", "active", "baby", "s6p"),
+            asList("pampers", "active", "baby-dry", "6+"),
+            asList("pampers", "activebaby", "6+"),
+            asList("pampers", "new", "baby-dry", "6"),
+            asList("pampers", "active", "baby-dry", "6"),
+            asList("pampers", "pure", "protection", "6"),
+            asList("pampers", "pure", "protection", "s6"),
+            asList("pampers", "pure", "protection", "s6,"),
+            asList("pampers", "giant", "pack", "maxi", "6")
+    ),
     LOVELA_GEL_WHITE(
             353L,
             asList("lovela", "gel", "biele"),
             asList("lovela", "gel", "biela"),
-            asList("lovela", "gel", "white")
+            asList("lovela", "gel", "white"),
+            asList("lovela", "biela", "tekuty")
 
     ),
     LOVELA_GEL_COLOR(
             417L,
             asList("lovela", "gel", "color"),
+            asList("lovela", "gel", "color,"),
             asList("lovela", "gel", "farebne"),
-            asList("lovela", "tekuty", "prasok", "color")
+            asList("lovela", "tekuty", "prasok", "color"),
+            asList("lovela", "tekuty", "farebna")
     ),
 
     LOVELA_POWDER_WHITE(
             386L,
             asList("lovela", "prasok", "biele"),
             asList("lovela", "prasok", "biela"),
+            asList("lovela", "prasok", "biela,"),
             asList("lovela", "prasek", "bile")
     ),
 
     LOVELA_POWDER_COLOR(
             385L,
-            asList("lovela", "prasok", "color")
+            asList("lovela", "prasok", "color"),
+            asList("lovela", "prasok", "color,"),
+            asList("lovela", "prasok", "farebna"),
+            asList("lovela", "prasek", "farebna"),
+            asList("lovela", "prasek", "barevne")
     ),
     NUTRILON_4(
             33L,
