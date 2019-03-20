@@ -163,9 +163,11 @@ public class Starter {
 //        uiService.removeProductsFromGroup(1L, 994L, 1226L);
 
 
-//internalTxService.deleteNotInterestedProducts(1206L,
-//        2929L,
-//        3626L);
+//internalTxService.deleteNotInterestedProducts(
+//        1809L,
+//        1810L,
+//        1811L,
+//        1825L);
 
 //        uiService.deleteNewProducts(5505L);
 //        uiService.deleteProducts(1569L);
@@ -224,7 +226,7 @@ public class Starter {
                 log.debug(">> eshop: {}, updated/waiting: {}/{}",
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
-        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
+//        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
 //        updateProductDataManager.updateAllProductDataNotInAnyGroup(listener);
 
 //        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.PERINBABA, listener);

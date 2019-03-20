@@ -7,6 +7,7 @@ import sk.hudak.prco.api.BestPriceInGroup;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dao.db.GroupEntityDao;
 import sk.hudak.prco.dao.db.GroupOfProductFindEntityDao;
+import sk.hudak.prco.dao.db.NotInterestedProductDbDao;
 import sk.hudak.prco.dao.db.ProductDataUpdateEntityDao;
 import sk.hudak.prco.dao.db.ProductEntityDao;
 import sk.hudak.prco.dto.ProductUpdateDataDto;
@@ -20,6 +21,7 @@ import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.dto.product.ProductInActionDto;
 import sk.hudak.prco.mapper.PrcoOrikaMapper;
 import sk.hudak.prco.model.GroupEntity;
+import sk.hudak.prco.model.NotInterestedProductEntity;
 import sk.hudak.prco.model.ProductDataUpdateEntity;
 import sk.hudak.prco.model.ProductEntity;
 import sk.hudak.prco.service.ProductService;
@@ -61,6 +63,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductDataUpdateEntityDao productDataUpdateEntityDao;
+
+    @Autowired
+    private NotInterestedProductDbDao notInterestedProductDbDao;
 
     @Autowired
     private PrcoOrikaMapper mapper;
@@ -253,7 +258,7 @@ public class ProductServiceImpl implements ProductService {
         notNull(groupId, "groupId");
 
         return mapper.mapAsList(
-                groupEntityDao.findProductsInGroup(groupId,withPriceOnly , eshopsToSkip).toArray(),
+                groupEntityDao.findProductsInGroup(groupId, withPriceOnly, eshopsToSkip).toArray(),
                 ProductFullDto.class);
     }
 
@@ -374,6 +379,29 @@ public class ProductServiceImpl implements ProductService {
         internalLastTimeDataUpdated(productId, null);
     }
 
+
+    @Override
+    public void markProductAsNotInterested(Long productId) {
+        // vyhladam povodny produkt
+        ProductEntity productEntity = productEntityDao.findById(productId);
+
+        // premapujem do noveho
+        NotInterestedProductEntity notInterestedProductEntity = mapper.map(productEntity, NotInterestedProductEntity.class);
+
+        // ulozim ho
+        notInterestedProductDbDao.save(notInterestedProductEntity);
+        log.debug("created new {} with id {}", notInterestedProductEntity.getClass().getSimpleName(), notInterestedProductEntity.getId());
+
+        // odmazem stary
+        List<GroupEntity> groupsForProduct = groupEntityDao.findGroupsForProduct(productId);
+        for (GroupEntity groupEntity : groupsForProduct) {
+            groupEntity.getProducts().remove(productEntity);
+            groupEntityDao.update(groupEntity);
+            log.debug("removed product '{}' from group '{}'", productEntity.getName(), groupEntity.getName());
+        }
+        productEntityDao.delete(productEntity);
+        log.debug("deleted {} with id {}", productEntity.getClass().getSimpleName(), productId);
+    }
 
     private void internalLastTimeDataUpdated(Long productId, Date lastTimeDataUpdated) {
         ProductDataUpdateEntity updateEntity = productDataUpdateEntityDao.findById(productId);

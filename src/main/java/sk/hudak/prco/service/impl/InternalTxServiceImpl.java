@@ -207,6 +207,12 @@ public class InternalTxServiceImpl implements InternalTxService {
     }
 
     @Override
+    @Transactional
+    public void markProductAsNotInterested(Long productId) {
+        productService.markProductAsNotInterested(productId);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<NewProductFullDto> findNewProductsForExport() {
         return newProductService.findNewProductsForExport();

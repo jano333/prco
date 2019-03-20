@@ -21,17 +21,27 @@ public class PrcoOrikaMapper extends ConfigurableMapper {
 
     @Override
     protected void configure(MapperFactory factory) {
+
         config_NewProductEntity_To_ProductEntity(factory);
         config_NewProductEntity_To_NotInterestedProductEntity(factory);
+        config_NewProductEntity_To_NewProductFullDto(factory);
+
+        config_ProductEntity_To_ProductFullDto(factory);
+        config_ProductEntity_To_ProductAddingToGroupDto(factory);
+        config_ProductEntity_to_NotInterestedProductEntity(factory);
+
 
         config_GroupEntity_To_GroupIdNameDto(factory);
         config_StatisticForUpdateForEshopDto_To_UpdateStatusInfo(factory);
 
         config_ErrorEntity_To_ErrorListDto(factory);
-        config_NewProductEntity_To_NewProductFullDto(factory);
+    }
 
-        config_ProductEntity_To_ProductFullDto(factory);
-        config_ProductEntity_To_ProductAddingToGroupDto(factory);
+    private void config_ProductEntity_to_NotInterestedProductEntity(MapperFactory mapperFactory) {
+        mapperFactory.classMap(ProductEntity.class, NotInterestedProductEntity.class)
+                .fieldMap("id").exclude().add()
+                .byDefault()
+                .register();
     }
 
     private void config_ProductEntity_To_ProductFullDto(MapperFactory mapperFactory) {
@@ -56,7 +66,7 @@ public class PrcoOrikaMapper extends ConfigurableMapper {
     private void config_NewProductEntity_To_ProductEntity(MapperFactory mapperFactory) {
         mapperFactory.classMap(NewProductEntity.class, ProductEntity.class)
                 .fieldMap("id").exclude().add()
-                .fieldMap("pictureUrl","productPictureUrl").add()
+                .fieldMap("pictureUrl", "productPictureUrl").add()
                 .byDefault()
                 .register();
     }

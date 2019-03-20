@@ -18,6 +18,7 @@ public final class MvcConstants {
     // redirect to view names
     public static final String REDIRECT = "redirect:/";
     public static final String REDIRECT_TO_VIEW_NEW_PRODUCTS = REDIRECT + VIEW_NEW_PRODUCTS;
+    public static final String REDIRECT_TO_VIEW_PRODUCTS_NOT_IN_ANY_GROUP = REDIRECT + VIEW_PRODUCTS_NOT_IN_ANY_GROUP;
 
 
 }

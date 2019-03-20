@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static sk.hudak.prco.ui.MvcConstants.ATTRIBUTE_COUNT_OF_PRODUCTS_NOT_IN_ANY_GROUP;
+import static sk.hudak.prco.ui.MvcConstants.REDIRECT_TO_VIEW_PRODUCTS_NOT_IN_ANY_GROUP;
 import static sk.hudak.prco.ui.MvcConstants.VIEW_PRODUCTS_IN_GROUP;
 import static sk.hudak.prco.ui.MvcConstants.VIEW_PRODUCTS_NOT_IN_ANY_GROUP;
 import static sk.hudak.prco.ui.MvcConstants.VIEW_PRODUCT_ADD_TO_GROUP;
@@ -38,10 +39,12 @@ public class ProductController extends BasicController {
         List<ProductNotInAnyGroupDto> products = new ArrayList<>();
 
         for (ProductFullDto product : getUiService().findProductsWitchAreNotInAnyGroup()) {
+            //FIXME cez oriku okrem keywords
             ProductNotInAnyGroupDto dto = new ProductNotInAnyGroupDto();
             dto.setEshopUuid(product.getEshopUuid());
             dto.setProductPictureUrl(product.getProductPictureUrl());
             dto.setName(product.getName());
+            dto.setUrl(product.getUrl());
             dto.setId(product.getId());
             dto.setKeywords(groupProductResolver.resolveGroup(product.getName()).orElse(null));
             products.add(dto);
@@ -68,6 +71,7 @@ public class ProductController extends BasicController {
 
         getUiService().addProductsToGroup(keyword.getGroupId(), productId);
 
+        //FIXME redirect
         return listProductsWitchAreNotInAnyGroup();
     }
 
@@ -95,6 +99,12 @@ public class ProductController extends BasicController {
         ModelAndView modelAndView = new ModelAndView(VIEW_PRODUCTS_IN_GROUP, "productsInGroup", productsInGroup);
         modelAndView.addObject("groupListDtos", getUiService().findGroups(new GroupFilterDto()));
         return modelAndView;
+    }
+
+    @RequestMapping("/product/{id}/notInterested")
+    public ModelAndView notInterestedNewProducts(@PathVariable Long id) {
+        getUiService().markProductAsNotInterested(id);
+        return new ModelAndView(REDIRECT_TO_VIEW_PRODUCTS_NOT_IN_ANY_GROUP);
     }
 
 }

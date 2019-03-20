@@ -57,4 +57,6 @@ public interface ProductService {
     List<ProductBestPriceInGroupDto> findProductsBestPriceInGroupDto(EshopUuid eshopUuid);
 
     StatisticForUpdateForEshopDto getStatisticForUpdateForEshop(EshopUuid eshopUuid, int olderThanInHours);
+
+    void markProductAsNotInterested(Long productId);
 }

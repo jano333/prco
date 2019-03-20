@@ -179,4 +179,9 @@ public class UIServiceImpl implements UIService {
     public void deleteNewProducts(Long... newProductIds) {
         internalTxService.deleteNewProducts(newProductIds);
     }
+
+    @Override
+    public void markProductAsNotInterested(Long productId) {
+        internalTxService.markProductAsNotInterested(productId);
+    }
 }
