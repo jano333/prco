@@ -31,7 +31,7 @@
                 <!-- eshop -->
                 <td th:text="${product.eshopUuid.name()}"></td>
 
-                <!-- obrazok produktu-->
+                <!-- obrazok -->
                 <td>
                     <img th:src="${product.productPictureUrl}" height="142" width="142">
                 </td>
@@ -41,8 +41,10 @@
                     <a th:href="${product.url}" th:text="${product.name}"></a>
                 </td>
 
+                <!-- id -->
                 <td th:text="${product.id}"></td>
 
+                <!-- akcie -->
                 <td>
                     <a th:href="'/products/'+${product.id}+'/addToGroup'" th:text="${'Add to group'}"></a>
                     <br/>
@@ -51,11 +53,9 @@
                     <br/>
                     <a th:href="'/products/'+${product.id}+'/addToGroupAutomaticaly/'+${product.keywords}" th:text="${'Add automaticaly'}"
                         th:if="${product.keywords!=null}">
-
                     </a>
                     <br/>
                     <a th:href="${'/product/'+product.id+'/notInterested'}">Not interested</a>
-
                 </td>
 
                 <!--<td>
