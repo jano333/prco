@@ -16,6 +16,7 @@ public enum GroupProductKeywords {
     ),
     PAMPERS_PREMIUM_1(
             450L,
+            asList("pampers", "premium", "newborn", "1"),
             asList("pampers", "premium", "care", "newborn", "1"),
             asList("pampers", "premium", "care", "newborn", "(1)")
     ),
@@ -31,13 +32,71 @@ public enum GroupProductKeywords {
     ),
     PAMPERS_PREMIUM_4(
             453L,
+            asList("pampers", "premium", "maxi", "4"),
             asList("pampers", "premium", "care", "maxi", "4"),
             asList("pampers", "premium", "care", "maxi", "(4)")
     ),
     PAMPERS_PREMIUM_5(
             481L,
+            asList("pampers", "premium", "junior", "5"),
             asList("pampers", "premium", "care", "junior", "5"),
             asList("pampers", "premium", "care", "junior", "(5)")
+    ),
+
+    PAMPERS_ZELENE_1(
+            545L,
+            asList("pampers", "active", "baby", "1"),
+            asList("pampers", "active", "baby", "1,"),
+            asList("pampers", "active", "baby", "1+"),
+            asList("pampers", "active", "baby", "1+,"),
+            asList("pampers", "active", "baby", "s1"),
+            asList("pampers", "active", "baby", "s1+"),
+            asList("pampers", "active", "baby", "s1p"),
+            asList("pampers", "active", "baby-dry", "1+"),
+            asList("pampers", "activebaby", "1+"),
+            asList("pampers", "new", "baby-dry", "1"),
+            asList("pampers", "active", "baby-dry", "1"),
+            asList("pampers", "pure", "protection", "1"),
+            asList("pampers", "pure", "protection", "s1"),
+            asList("pampers", "pure", "protection", "s1,"),
+            asList("pampers", "giant", "pack", "maxi", "1")
+    ),
+    PAMPERS_ZELENE_2(
+            546L,
+            asList("pampers", "active", "baby", "2"),
+            asList("pampers", "active", "baby", "2,"),
+            asList("pampers", "active", "baby", "2+"),
+            asList("pampers", "active", "baby", "2+,"),
+            asList("pampers", "active", "baby", "s2"),
+            asList("pampers", "active", "baby", "s2+"),
+            asList("pampers", "active", "baby", "s2p"),
+            asList("pampers", "active", "baby-dry", "2+"),
+            asList("pampers", "activebaby", "2+"),
+            asList("pampers", "new", "baby", "2"),
+            asList("pampers", "new", "baby-dry", "2"),
+            asList("pampers", "active", "baby-dry", "2"),
+            asList("pampers", "pure", "protection", "2"),
+            asList("pampers", "pure", "protection", "s2"),
+            asList("pampers", "pure", "protection", "s2,"),
+            asList("pampers", "giant", "pack", "maxi", "2")
+    ),
+    PAMPERS_ZELENE_3(
+            547L,
+            asList("pampers", "active", "baby", "3"),
+            asList("pampers", "active", "baby", "3,"),
+            asList("pampers", "active", "baby", "3+"),
+            asList("pampers", "active", "baby", "3+,"),
+            asList("pampers", "active", "baby", "s3"),
+            asList("pampers", "active", "baby", "s3+"),
+            asList("pampers", "active", "baby", "s3p"),
+            asList("pampers", "active", "baby-dry", "3+"),
+            asList("pampers", "activebaby", "3+"),
+            asList("pampers", "new", "baby-dry", "3"),
+            asList("pampers", "active", "baby-dry", "3"),
+            asList("pampers", "pure", "protection", "3"),
+            asList("pampers", "pure", "protection", "s3"),
+            asList("pampers", "pure", "protection", "s3,"),
+            asList("pampers", "giant", "pack", "maxi", "3")
     ),
     PAMPERS_ZELENE_4(
             1L,
@@ -99,7 +158,6 @@ public enum GroupProductKeywords {
             asList("lovela", "gel", "biela"),
             asList("lovela", "gel", "white"),
             asList("lovela", "biela", "tekuty")
-
     ),
     LOVELA_GEL_COLOR(
             417L,
@@ -109,7 +167,6 @@ public enum GroupProductKeywords {
             asList("lovela", "tekuty", "prasok", "color"),
             asList("lovela", "tekuty", "farebna")
     ),
-
     LOVELA_POWDER_WHITE(
             386L,
             asList("lovela", "prasok", "biele"),
@@ -117,7 +174,6 @@ public enum GroupProductKeywords {
             asList("lovela", "prasok", "biela,"),
             asList("lovela", "prasek", "bile")
     ),
-
     LOVELA_POWDER_COLOR(
             385L,
             asList("lovela", "prasok", "color"),
@@ -125,6 +181,18 @@ public enum GroupProductKeywords {
             asList("lovela", "prasok", "farebna"),
             asList("lovela", "prasek", "farebna"),
             asList("lovela", "prasek", "barevne")
+    ),
+    NUTRILON_1(
+            577L,
+            asList("nutrilon", "1")
+    ),
+    NUTRILON_2(
+            578L,
+            asList("nutrilon", "2")
+    ),
+    NUTRILON_3(
+            579L,
+            asList("nutrilon", "3")
     ),
     NUTRILON_4(
             33L,
