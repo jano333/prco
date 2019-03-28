@@ -184,6 +184,12 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional
+    public void deleteNotInterestedProducts(EshopUuid eshopUuid) {
+        notInterestedProductService.deleteNotInterestedProducts(eshopUuid);
+    }
+
+    @Override
+    @Transactional
     public void markProductAsUnavailable(Long productId) {
         productService.markProductAsUnavailable(productId);
     }

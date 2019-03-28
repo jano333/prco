@@ -12,7 +12,6 @@ import sk.hudak.prco.parser.impl.JSoupProductParser;
 import sk.hudak.prco.utils.ConvertUtils;
 import sk.hudak.prco.utils.UserAgentDataHolder;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +24,7 @@ import static sk.hudak.prco.api.EshopUuid.DROGERKA;
 @Component
 public class DrogerkaProductParser extends JSoupProductParser {
 
-    public DrogerkaProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, @NotNull SearchUrlBuilder searchUrlBuilder) {
+    public DrogerkaProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
         super(unitParser, userAgentDataHolder, searchUrlBuilder);
     }
 

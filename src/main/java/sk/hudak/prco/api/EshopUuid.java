@@ -24,8 +24,6 @@ public enum EshopUuid {
     // -- DROGERIE --
     //TODO https://www.diskontdrogerie.cz/plenky/pampers-premium-care-1-new-born-88ks.html
 
-    //TODO https://www.drogerka.sk/pampers-premium-care-detske-plienky-newborn-88-ks // nie su tam pampers 5
-
     // -- LEKARNE --
     //TODO https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-premium-care-1-newborn-88ks-18815.html
     //TODO http://www.sos-lekaren.sk/tehotne-a-kojici-deti/pampers-premium-care-newborn-2-5kg-88ks/
@@ -59,6 +57,7 @@ public enum EshopUuid {
     //TODO pridat prvy parameter boolean ktory bude hovorit o tom ci je alebo nie je enablovany dany eshop
 
 
+    // done
     ALZA("https://www.alza.sk",
             "https://www.alza.sk/search.htm?exps=" + KEYWORD_TEMP,
             "https://www.alza.sk/search-p" + PAGE_NUMBER_TEMP + ".htm?exps=" + KEYWORD_TEMP,
@@ -113,6 +112,7 @@ public enum EshopUuid {
             "https://www.esodrogeria.eu/search-engine.htm?slovo=" + KEYWORD_TEMP + "&search_submit=&hledatjak=2&page=" + PAGE_NUMBER_TEMP + "&man=9",
             5, 12, 21),
 
+    // done
     FEEDO("https://www.feedo.sk",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/filter/?strana={pageNumber}",
@@ -154,6 +154,14 @@ public enum EshopUuid {
             "https://www.lekaren-bella.sk/search/?query=" + KEYWORD_TEMP,
             "https://www.lekaren-bella.sk/search:" + PAGE_NUMBER_TEMP + ":12/" + KEYWORD_TEMP,
             5, 12, 12),
+
+    LEKAREN_EXPRES(
+            PHARMACY,
+            "https://www.lekarenexpres.sk",
+            "https://www.lekarenexpres.sk/search/?hledat=" + KEYWORD_TEMP,
+            "https://www.lekarenexpres.sk/search/?hledat=" + KEYWORD_TEMP + "&start=" + OFFSET_TEMP,
+            5, 12, 24
+    ),
 
     LEKAREN_V_KOCKE(
             PHARMACY,

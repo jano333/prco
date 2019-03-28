@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.DrogerkaProductParser;
+import sk.hudak.prco.eshop.LekarenExpresProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -27,10 +27,19 @@ public class ProductParserTest {
 ////                .parseProductUpdateData("https://www.lekaren-bella.sk/zbozi/3134039/pampers-active-baby-vpp-4-maxi-58ks"));
 
 //         Drogerka
-        System.out.println(new DrogerkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                .parseUrlsOfProduct("pampers"));
+//        System.out.println(new DrogerkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+////                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.drogerka.sk/pampers-premium-care-detske-plienky-junior-44-ks?search=pampers"));
-                .parseProductUpdateData("https://www.drogerka.sk/pampers-premium-care-detske-plienky-junior-44-ks?search=pampers"));
+////                .parseProductUpdateData("https://www.drogerka.sk/pampers-premium-care-detske-plienky-junior-44-ks?search=pampers"));
+
+        //         Lekaren expres
+        System.out.println(new LekarenExpresProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers"));
+//                .parseNewProductInfo("https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/obrusky-hygienicke/pro-deti/pampers-vlhcene-ubrousky-baby-fresh-64ks-14882.html"));
+                .parseProductUpdateData("https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/obrusky-hygienicke/pro-deti/pampers-vlhcene-ubrousky-baby-fresh-64ks-14882.html"));
+//                .parseProductUpdateData("https://www.drogerka.sk/pampers-premium-care-detske-plienky-junior-44-ks?search=pampers"));
+
+        System.out.println();
 
          // Giga lekaren
 //        System.out.println(new GigaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)

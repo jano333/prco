@@ -11,6 +11,20 @@ public class JsoupUtils {
     private JsoupUtils() {
     }
 
+    public static String hrefAttribute(Element element) {
+        if (element == null) {
+            return null;
+        }
+        return element.attr("href");
+    }
+
+    public static String srcAttribute(Element element) {
+        if (element == null) {
+            return null;
+        }
+        return element.attr("src");
+    }
+
     public static boolean existElement(@NonNull Document document, @NonNull String cssQuery) {
         return !notExistElement(document, cssQuery);
     }

@@ -1,6 +1,5 @@
 package sk.hudak.prco.eshop;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,6 +13,7 @@ import sk.hudak.prco.utils.ConvertUtils;
 import sk.hudak.prco.utils.JsoupUtils;
 import sk.hudak.prco.utils.UserAgentDataHolder;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -21,33 +21,38 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
-import static sk.hudak.prco.api.EshopUuid.LEKAREN_V_KOCKE;
+import static sk.hudak.prco.api.EshopUuid.LEKAREN_EXPRES;
+import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
 
-@Slf4j
 @Component
-public class LekarenVKockeProductParser extends JSoupProductParser {
+public class LekarenExpresProductParser extends JSoupProductParser {
 
-    public LekarenVKockeProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
+    public LekarenExpresProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, @NotNull SearchUrlBuilder searchUrlBuilder) {
         super(unitParser, userAgentDataHolder, searchUrlBuilder);
     }
 
     @Override
     public EshopUuid getEshopUuid() {
-        return LEKAREN_V_KOCKE;
+        return LEKAREN_EXPRES;
     }
 
     @Override
     protected int parseCountOfPages(Document documentList) {
-        int size = documentList.select("nav > ul > li").size();
+        int size = documentList.select("div[class='paging'] p > a").size();
         if (size == 0) {
             return 1;
         }
-        return size / 2;
+        size = size / 2;
+        size = size - 1;
+        if (size == 0) {
+            return 1;
+        }
+        return size;
     }
 
     @Override
     protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
-        return documentList.select("div[class='product col-xs-12 col-xs-offset-0 col-s-6 col-s-offset-0 col-sm-3 col-sm-offset-0'] > a")
+        return documentList.select("div[class='product'] h3 a")
                 .stream()
                 .map(JsoupUtils::hrefAttribute)
                 .filter(StringUtils::isNotBlank)
@@ -56,30 +61,27 @@ public class LekarenVKockeProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        return ofNullable(documentDetailProduct.select("h1[class='product-detail-title title-xs']").first())
-                .map(Element::text)
-                .filter(StringUtils::isNotBlank);
+        return ofNullable(documentDetailProduct.select("#meta > h1").first())
+                .map(Element::text);
     }
 
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        return ofNullable(documentDetailProduct.select("img[class='img-responsive']").first())
-                .map(JsoupUtils::srcAttribute)
-                .filter(StringUtils::isNotBlank);
+        return ofNullable(documentDetailProduct.select("#topImg > a").first())
+                .map(JsoupUtils::hrefAttribute);
     }
 
     @Override
     protected boolean isProductUnavailable(Document documentDetailProduct) {
-        return !ofNullable(documentDetailProduct.select("button[value='KOUPIT']").first())
-                .isPresent();
+        return notExistElement(documentDetailProduct, "#meta > div.buy > div.button > a > span");
     }
 
     @Override
     protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        return ofNullable(documentDetailProduct.select("strong[class='price-default'] span[itemprop='price']").first())
+        return ofNullable(documentDetailProduct.select("#meta > div.prices > span.price").first())
                 .map(Element::text)
-                .map(String::trim)
                 .filter(StringUtils::isNotBlank)
+                .map(text -> StringUtils.removeEnd(text, " €"))
                 .map(ConvertUtils::convertToBigDecimal);
     }
 

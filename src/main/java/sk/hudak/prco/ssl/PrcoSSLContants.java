@@ -58,6 +58,9 @@ public class PrcoSSLContants {
 
         ALLOWED_HOSTNAME.add("drogerka.sk");
 
+        ALLOWED_HOSTNAME.add("moonlake.cz");
+        ALLOWED_HOSTNAME.add("www.lekarenexpres.sk");
+
 
 
 

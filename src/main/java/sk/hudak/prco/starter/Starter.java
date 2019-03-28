@@ -144,10 +144,9 @@ public class Starter {
 
 
         // --- GROUPY --
-//        createNewGroup("pampers 0 premium");
-//        createNewGroup("pampers 1 premium");
-//        createNewGroup("pampers 2 premium");
-//        createNewGroup("pampers 3 premium");
+//        createNewGroup("nutrilon 1");
+//        createNewGroup("nutrilon 2");
+//        createNewGroup("nutrilon 3");
 //        createNewGroup("pampers 5 premium");
 //        updateGroupName(1L, "pampers 4 zelene");
         //nutrilon 4
@@ -163,11 +162,10 @@ public class Starter {
 //        uiService.removeProductsFromGroup(1L, 994L, 1226L);
 
 
-//internalTxService.deleteNotInterestedProducts(
-//        1809L,
-//        1810L,
-//        1811L,
-//        1825L);
+//        internalTxService.deleteNotInterestedProducts(
+//                97L,
+//                99L,
+//                5170L);
 
 //        uiService.deleteNewProducts(5505L);
 //        uiService.deleteProducts(1569L);
@@ -185,7 +183,9 @@ public class Starter {
         // nutrilon 5
 //        showProductsInGroup(257L, true);
 
-        showProductNotInterested(EshopUuid.ALZA);
+        showProductNotInterested(EshopUuid.DROGERIA_VMD);
+
+//        deleteProductsFromNotInterested(EshopUuid.DR_MAX);
 
         // olej
 //        showProductsInGroup(225L);
@@ -193,7 +193,6 @@ public class Starter {
 
 //        showAllProductsInAllGroups();
         showProductsNotInAnyGroup();
-
 
 
 //        existProduct("https://www.feedo.sk/pampers-active-baby-4-box-120ks-9-16-kg-jednorazove-plienky/");
@@ -237,9 +236,10 @@ public class Starter {
 //        uiService.updateCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-//        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
-//        newProductManager.addNewProductsByKeywordForAllEshops("nutrilon 5");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.MAGANO, "pampers");
+        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "pampers");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "nutrilon");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "lovela");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PERINBABA, "pampers 5");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "pampers 4");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "pampers 5");
@@ -286,9 +286,13 @@ public class Starter {
 
     }
 
+    private void deleteProductsFromNotInterested(EshopUuid eshopUuid) {
+        internalTxService.deleteNotInterestedProducts(eshopUuid);
+    }
+
     private void showProductNotInterested(EshopUuid eshopUuid) {
         List<NotInterestedProductFullDto> notInterestedProducts = internalTxService.findNotInterestedProducts(new NotInterestedProductFindDto(eshopUuid));
-        System.out.println("Not interested product for eshop :" + eshopUuid);
+        System.out.println("Not interested product for eshop: " + eshopUuid);
         for (NotInterestedProductFullDto product : notInterestedProducts) {
             System.out.println("id " + product.getId() + ", "
                     + product.getEshopUuid() + " "

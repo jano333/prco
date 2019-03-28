@@ -89,4 +89,5 @@ public interface NewProductService {
     void updateProductUnitData(ProductUnitDataDto productUnitDataDto);
 
     void deleteNewProducts(Long... newProductIds);
+
 }
