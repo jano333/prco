@@ -37,6 +37,12 @@ public class LekarenVKockeProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 10 sekund
+        return 10000;
+    }
+
+    @Override
     protected int parseCountOfPages(Document documentList) {
         int size = documentList.select("nav > ul > li").size();
         if (size == 0) {

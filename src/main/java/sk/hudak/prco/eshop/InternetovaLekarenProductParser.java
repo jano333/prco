@@ -35,6 +35,12 @@ public class InternetovaLekarenProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 10 sekund
+        return 10000;
+    }
+
+    @Override
     protected int parseCountOfPages(Document documentList) {
         int i = documentList.select("div[class=indent] div[class='col col-pager text-right'] div[class=pager] > span").size() - 3;
         if (i < 1) {

@@ -36,6 +36,12 @@ public class EsoDrogeriaProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 10 sekund
+        return 10000;
+    }
+
+    @Override
     protected int parseCountOfPages(Document documentList) {
         Elements select = documentList.select("div[class='pagination'] a");
         if (select.size() == 0) {

@@ -51,6 +51,12 @@ public class HornbachProductParser extends JSoupProductParser implements WatchDo
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 10 sekund
+        return 10000;
+    }
+
+    @Override
     protected Document retrieveDocument(String productUrl) {
         BasicCookieStore cookieStore = new BasicCookieStore();
         // 746 -> Kosice predajna

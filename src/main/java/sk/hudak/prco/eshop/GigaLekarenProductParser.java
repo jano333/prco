@@ -35,6 +35,12 @@ public class GigaLekarenProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 10 sekund
+        return 10000;
+    }
+
+    @Override
     protected int parseCountOfPages(Document documentList) {
         int size = documentList.select("div[class=paging_footer] a").size();
         int i = (size / 2) - 2;

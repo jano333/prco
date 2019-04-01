@@ -46,6 +46,12 @@ public class TescoProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 10 sekund
+        return 10000;
+    }
+
+    @Override
     protected int parseCountOfPages(Document documentList) {
         Element navEl = documentList.select("nav.pagination--page-selector-wrapper").first();
         if (navEl == null) {

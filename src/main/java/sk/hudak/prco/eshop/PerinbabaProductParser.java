@@ -34,6 +34,12 @@ public class PerinbabaProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 10 sekund
+        return 10000;
+    }
+
+    @Override
     protected int parseCountOfPages(Document documentList) {
         Element element = documentList.select("div[class=pages] ol").first();
         if (element == null) {

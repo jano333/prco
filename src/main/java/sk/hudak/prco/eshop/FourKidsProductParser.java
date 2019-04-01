@@ -35,6 +35,12 @@ public class FourKidsProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 10 sekund
+        return 10000;
+    }
+
+    @Override
     protected int parseCountOfPages(Document documentList) {
         Optional<Integer> countOfProductsOpt = ofNullable(documentList.select("body > div.inner.relative > div > div > div:nth-child(5) > div.col-md-4.hidden-xs.hidden-sm > span").first())
                 .map(Element::text)

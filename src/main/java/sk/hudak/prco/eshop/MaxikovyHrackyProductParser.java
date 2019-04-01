@@ -35,6 +35,12 @@ public class MaxikovyHrackyProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 10 sekund
+        return 10000;
+    }
+
+    @Override
     protected int parseCountOfPages(Document documentList) {
         //Optional[Zobrazuji 1-60 z 807 produktů]
         Optional<Integer> countOfProductsOpt = ofNullable(documentList.select("div.line-sort > div > div.col-sm-4.text-right.top-12.font-12").first())

@@ -37,6 +37,12 @@ public class PrvaLekarenProductParser extends JSoupProductParser {
     }
 
     @Override
+    protected int getTimeout() {
+        // koli pomalym odozvam davam na 10 sekund
+        return 10000;
+    }
+
+    @Override
     protected int parseCountOfPages(Document documentList) {
         int countOfPages = documentList.select("div[class=pagination] a").size() - 2;
         if (countOfPages < 1) {
