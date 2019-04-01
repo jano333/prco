@@ -89,7 +89,6 @@ public class UnitParserImpl implements UnitParser {
         if (matcher.find()) {
             return createKus(matcher.group(3), matcher.group(1));
         }
-
         //pampers new baby dry 2 mini 100ks
         matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "ks");
         if (matcher.find()) {
@@ -130,6 +129,18 @@ public class UnitParserImpl implements UnitParser {
         matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, SPACE, "kusov$");
         if (matcher.find()) {
             return createKus(matcher.group(1));
+        }
+
+        //Pampers Active Baby Veľ. 6, 56 Plienok, 13-18 kg
+        matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, SPACE, "plienok");
+        if (matcher.find()) {
+            return createKus(matcher.group(1));
+        }
+
+        //Pampers Premium Care Veľkosť 5, Plienky x88, 11kg-16kg
+        matcher = craeteMatcher(productName, "plienky", SPACE, "x", NUMBER_AT_LEAST_ONE, ",", SPACE);
+        if (matcher.find()) {
+            return createKus(matcher.group(4));
         }
 
         // --- OBJEM ---
@@ -267,12 +278,18 @@ public class UnitParserImpl implements UnitParser {
         // Nutrilon 5 detská mliečna výživa v prášku 800 g 5+1 zdarma
         matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, SPACE, "g", SPACE, NUMBER_AT_LEAST_ONE, "\\+", NUMBER_AT_LEAST_ONE, SPACE);
         if (matcher.find()) {
-            return createKilogram(recalculateToKilograms(
-                    convertToBigDecimal(matcher.group(2))),
+            return createKilogram(
+                    recalculateToKilograms(convertToBigDecimal(matcher.group(2))),
                     String.valueOf((Integer.valueOf(matcher.group(6)) + Integer.valueOf(matcher.group(8))))
             );
         }
-
+        // Nutrilon 2 600g 5pack
+        matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "g", SPACE, "[0-9]{1}", "pack");
+        if (matcher.find()) {
+            return createKilogram(
+                    recalculateToKilograms(convertToBigDecimal(matcher.group(2))),
+                    matcher.group(5));
+        }
         // Hamé Májka Lahôdkový bravčový krém 75 g
         matcher = craeteMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, " g|g");
         if (matcher.find()) {
@@ -306,6 +323,7 @@ public class UnitParserImpl implements UnitParser {
         if (matcher.find()) {
             return createKilogram(convertToBigDecimal(matcher.group(2)));
         }
+
 
         log.warn("unit info not found for '{}'", productName);
 
