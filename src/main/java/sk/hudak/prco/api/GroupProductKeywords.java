@@ -23,7 +23,8 @@ public enum GroupProductKeywords {
     PAMPERS_PREMIUM_2(
             451L,
             asList("pampers", "premium", "care", "mini", "2"),
-            asList("pampers", "premium", "care", "mini", "(2)")
+            asList("pampers", "premium", "care", "mini", "(2)"),
+            asList("pampers", "premium", "pack", "s2")
     ),
     PAMPERS_PREMIUM_3(
             452L,
@@ -73,6 +74,7 @@ public enum GroupProductKeywords {
             asList("pampers", "active", "baby-dry", "2+"),
             asList("pampers", "activebaby", "2+"),
             asList("pampers", "new", "baby", "2"),
+            asList("pampers", "new", "baby", "s2"),
             asList("pampers", "new", "baby-dry", "2"),
             asList("pampers", "active", "baby-dry", "2"),
             asList("pampers", "pure", "protection", "2"),
