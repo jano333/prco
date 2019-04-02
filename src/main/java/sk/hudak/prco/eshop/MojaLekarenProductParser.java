@@ -49,8 +49,7 @@ public class MojaLekarenProductParser extends JSoupProductParser {
     protected int parseCountOfPages(Document documentList) {
         Element select = documentList.select("p.pagination__part.pagination__part--page").first();
         if (select == null) {
-            //FIXME move to parent as constants for one page only
-            return 1;
+            return SINGLE_PAGE_ONE;
         }
         return Integer.valueOf(select.children().last().previousElementSibling().previousElementSibling().text());
     }
@@ -68,7 +67,12 @@ public class MojaLekarenProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        return ofNullable(documentDetailProduct.select("div.detail-top.list > div > h1").first())
+        Element element = documentDetailProduct.select("div.detail-top.list > div > h1").first();
+        if (element == null) {
+            element = documentDetailProduct.select("div > article > h1").first();
+        }
+
+        return ofNullable(element)
                 .map(Element::text)
                 .filter(StringUtils::isNotBlank);
     }

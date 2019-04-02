@@ -1,16 +1,57 @@
-Not interested to move to new product:
-1206
-1211
-1212
-2121
-2145
-2322
-2442
-2501
-2507
-2929
-3626
-
+2019-04-01 13:39:25,482 DEBUG [http-nio-8080-exec-2] [] s.h.p.s.i.NewProductServiceImpl [NewProductServiceImpl.java:155] new product with id 8550 was updated with unit data UnitTypeValueCount(unit=KUS, value=51, packageCount=1)
+2019-04-01 13:39:25,488 ERROR [http-nio-8080-exec-2] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]]
+2019-04-01 13:39:25,512 ERROR [http-nio-8080-exec-2] [] o.a.c.c.C.[.[.[.[dispatcherServlet] [DirectJDKLog.java:182] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.orm.ObjectOptimisticLockingFailureException: Object of class [sk.hudak.prco.model.NewProductEntity] with identifier [8550]: optimistic locking failed; nested exception is org.hibernate.StaleObjectStateException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]] with root cause
+org.hibernate.StaleObjectStateException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]
+	at org.hibernate.persister.entity.AbstractEntityPersister.check(AbstractEntityPersister.java:2414)
+	at org.hibernate.persister.entity.AbstractEntityPersister.update(AbstractEntityPersister.java:3216)
+	at org.hibernate.persister.entity.AbstractEntityPersister.updateOrInsert(AbstractEntityPersister.java:3090)
+	at org.hibernate.persister.entity.AbstractEntityPersister.update(AbstractEntityPersister.java:3491)
+	at org.hibernate.action.internal.EntityUpdateAction.execute(EntityUpdateAction.java:145)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:600)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:474)
+	at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:337)
+	at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:39)
+	at org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1437)
+	at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:494)
+	at org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:3245)
+	at org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:2451)
+	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:473)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:156)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.access$100(JdbcResourceLocalTransactionCoordinatorImpl.java:38)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:231)
+	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:68)
+	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:536)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:746)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:714)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:532)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:304)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:98)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688)
+	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$EnhancerBySpringCGLIB$$48b78007.repairInvalidUnitForNewProductByReprocessing(<generated>)
+	at sk.hudak.prco.service.impl.UIServiceImpl.tryToRepairInvalidUnitForNewProductByReprocessing(UIServiceImpl.java:103)
+	at sk.hudak.prco.ui.controller.NewProductController.reprocessNewProducts(NewProductController.java:60)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:877)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:783)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:991)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:925)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:866)
+-----------------------------------------------------------------------------------------------------------------------
+TOTO nejde:
+https://www.drmax.sk/nutrilon-3-pronutra/
+https://www.drmax.sk/nutrilon-1-pronutra/
+-------------------------------------------------
+Pampers New Baby 1 Newborn - 2 x 43 ks
+chyba ze je to dvakrat
 -----------------------------------------------------------------------------------------------------------------------
 odpalit maja eshop produkty aj parser full
 https://eshop.mamaaja.sk/pampers-cp-maxi-36/
