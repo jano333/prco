@@ -323,6 +323,11 @@ public class UnitParserImpl implements UnitParser {
         if (matcher.find()) {
             return createKilogram(convertToBigDecimal(matcher.group(2)));
         }
+        // 800 g, počiatočná dojčenská výživa (0-6 mesiacov)
+        matcher = craeteMatcher(productName, NUMBER_AT_LEAST_ONE, SPACE, "g,", SPACE);
+        if (matcher.find()) {
+            return createKilogram(recalculateToKilograms(convertToBigDecimal(matcher.group(1))));
+        }
 
 
         log.warn("unit info not found for '{}'", productName);
