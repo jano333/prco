@@ -39,6 +39,7 @@ import static sk.hudak.prco.utils.ThreadUtils.sleepRandomSafeBetween;
 public abstract class JSoupProductParser implements EshopProductsParser {
 
     public static final int DEFAULT_TIMEOUT_IN_MILIS = 3000;
+    public static final int SINGLE_PAGE_ONE = 1;
 
     protected UnitParser unitParser;
     protected UserAgentDataHolder userAgentDataHolder;
