@@ -90,4 +90,5 @@ public interface NewProductService {
 
     void deleteNewProducts(Long... newProductIds);
 
+    long getCountOfAllNewProducts();
 }

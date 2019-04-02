@@ -20,4 +20,6 @@ public interface NewProductEntityDbDao extends BaseDao<NewProductEntity> {
     Optional<NewProductEntity> findFirstInvalid();
 
     List<NewProductEntity> findByFilter(NewProductFilterUIDto filter);
+
+    long getCountOfAllNewProducts();
 }

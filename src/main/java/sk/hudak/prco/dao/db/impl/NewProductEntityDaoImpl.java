@@ -48,6 +48,11 @@ public class NewProductEntityDaoImpl extends BaseDaoImpl<NewProductEntity> imple
     }
 
     @Override
+    public long getCountOfAllNewProducts() {
+        return from(QNewProductEntity.newProductEntity).fetchCount();
+    }
+
+    @Override
     public boolean existWithUrl(String url) {
         JPAQuery<NewProductEntity> query = from(QNewProductEntity.newProductEntity);
         query.where(QNewProductEntity.newProductEntity.url.equalsIgnoreCase(url));

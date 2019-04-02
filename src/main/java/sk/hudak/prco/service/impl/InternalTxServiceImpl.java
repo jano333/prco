@@ -183,6 +183,12 @@ public class InternalTxServiceImpl implements InternalTxService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public long getCountOfAllNewProducts() {
+        return newProductService.getCountOfAllNewProducts();
+    }
+
+    @Override
     @Transactional
     public void deleteNotInterestedProducts(EshopUuid eshopUuid) {
         notInterestedProductService.deleteNotInterestedProducts(eshopUuid);

@@ -259,5 +259,10 @@ public class NewProductServiceImpl implements NewProductService {
         }
     }
 
+    @Override
+    public long getCountOfAllNewProducts() {
+        return newProductEntityDao.getCountOfAllNewProducts();
+    }
+
 
 }

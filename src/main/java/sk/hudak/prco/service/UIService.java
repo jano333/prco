@@ -195,4 +195,6 @@ public interface UIService {
     void deleteNewProducts(Long... newProductIds);
 
     void markProductAsNotInterested(Long productId);
+
+    long getCountOfAllNewProducts();
 }

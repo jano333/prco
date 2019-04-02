@@ -184,4 +184,9 @@ public class UIServiceImpl implements UIService {
     public void markProductAsNotInterested(Long productId) {
         internalTxService.markProductAsNotInterested(productId);
     }
+
+    @Override
+    public long getCountOfAllNewProducts() {
+        return internalTxService.getCountOfAllNewProducts();
+    }
 }

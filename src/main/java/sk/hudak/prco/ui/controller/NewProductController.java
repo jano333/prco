@@ -32,6 +32,7 @@ public class NewProductController extends BasicController {
         List<NewProductFullDto> newProducts = getUiService().findNewProducts(new NewProductFilterUIDto());
         ModelAndView modelAndView = new ModelAndView(VIEW_NEW_PRODUCTS, "newProducts", newProducts);
         modelAndView.addObject("countOfAllNewProducts", newProducts.size());
+        modelAndView.addObject("fullCountOfAllNewProducts", getUiService().getCountOfAllNewProducts());
 
         return modelAndView;
     }
