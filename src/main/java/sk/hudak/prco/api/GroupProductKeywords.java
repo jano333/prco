@@ -12,28 +12,41 @@ public enum GroupProductKeywords {
 
     PAMPERS_PREMIUM_0(
             449L,
-            asList("pampers", "premium", "care", "newborn", "0")
+            asList("pampers", "premium", "care", "newborn", "0"),
+            asList("pampers", "premium", "procare", "0"),
+            asList("pampers", "premium", "care", "newborn", "s0")
     ),
     PAMPERS_PREMIUM_1(
             450L,
             asList("pampers", "premium", "newborn", "1"),
+            asList("pampers", "premium", "procare", "1"),
             asList("pampers", "premium", "care", "newborn", "1"),
             asList("pampers", "premium", "care", "newborn", "(1)")
     ),
     PAMPERS_PREMIUM_2(
             451L,
+            asList("pampers", "premium", "care", "2"),
             asList("pampers", "premium", "care", "mini", "2"),
+            asList("pampers", "premium", "procare", "2"),
             asList("pampers", "premium", "care", "mini", "(2)"),
+            asList("pampers", "premiumcare", "2"),
             asList("pampers", "premium", "pack", "s2")
     ),
     PAMPERS_PREMIUM_3(
             452L,
+            asList("pampers", "premium", "care", "3"),
             asList("pampers", "premium", "care", "midi", "3"),
+            asList("pampers", "premium", "procare", "3"),
+            asList("pampers", "premium", "s3"),
+            asList("pampers", "premiumcare", "midi", "3"),
             asList("pampers", "premium", "care", "midi", "(3)")
     ),
     PAMPERS_PREMIUM_4(
             453L,
+            asList("pampers", "premium", "care", "4"),
             asList("pampers", "premium", "maxi", "4"),
+            asList("pampers", "premium", "s4"),
+            asList("pampers", "premium", "care", "s4"),
             asList("pampers", "premium", "care", "maxi", "4"),
             asList("pampers", "premium", "care", "maxi", "(4)")
     ),
@@ -41,7 +54,11 @@ public enum GroupProductKeywords {
             481L,
             asList("pampers", "premium", "junior", "5"),
             asList("pampers", "premium", "care", "junior", "5"),
-            asList("pampers", "premium", "care", "junior", "(5)")
+            asList("pampers", "premiumcare", "5"),
+            asList("pampers", "premium", "care", "5"),
+            asList("pampers", "premium", "care", "junior", "(5)"),
+            asList("pampers", "premium", "care", "(junior)", "5"),
+            asList("pampers", "premium", "s5")
     ),
 
     PAMPERS_ZELENE_1(
@@ -56,6 +73,8 @@ public enum GroupProductKeywords {
             asList("pampers", "active", "baby-dry", "1+"),
             asList("pampers", "activebaby", "1+"),
             asList("pampers", "new", "baby-dry", "1"),
+            asList("pampers", "new", "baby", "1"),
+            asList("pampers", "new", "baby", "s1"),
             asList("pampers", "active", "baby-dry", "1"),
             asList("pampers", "pure", "protection", "1"),
             asList("pampers", "pure", "protection", "s1"),
@@ -80,7 +99,9 @@ public enum GroupProductKeywords {
             asList("pampers", "pure", "protection", "2"),
             asList("pampers", "pure", "protection", "s2"),
             asList("pampers", "pure", "protection", "s2,"),
-            asList("pampers", "giant", "pack", "maxi", "2")
+            asList("pampers", "giant", "pack", "maxi", "2"),
+            asList("pampers", "giant", "pack", "mini", "2"),
+            asList("pampers", "cary", "pack", "s2")
     ),
     PAMPERS_ZELENE_3(
             547L,
