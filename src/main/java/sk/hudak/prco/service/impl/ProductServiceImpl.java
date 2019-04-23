@@ -33,7 +33,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -401,6 +403,30 @@ public class ProductServiceImpl implements ProductService {
         }
         productEntityDao.delete(productEntity);
         log.debug("deleted {} with id {}", productEntity.getClass().getSimpleName(), productId);
+    }
+
+    @Override
+    public List<ProductFullDto> findDuplicityProductsByNameAndPriceInEshop(EshopUuid eshopUuid) {
+        Map<String, List<ProductEntity>> tmp = new HashMap<>();
+        for (ProductEntity productEntity : productEntityDao.findByFilter(new ProductFilterUIDto(eshopUuid))) {
+            List<ProductEntity> values = tmp.get(productEntity.getName());
+            if (values == null) {
+                values = new ArrayList<>();
+            }
+            values.add(productEntity);
+            tmp.put(productEntity.getName(), values);
+        }
+
+        List<ProductEntity> result = new ArrayList<>();
+        for (String name : tmp.keySet()) {
+            List<ProductEntity> productEntities = tmp.get(name);
+            if (productEntities.size() > 1) {
+
+
+                result.addAll(productEntities);
+            }
+        }
+        return mapper.mapAsList(result, ProductFullDto.class);
     }
 
     private void internalLastTimeDataUpdated(Long productId, Date lastTimeDataUpdated) {

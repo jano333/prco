@@ -443,6 +443,12 @@ public class InternalTxServiceImpl implements InternalTxService {
         notInterestedProductService.deleteNotInterestedProducts(notInterestedProductIds);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProductFullDto> findDuplicityProductsByNameAndPriceInEshop(EshopUuid eshopUuid) {
+        return productService.findDuplicityProductsByNameAndPriceInEshop(eshopUuid);
+    }
+
     // tests
 
     @Override
