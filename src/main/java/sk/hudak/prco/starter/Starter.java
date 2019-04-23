@@ -35,12 +35,15 @@ import sk.hudak.prco.utils.CalculationUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static sk.hudak.prco.api.EshopUuid.FEEDO;
 
 /**
  * Created by jan.hudak on 9/29/2017.
@@ -93,11 +96,11 @@ public class Starter {
         //TODO
         internalTxService.startErrorCleanUp();
 
-        System.out.println(">> --------");
+//        System.out.println(">> --------");
 
 //        Optional<GroupProductKeywords> groupProductKeywords = groupProductResolver.resolveGroup("Pampers Plienky S4P Active Baby mesačné balenie");
 
-        System.out.println("");
+//        System.out.println("");
 
 //        for (ProductFullDto productFullDto : internalTxService.findProductsInGroup(257L)) {
 //            Optional<GroupProductKeywords> groupProductKeywords = groupProductResolver.resolveGroup(productFullDto.getName());
@@ -130,18 +133,12 @@ public class Starter {
 //            System.out.println(sb.toString());
 //        }
 
-
-        System.out.println("<< --------");
-
-
 //        System.out.println(ToStringBuilder.reflectionToString(uiService.getStatisticsOfProducts(), ToStringStyle.MULTI_LINE_STYLE));
 
         // --- WATCH DOG SERVICE ---
 //        watchDogManager.startWatching("https://www.obi.sk/zahradne-hadice/cmi-zahradna-hadica-12-5-mm-1-2-20-m-zelena/p/2235422",
 //                BigDecimal.valueOf(4.99));
-
 //        watchDogManager.collectAllUpdateAndSendEmail();
-
 
         // --- GROUPY --
 //        createNewGroup("nutrilon 1");
@@ -162,13 +159,18 @@ public class Starter {
 //        uiService.removeProductsFromGroup(1L, 994L, 1226L);
 
 
+//        uiService.deleteProducts(169L, 802L);
+
+
+        showDuplicityProductsInEshops();
+
 //        internalTxService.deleteNotInterestedProducts(
 //                97L,
 //                99L,
 //                5170L);
 
 //        uiService.deleteNewProducts(5505L);
-//        uiService.deleteProducts(1569L);
+
 
         // --- PRODUCTS ---
 //        showAllProducts();
@@ -176,14 +178,15 @@ public class Starter {
         // pampers 4
 //        showProductsInGroup(1L, true, EshopUuid.METRO);
         // pampers 5
-        showProductsInGroup(321L, true);
+//        showProductsInGroup(321L, true);
+        showProductsInGroupForFb(321L, true, EshopUuid.METRO);
 
         // nutrilon 4
 //        showProductsInGroup(33L);
         // nutrilon 5
 //        showProductsInGroup(257L, true);
 
-        showProductNotInterested(EshopUuid.DROGERIA_VMD);
+//        showProductNotInterested(EshopUuid.DROGERIA_VMD);
 
 //        deleteProductsFromNotInterested(EshopUuid.DR_MAX);
 
@@ -225,18 +228,18 @@ public class Starter {
                 log.debug(">> eshop: {}, updated/waiting: {}/{}",
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
-//        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
+        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
 //        updateProductDataManager.updateAllProductDataNotInAnyGroup(listener);
 
 //        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.PERINBABA, listener);
         // updatne vsetky produkty v danej skupine
 //        updateProductDataManager.updateAllProductsDataInGroup(33L);
-//        updateProductDataManager.updateProductData(103L);
+//        updateProductDataManager.updateProduct(103L);
 //        uiService.resetUpdateDateForAllProductsInEshop(EshopUuid.TESCO);
-//        uiService.updateCommonPrice(449L, BigDecimal.valueOf(0.59));
+//        uiService.updateProductPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
+//        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "nutrilon");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "lovela");
@@ -284,6 +287,18 @@ public class Starter {
 //                348L,
 //                new UnitData(Unit.KILOGRAM, new BigDecimal(5.6), Integer.valueOf(1)));
 
+    }
+
+    private void showDuplicityProductsInEshops() {
+        EshopUuid eshopUuid = FEEDO;
+//        for (EshopUuid eshopUuid : EshopUuid.values()) {
+        System.out.println("Duplicity for eshop: " + eshopUuid);
+        List<ProductFullDto> result = internalTxService.findDuplicityProductsByNameAndPriceInEshop(eshopUuid);
+        for (ProductFullDto productFullDto : result) {
+            System.out.println(productFullDto.getId() + ", " + productFullDto.getName() + " " + productFullDto.getPriceForPackage() + " " + productFullDto.getUrl());
+        }
+        System.out.println();
+//        }
     }
 
     private void deleteProductsFromNotInterested(EshopUuid eshopUuid) {
@@ -398,7 +413,15 @@ public class Starter {
             return "-";
         }
         return bigDecimal.toString().replaceAll("0+$", "");
+    }
 
+    private String formatPriceFb(BigDecimal bigDecimal) {
+        if (bigDecimal == null) {
+            return "-";
+        }
+
+
+        return new DecimalFormat("00.00").format(bigDecimal).replace(".", ",");
     }
 
     private void existProduct(String productURL) {
@@ -443,6 +466,25 @@ public class Starter {
                     "', " + product.getUrl() +
                     ", last updated " + formatDate(product.getLastTimeDataUpdated()));
         }
+    }
+
+    private void showProductsInGroupForFb(long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip) {
+        System.out.println("For FB(top 5): ");
+        GroupIdNameDto group = uiService.getGroupById(groupId);
+        List<ProductFullDto> productsInGroup = uiService.findProductsInGroup(groupId, withPriceOnly, eshopsToSkip);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(group.getName()).append("(").append(productsInGroup.size()).append(" produktov):");
+        sb.append("\n");
+        for (int i = 0; i < 5; i++) {
+            ProductFullDto product = productsInGroup.get(i);
+            sb.append(i + 1).append(". ");
+            sb.append(product.getPriceForUnit()).append("€/kus ");
+            sb.append(formatPriceFb(product.getPriceForOneItemInPackage())).append("€/balenie ");
+            sb.append(product.getUrl());
+            sb.append("\n");
+        }
+        System.out.println(sb.toString());
     }
 
     private String formatDate(Date date) {

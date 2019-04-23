@@ -112,7 +112,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
                     try {
                         // nacitam detaily produktu
-                        Optional<ProductDetailInfo> productForUpdateOpt = internalTxService.findProductForUpdate(productId);
+                        Optional<ProductDetailInfo> productForUpdateOpt = internalTxService.getProductForUpdate(productId);
                         if (!productForUpdateOpt.isPresent()) {
 
                             countOfProductsAlreadyUpdated++;
@@ -166,7 +166,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
             try {
                 notifyUpdateListener(eshopUuid, listener);
 
-                Optional<ProductDetailInfo> productForUpdateOpt = internalTxService.findProductForUpdate(eshopUuid, eshopUuid.getOlderThanInHours());
+                Optional<ProductDetailInfo> productForUpdateOpt = internalTxService.getProductForUpdate(eshopUuid, eshopUuid.getOlderThanInHours());
                 while (productForUpdateOpt.isPresent()) {
                     ProductDetailInfo productDetailInfo = productForUpdateOpt.get();
 
@@ -186,7 +186,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
                     sleepRandomSafe();
 
                     notifyUpdateListener(eshopUuid, listener);
-                    productForUpdateOpt = internalTxService.findProductForUpdate(eshopUuid, eshopUuid.getOlderThanInHours());
+                    productForUpdateOpt = internalTxService.getProductForUpdate(eshopUuid, eshopUuid.getOlderThanInHours());
                 }
                 log.debug("none product found for update");
 
@@ -208,7 +208,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
     @Override
     public void updateProductData(Long productId) {
-        EshopUuid eshopUuid = internalTxService.findEshopForProductId(productId);
+        EshopUuid eshopUuid = internalTxService.getEshopForProductId(productId);
 
         taskManager.submitTask(eshopUuid, () -> {
 
@@ -216,7 +216,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
             boolean finishedWithError = false;
             try {
-                Optional<ProductDetailInfo> productForUpdate = internalTxService.findProductForUpdate(productId);
+                Optional<ProductDetailInfo> productForUpdate = internalTxService.getProductForUpdate(productId);
                 if (productForUpdate.isPresent()) {
 
                     processUpdate(productForUpdate.get());
@@ -257,7 +257,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
         }
         if (updateData.isProductAvailable()) {
             //FIXME premapovanie cez sk.hudak.prco mapper nie takto rucne, nech mam na jednom mieste tie preklapacky...
-            internalTxService.updateProductData(ProductUpdateDataDto.builder()
+            internalTxService.updateProduct(ProductUpdateDataDto.builder()
                     .id(productDetailInfo.getId())
                     .name(updateData.getName())
                     .priceForPackage(updateData.getPriceForPackage())

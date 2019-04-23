@@ -1,3 +1,21 @@
+2019-03-14 08:09:51,461 ERROR [MOJA_LEKAREN] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
+sk.hudak.prco.exception.ProductNameNotFoundException: Product name for url 'https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/' not found.
+-----------
+2019-03-27 21:11:35,276 ERROR [LEKAREN_EXPRES] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:96] error while creating new product
+sk.hudak.prco.exception.HttpErrorPrcoRuntimeException: error creating document for url 'https://www.lekarenexpres.sk/matka-a-dieta/detska-vyziva/mliecna-vyziva/kase/nutrilon-kase-allergy-nemlecna-proexpert-250g-4m-11682.html':  org.jsoup.HttpStatusException: HTTP error fetching URL. Status=500, URL=https://www.lekarenexpres.sk/matka-a-dieta/detska-vyziva/mliecna-vyziva/kase/nutrilon-kase-allergy-nemlecna-proexpert-250g-4m-11682.html
+-----------
+2019-03-27 15:32:02,059 ERROR [main] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:244] error creating document for url 'https://www.lekarenexpres.sk/search/?hledat=pampers&start=%7Boffset%7D':
+javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+----------------------------------------------------------------------------------------
+Je to toiste(prest vsetky eshopy a vypisat duplicity na zaklade nazvu) !!!
+4. 0.22500€/kus 14,40€/balenie https://kidmarket.sk/jednorazove-plienky/177-pampers-active-baby-5-giant-pack-64ks.html
+5. 0.22500€/kus 14,40€/balenie https://kidmarket.sk/active-baby/177-pampers-active-baby-5-giant-pack-64ks-8001090278067.html
+----------------------------------------------------------------------------------------
+!!! do nutrilon groupy som pridal aj vanilku
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+chyba 5 value
+Nutrilon 2 600g 5pack
+-----------------------------------------------------------------------------------------------------------------------------------------------
 2019-04-01 13:39:25,482 DEBUG [http-nio-8080-exec-2] [] s.h.p.s.i.NewProductServiceImpl [NewProductServiceImpl.java:155] new product with id 8550 was updated with unit data UnitTypeValueCount(unit=KUS, value=51, packageCount=1)
 2019-04-01 13:39:25,488 ERROR [http-nio-8080-exec-2] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]]
 2019-04-01 13:39:25,512 ERROR [http-nio-8080-exec-2] [] o.a.c.c.C.[.[.[.[dispatcherServlet] [DirectJDKLog.java:182] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.orm.ObjectOptimisticLockingFailureException: Object of class [sk.hudak.prco.model.NewProductEntity] with identifier [8550]: optimistic locking failed; nested exception is org.hibernate.StaleObjectStateException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]] with root cause

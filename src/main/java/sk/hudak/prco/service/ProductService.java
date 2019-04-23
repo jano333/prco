@@ -17,17 +17,15 @@ import java.util.Optional;
 // TODO javadoc
 public interface ProductService {
 
-    ProductAddingToGroupDto getProduct(Long productId);
-
     /**
      * @param productURL url of product
      * @return true, if product exist (product table only)
      */
     boolean existProductWithUrl(String productURL);
 
-    void updateProductData(ProductUpdateDataDto productUpdateDataDto);
+    void updateProduct(ProductUpdateDataDto productUpdateDataDto);
 
-    void updateCommonPrice(Long productId, BigDecimal newCommonPrice);
+    void updateProductPrice(Long productId, BigDecimal newCommonPrice);
 
     void resetUpdateDateForAllProductsInEshop(EshopUuid eshopUuid);
 
@@ -36,35 +34,50 @@ public interface ProductService {
     /**
      * Resetne ceny a akcie na null, last update na aktualny datum
      *
-     * @param productId id produktu
+     * @param productId product id
      */
     void markProductAsUnavailable(Long productId);
 
+    /**
+     * @param productId product id
+     */
     void markProductAsNotInterested(Long productId);
 
+    /**
+     *
+     * @param productId product id
+     */
     void removeProduct(Long productId);
 
-    // ----------- FIND -------------
+    // ----------- GET -----------
+
+    ProductAddingToGroupDto getProduct(Long productId);
+
+    EshopUuid getEshopForProductId(Long productId);
+
+    Optional<ProductDetailInfo> getProductForUpdate(EshopUuid eshopUuid, int olderThanInHours);
+
+    Optional<ProductDetailInfo> getProductForUpdate(Long productId);
+
+    StatisticForUpdateForEshopDto getStatisticForUpdateForEshop(EshopUuid eshopUuid, int olderThanInHours);
+
+    // ----------- FIND -----------
 
     List<ProductFullDto> findProducts(ProductFilterUIDto filter);
-
-    List<ProductInActionDto> findProductsInAction(EshopUuid eshopUuid);
 
     List<ProductFullDto> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip);
 
     List<ProductFullDto> findProductsNotInAnyGroup();
 
-    Optional<ProductDetailInfo> findProductForUpdate(EshopUuid eshopUuid, int olderThanInHours);
-
-    Optional<ProductDetailInfo> findProductForUpdate(Long productId);
-
-    List<ProductFullDto> findProductsForExport();
-
-    EshopUuid findEshopForProductId(Long productId);
+    /**
+     * @param eshopUuid eshop id
+     * @return return list of product in action for given eshop code <code>eshopUuid</code>
+     */
+    List<ProductInActionDto> findProductsInAction(EshopUuid eshopUuid);
 
     List<ProductBestPriceInGroupDto> findProductsBestPriceInGroupDto(EshopUuid eshopUuid);
 
-    StatisticForUpdateForEshopDto getStatisticForUpdateForEshop(EshopUuid eshopUuid, int olderThanInHours);
+    List<ProductFullDto> findProductsForExport();
 
     List<ProductFullDto> findDuplicityProductsByNameAndPriceInEshop(EshopUuid eshopUuid);
 }

@@ -160,14 +160,14 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<ProductDetailInfo> findProductForUpdate(EshopUuid eshopUuid, int olderThanInHours) {
-        return productService.findProductForUpdate(eshopUuid, olderThanInHours);
+    public Optional<ProductDetailInfo> getProductForUpdate(EshopUuid eshopUuid, int olderThanInHours) {
+        return productService.getProductForUpdate(eshopUuid, olderThanInHours);
     }
 
     @Override
     @Transactional
-    public void updateProductData(ProductUpdateDataDto productUpdateDataDto) {
-        productService.updateProductData(productUpdateDataDto);
+    public void updateProduct(ProductUpdateDataDto productUpdateDataDto) {
+        productService.updateProduct(productUpdateDataDto);
     }
 
     @Override
@@ -286,20 +286,20 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional
-    public void updateCommonPrice(Long productId, BigDecimal newCommonPrice) {
-        productService.updateCommonPrice(productId, newCommonPrice);
+    public void updateProductPrice(Long productId, BigDecimal newCommonPrice) {
+        productService.updateProductPrice(productId, newCommonPrice);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public EshopUuid findEshopForProductId(Long productId) {
-        return productService.findEshopForProductId(productId);
+    public EshopUuid getEshopForProductId(Long productId) {
+        return productService.getEshopForProductId(productId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<ProductDetailInfo> findProductForUpdate(Long productId) {
-        return productService.findProductForUpdate(productId);
+    public Optional<ProductDetailInfo> getProductForUpdate(Long productId) {
+        return productService.getProductForUpdate(productId);
     }
 
     @Override

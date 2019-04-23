@@ -84,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<ProductDetailInfo> findProductForUpdate(EshopUuid eshopUuid, int olderThanInHours) {
+    public Optional<ProductDetailInfo> getProductForUpdate(EshopUuid eshopUuid, int olderThanInHours) {
         notNull(eshopUuid, ESHOP_UUID);
         notNegativeAndNotZeroValue(olderThanInHours, "olderThanInHours");
 
@@ -296,7 +296,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateCommonPrice(Long productId, BigDecimal newCommonPrice) {
+    public void updateProductPrice(Long productId, BigDecimal newCommonPrice) {
         notNull(productId, PRODUCT_ID);
         notNull(newCommonPrice, "newCommonPrice");
         // TODO validacia na vecsie ako nula...
@@ -309,14 +309,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public EshopUuid findEshopForProductId(Long productId) {
+    public EshopUuid getEshopForProductId(Long productId) {
         notNull(productId, PRODUCT_ID);
 
         return productEntityDao.findById(productId).getEshopUuid();
     }
 
     @Override
-    public Optional<ProductDetailInfo> findProductForUpdate(Long productId) {
+    public Optional<ProductDetailInfo> getProductForUpdate(Long productId) {
         notNull(productId, PRODUCT_ID);
 
         return of(mapper.map(
@@ -325,7 +325,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProductData(ProductUpdateDataDto updateData) {
+    public void updateProduct(ProductUpdateDataDto updateData) {
         notNull(updateData, "updateData");
         notNull(updateData.getId(), "id");
         notNullNotEmpty(updateData.getName(), "name");

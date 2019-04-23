@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.LekarenExpresProductParser;
+import sk.hudak.prco.eshop.AlzaProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -33,10 +33,10 @@ public class ProductParserTest {
 ////                .parseProductUpdateData("https://www.drogerka.sk/pampers-premium-care-detske-plienky-junior-44-ks?search=pampers"));
 
         //         Lekaren expres
-        System.out.println(new LekarenExpresProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new LekarenExpresProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseNewProductInfo("https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/obrusky-hygienicke/pro-deti/pampers-vlhcene-ubrousky-baby-fresh-64ks-14882.html"));
-                .parseProductUpdateData("https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/obrusky-hygienicke/pro-deti/pampers-vlhcene-ubrousky-baby-fresh-64ks-14882.html"));
+//                .parseProductUpdateData("https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/obrusky-hygienicke/pro-deti/pampers-vlhcene-ubrousky-baby-fresh-64ks-14882.html"));
 //                .parseProductUpdateData("https://www.drogerka.sk/pampers-premium-care-detske-plienky-junior-44-ks?search=pampers"));
 
         System.out.println();
@@ -81,10 +81,10 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.drogeria-vmd.sk/pampers-maxi-pack-4-9-14kg-58ks-0819/"));
 
 //        // Alza
-//        System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+        System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 4"));
 //                .parseNewProductInfo("https://www.alza.sk/maxi/pampers-active-baby-dry-vel-4-maxi-174-ks-d4593569.htm"));
-//                .parseProductUpdateData("https://www.alza.sk/maxi/lovela-gel-color-4-7-l-50-pranie-d4849185.htm"));
+                .parseProductUpdateData("https://www.alza.sk/maxi/lovela-prasok-color-5-kg-40-prani-d5531490.htm"));
 //
 //        // Bambino
 //        System.out.println(new BambinoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -149,9 +149,7 @@ public class ProductParserTest {
 // Dx max
 //        System.out.println(new DrMaxProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers/ 5"));
-//                .parseNewProductInfo("https://www.drmax.sk/pampers-plienky-s4p-active-baby-monthly-box-152/"));
-//                .parseNewProductInfo("https://www.drmax.sk/pampers-baby-wipes-fresh-clean-64ks/"));
-//                .parseNewProductInfo("https://www.drmax.sk/pampers-mega-maxi-132/"));
+//                .parseNewProductInfo("https://www.drmax.sk/nutrilon-1-pronutra/"));
 //                .parseProductUpdateData("https://www.drmax.sk/pampers-mega-maxi-132/"));
 
 
@@ -191,7 +189,7 @@ public class ProductParserTest {
 //        System.out.println(new MojaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 4"));
 //                .parseNewProductInfo("https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/"));
-//                .parseProductUpdateData("https://www.mojalekaren.sk//nutrilon-comfort-1-400g/"));
+//                .parseProductUpdateData("https://www.mojalekaren.sk//pampers-vlhcene-obrusky-natural-clean-4x64-kusov/"));
 
         // Pilulka
 //        System.out.println(new PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
