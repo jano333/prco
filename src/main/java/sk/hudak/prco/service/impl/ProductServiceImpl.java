@@ -75,7 +75,6 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private PriceCalculator priceCalculator;
 
-
     @Override
     public List<ProductFullDto> findProductsForExport() {
         return mapper.mapAsList(
@@ -244,8 +243,7 @@ public class ProductServiceImpl implements ProductService {
 
         ProductEntity productEntity = productEntityDao.findById(productId);
 
-        List<GroupEntity> groupsForProduct = groupEntityDao.findGroupsForProduct(productEntity.getId());
-        for (GroupEntity groupEntity : groupsForProduct) {
+        for (GroupEntity groupEntity : groupEntityDao.findGroupsForProduct(productEntity.getId())) {
             groupEntity.getProducts().remove(productEntity);
             groupEntityDao.update(groupEntity);
             log.debug("removed product '{}' from group '{}'", productEntity.getName(), groupEntity.getName());
@@ -355,7 +353,7 @@ public class ProductServiceImpl implements ProductService {
         productEntity.setLastTimeDataUpdated(new Date());
         productDataUpdateEntityDao.update(productEntity);
 
-        log.debug("product with id {} has been updated with price for package {}",
+        log.info("product with id {} has been updated with price for package {}",
                 productEntity.getId(), updateData.getPriceForPackage());
     }
 
@@ -373,7 +371,7 @@ public class ProductServiceImpl implements ProductService {
         updateEntity.setActionValidTo(null);
 
         productDataUpdateEntityDao.update(updateEntity);
-        log.debug("product with id {} was reset/mark as unavailable", productId);
+        log.info("product with id {} was reset/mark as unavailable", productId);
     }
 
     @Override
@@ -395,18 +393,19 @@ public class ProductServiceImpl implements ProductService {
         log.debug("created new {} with id {}", notInterestedProductEntity.getClass().getSimpleName(), notInterestedProductEntity.getId());
 
         // odmazem stary
-        List<GroupEntity> groupsForProduct = groupEntityDao.findGroupsForProduct(productId);
-        for (GroupEntity groupEntity : groupsForProduct) {
+        for (GroupEntity groupEntity : groupEntityDao.findGroupsForProduct(productId)) {
             groupEntity.getProducts().remove(productEntity);
             groupEntityDao.update(groupEntity);
             log.debug("removed product '{}' from group '{}'", productEntity.getName(), groupEntity.getName());
         }
         productEntityDao.delete(productEntity);
-        log.debug("deleted {} with id {}", productEntity.getClass().getSimpleName(), productId);
+        log.info("deleted {} with id {}", productEntity.getClass().getSimpleName(), productId);
     }
 
     @Override
     public List<ProductFullDto> findDuplicityProductsByNameAndPriceInEshop(EshopUuid eshopUuid) {
+        notNull(eshopUuid, "eshopUuid");
+
         Map<String, List<ProductEntity>> tmp = new HashMap<>();
         for (ProductEntity productEntity : productEntityDao.findByFilter(new ProductFilterUIDto(eshopUuid))) {
             List<ProductEntity> values = tmp.get(productEntity.getName());

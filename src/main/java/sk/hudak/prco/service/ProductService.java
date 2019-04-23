@@ -44,7 +44,6 @@ public interface ProductService {
     void markProductAsNotInterested(Long productId);
 
     /**
-     *
      * @param productId product id
      */
     void removeProduct(Long productId);
@@ -67,6 +66,9 @@ public interface ProductService {
 
     List<ProductFullDto> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip);
 
+    /**
+     * @return list of products which are not in any group
+     */
     List<ProductFullDto> findProductsNotInAnyGroup();
 
     /**
