@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Random;
 
 @Slf4j
-public class ThreadUtils {
+public final class ThreadUtils {
 
     private ThreadUtils() {
     }
@@ -25,7 +25,6 @@ public class ThreadUtils {
         try {
             log.debug("start sleeping for {} sec", second);
             Thread.sleep(1000l * second);
-//            log.debug("end sleeping");
 
         } catch (InterruptedException e) {
             //FIXME log

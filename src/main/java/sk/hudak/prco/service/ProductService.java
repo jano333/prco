@@ -19,7 +19,32 @@ public interface ProductService {
 
     ProductAddingToGroupDto getProduct(Long productId);
 
+    /**
+     * @param productURL url of product
+     * @return true, if product exist (product table only)
+     */
     boolean existProductWithUrl(String productURL);
+
+    void updateProductData(ProductUpdateDataDto productUpdateDataDto);
+
+    void updateCommonPrice(Long productId, BigDecimal newCommonPrice);
+
+    void resetUpdateDateForAllProductsInEshop(EshopUuid eshopUuid);
+
+    void resetUpdateDateProduct(Long productId);
+
+    /**
+     * Resetne ceny a akcie na null, last update na aktualny datum
+     *
+     * @param productId id produktu
+     */
+    void markProductAsUnavailable(Long productId);
+
+    void markProductAsNotInterested(Long productId);
+
+    void removeProduct(Long productId);
+
+    // ----------- FIND -------------
 
     List<ProductFullDto> findProducts(ProductFilterUIDto filter);
 
@@ -37,26 +62,9 @@ public interface ProductService {
 
     EshopUuid findEshopForProductId(Long productId);
 
-    void updateProductData(ProductUpdateDataDto productUpdateDataDto);
-
-    void updateCommonPrice(Long productId, BigDecimal newCommonPrice);
-
-    void resetUpdateDateForAllProductsInEshop(EshopUuid eshopUuid);
-
-    void removeProduct(Long productId);
-
-    /**
-     * Resetne ceny a akcie na null, last update na aktualny datum
-     *
-     * @param productId id produktu
-     */
-    void markProductAsUnavailable(Long productId);
-
-    void resetUpdateDateProduct(Long productId);
-
     List<ProductBestPriceInGroupDto> findProductsBestPriceInGroupDto(EshopUuid eshopUuid);
 
     StatisticForUpdateForEshopDto getStatisticForUpdateForEshop(EshopUuid eshopUuid, int olderThanInHours);
 
-    void markProductAsNotInterested(Long productId);
+    List<ProductFullDto> findDuplicityProductsByNameAndPriceInEshop(EshopUuid eshopUuid);
 }
