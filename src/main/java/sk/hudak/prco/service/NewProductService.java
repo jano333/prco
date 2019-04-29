@@ -17,7 +17,7 @@ import java.util.Optional;
 public interface NewProductService {
 
     /**
-     * Vytvori novy zaznam v databaze do DB, pricom<br>
+     * Vytvori novy zaznam, pricom<br>
      * <code>valid</code> sa nastavuje na true, iba ak su vyplnene vsetky atributy okrem pictureURL,<br>
      * <code>confirmValidity</code> na false, a interested na false<br>
      *
@@ -27,14 +27,15 @@ public interface NewProductService {
     Long createNewProduct(NewProductCreateDto newProductCreateDto);
 
     /**
-     * NA zaklade id vrati cely novy produkt
+     * Na zaklade id vrati cely novy produkt
+     *
      * @param newProductId
      * @return
      */
     NewProductFullDto getNewProduct(Long newProductId);
 
     /**
-     * @return prvy nevalidny produkt, ktory treba opravit.<br>
+     * @return prvy nevalidny produkt(TODO co to je nevalidny), ktory treba opravit.<br>
      * {@link sk.hudak.prco.model.NewProductEntity#valid} je nastaveny na false
      */
     Optional<NewProductInfoDetail> findFirstInvalidNewProduct();
@@ -47,7 +48,7 @@ public interface NewProductService {
     /**
      * Nastavi confirmaciu a validitu na true.
      *
-     * @param newProductId
+     * @param newProductId    new product id
      * @param correctUnitData
      */
     void repairInvalidUnitForNewProduct(Long newProductId, UnitData correctUnitData);
@@ -55,7 +56,7 @@ public interface NewProductService {
     /**
      * sprusti este raz zistovanie UnitData na zaklade nazvu productu.
      *
-     * @param newProductId
+     * @param newProductId new product id
      */
     void repairInvalidUnitForNewProductByReprocessing(Long newProductId);
 
