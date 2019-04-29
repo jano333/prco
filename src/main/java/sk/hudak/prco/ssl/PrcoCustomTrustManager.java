@@ -9,6 +9,7 @@ import java.security.KeyStore;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -18,7 +19,7 @@ public class PrcoCustomTrustManager implements X509TrustManager {
     private X509Certificate serverCert;
 
     public PrcoCustomTrustManager() throws Exception {
-        log.debug("inicializing");
+        log.debug("initializing");
         this.javaDefaultTrustManager = (X509TrustManager) getJavaDefaultTrustManager();
     }
 
@@ -58,9 +59,7 @@ public class PrcoCustomTrustManager implements X509TrustManager {
         log.debug("getAcceptedIssuers()");
         List<X509Certificate> issuers = new ArrayList<>();
         issuers.add(this.serverCert);
-        for (X509Certificate javaDefaultIssuer : this.javaDefaultTrustManager.getAcceptedIssuers()) {
-            issuers.add(javaDefaultIssuer);
-        }
+        Collections.addAll(issuers, this.javaDefaultTrustManager.getAcceptedIssuers());
         return issuers.toArray(new X509Certificate[issuers.size()]);
     }
 
