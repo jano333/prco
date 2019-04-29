@@ -61,6 +61,11 @@ public class NewProductServiceImpl implements NewProductService {
             notNullNotEmpty(newProductCreateDto.getUrl(), "url");
             notNullNotEmpty(newProductCreateDto.getName(), "name");
 
+            // check if product with given URL already exist
+            if (existProductWithUrl(newProductCreateDto.getUrl())) {
+                throw new PrcoRuntimeException("Product with URL " + newProductCreateDto.getUrl() + " already exist.");
+            }
+
             NewProductEntity entity = new NewProductEntity();
             entity.setEshopUuid(newProductCreateDto.getEshopUuid());
             entity.setUrl(newProductCreateDto.getUrl());
@@ -80,8 +85,16 @@ public class NewProductServiceImpl implements NewProductService {
         } catch (Exception e) {
             String errMsg = "error creating " + NewProductInfo.class.getSimpleName();
             log.debug(errMsg, e);
+            if (e instanceof PrcoRuntimeException) {
+                throw (PrcoRuntimeException) e;
+            }
             throw new PrcoRuntimeException(errMsg, e);
         }
+    }
+
+    private boolean existProductWithUrl(String url) {
+        //TODO impl
+        return false;
     }
 
     @Override
@@ -129,7 +142,7 @@ public class NewProductServiceImpl implements NewProductService {
         notNull(newProductId, "newProductId");
         NewProductEntity productEntity = newProductEntityDao.findById(newProductId);
         // parsujem
-        NewProductInfo newProductInfo = htmlParser.parseNewProductInfo(productEntity.getUrl());
+        NewProductInfo newProductInfo = htmlParser.parseProductNewData(productEntity.getUrl());
 
         if (newProductInfo.getUnit() == null) {
             if (StringUtils.isBlank(productEntity.getPictureUrl()) && newProductInfo.getPictureUrl() != null) {

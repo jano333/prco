@@ -45,7 +45,7 @@ public class JsoupHtmlParser implements HtmlParser {
     }
 
     @Override
-    public NewProductInfo parseNewProductInfo(String productUrl) {
+    public NewProductInfo parseProductNewData(String productUrl) {
         notNullNotEmpty(productUrl, "productUrl");
 
         return findParserForEshop(productUrl).parseNewProductInfo(productUrl);

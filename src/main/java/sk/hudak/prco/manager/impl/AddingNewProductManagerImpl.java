@@ -89,6 +89,7 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
                 // vyparsujem vsetky url-cky produktov, ktore sa najdu na strankach(prechadza aj pageovane stranky)
                 List<String> urlList = htmlParser.searchProductUrls(eshopUuid, searchKeyWord);
 
+                //TODO toto volanie dat do osobitneho try catch bloku a zalogovat ze sa nepodarilo ulozit a nie ze sa nepodarilo vyparsovat
                 createNewProducts(eshopUuid, urlList);
 
             } catch (Exception e) {
@@ -159,11 +160,12 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
             }
 
             // parsujem
-            NewProductInfo newProductInfo = htmlParser.parseNewProductInfo(productUrl);
-            //FIXME pridat kontrolu na dostupnost proudku, alza nebol dostupny preto nevrati mene.... a padne toto
+            NewProductInfo newProductInfo = htmlParser.parseProductNewData(productUrl);
+            //TODO pridat kontrolu na dostupnost proudku, alza nebol dostupny preto nevrati mene.... a padne toto
+
             // je len tmp fix
             if (newProductInfo.getName() == null) {
-                log.debug("skipping to next product");
+                log.warn("new product not contains name, skipping to next product");
                 continue;
             }
             if (newProductInfo.getUnit() == null) {
@@ -187,7 +189,7 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
                 .build());
     }
 
-    private void logErrorParsingUnit(EshopUuid eshopUuid,  String productUrl, String productName) {
+    private void logErrorParsingUnit(EshopUuid eshopUuid, String productUrl, String productName) {
         internalTxService.createError(ErrorCreateDto.builder()
                 .errorType(ErrorType.PARSING_PRODUCT_INFO_ERR)
                 .eshopUuid(eshopUuid)

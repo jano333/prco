@@ -16,7 +16,7 @@ public interface HtmlParser {
      * @param productUrl
      * @return
      */
-    NewProductInfo parseNewProductInfo(String productUrl);
+    NewProductInfo parseProductNewData(String productUrl);
 
     ProductForUpdateData parseProductUpdateData(String productUrl);
 
