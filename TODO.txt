@@ -1,3 +1,71 @@
+---------------------
+32
+FEATURE: ked spadne update jedneho produktu na timeout tak nech pokracuje update dalsich, ale len pre dany typ chyby
+---------------------
+31
+2019-05-02 09:17:18,065 ERROR [PILULKA] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:245] error creating document for url 'https://www.pilulka.sk/pampers-s4-active-baby-monthly-box-174ks':
+javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: timestamp check failed
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+---------------------
+30
+2019-05-02 09:16:59,221 ERROR [FEEDO] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
+sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException: timeout
+	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:242)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:169)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.processUpdate(UpdateProductDataManagerImpl.java:245)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateAllProductsDataForEshop$3(UpdateProductDataManagerImpl.java:173)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.net.SocketInputStream.socketRead0(Native Method)
+	at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+	at java.net.SocketInputStream.read(SocketInputStream.java:170)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at sun.security.ssl.InputRecord.readFully(InputRecord.java:465)
+	at sun.security.ssl.InputRecord.read(InputRecord.java:503)
+	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:973)
+	at sun.security.ssl.SSLSocketImpl.readDataRecord(SSLSocketImpl.java:930)
+	at sun.security.ssl.AppInputStream.read(AppInputStream.java:105)
+	at java.io.BufferedInputStream.fill(BufferedInputStream.java:246)
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:286)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
+	at sun.net.www.http.HttpClient.parseHTTPHeader(HttpClient.java:704)
+	at sun.net.www.http.HttpClient.parseHTTP(HttpClient.java:647)
+	at sun.net.www.http.HttpClient.parseHTTPHeader(HttpClient.java:789)
+	at sun.net.www.http.HttpClient.parseHTTP(HttpClient.java:647)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1535)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1440)
+	at java.net.HttpURLConnection.getResponseCode(HttpURLConnection.java:480)
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.getResponseCode(HttpsURLConnectionImpl.java:338)
+----------------
+29
+2019-05-02 09:16:47,922 ERROR [LEKAREN_V_KOCKE] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
+sk.hudak.prco.exception.ProductNameNotFoundException: Product name for url 'https://www.lekarenvkocke.sk/zqcca7c9d69cc89a501513a05ef16592f4-nutrilon-4-batolacia-mliecna-vyziva-v-prasku-24-36-mesiacov-inov-2018-1x800-g' not found.
+	at sk.hudak.prco.parser.impl.JSoupProductParser.lambda$parseProductUpdateData$0(JSoupProductParser.java:182)
+	at java.util.Optional.orElseThrow(Optional.java:290)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:182)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.processUpdate(UpdateProductDataManagerImpl.java:245)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateAllProductsDataForEshop$3(UpdateProductDataManagerImpl.java:173)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+----------------
+28
+Tu je asi neaky problem s tym eshopom
+sk.hudak.prco.exception.PrcoRuntimeException: Parser implementation for eshop BRENDON not found.
+----------------
+27
+odstranit vsetky produkty mama-A_ja a potom aj vsetky
+https://eshop.mamaaja.sk/pampers-vpm-maxi-plus-40/
+----------------
+26
 2019-04-29 10:53:20,489 ERROR [INTERNETOVA_LEKAREN] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
 sk.hudak.prco.exception.ProductPriceNotFoundException: Product price for url 'http://www.internetovalekaren.eu/pampers-premium-newborn-3-midi-5-9kg-60-ks-pampers-premium-newborn-3-midi-5-9kg-60-ks-mesacna-zasoba-plienok-darcekyzdarma/' not found.
 	at sk.hudak.prco.parser.impl.JSoupProductParser.lambda$parseProductUpdateData$1(JSoupProductParser.java:187)
@@ -15,24 +83,31 @@ sk.hudak.prco.exception.ProductPriceNotFoundException: Product price for url 'ht
 2019-04-29 10:53:22,843 DEBUG [FOUR_KIDS] [] s.h.p.s.Starter [Starter.java:228] >> eshop: FOUR_KIDS, updated/waiting: 7/10
 2019-04-29 10:53:22,843 DEBUG [FOUR_KIDS] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:242] start updating data for product https://www.4kids.sk/pampers-active-baby-monthly-box-s3-208ks
 --------------
+25
 2019-03-14 08:09:51,461 ERROR [MOJA_LEKAREN] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
 sk.hudak.prco.exception.ProductNameNotFoundException: Product name for url 'https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/' not found.
 -----------
+24
 2019-03-27 21:11:35,276 ERROR [LEKAREN_EXPRES] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:96] error while creating new product
 sk.hudak.prco.exception.HttpErrorPrcoRuntimeException: error creating document for url 'https://www.lekarenexpres.sk/matka-a-dieta/detska-vyziva/mliecna-vyziva/kase/nutrilon-kase-allergy-nemlecna-proexpert-250g-4m-11682.html':  org.jsoup.HttpStatusException: HTTP error fetching URL. Status=500, URL=https://www.lekarenexpres.sk/matka-a-dieta/detska-vyziva/mliecna-vyziva/kase/nutrilon-kase-allergy-nemlecna-proexpert-250g-4m-11682.html
 -----------
+23
 2019-03-27 15:32:02,059 ERROR [main] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:244] error creating document for url 'https://www.lekarenexpres.sk/search/?hledat=pampers&start=%7Boffset%7D':
 javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
 ----------------------------------------------------------------------------------------
+22
 Je to toiste(prest vsetky eshopy a vypisat duplicity na zaklade nazvu) !!!
 4. 0.22500€/kus 14,40€/balenie https://kidmarket.sk/jednorazove-plienky/177-pampers-active-baby-5-giant-pack-64ks.html
 5. 0.22500€/kus 14,40€/balenie https://kidmarket.sk/active-baby/177-pampers-active-baby-5-giant-pack-64ks-8001090278067.html
 ----------------------------------------------------------------------------------------
+21
 !!! do nutrilon groupy som pridal aj vanilku
 --------------------------------------------------------------------------------------------------------------------------------------------------------
+20
 chyba 5 value
 Nutrilon 2 600g 5pack
 -----------------------------------------------------------------------------------------------------------------------------------------------
+19
 2019-04-01 13:39:25,482 DEBUG [http-nio-8080-exec-2] [] s.h.p.s.i.NewProductServiceImpl [NewProductServiceImpl.java:155] new product with id 8550 was updated with unit data UnitTypeValueCount(unit=KUS, value=51, packageCount=1)
 2019-04-01 13:39:25,488 ERROR [http-nio-8080-exec-2] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]]
 2019-04-01 13:39:25,512 ERROR [http-nio-8080-exec-2] [] o.a.c.c.C.[.[.[.[dispatcherServlet] [DirectJDKLog.java:182] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.orm.ObjectOptimisticLockingFailureException: Object of class [sk.hudak.prco.model.NewProductEntity] with identifier [8550]: optimistic locking failed; nested exception is org.hibernate.StaleObjectStateException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]] with root cause
@@ -81,16 +156,20 @@ org.hibernate.StaleObjectStateException: Row was updated or deleted by another t
 	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:974)
 	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:866)
 -----------------------------------------------------------------------------------------------------------------------
+18
 TOTO nejde:
 https://www.drmax.sk/nutrilon-3-pronutra/
 https://www.drmax.sk/nutrilon-1-pronutra/
 -------------------------------------------------
+17
 Pampers New Baby 1 Newborn - 2 x 43 ks
 chyba ze je to dvakrat
 -----------------------------------------------------------------------------------------------------------------------
+16
 odpalit maja eshop produkty aj parser full
 https://eshop.mamaaja.sk/pampers-cp-maxi-36/
 -----------------------------------------------------------------------------------------------------------------------
+15
 2019-03-04 13:24:06,970 ERROR [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:244] error creating document for url 'https://www.brendon.sk/search?q=pampers':
 java.net.SocketException: Connection reset
 	at java.net.SocketInputStream.read(SocketInputStream.java:209)
@@ -118,25 +197,31 @@ java.net.SocketException: Connection reset
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
 	at java.lang.Thread.run(Thread.java:745)
 ---------------------------------------
+14
 BUG: dvojite lomitka:
 https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/
 ----------------------------------
+13
 BUG:
 https://www.mojalekaren.sk//nutrilon-comfort-1-400g/
 tento produkt neexistuje a vrati 302 na https://www.mojalekaren.sk/, potrebujem urobit to aby som to odchytil
 ------------------------------------------------------------------------------
+12
 BUG:
 PAMPERS Plienky Active Baby-Dry Mega Quad S4
 ma na konci nieco co vyzera ako medzera ale nie je to medzera
 ---------------------------------------------------------------------------------------------------------------------------------
+11
 2019-02-20 14:58:39,257 ERROR [MAMA_A_JA] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
 sk.hudak.prco.exception.PrcoRuntimeException: Parser implementation for eshop MAMA_A_JAnot found.
 --------------------------------------------------------------------------------------------------------------------
+10
 BUG
 tieto dva produkty to su to iste... lebo na jednom z nich je tam redirect... skusit neako poriesit... na zaklade nazvu, pripadne vyslednej(redirect url)
 eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 169, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-pronutra-800g-dojcenske-mlieko/, last updated 03-01-2019 14:47:56
 eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 996, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-800g-dojcenske-mlieko/, last updated 03-01-2019 14:48:28
 --------------------------------------------------------------------------------------------------------------------
+9
 BUG
 duplicita v grupe:
 eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2113, 'Pampers Active Baby 5 Megapack+ 11-16Kg 110ks', https://kidmarket.sk/jednorazove-plienky/1046-pampers-active-baby-5-megapack-11-16kg-110ks-8001090951762.html?search_query=pampers&results=44, last updated 03-01-2019 14:48:09
@@ -145,14 +230,17 @@ eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2851, 'Pa
 eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2913, 'Pampers Active Baby 5 Megapack+ 11-16Kg 110ks', https://kidmarket.sk/jednorazove-plienky/1046-pampers-active-baby-5-megapack-11-16kg-110ks-8001090951762.html?search_query=pampers&results=42, last updated 03-01-2019 14:57:53
 eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2919, 'Pampers Active Baby 5 Megapack+ 11-16Kg 110ks', https://kidmarket.sk/jednorazove-plienky/1046-pampers-active-baby-5-megapack-11-16kg-110ks-8001090951762.html?search_query=pampers&results=38, last updated 03-01-2019 14:58:59
 --------------------------------------------------------------------------------------------------------------------
+8
 BUG:
 chyba 2x
 Lovela 2x Gél color, 4,7 l / 50 pracích dávok
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
+7
 TODO log each type of unit parser exception name, najlepsie asi specialny typ chyby aby som vedel ze parsing nepresiel...
 a dat len nech maze starsie zaznamy ako 30 dni, a teda aj nech tam vklada ak tam taka chyba este nie je equal na zaklade name
 produktu
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
+6
 2018-08-08 15:10:57,680 ERROR [HORNBACH] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:82] error while creating new product
 sk.hudak.prco.exception.PrcoRuntimeException: error while downloading/parsing content for url https://www.hornbach.sk/shop/vyhladavanie/sortiment/nutrilon%205
 	at sk.hudak.prco.eshop.HornbachProductParser.retrieveDocument(HornbachProductParser.java:70)
@@ -181,6 +269,7 @@ Caused by: java.lang.NullPointerException: null
 	at sk.hudak.prco.eshop.HornbachProductParser.retrieveDocument(HornbachProductParser.java:67)
 	... 8 common frames omitted
 -------------------------------------------------------------------------------------------------
+5
 2018-08-07 11:53:12,803 DEBUG [OBI] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:152] request URL: https://www.obi.sk/search/nutrilon%204/?isi=true
 2018-08-07 11:53:12,803 DEBUG [OBI] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:155] userAgent: Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko
 2018-08-07 11:53:12,949 DEBUG [OBI] [] s.h.p.s.PrcoCustomTrustManager [PrcoCustomTrustManager.java:41] checkServerTrusted() for hostname CN=*.obi.at,O=OBI Smart Technologies GmbH,L=Wermelskirchen,ST=Nordrhein-Westfalen,C=DE
@@ -234,14 +323,18 @@ Caused by: sun.security.provider.certpath.SunCertPathBuilderException: unable to
 	at sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:382)
 	... 31 common frames omitted
 ----------------------
+4
 dalo zle unity: Absolut vodka 40% 1x1 l
 ------------------------------------------------------------------------------------------------------------------------
+3
 TODO: doriesit nove produkty pre ktore nevie vyparsovat unit co mam na UI
 ------------------------------------------------------------------------------------------------------------------------
+2
 pre tieto dve nerozpozna unit produktu(nie je tam jednotka len cislo, ide o plienky pre obe URL
 https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121218245
 https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121218256
 ------------------------------------------------------------------------------------------------------------------------
+1
 BUG:
 2018-09-05 10:05:29,929 ERROR [HORNBACH] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:85] error while creating new product
 sk.hudak.prco.exception.PrcoRuntimeException: error while downloading/parsing content for url https://www.hornbach.sk/shop/vyhladavanie/sortiment/pampers%205
