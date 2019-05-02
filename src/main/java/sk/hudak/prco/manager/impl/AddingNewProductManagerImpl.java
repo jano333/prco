@@ -59,19 +59,20 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
     public void addNewProductsByKeywordForAllEshops(String searchKeyWord) {
         notNullNotEmpty(searchKeyWord, "searchKeyWord");
 
-        for (EshopUuid eshopUuid : EshopUuid.values()) {
+        Arrays.stream(EshopUuid.values()).forEach(eshopUuid -> {
 
             // ak neexistuje parser pre dany eshop, tak len zaloguj a chod na dalsi
             if (!existParserFor(eshopUuid)) {
                 log.warn("for eshop {} none parser found", eshopUuid);
-                continue;
+                return;
             }
+
             // spusti stahovanie pre dalsi
             addNewProductsByKeywordForEshop(eshopUuid, searchKeyWord);
 
             // kazdy dalsi spusti s 3 sekundovym oneskorenim
             ThreadUtils.sleepSafe(3);
-        }
+        });
     }
 
     @Override
@@ -114,30 +115,27 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
         // roztriedim URL podla typu eshopu
         Map<EshopUuid, List<String>> eshopUrls = new EnumMap<>(EshopUuid.class);
         for (String productUrl : productsUrl) {
-            eshopUrls.computeIfAbsent(eshopUuidParser.parseEshopUuid(productUrl),
-                    eshopUuid -> new ArrayList<>())
+            eshopUrls.computeIfAbsent(eshopUuidParser.parseEshopUuid(productUrl), eshopUuid -> new ArrayList<>())
                     .add(productUrl);
         }
 
-        for (EshopUuid eshopUuid : eshopUrls.keySet()) {
+        eshopUrls.keySet().forEach(eshopUuid ->
+                taskManager.submitTask(eshopUuid, () -> {
 
-            taskManager.submitTask(eshopUuid, () -> {
+                    taskManager.markTaskAsRunning(eshopUuid);
+                    boolean finishedWithError = false;
 
-                taskManager.markTaskAsRunning(eshopUuid);
-                boolean finishedWithError = false;
+                    try {
+                        createNewProducts(eshopUuid, eshopUrls.get(eshopUuid));
 
-                try {
-                    createNewProducts(eshopUuid, eshopUrls.get(eshopUuid));
+                    } catch (Exception e) {
+                        log.error(ERROR_WHILE_CREATING_NEW_PRODUCT, e);
+                        finishedWithError = true;
 
-                } catch (Exception e) {
-                    log.error(ERROR_WHILE_CREATING_NEW_PRODUCT, e);
-                    finishedWithError = true;
-
-                } finally {
-                    taskManager.markTaskAsFinished(eshopUuid, finishedWithError);
-                }
-            });
-        }
+                    } finally {
+                        taskManager.markTaskAsFinished(eshopUuid, finishedWithError);
+                    }
+                }));
         log.debug("<< addNewProductsByUrl count of URLs: {}", countOfUrls);
     }
 
@@ -196,7 +194,6 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
                 .url(productUrl)
                 .additionalInfo(productName)
                 .build());
-
     }
 
     private boolean existParserFor(EshopUuid eshopUuid) {

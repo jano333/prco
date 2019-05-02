@@ -117,7 +117,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
                             countOfProductsAlreadyUpdated++;
                             countOfProductsWaitingToBeUpdated--;
-                            listener.updateStatusInfo(new UpdateStatusInfo(countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated, eshopUuid));
+                            listener.onUpdateStatus(new UpdateStatusInfo(countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated, eshopUuid));
 
                             continue;
                         }
@@ -128,7 +128,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
                         countOfProductsAlreadyUpdated++;
                         countOfProductsWaitingToBeUpdated--;
-                        listener.updateStatusInfo(new UpdateStatusInfo(countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated, eshopUuid));
+                        listener.onUpdateStatus(new UpdateStatusInfo(countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated, eshopUuid));
 
                         if (taskManager.isTaskShouldStopped(eshopUuid)) {
                             taskManager.markTaskAsStopped(eshopUuid);
@@ -201,7 +201,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
     }
 
     private void notifyUpdateListener(@NonNull EshopUuid eshopUuid, @NonNull UpdateProductInfoListener listener) {
-        listener.updateStatusInfo(mapper.map(
+        listener.onUpdateStatus(mapper.map(
                 internalTxService.getStatisticForUpdateForEshop(eshopUuid, eshopUuid.getOlderThanInHours()),
                 UpdateStatusInfo.class));
     }

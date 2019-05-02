@@ -8,7 +8,7 @@ public class UpdateProductInfoListenerAdapter implements UpdateProductInfoListen
     public static UpdateProductInfoListener INSTANCE = new UpdateProductInfoListenerAdapter();
 
     @Override
-    public void updateStatusInfo(UpdateStatusInfo updateStatusInfo) {
+    public void onUpdateStatus(UpdateStatusInfo updateStatusInfo) {
         // do nothing
     }
 }
