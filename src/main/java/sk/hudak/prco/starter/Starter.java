@@ -43,8 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static sk.hudak.prco.api.EshopUuid.FEEDO;
-
 /**
  * Created by jan.hudak on 9/29/2017.
  */
@@ -228,7 +226,7 @@ public class Starter {
                 log.debug(">> eshop: {}, updated/waiting: {}/{}",
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
-        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
+//        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
 //        updateProductDataManager.updateAllProductDataNotInAnyGroup(listener);
 
 //        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.PERINBABA, listener);
@@ -290,15 +288,18 @@ public class Starter {
     }
 
     private void showDuplicityProductsInEshops() {
-        EshopUuid eshopUuid = FEEDO;
-//        for (EshopUuid eshopUuid : EshopUuid.values()) {
-        System.out.println("Duplicity for eshop: " + eshopUuid);
-        List<ProductFullDto> result = internalTxService.findDuplicityProductsByNameAndPriceInEshop(eshopUuid);
-        for (ProductFullDto productFullDto : result) {
-            System.out.println(productFullDto.getId() + ", " + productFullDto.getName() + " " + productFullDto.getPriceForPackage() + " " + productFullDto.getUrl());
+
+//        internalTxService.removeProduct(3121L);
+
+//        EshopUuid eshopUuid = MALL;
+        for (EshopUuid eshopUuid : EshopUuid.values()) {
+            System.out.println("Duplicity for eshop: " + eshopUuid);
+            List<ProductFullDto> result = internalTxService.findDuplicityProductsByNameAndPriceInEshop(eshopUuid);
+            for (ProductFullDto productFullDto : result) {
+                System.out.println(productFullDto.getId() + ", " + productFullDto.getName() + " " + productFullDto.getPriceForPackage() + " " + productFullDto.getUrl());
+            }
+            System.out.println();
         }
-        System.out.println();
-//        }
     }
 
     private void deleteProductsFromNotInterested(EshopUuid eshopUuid) {

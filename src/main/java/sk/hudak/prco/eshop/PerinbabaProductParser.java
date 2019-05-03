@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static sk.hudak.prco.api.EshopUuid.PERINBABA;
+
 @Slf4j
 @Component
 public class PerinbabaProductParser extends JSoupProductParser {
@@ -30,13 +32,12 @@ public class PerinbabaProductParser extends JSoupProductParser {
 
     @Override
     public EshopUuid getEshopUuid() {
-        return EshopUuid.PERINBABA;
+        return PERINBABA;
     }
 
     @Override
     protected int getTimeout() {
-        // koli pomalym odozvam davam na 10 sekund
-        return 10000;
+        return TIMEOUT_10_SECOND;
     }
 
     @Override

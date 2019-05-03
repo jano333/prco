@@ -36,8 +36,6 @@ import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
 @Component
 public class AlzaProductParser extends JSoupProductParser {
 
-    private static final int SECOND_10 = 10000;
-
     public AlzaProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
         super(unitParser, userAgentDataHolder, searchUrlBuilder);
     }
@@ -45,7 +43,7 @@ public class AlzaProductParser extends JSoupProductParser {
     @Override
     protected int getTimeout() {
         // koli pomalym odozvam davam na 10 sekund
-        return SECOND_10;
+        return TIMEOUT_10_SECOND;
     }
 
     @Override

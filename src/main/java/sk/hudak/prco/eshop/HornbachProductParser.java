@@ -52,8 +52,7 @@ public class HornbachProductParser extends JSoupProductParser implements WatchDo
 
     @Override
     protected int getTimeout() {
-        // koli pomalym odozvam davam na 10 sekund
-        return 10000;
+        return TIMEOUT_10_SECOND;
     }
 
     @Override

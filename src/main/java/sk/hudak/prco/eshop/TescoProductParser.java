@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
+import static sk.hudak.prco.api.EshopUuid.TESCO;
 import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
 import static sk.hudak.prco.utils.JsoupUtils.getTextFromFirstElementByClass;
 import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
@@ -33,8 +34,6 @@ import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
 @Component
 public class TescoProductParser extends JSoupProductParser {
 
-    private static final String DATE_FORMAT_HH_MM_YYYY = "dd.MM.yyyy";
-
     @Autowired
     public TescoProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
         super(unitParser, userAgentDataHolder, searchUrlBuilder);
@@ -42,13 +41,12 @@ public class TescoProductParser extends JSoupProductParser {
 
     @Override
     public EshopUuid getEshopUuid() {
-        return EshopUuid.TESCO;
+        return TESCO;
     }
 
     @Override
     protected int getTimeout() {
-        // koli pomalym odozvam davam na 10 sekund
-        return 10000;
+        return TIMEOUT_10_SECOND;
     }
 
     @Override

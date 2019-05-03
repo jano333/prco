@@ -32,6 +32,7 @@ public class BambinoProductParser extends JSoupProductParser {
 
     private static final int PAGING = 24;
 
+
     @Autowired
     public BambinoProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
         super(unitParser, userAgentDataHolder, searchUrlBuilder);
@@ -45,7 +46,7 @@ public class BambinoProductParser extends JSoupProductParser {
     @Override
     protected int getTimeout() {
         // koli pomalym odozvam davam na 15 sekund
-        return 15000;
+        return TIMEOUT_15_SECOND;
     }
 
     @Override

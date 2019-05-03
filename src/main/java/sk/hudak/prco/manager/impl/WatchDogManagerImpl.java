@@ -7,7 +7,7 @@ import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.WatchDogAddDto;
 import sk.hudak.prco.dto.WatchDogDto;
 import sk.hudak.prco.dto.WatchDogNotifyUpdateDto;
-import sk.hudak.prco.dto.internal.ProductForUpdateData;
+import sk.hudak.prco.dto.internal.ProductUpdateData;
 import sk.hudak.prco.manager.WatchDogManager;
 import sk.hudak.prco.parser.HtmlParser;
 import sk.hudak.prco.service.InternalTxService;
@@ -82,18 +82,18 @@ public class WatchDogManagerImpl implements WatchDogManager {
             boolean finishedWithError = false;
             try {
                 for (WatchDogDto watchDogDto : products) {
-                    Optional<ProductForUpdateData> result = Optional.of(parser.parseProductUpdateData(watchDogDto.getProductUrl()));
+                    Optional<ProductUpdateData> result = Optional.of(parser.parseProductUpdateData(watchDogDto.getProductUrl()));
                     sleepRandomSafe();
                     if (!result.isPresent()) {
                         continue;
                     }
-                    ProductForUpdateData productForUpdateData = result.get();
+                    ProductUpdateData productUpdateData = result.get();
                     // compare price
-                    BigDecimal currentPrice = productForUpdateData.getPriceForPackage();
+                    BigDecimal currentPrice = productUpdateData.getPriceForPackage();
                     BigDecimal watchDogDtoMaxPriceToBeInterestedIn = watchDogDto.getMaxPriceToBeInterestedIn();
                     int i = currentPrice.compareTo(watchDogDtoMaxPriceToBeInterestedIn);
                     if (i < 0) {
-                        productIdToBeNotified.add(createWatchDogNotifyUpdateDto(watchDogDto, productForUpdateData));
+                        productIdToBeNotified.add(createWatchDogNotifyUpdateDto(watchDogDto, productUpdateData));
                         //TODO msg
                         log.debug("adding product ");
                     } else {
@@ -113,14 +113,14 @@ public class WatchDogManagerImpl implements WatchDogManager {
         });
     }
 
-    private WatchDogNotifyUpdateDto createWatchDogNotifyUpdateDto(WatchDogDto watchDogDto, ProductForUpdateData productForUpdateData) {
+    private WatchDogNotifyUpdateDto createWatchDogNotifyUpdateDto(WatchDogDto watchDogDto, ProductUpdateData productUpdateData) {
         WatchDogNotifyUpdateDto result = new WatchDogNotifyUpdateDto();
         result.setId(watchDogDto.getId());
         result.setEshopUuid(watchDogDto.getEshopUuid());
         result.setProductUrl(watchDogDto.getProductUrl());
         result.setMaxPriceToBeInterestedIn(watchDogDto.getMaxPriceToBeInterestedIn());
-        result.setProductName(productForUpdateData.getName());
-        result.setCurrentPrice(productForUpdateData.getPriceForPackage());
+        result.setProductName(productUpdateData.getName());
+        result.setCurrentPrice(productUpdateData.getPriceForPackage());
         return result;
     }
 }

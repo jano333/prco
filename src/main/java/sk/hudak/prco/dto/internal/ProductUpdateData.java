@@ -14,7 +14,7 @@ import java.util.Date;
 @Setter
 @Builder
 @ToString
-public class ProductForUpdateData implements InternalDto {
+public class ProductUpdateData implements InternalDto {
 
     // povinne
     private String url;

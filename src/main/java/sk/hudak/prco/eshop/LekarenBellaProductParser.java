@@ -38,8 +38,7 @@ public class LekarenBellaProductParser extends JSoupProductParser {
 
     @Override
     protected int getTimeout() {
-        // koli pomalym odozvam davam na 10 sekund
-        return 10000;
+        return TIMEOUT_15_SECOND;
     }
 
     @Override

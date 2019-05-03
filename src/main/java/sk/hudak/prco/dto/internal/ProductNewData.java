@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 @ToString
-public class NewProductInfo implements InternalDto {
+public class ProductNewData implements InternalDto {
 
     private String url;
     private String name;

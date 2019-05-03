@@ -39,7 +39,7 @@ public class MamaAJaProductParser extends JSoupProductParser {
 
     @Override
     protected int getTimeout() {
-        return 10000;
+        return TIMEOUT_10_SECOND;
     }
 
     @Override

@@ -37,7 +37,7 @@ public class MaxikovyHrackyProductParser extends JSoupProductParser {
     @Override
     protected int getTimeout() {
         // koli pomalym odozvam davam na 10 sekund
-        return 10000;
+        return TIMEOUT_10_SECOND;
     }
 
     @Override

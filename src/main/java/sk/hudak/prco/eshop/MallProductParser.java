@@ -31,7 +31,6 @@ import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
 public class MallProductParser extends JSoupProductParser {
 
     private static final int MAX_COUNT_OF_PRODUCT_PRE_PAGE = 36;
-    private static final String DATE_FORMAT_HH_MM_YYYY = "dd.MM.yyyy";
 
     @Autowired
     public MallProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
@@ -45,8 +44,7 @@ public class MallProductParser extends JSoupProductParser {
 
     @Override
     protected int getTimeout() {
-        // koli pomalym odozvam davam na 15 sekund
-        return 15000;
+        return TIMEOUT_15_SECOND;
     }
 
     @Override

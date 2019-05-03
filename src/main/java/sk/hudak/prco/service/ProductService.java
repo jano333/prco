@@ -43,6 +43,8 @@ public interface ProductService {
      */
     void markProductAsNotInterested(Long productId);
 
+    //TODO niekde je delete a niekde remove...
+
     /**
      * @param productId product id
      */
@@ -50,14 +52,36 @@ public interface ProductService {
 
     // ----------- GET -----------
 
+    /**
+     * @param productId product id
+     * @return
+     */
     ProductAddingToGroupDto getProduct(Long productId);
 
+    /**
+     * @param productId product id
+     * @return
+     */
     EshopUuid getEshopForProductId(Long productId);
 
+    /**
+     * @param eshopUuid
+     * @param olderThanInHours
+     * @return
+     */
     Optional<ProductDetailInfo> getProductForUpdate(EshopUuid eshopUuid, int olderThanInHours);
 
+    /**
+     * @param productId product id
+     * @return
+     */
     Optional<ProductDetailInfo> getProductForUpdate(Long productId);
 
+    /**
+     * @param eshopUuid
+     * @param olderThanInHours
+     * @return
+     */
     StatisticForUpdateForEshopDto getStatisticForUpdateForEshop(EshopUuid eshopUuid, int olderThanInHours);
 
     // ----------- FIND -----------

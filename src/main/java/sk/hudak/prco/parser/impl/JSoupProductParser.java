@@ -9,8 +9,8 @@ import org.jsoup.nodes.Document;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.dto.UnitTypeValueCount;
-import sk.hudak.prco.dto.internal.NewProductInfo;
-import sk.hudak.prco.dto.internal.ProductForUpdateData;
+import sk.hudak.prco.dto.internal.ProductNewData;
+import sk.hudak.prco.dto.internal.ProductUpdateData;
 import sk.hudak.prco.exception.HttpErrorPrcoRuntimeException;
 import sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException;
 import sk.hudak.prco.exception.PrcoRuntimeException;
@@ -38,7 +38,12 @@ import static sk.hudak.prco.utils.ThreadUtils.sleepRandomSafeBetween;
 @Slf4j
 public abstract class JSoupProductParser implements EshopProductsParser {
 
-    public static final int DEFAULT_TIMEOUT_IN_MILIS = 3000;
+    protected static final int DEFAULT_TIMEOUT_3_SECOND = 3_000;
+    protected static final int TIMEOUT_10_SECOND = 10_000;
+    protected static final int TIMEOUT_15_SECOND = 15_000;
+
+    protected static final String DATE_FORMAT_HH_MM_YYYY = "dd.MM.yyyy";
+
     public static final int SINGLE_PAGE_ONE = 1;
 
     protected UnitParser unitParser;
@@ -130,12 +135,12 @@ public abstract class JSoupProductParser implements EshopProductsParser {
     }
 
     @Override
-    public NewProductInfo parseNewProductInfo(@NonNull String productUrl) {
+    public ProductNewData parseProductNewData(@NonNull String productUrl) {
         //FIXME prepisat tak ako je parseProductUpdateData myslim tym tie optional
 
         Document document = retrieveDocument(productUrl);
 
-        NewProductInfo.NewProductInfoBuilder builder = NewProductInfo.builder()
+        ProductNewData.ProductNewDataBuilder builder = ProductNewData.builder()
                 .url(productUrl)
                 .eshopUuid(getEshopUuid());
 
@@ -165,13 +170,13 @@ public abstract class JSoupProductParser implements EshopProductsParser {
 
 
     @Override
-    public ProductForUpdateData parseProductUpdateData(@NonNull String productUrl) {
+    public ProductUpdateData parseProductUpdateData(@NonNull String productUrl) {
         Document document = retrieveDocument(productUrl);
 
         // ak je produkt nedostupny tak nastavim len url a eshop uuid
         if (isProductUnavailable(document)) {
             log.debug("product is unavailable: {} ", productUrl);
-            return ProductForUpdateData.builder()
+            return ProductUpdateData.builder()
                     .url(productUrl)
                     .eshopUuid(getEshopUuid()).build();
         }
@@ -197,7 +202,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
 
         Optional<String> pictureUrl = internalParseProductPictureURL(document, productUrl);
 
-        return ProductForUpdateData.builder()
+        return ProductUpdateData.builder()
                 .url(productUrl)
                 .eshopUuid(getEshopUuid())
                 .name(productName)
@@ -264,7 +269,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
     }
 
     protected int getTimeout() {
-        return DEFAULT_TIMEOUT_IN_MILIS;
+        return DEFAULT_TIMEOUT_3_SECOND;
     }
 
     protected Map<String, String> getCookie() {

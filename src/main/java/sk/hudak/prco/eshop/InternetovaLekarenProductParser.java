@@ -3,6 +3,7 @@ package sk.hudak.prco.eshop;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.omg.CORBA.TIMEOUT;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
@@ -36,8 +37,7 @@ public class InternetovaLekarenProductParser extends JSoupProductParser {
 
     @Override
     protected int getTimeout() {
-        // koli pomalym odozvam davam na 10 sekund
-        return 15000;
+        return TIMEOUT_15_SECOND;
     }
 
     @Override

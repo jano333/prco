@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static sk.hudak.prco.api.EshopUuid.PILULKA;
 import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
 import static sk.hudak.prco.utils.JsoupUtils.getFirstElementByClass;
 
@@ -33,13 +34,12 @@ public class PilulkaProductParser extends JSoupProductParser {
 
     @Override
     public EshopUuid getEshopUuid() {
-        return EshopUuid.PILULKA;
+        return PILULKA;
     }
 
     @Override
     protected int getTimeout() {
-        // koli pomalym odozvam davam na 10 sekund
-        return 10000;
+        return TIMEOUT_10_SECOND;
     }
 
     @Override

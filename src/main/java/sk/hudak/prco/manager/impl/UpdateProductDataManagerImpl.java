@@ -9,7 +9,7 @@ import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.ProductUpdateDataDto;
 import sk.hudak.prco.dto.error.ErrorCreateDto;
-import sk.hudak.prco.dto.internal.ProductForUpdateData;
+import sk.hudak.prco.dto.internal.ProductUpdateData;
 import sk.hudak.prco.dto.product.ProductDetailInfo;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.exception.HttpErrorPrcoRuntimeException;
@@ -240,7 +240,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
     private UpdateProcessResult processUpdate(ProductDetailInfo productDetailInfo) {
         log.debug("start updating data for product {}", productDetailInfo.getUrl());
-        ProductForUpdateData updateData;
+        ProductUpdateData updateData;
         try {
             updateData = htmlParser.parseProductUpdateData(productDetailInfo.getUrl());
 

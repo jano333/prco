@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.AlzaProductParser;
+import sk.hudak.prco.eshop.PilulkaProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -81,10 +81,10 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.drogeria-vmd.sk/pampers-maxi-pack-4-9-14kg-58ks-0819/"));
 
 //        // Alza
-        System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 4"));
 //                .parseProductNewData("https://www.alza.sk/maxi/pampers-active-baby-dry-vel-4-maxi-174-ks-d4593569.htm"));
-                .parseProductUpdateData("https://www.alza.sk/maxi/lovela-prasok-color-5-kg-40-prani-d5531490.htm"));
+//                .parseProductUpdateData("https://www.alza.sk/maxi/lovela-prasok-color-5-kg-40-prani-d5531490.htm"));
 //
 //        // Bambino
 //        System.out.println(new BambinoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -192,9 +192,9 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.mojalekaren.sk//pampers-vlhcene-obrusky-natural-clean-4x64-kusov/"));
 
         // Pilulka
-//        System.out.println(new PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+        System.out.println(new PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("nutrilon"));
-//                .parseProductNewData("https://www.pilulka.sk/pampers-11-18kg-junior-ab-50-5-act-b-487858"));
+                .parseProductNewData("https://www.pilulka.sk/pampers-s4-active-baby-monthly-box-174ks"));
 //                .parseProductUpdateData("https://www.pilulka.sk/nutrilon-3-ha-800g-5-1-zdarma"));
 
 

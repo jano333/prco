@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.error.ErrorCreateDto;
-import sk.hudak.prco.dto.internal.NewProductInfo;
+import sk.hudak.prco.dto.internal.ProductNewData;
 import sk.hudak.prco.dto.newproduct.NewProductCreateDto;
 import sk.hudak.prco.manager.AddingNewProductManager;
 import sk.hudak.prco.mapper.PrcoOrikaMapper;
@@ -158,20 +158,20 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
             }
 
             // parsujem
-            NewProductInfo newProductInfo = htmlParser.parseProductNewData(productUrl);
+            ProductNewData productNewData = htmlParser.parseProductNewData(productUrl);
             //TODO pridat kontrolu na dostupnost proudku, alza nebol dostupny preto nevrati mene.... a padne toto
 
             // je len tmp fix
-            if (newProductInfo.getName() == null) {
+            if (productNewData.getName() == null) {
                 log.warn("new product not contains name, skipping to next product");
                 continue;
             }
-            if (newProductInfo.getUnit() == null) {
-                logErrorParsingUnit(eshopUuid, productUrl, newProductInfo.getName());
+            if (productNewData.getUnit() == null) {
+                logErrorParsingUnit(eshopUuid, productUrl, productNewData.getName());
             }
 
             // preklopim a pridavam do DB
-            internalTxService.createNewProduct(mapper.map(newProductInfo, NewProductCreateDto.class));
+            internalTxService.createNewProduct(mapper.map(productNewData, NewProductCreateDto.class));
 
             // sleep pre dalsou iteraciou
             //TODO fix na zaklade nastavenia daneho eshopu.... dave od to delay

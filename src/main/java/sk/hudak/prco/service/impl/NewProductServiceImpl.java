@@ -10,7 +10,7 @@ import sk.hudak.prco.dao.db.NewProductEntityDbDao;
 import sk.hudak.prco.dto.UnitData;
 import sk.hudak.prco.dto.UnitTypeValueCount;
 import sk.hudak.prco.dto.error.ErrorCreateDto;
-import sk.hudak.prco.dto.internal.NewProductInfo;
+import sk.hudak.prco.dto.internal.ProductNewData;
 import sk.hudak.prco.dto.newproduct.NewProductCreateDto;
 import sk.hudak.prco.dto.newproduct.NewProductFilterUIDto;
 import sk.hudak.prco.dto.newproduct.NewProductFullDto;
@@ -83,7 +83,7 @@ public class NewProductServiceImpl implements NewProductService {
             return id;
 
         } catch (Exception e) {
-            String errMsg = "error creating " + NewProductInfo.class.getSimpleName();
+            String errMsg = "error creating " + ProductNewData.class.getSimpleName();
             log.debug(errMsg, e);
             if (e instanceof PrcoRuntimeException) {
                 throw (PrcoRuntimeException) e;
@@ -142,12 +142,12 @@ public class NewProductServiceImpl implements NewProductService {
         notNull(newProductId, "newProductId");
         NewProductEntity productEntity = newProductEntityDao.findById(newProductId);
         // parsujem
-        NewProductInfo newProductInfo = htmlParser.parseProductNewData(productEntity.getUrl());
+        ProductNewData productNewData = htmlParser.parseProductNewData(productEntity.getUrl());
 
-        if (newProductInfo.getUnit() == null) {
-            if (StringUtils.isBlank(productEntity.getPictureUrl()) && newProductInfo.getPictureUrl() != null) {
-                log.debug("updating product picture url to {}", newProductInfo.getPictureUrl());
-                productEntity.setPictureUrl(newProductInfo.getPictureUrl());
+        if (productNewData.getUnit() == null) {
+            if (StringUtils.isBlank(productEntity.getPictureUrl()) && productNewData.getPictureUrl() != null) {
+                log.debug("updating product picture url to {}", productNewData.getPictureUrl());
+                productEntity.setPictureUrl(productNewData.getPictureUrl());
                 newProductEntityDao.update(productEntity);
             }
 
@@ -161,13 +161,13 @@ public class NewProductServiceImpl implements NewProductService {
 
 
         } else {
-            productEntity.setUnit(newProductInfo.getUnit());
-            productEntity.setUnitValue(newProductInfo.getUnitValue());
-            productEntity.setUnitPackageCount(newProductInfo.getUnitPackageCount());
+            productEntity.setUnit(productNewData.getUnit());
+            productEntity.setUnitValue(productNewData.getUnitValue());
+            productEntity.setUnitPackageCount(productNewData.getUnitPackageCount());
             productEntity.setValid(Boolean.TRUE);
             log.debug("new product with id {} was updated with unit data {}", productEntity.getId(),
-                    new UnitTypeValueCount(newProductInfo.getUnit(), newProductInfo.getUnitValue(), newProductInfo.getUnitPackageCount()));
-            productEntity.setPictureUrl(newProductInfo.getPictureUrl());
+                    new UnitTypeValueCount(productNewData.getUnit(), productNewData.getUnitValue(), productNewData.getUnitPackageCount()));
+            productEntity.setPictureUrl(productNewData.getPictureUrl());
             newProductEntityDao.update(productEntity);
         }
     }

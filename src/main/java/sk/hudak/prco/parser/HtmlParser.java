@@ -1,8 +1,8 @@
 package sk.hudak.prco.parser;
 
 import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.dto.internal.NewProductInfo;
-import sk.hudak.prco.dto.internal.ProductForUpdateData;
+import sk.hudak.prco.dto.internal.ProductNewData;
+import sk.hudak.prco.dto.internal.ProductUpdateData;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ public interface HtmlParser {
      * @param productUrl
      * @return
      */
-    NewProductInfo parseProductNewData(String productUrl);
+    ProductNewData parseProductNewData(String productUrl);
 
-    ProductForUpdateData parseProductUpdateData(String productUrl);
+    ProductUpdateData parseProductUpdateData(String productUrl);
 
 
 }

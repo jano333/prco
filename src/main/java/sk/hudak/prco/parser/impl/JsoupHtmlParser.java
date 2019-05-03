@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.dto.internal.NewProductInfo;
-import sk.hudak.prco.dto.internal.ProductForUpdateData;
+import sk.hudak.prco.dto.internal.ProductNewData;
+import sk.hudak.prco.dto.internal.ProductUpdateData;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.parser.EshopProductsParser;
 import sk.hudak.prco.parser.EshopUuidParser;
@@ -45,14 +45,14 @@ public class JsoupHtmlParser implements HtmlParser {
     }
 
     @Override
-    public NewProductInfo parseProductNewData(String productUrl) {
+    public ProductNewData parseProductNewData(String productUrl) {
         notNullNotEmpty(productUrl, "productUrl");
 
-        return findParserForEshop(productUrl).parseNewProductInfo(productUrl);
+        return findParserForEshop(productUrl).parseProductNewData(productUrl);
     }
 
     @Override
-    public ProductForUpdateData parseProductUpdateData(String productUrl) {
+    public ProductUpdateData parseProductUpdateData(String productUrl) {
         notNullNotEmpty(productUrl, "productUrl");
 
         return findParserForEshop(productUrl).parseProductUpdateData(productUrl);
