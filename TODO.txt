@@ -1,47 +1,48 @@
----------------------
+-------------
+41
+Pampers Premium Care Veľkosť 0, Plienky x30, <3kg
+unit nic
+---------------
+40
+Pampers Active Baby Veľ. 7, 40 Plienok, 15kg+
+zle unit dale,
+--------------
+39
+Pampers Plienky Veľ. 2, 43 Plienok, 4-8 kg
+nic unit
+-----------
+38
+Pampers Premium Care Veľkosť 2, Plienky x148, 4kg-8kg
+zle unit
+-------------------------------------
+37
+Nutrilon 3 600g 5pack
+zle unit
+-----------------
+36
+Pampers Premium Care Veľkosť 5, Plienky x88, 11kg-16kg
+zle unit
+---------------------------
+35
+Pampers Premium Care Veľkosť 4, Plienky x104, 9kg-14kg
+zle unit
+------------------------
+34
+Pampers Premium Care Veľkosť 4, Plienky x104, 9kg-14kg
+zle unit data
+----------------------
+33
+Pampers Plienky Veľ. 2, 76 Plienok, 4-8 kg
+ziadne unit data
+-----------------------------------
 32
-FEATURE: ked spadne update jedneho produktu na timeout tak nech pokracuje update dalsich, ale len pre dany typ chyby
+FEATURE: ked spadne update jedneho produktu na 'SocketTimeoutException: Read timed out' tak nech pokracuje update dalsich, ale len pre dany typ chyby
 ---------------------
 31
 2019-05-02 09:17:18,065 ERROR [PILULKA] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:245] error creating document for url 'https://www.pilulka.sk/pampers-s4-active-baby-monthly-box-174ks':
 javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: timestamp check failed
 	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
 ---------------------
-30
-2019-05-02 09:16:59,221 ERROR [FEEDO] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
-sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException: timeout
-	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:242)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:169)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.processUpdate(UpdateProductDataManagerImpl.java:245)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateAllProductsDataForEshop$3(UpdateProductDataManagerImpl.java:173)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.net.SocketTimeoutException: Read timed out
-	at java.net.SocketInputStream.socketRead0(Native Method)
-	at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
-	at java.net.SocketInputStream.read(SocketInputStream.java:170)
-	at java.net.SocketInputStream.read(SocketInputStream.java:141)
-	at sun.security.ssl.InputRecord.readFully(InputRecord.java:465)
-	at sun.security.ssl.InputRecord.read(InputRecord.java:503)
-	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:973)
-	at sun.security.ssl.SSLSocketImpl.readDataRecord(SSLSocketImpl.java:930)
-	at sun.security.ssl.AppInputStream.read(AppInputStream.java:105)
-	at java.io.BufferedInputStream.fill(BufferedInputStream.java:246)
-	at java.io.BufferedInputStream.read1(BufferedInputStream.java:286)
-	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
-	at sun.net.www.http.HttpClient.parseHTTPHeader(HttpClient.java:704)
-	at sun.net.www.http.HttpClient.parseHTTP(HttpClient.java:647)
-	at sun.net.www.http.HttpClient.parseHTTPHeader(HttpClient.java:789)
-	at sun.net.www.http.HttpClient.parseHTTP(HttpClient.java:647)
-	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1535)
-	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1440)
-	at java.net.HttpURLConnection.getResponseCode(HttpURLConnection.java:480)
-	at sun.net.www.protocol.https.HttpsURLConnectionImpl.getResponseCode(HttpsURLConnectionImpl.java:338)
-----------------
 29
 2019-05-02 09:16:47,922 ERROR [LEKAREN_V_KOCKE] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
 sk.hudak.prco.exception.ProductNameNotFoundException: Product name for url 'https://www.lekarenvkocke.sk/zqcca7c9d69cc89a501513a05ef16592f4-nutrilon-4-batolacia-mliecna-vyziva-v-prasku-24-36-mesiacov-inov-2018-1x800-g' not found.
