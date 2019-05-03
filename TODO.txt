@@ -39,25 +39,10 @@ ziadne unit data
 FEATURE: ked spadne update jedneho produktu na 'SocketTimeoutException: Read timed out' tak nech pokracuje update dalsich, ale len pre dany typ chyby
 ---------------------
 31
-2019-05-02 09:17:18,065 ERROR [PILULKA] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:245] error creating document for url 'https://www.pilulka.sk/pampers-s4-active-baby-monthly-box-174ks':
-javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path validation failed: java.security.cert.CertPathValidatorException: timestamp check failed
-	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+produktu je nedostupny a nevyparsuje nam ani meno....
+2019-05-03 09:48:49,693 WARN [main] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:332] property productName is null for product url https://www.pilulka.sk/pampers-active-baby-4-8-14kg-monthly-box-174ks-utierky-zadarmo
+ProductNewData(url=https://www.pilulka.sk/pampers-s4-active-baby-monthly-box-174ks, name=null, eshopUuid=PILULKA, unit=null, unitValue=null, unitPackageCount=null, pictureUrl=null)
 ---------------------
-29
-2019-05-02 09:16:47,922 ERROR [LEKAREN_V_KOCKE] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
-sk.hudak.prco.exception.ProductNameNotFoundException: Product name for url 'https://www.lekarenvkocke.sk/zqcca7c9d69cc89a501513a05ef16592f4-nutrilon-4-batolacia-mliecna-vyziva-v-prasku-24-36-mesiacov-inov-2018-1x800-g' not found.
-	at sk.hudak.prco.parser.impl.JSoupProductParser.lambda$parseProductUpdateData$0(JSoupProductParser.java:182)
-	at java.util.Optional.orElseThrow(Optional.java:290)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:182)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.processUpdate(UpdateProductDataManagerImpl.java:245)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateAllProductsDataForEshop$3(UpdateProductDataManagerImpl.java:173)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-----------------
 28
 Tu je asi neaky problem s tym eshopom
 sk.hudak.prco.exception.PrcoRuntimeException: Parser implementation for eshop BRENDON not found.

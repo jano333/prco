@@ -61,7 +61,12 @@ public class LekarenVKockeProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        return ofNullable(documentDetailProduct.select("h1[class='product-detail-title title-xs']").first())
+        Element first = documentDetailProduct.select("h1[class='product-detail-title title-xs']").first();
+        if (first == null) {
+            first = documentDetailProduct.select("h1[class='product-detail-title title-sm']").first();
+        }
+
+        return ofNullable(first)
                 .map(Element::text)
                 .filter(StringUtils::isNotBlank);
     }

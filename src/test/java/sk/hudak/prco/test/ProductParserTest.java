@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.PilulkaProductParser;
+import sk.hudak.prco.eshop.LekarenVKockeProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -104,10 +104,10 @@ public class ProductParserTest {
 //                .parseProductNewData("https://www.feedo.sk/pampers-active-baby-4-maxi-174ks-8-14kg-mesacna-zasoba-jednorazove-plienky/"));
 //                .parseProductUpdateData("https://www.feedo.sk/pampers-active-baby-4-10-15-kg-70-ks-giant-pack-jednorazove-plienky/"));
         // Lekaren v kocke
-//        System.out.println(new LekarenVKockeProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+        System.out.println(new LekarenVKockeProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseProductNewData("https://www.lekarenvkocke.sk/zq63a34d05b2ee15854983854d75bc3696-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x22-ks"));
-//                .parseProductUpdateData("https://www.lekarenvkocke.sk/zq63a34d05b2ee15854983854d75bc3696-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x22-ks"));
+                .parseProductUpdateData("https://www.lekarenvkocke.sk/zqcca7c9d69cc89a501513a05ef16592f4-nutrilon-4-batolacia-mliecna-vyziva-v-prasku-24-36-mesiacov-inov-2018-1x800-g"));
 //
 //        // MaxikovyHracky
 //        System.out.println(new MaxikovyHrackyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -192,9 +192,9 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.mojalekaren.sk//pampers-vlhcene-obrusky-natural-clean-4x64-kusov/"));
 
         // Pilulka
-        System.out.println(new PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("nutrilon"));
-                .parseProductNewData("https://www.pilulka.sk/pampers-s4-active-baby-monthly-box-174ks"));
+//                .parseProductNewData("https://www.pilulka.sk/pampers-s4-active-baby-monthly-box-174ks"));
 //                .parseProductUpdateData("https://www.pilulka.sk/nutrilon-3-ha-800g-5-1-zdarma"));
 
 
