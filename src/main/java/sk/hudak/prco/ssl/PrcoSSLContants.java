@@ -16,6 +16,7 @@ public class PrcoSSLContants {
         ALLOWED_HOSTNAME.add("esodrogeria.eu");
 
         ALLOWED_HOSTNAME.add("pilulka-lb1.vshosting.cz");
+        ALLOWED_HOSTNAME.add("pilulka.cz");
         ALLOWED_HOSTNAME.add("www.pilulka.sk");
 
         ALLOWED_HOSTNAME.add("www.feedo.sk");
