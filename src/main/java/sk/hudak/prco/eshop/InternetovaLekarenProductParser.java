@@ -3,7 +3,6 @@ package sk.hudak.prco.eshop;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.omg.CORBA.TIMEOUT;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
@@ -80,7 +79,11 @@ public class InternetovaLekarenProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        return ofNullable(documentDetailProduct.select("strong[class=fs-xxlarge]").first())
+        Element first = documentDetailProduct.select("strong[class=fs-xxlarge]").first();
+        if (first == null) {
+            first = documentDetailProduct.select("strong[class=fs-xxlarge red]").first();
+        }
+        return ofNullable(first)
                 .map(Element::text)
                 .map(value -> StringUtils.removeEnd(value, "€"))
                 .map(ConvertUtils::convertToBigDecimal);
