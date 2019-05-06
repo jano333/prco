@@ -4,12 +4,6 @@
 45 BUG
 overit MOJA_LEKAREN lebo neako stale mi dava vela novych produktov ci je to ok
 -----------------------------------------------------------------------------------------------------------------------
-44 BUG
-http://mall.sk/detska-vyziva-expiracia/nutrilon-2-pronutra-good-night-800g-exp-062019
-http://mall.sk/darceky/lovela-gel-color-4-7-l-50-pracich-davok-darcek-
-http://mall.sk/plienky-pampers-7-18-kg/pampers-pure-protection-s4-28-ks-914-kg
-nedava obrazok pre new produkt
------------------------------------------------------------------------------------------------------------------------
 32 FEATURE
 FEATURE: ked spadne update jedneho produktu na 'SocketTimeoutException: Read timed out' tak nech pokracuje update dalsich, ale len pre dany typ chyby
 -----------------------------------------------------------------------------------------------------------------------

@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.InternetovaLekarenProductParser;
+import sk.hudak.prco.eshop.MallProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -35,7 +35,7 @@ public class ProductParserTest {
         //         Lekaren expres
 //        System.out.println(new LekarenExpresProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
-//                .parseProductNewData("https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/obrusky-hygienicke/pro-deti/pampers-vlhcene-ubrousky-baby-fresh-64ks-14882.html"));
+//                .parseProductNewData("https://www.lekarenexpres.sk/matka-a-dieta/detska-vyziva/mliecna-vyziva/kase/nutrilon-kase-allergy-nemlecna-proexpert-250g-4m-11682.html"));
 //                .parseProductUpdateData("https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/obrusky-hygienicke/pro-deti/pampers-vlhcene-ubrousky-baby-fresh-64ks-14882.html"));
 //                .parseProductUpdateData("https://www.drogerka.sk/pampers-premium-care-detske-plienky-junior-44-ks?search=pampers"));
 //
@@ -53,10 +53,10 @@ public class ProductParserTest {
 
 
         // Internetova lekaren
-        System.out.println(new InternetovaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new InternetovaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseProductNewData("http://www.internetovalekaren.eu/pampers-premium-newborn-1-2-5kg-88-ks-pampers-premium-newborn-1-2-5kg-88ks-mesacna-zasoba-plienok-darceky-zdarma/"));
-                .parseProductUpdateData("http://www.internetovalekaren.eu/pampers-premium-newborn-3-midi-5-9kg-60-ks-pampers-premium-newborn-3-midi-5-9kg-60-ks-mesacna-zasoba-plienok-darcekyzdarma/"));
+//                .parseProductUpdateData("http://www.internetovalekaren.eu/pampers-premium-newborn-3-midi-5-9kg-60-ks-pampers-premium-newborn-3-midi-5-9kg-60-ks-mesacna-zasoba-plienok-darcekyzdarma/"));
 
 
 //        Eso drogeria
@@ -165,10 +165,10 @@ public class ProductParserTest {
 //                 .parseProductUpdateData("https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002017045669"));
 
 
-        // MALL
-//        System.out.println(new MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//         MALL
+        System.out.println(new MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 4"));
-//                .parseProductNewData("https://www.mall.sk/detske-mlieka/nutrilon-4-6-x-800g"));
+                .parseProductNewData("http://mall.sk/plienky-pampers-7-18-kg/pampers-pure-protection-s4-28-ks-914-kg"));
 //                .parseProductUpdateData("http://mall.sk/plienky-pampers-7-18-kg/pampers-active-baby-4-maxi-7-14kg-giant-box-90ks"));
 
         //        MamaAJa(UZ neexistuje)
@@ -188,7 +188,7 @@ public class ProductParserTest {
 //        System.out.println(new MojaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 4"));
 //                .parseProductNewData("https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/"));
-//                .parseProductUpdateData("https://www.mojalekaren.sk//pampers-vlhcene-obrusky-natural-clean-4x64-kusov/"));
+//                .parseProductUpdateData("https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/"));
 
         // Pilulka
 //        System.out.println(new PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)

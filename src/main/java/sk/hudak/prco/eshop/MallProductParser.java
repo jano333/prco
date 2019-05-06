@@ -12,6 +12,7 @@ import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.parser.UnitParser;
 import sk.hudak.prco.parser.impl.JSoupProductParser;
+import sk.hudak.prco.utils.JsoupUtils;
 import sk.hudak.prco.utils.UserAgentDataHolder;
 
 import java.math.BigDecimal;
@@ -124,13 +125,12 @@ public class MallProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        Elements img = documentDetailProduct.select("img[class=gall-slide-img]");
-        if (img.size() == 0) {
-            return Optional.empty();
+        Element img = documentDetailProduct.select("img[class=gall-slide-img]").first();
+        if (img == null) {
+            img = documentDetailProduct.select("img.gallery-magnifier__normal").first();
         }
-        Element element1 = img.get(0);
-        String src1 = element1.attr("src");
-        return Optional.of(src1);
+        return Optional.ofNullable(img)
+                .map(JsoupUtils::srcAttribute);
     }
 
     private Date parseDate(String strDate, String format) {
