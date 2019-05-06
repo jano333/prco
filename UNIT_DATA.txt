@@ -1,0 +1,47 @@
+20
+chyba 5 value
+Nutrilon 2 600g 5pack
+-----------------------------------------------------------------------------------------------------------------------------------------------
+43 bug
+https://www.lekaren-bella.sk/zbozi/8590340126840/nutrilon-3-pronutra-800g-akcia-6-ks-balenie
+zle unit data
+-------------------------------------------------------------------------------------------
+42 unit
+NO unit data
+https://www.bambino.sk/jednorazove-plienky/pampers-premium-care-velkost-6-plienka-50x-1
+-------------------------------------------------------------------------------------------
+41 unit
+Pampers Premium Care Veľkosť 0, Plienky x30, <3kg
+unit nic
+-------------------------------------------------------------------------------------------
+40 unit
+Pampers Active Baby Veľ. 7, 40 Plienok, 15kg+
+zle unit dale,
+-------------------------------------------------------------------------------------------
+39 unit
+Pampers Plienky Veľ. 2, 43 Plienok, 4-8 kg
+nic unit
+-------------------------------------------------------------------------------------------
+38
+Pampers Premium Care Veľkosť 2, Plienky x148, 4kg-8kg
+zle unit
+-------------------------------------
+37
+Nutrilon 3 600g 5pack
+zle unit
+-----------------
+36
+Pampers Premium Care Veľkosť 5, Plienky x88, 11kg-16kg
+zle unit
+35
+Pampers Premium Care Veľkosť 4, Plienky x104, 9kg-14kg
+zle unit
+------------------------
+34
+Pampers Premium Care Veľkosť 4, Plienky x104, 9kg-14kg
+zle unit data
+----------------------
+33
+Pampers Plienky Veľ. 2, 76 Plienok, 4-8 kg
+ziadne unit data
+-----------------------------------

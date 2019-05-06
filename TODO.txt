@@ -1,134 +1,44 @@
--------------
-41
-Pampers Premium Care Veľkosť 0, Plienky x30, <3kg
-unit nic
----------------
-40
-Pampers Active Baby Veľ. 7, 40 Plienok, 15kg+
-zle unit dale,
---------------
-39
-Pampers Plienky Veľ. 2, 43 Plienok, 4-8 kg
-nic unit
------------
-38
-Pampers Premium Care Veľkosť 2, Plienky x148, 4kg-8kg
-zle unit
--------------------------------------
-37
-Nutrilon 3 600g 5pack
-zle unit
------------------
-36
-Pampers Premium Care Veľkosť 5, Plienky x88, 11kg-16kg
-zle unit
----------------------------
-35
-Pampers Premium Care Veľkosť 4, Plienky x104, 9kg-14kg
-zle unit
-------------------------
-34
-Pampers Premium Care Veľkosť 4, Plienky x104, 9kg-14kg
-zle unit data
-----------------------
-33
-Pampers Plienky Veľ. 2, 76 Plienok, 4-8 kg
-ziadne unit data
------------------------------------
-32
+46 FEATURE
+!!! ak ide o pridanie noveho produktu a produkt je nedostupny tak preskakovat dany produkt a ist na dalsi !!!
+-----------------------------------------------------------------------------------------------------------------------
+45 BUG
+overit MOJA_LEKAREN lebo neako stale mi dava vela novych produktov ci je to ok
+-----------------------------------------------------------------------------------------------------------------------
+44 BUG
+http://mall.sk/detska-vyziva-expiracia/nutrilon-2-pronutra-good-night-800g-exp-062019
+http://mall.sk/darceky/lovela-gel-color-4-7-l-50-pracich-davok-darcek-
+http://mall.sk/plienky-pampers-7-18-kg/pampers-pure-protection-s4-28-ks-914-kg
+nedava obrazok pre new produkt
+-----------------------------------------------------------------------------------------------------------------------
+32 FEATURE
 FEATURE: ked spadne update jedneho produktu na 'SocketTimeoutException: Read timed out' tak nech pokracuje update dalsich, ale len pre dany typ chyby
----------------------
-31
+-----------------------------------------------------------------------------------------------------------------------
+31 BUG PILULKA
 produktu je nedostupny a nevyparsuje nam ani meno....
 2019-05-03 09:48:49,693 WARN [main] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:332] property productName is null for product url https://www.pilulka.sk/pampers-active-baby-4-8-14kg-monthly-box-174ks-utierky-zadarmo
 ProductNewData(url=https://www.pilulka.sk/pampers-s4-active-baby-monthly-box-174ks, name=null, eshopUuid=PILULKA, unit=null, unitValue=null, unitPackageCount=null, pictureUrl=null)
----------------------
-28
+-----------------------------------------------------------------------------------------------------------------------
+28 BUG BRENDON
 Tu je asi neaky problem s tym eshopom
 sk.hudak.prco.exception.PrcoRuntimeException: Parser implementation for eshop BRENDON not found.
-----------------
-27
+-----------------------------------------------------------------------------------------------------------------------
+27 BUG MAMA A JA
 odstranit vsetky produkty mama-A_ja a potom aj vsetky
 https://eshop.mamaaja.sk/pampers-vpm-maxi-plus-40/
-----------------
-25
-2019-03-14 08:09:51,461 ERROR [MOJA_LEKAREN] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
-sk.hudak.prco.exception.ProductNameNotFoundException: Product name for url 'https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/' not found.
------------
-24
-2019-03-27 21:11:35,276 ERROR [LEKAREN_EXPRES] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:96] error while creating new product
-sk.hudak.prco.exception.HttpErrorPrcoRuntimeException: error creating document for url 'https://www.lekarenexpres.sk/matka-a-dieta/detska-vyziva/mliecna-vyziva/kase/nutrilon-kase-allergy-nemlecna-proexpert-250g-4m-11682.html':  org.jsoup.HttpStatusException: HTTP error fetching URL. Status=500, URL=https://www.lekarenexpres.sk/matka-a-dieta/detska-vyziva/mliecna-vyziva/kase/nutrilon-kase-allergy-nemlecna-proexpert-250g-4m-11682.html
------------
-23
-2019-03-27 15:32:02,059 ERROR [main] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:244] error creating document for url 'https://www.lekarenexpres.sk/search/?hledat=pampers&start=%7Boffset%7D':
-javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
-----------------------------------------------------------------------------------------
-22
+-----------------------------------------------------------------------------------------------------------------------
+22 BUG
 Je to toiste(prest vsetky eshopy a vypisat duplicity na zaklade nazvu) !!!
 4. 0.22500€/kus 14,40€/balenie https://kidmarket.sk/jednorazove-plienky/177-pampers-active-baby-5-giant-pack-64ks.html
 5. 0.22500€/kus 14,40€/balenie https://kidmarket.sk/active-baby/177-pampers-active-baby-5-giant-pack-64ks-8001090278067.html
-----------------------------------------------------------------------------------------
-21
-!!! do nutrilon groupy som pridal aj vanilku
---------------------------------------------------------------------------------------------------------------------------------------------------------
-20
-chyba 5 value
-Nutrilon 2 600g 5pack
------------------------------------------------------------------------------------------------------------------------------------------------
-19
-2019-04-01 13:39:25,482 DEBUG [http-nio-8080-exec-2] [] s.h.p.s.i.NewProductServiceImpl [NewProductServiceImpl.java:155] new product with id 8550 was updated with unit data UnitTypeValueCount(unit=KUS, value=51, packageCount=1)
-2019-04-01 13:39:25,488 ERROR [http-nio-8080-exec-2] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]]
-2019-04-01 13:39:25,512 ERROR [http-nio-8080-exec-2] [] o.a.c.c.C.[.[.[.[dispatcherServlet] [DirectJDKLog.java:182] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.orm.ObjectOptimisticLockingFailureException: Object of class [sk.hudak.prco.model.NewProductEntity] with identifier [8550]: optimistic locking failed; nested exception is org.hibernate.StaleObjectStateException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]] with root cause
-org.hibernate.StaleObjectStateException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]
-	at org.hibernate.persister.entity.AbstractEntityPersister.check(AbstractEntityPersister.java:2414)
-	at org.hibernate.persister.entity.AbstractEntityPersister.update(AbstractEntityPersister.java:3216)
-	at org.hibernate.persister.entity.AbstractEntityPersister.updateOrInsert(AbstractEntityPersister.java:3090)
-	at org.hibernate.persister.entity.AbstractEntityPersister.update(AbstractEntityPersister.java:3491)
-	at org.hibernate.action.internal.EntityUpdateAction.execute(EntityUpdateAction.java:145)
-	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:600)
-	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:474)
-	at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:337)
-	at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:39)
-	at org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1437)
-	at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:494)
-	at org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:3245)
-	at org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:2451)
-	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:473)
-	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:156)
-	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.access$100(JdbcResourceLocalTransactionCoordinatorImpl.java:38)
-	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:231)
-	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:68)
-	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:536)
-	at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:746)
-	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:714)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:532)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:304)
-	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:98)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$EnhancerBySpringCGLIB$$48b78007.repairInvalidUnitForNewProductByReprocessing(<generated>)
-	at sk.hudak.prco.service.impl.UIServiceImpl.tryToRepairInvalidUnitForNewProductByReprocessing(UIServiceImpl.java:103)
-	at sk.hudak.prco.ui.controller.NewProductController.reprocessNewProducts(NewProductController.java:60)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:497)
-	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
-	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
-	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
-	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:877)
-	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:783)
-	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
-	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:991)
-	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:925)
-	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:974)
-	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:866)
 -----------------------------------------------------------------------------------------------------------------------
-18
+21 BUG
+!!! do nutrilon groupy som pridal aj vanilku
+-----------------------------------------------------------------------------------------------------------------------
+18 BUG
 TOTO nejde:
 https://www.drmax.sk/nutrilon-3-pronutra/
 https://www.drmax.sk/nutrilon-1-pronutra/
--------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
 17
 Pampers New Baby 1 Newborn - 2 x 43 ks
 chyba ze je to dvakrat
@@ -178,11 +88,11 @@ tento produkt neexistuje a vrati 302 na https://www.mojalekaren.sk/, potrebujem 
 BUG:
 PAMPERS Plienky Active Baby-Dry Mega Quad S4
 ma na konci nieco co vyzera ako medzera ale nie je to medzera
----------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
 11
 2019-02-20 14:58:39,257 ERROR [MAMA_A_JA] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
 sk.hudak.prco.exception.PrcoRuntimeException: Parser implementation for eshop MAMA_A_JAnot found.
---------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
 10
 BUG
 tieto dva produkty to su to iste... lebo na jednom z nich je tam redirect... skusit neako poriesit... na zaklade nazvu, pripadne vyslednej(redirect url)
@@ -332,3 +242,51 @@ Caused by: java.lang.NullPointerException: null
 	at sk.hudak.prco.eshop.HornbachProductParser.retrieveDocument(HornbachProductParser.java:67)
 	... 8 common frames omitted
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
+19
+2019-04-01 13:39:25,482 DEBUG [http-nio-8080-exec-2] [] s.h.p.s.i.NewProductServiceImpl [NewProductServiceImpl.java:155] new product with id 8550 was updated with unit data UnitTypeValueCount(unit=KUS, value=51, packageCount=1)
+2019-04-01 13:39:25,488 ERROR [http-nio-8080-exec-2] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]]
+2019-04-01 13:39:25,512 ERROR [http-nio-8080-exec-2] [] o.a.c.c.C.[.[.[.[dispatcherServlet] [DirectJDKLog.java:182] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.orm.ObjectOptimisticLockingFailureException: Object of class [sk.hudak.prco.model.NewProductEntity] with identifier [8550]: optimistic locking failed; nested exception is org.hibernate.StaleObjectStateException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]] with root cause
+org.hibernate.StaleObjectStateException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]
+	at org.hibernate.persister.entity.AbstractEntityPersister.check(AbstractEntityPersister.java:2414)
+	at org.hibernate.persister.entity.AbstractEntityPersister.update(AbstractEntityPersister.java:3216)
+	at org.hibernate.persister.entity.AbstractEntityPersister.updateOrInsert(AbstractEntityPersister.java:3090)
+	at org.hibernate.persister.entity.AbstractEntityPersister.update(AbstractEntityPersister.java:3491)
+	at org.hibernate.action.internal.EntityUpdateAction.execute(EntityUpdateAction.java:145)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:600)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:474)
+	at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:337)
+	at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:39)
+	at org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1437)
+	at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:494)
+	at org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:3245)
+	at org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:2451)
+	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:473)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:156)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.access$100(JdbcResourceLocalTransactionCoordinatorImpl.java:38)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:231)
+	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:68)
+	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:536)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:746)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:714)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:532)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:304)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:98)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688)
+	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$EnhancerBySpringCGLIB$$48b78007.repairInvalidUnitForNewProductByReprocessing(<generated>)
+	at sk.hudak.prco.service.impl.UIServiceImpl.tryToRepairInvalidUnitForNewProductByReprocessing(UIServiceImpl.java:103)
+	at sk.hudak.prco.ui.controller.NewProductController.reprocessNewProducts(NewProductController.java:60)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:877)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:783)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:991)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:925)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:866)
