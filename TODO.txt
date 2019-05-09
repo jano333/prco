@@ -1,25 +1,21 @@
-46 FEATURE
-!!! ak ide o pridanie noveho produktu a produkt je nedostupny tak preskakovat dany produkt a ist na dalsi !!!
------------------------------------------------------------------------------------------------------------------------
-45 BUG
-overit MOJA_LEKAREN lebo neako stale mi dava vela novych produktov ci je to ok
------------------------------------------------------------------------------------------------------------------------
-32 FEATURE
-FEATURE: ked spadne update jedneho produktu na 'SocketTimeoutException: Read timed out' tak nech pokracuje update dalsich, ale len pre dany typ chyby
------------------------------------------------------------------------------------------------------------------------
-31 BUG PILULKA
-produktu je nedostupny a nevyparsuje nam ani meno....
-2019-05-03 09:48:49,693 WARN [main] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:332] property productName is null for product url https://www.pilulka.sk/pampers-active-baby-4-8-14kg-monthly-box-174ks-utierky-zadarmo
-ProductNewData(url=https://www.pilulka.sk/pampers-s4-active-baby-monthly-box-174ks, name=null, eshopUuid=PILULKA, unit=null, unitValue=null, unitPackageCount=null, pictureUrl=null)
------------------------------------------------------------------------------------------------------------------------
-28 BUG BRENDON
-Tu je asi neaky problem s tym eshopom
-sk.hudak.prco.exception.PrcoRuntimeException: Parser implementation for eshop BRENDON not found.
------------------------------------------------------------------------------------------------------------------------
-27 BUG MAMA A JA
-odstranit vsetky produkty mama-A_ja a potom aj vsetky
-https://eshop.mamaaja.sk/pampers-vpm-maxi-plus-40/
------------------------------------------------------------------------------------------------------------------------
+posledne 48
+*********************************
+
+
+
+48: FEATURE:
+ak robim update produktu na zaklade url co mam v databaze a nahodou dostanem redirect url, tak nech sa dana URL updatne(pozor vsak na duplicitu)
+zatial neriesit duplicitu. neako poriadne domysliet...
+
+3118, Pampers Pure Protection S4, 28 ks, 9-14 kg 11.70000 http://mall.sk/plienky-pampers-7-18-kg/pampers-pure-protection-s4-28-pcs-9-14-kg 07-02-2019 14:02:13
+4585, Pampers Pure Protection S4, 28 ks, 9-14 kg 11.70000 http://mall.sk/plienky-pampers-7-18-kg/pampers-pure-protection-s4-28-ks-914-kg 06-05-2019 08:33:18
+
+
+10 BUG
+tieto dva produkty to su to iste... lebo na jednom z nich je tam redirect... skusit neako poriesit... na zaklade nazvu, pripadne vyslednej(redirect url)
+eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 169, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-pronutra-800g-dojcenske-mlieko/, last updated 03-01-2019 14:47:56
+eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 996, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-800g-dojcenske-mlieko/, last updated 03-01-2019 14:48:28
+--------------------------------------------------------------------------------------------------------------------
 22 BUG
 Je to toiste(prest vsetky eshopy a vypisat duplicity na zaklade nazvu) !!!
 4. 0.22500€/kus 14,40€/balenie https://kidmarket.sk/jednorazove-plienky/177-pampers-active-baby-5-giant-pack-64ks.html
@@ -33,9 +29,35 @@ TOTO nejde:
 https://www.drmax.sk/nutrilon-3-pronutra/
 https://www.drmax.sk/nutrilon-1-pronutra/
 -----------------------------------------------------------------------------------------------------------------------
-17
-Pampers New Baby 1 Newborn - 2 x 43 ks
-chyba ze je to dvakrat
+45 BUG
+overit MOJA_LEKAREN lebo neako stale mi dava vela novych produktov ci je to ok
+-----------------------------------------------------------------------------------------------------------------------
+46 FEATURE
+!!! ak ide o pridanie noveho produktu a produkt je nedostupny tak preskakovat dany produkt a ist na dalsi !!!
+-----------------------------------------------------------------------------------------------------------------------
+32 FEATURE
+FEATURE: ked spadne update jedneho produktu na 'SocketTimeoutException: Read timed out' tak nech pokracuje update dalsich, ale len pre dany typ chyby
+-----------------------------------------------------------------------------------------------------------------------
+
+*************************************************************************************
+
+
+47 BUG MINOR
+Pampers Pampers Premium Care, Veľkosť 6, Plienka 38x
+nevie rozpoznat groupu
+-----------------------------------------------------------------------------------------------------------------------
+31 BUG PILULKA
+produktu je nedostupny a nevyparsuje nam ani meno....
+2019-05-03 09:48:49,693 WARN [main] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:332] property productName is null for product url https://www.pilulka.sk/pampers-active-baby-4-8-14kg-monthly-box-174ks-utierky-zadarmo
+ProductNewData(url=https://www.pilulka.sk/pampers-s4-active-baby-monthly-box-174ks, name=null, eshopUuid=PILULKA, unit=null, unitValue=null, unitPackageCount=null, pictureUrl=null)
+-----------------------------------------------------------------------------------------------------------------------
+28 BUG BRENDON
+Tu je asi neaky problem s tym eshopom
+sk.hudak.prco.exception.PrcoRuntimeException: Parser implementation for eshop BRENDON not found.
+-----------------------------------------------------------------------------------------------------------------------
+27 BUG MAMA A JA
+odstranit vsetky produkty mama-A_ja a potom aj vsetky
+https://eshop.mamaaja.sk/pampers-vpm-maxi-plus-40/
 -----------------------------------------------------------------------------------------------------------------------
 16
 odpalit maja eshop produkty aj parser full
@@ -87,12 +109,6 @@ ma na konci nieco co vyzera ako medzera ale nie je to medzera
 2019-02-20 14:58:39,257 ERROR [MAMA_A_JA] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
 sk.hudak.prco.exception.PrcoRuntimeException: Parser implementation for eshop MAMA_A_JAnot found.
 -----------------------------------------------------------------------------------------------------------------------
-10
-BUG
-tieto dva produkty to su to iste... lebo na jednom z nich je tam redirect... skusit neako poriesit... na zaklade nazvu, pripadne vyslednej(redirect url)
-eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 169, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-pronutra-800g-dojcenske-mlieko/, last updated 03-01-2019 14:47:56
-eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 996, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-800g-dojcenske-mlieko/, last updated 03-01-2019 14:48:28
---------------------------------------------------------------------------------------------------------------------
 9
 BUG
 duplicita v grupe:
@@ -102,11 +118,6 @@ eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2851, 'Pa
 eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2913, 'Pampers Active Baby 5 Megapack+ 11-16Kg 110ks', https://kidmarket.sk/jednorazove-plienky/1046-pampers-active-baby-5-megapack-11-16kg-110ks-8001090951762.html?search_query=pampers&results=42, last updated 03-01-2019 14:57:53
 eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2919, 'Pampers Active Baby 5 Megapack+ 11-16Kg 110ks', https://kidmarket.sk/jednorazove-plienky/1046-pampers-active-baby-5-megapack-11-16kg-110ks-8001090951762.html?search_query=pampers&results=38, last updated 03-01-2019 14:58:59
 --------------------------------------------------------------------------------------------------------------------
-8
-BUG:
-chyba 2x
-Lovela 2x Gél color, 4,7 l / 50 pracích dávok
----------------------------------------------------------------------------------------------------------------------------------------------------------
 7
 TODO log each type of unit parser exception name, najlepsie asi specialny typ chyby aby som vedel ze parsing nepresiel...
 a dat len nech maze starsie zaznamy ako 30 dni, a teda aj nech tam vklada ak tam taka chyba este nie je equal na zaklade name

@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.MallProductParser;
+import sk.hudak.prco.eshop.FeedoProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -97,8 +97,8 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.brendon.sk/Products/Details/84545"));
 //
 //        // Feedo
-//        System.out.println(new FeedoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                .parseUrlsOfProduct("pampers"));
+        System.out.println(new FeedoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+                .parseUrlsOfProduct("pampers"));
 //                .parseProductNewData("https://www.feedo.sk/pampers-active-baby-4-maxi-174ks-8-14kg-mesacna-zasoba-jednorazove-plienky/"));
 //                .parseProductUpdateData("https://www.feedo.sk/pampers-active-baby-4-10-15-kg-70-ks-giant-pack-jednorazove-plienky/"));
 //
@@ -166,9 +166,9 @@ public class ProductParserTest {
 
 
 //         MALL
-        System.out.println(new MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 4"));
-                .parseProductNewData("http://mall.sk/plienky-pampers-7-18-kg/pampers-pure-protection-s4-28-ks-914-kg"));
+//                .parseProductNewData("http://mall.sk/plienky-pampers-7-18-kg/pampers-pure-protection-s4-28-ks-914-kg"));
 //                .parseProductUpdateData("http://mall.sk/plienky-pampers-7-18-kg/pampers-active-baby-4-maxi-7-14kg-giant-box-90ks"));
 
         //        MamaAJa(UZ neexistuje)

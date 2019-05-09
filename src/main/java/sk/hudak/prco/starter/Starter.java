@@ -177,7 +177,8 @@ public class Starter {
 //        showProductsInGroup(1L, true, EshopUuid.METRO);
         // pampers 5
 //        showProductsInGroup(321L, true);
-        showProductsInGroupForFb(321L, true, EshopUuid.METRO);
+
+        showProductsInGroupForFb(257L, true, EshopUuid.METRO);
 
         // nutrilon 4
 //        showProductsInGroup(33L);
@@ -289,14 +290,18 @@ public class Starter {
 
     private void showDuplicityProductsInEshops() {
 
-//        internalTxService.removeProduct(3121L);
+//        internalTxService.removeProduct(2659L);
 
-//        EshopUuid eshopUuid = MALL;
+//        EshopUuid eshopUuid = EshopUuid.FEEDO;
         for (EshopUuid eshopUuid : EshopUuid.values()) {
             System.out.println("Duplicity for eshop: " + eshopUuid);
             List<ProductFullDto> result = internalTxService.findDuplicityProductsByNameAndPriceInEshop(eshopUuid);
             for (ProductFullDto productFullDto : result) {
-                System.out.println(productFullDto.getId() + ", " + productFullDto.getName() + " " + productFullDto.getPriceForPackage() + " " + productFullDto.getUrl());
+                System.out.println(productFullDto.getId() + ", "
+                        + productFullDto.getName() + " "
+                        + productFullDto.getPriceForPackage() + " "
+                        + productFullDto.getUrl() + " "
+                        + formatDate(productFullDto.getCreated()));
             }
             System.out.println();
         }

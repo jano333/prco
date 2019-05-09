@@ -13,6 +13,7 @@ import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.parser.UnitParser;
 import sk.hudak.prco.parser.impl.JSoupProductParser;
+import sk.hudak.prco.utils.JsoupUtils;
 import sk.hudak.prco.utils.UserAgentDataHolder;
 
 import java.math.BigDecimal;
@@ -75,7 +76,7 @@ public class FeedoProductParser extends JSoupProductParser {
     protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
         return documentList.select("div[class=box-product__top]").stream()
                 .map(element -> element.select("h1 a").first())
-                .map(element -> element.attr("href"))
+                .map(JsoupUtils::hrefAttribute)
                 .filter(StringUtils::isNotBlank)
                 .map(href -> {
                     if (href.endsWith("/")) {
