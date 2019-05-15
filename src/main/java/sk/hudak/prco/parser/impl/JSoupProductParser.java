@@ -172,12 +172,19 @@ public abstract class JSoupProductParser implements EshopProductsParser {
     @Override
     public ProductUpdateData parseProductUpdateData(@NonNull String productUrl) {
         Document document = retrieveDocument(productUrl);
+        // because there could be redirect
+        String realProductUrl = document.location();
+        if (!productUrl.equals(realProductUrl)) {
+            log.warn("redirecting: ");
+            log.warn("from {}", productUrl);
+            log.warn("to {}", realProductUrl);
+        }
 
         // ak je produkt nedostupny tak nastavim len url a eshop uuid
         if (isProductUnavailable(document)) {
             log.debug("product is unavailable: {} ", productUrl);
             return ProductUpdateData.builder()
-                    .url(productUrl)
+                    .url(realProductUrl)
                     .eshopUuid(getEshopUuid()).build();
         }
 
@@ -193,21 +200,20 @@ public abstract class JSoupProductParser implements EshopProductsParser {
 
         // product action
         Optional<ProductAction> productAction = internalParseProductAction(document, productUrl);
-
         // validity of action
         Optional<Date> productActionValidity = Optional.empty();
         if (productAction.isPresent() && productAction.get().equals(ProductAction.IN_ACTION)) {
             productActionValidity = internalParseProductActionValidity(document, productUrl);
         }
 
+        // product picture
         Optional<String> pictureUrl = internalParseProductPictureURL(document, productUrl);
 
         return ProductUpdateData.builder()
-                .url(productUrl)
+                .url(realProductUrl)
                 .eshopUuid(getEshopUuid())
                 .name(productName)
                 .priceForPackage(productPriceForPackage)
-
                 // FIXME spojit do jedneho ohladne product action
                 .productAction(productAction.isPresent() ? productAction.get() : null)
                 .actionValidity(productActionValidity.isPresent() ? productActionValidity.get() : null)
@@ -216,16 +222,14 @@ public abstract class JSoupProductParser implements EshopProductsParser {
                 .build();
     }
 
-    protected Document retrieveDocument(String productUrl) {
+    protected Document retrieveDocument(@NonNull String productUrl) {
         try {
             log.debug("request URL: {}", productUrl);
 
             String userAgent = getUserAgent();
             log.debug("userAgent: {}", userAgent);
 
-            Connection connection = Jsoup.connect(productUrl)
-                    .userAgent(userAgent)
-                    .timeout(getTimeout());
+            Connection connection = Jsoup.connect(productUrl).userAgent(userAgent).timeout(getTimeout());
 
             if (getCookie() != null && !getCookie().isEmpty()) {
                 connection.cookies(getCookie());

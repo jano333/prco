@@ -16,6 +16,7 @@ import java.util.Date;
 public class ProductUpdateDataDto {
     private Long id;
 
+    private String url;
     private String name;
     private BigDecimal priceForPackage;
 

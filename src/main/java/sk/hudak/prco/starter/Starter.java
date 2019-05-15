@@ -23,8 +23,8 @@ import sk.hudak.prco.manager.DbExportImportManager;
 import sk.hudak.prco.manager.EshopThreadStatisticManager;
 import sk.hudak.prco.manager.GroupProductResolver;
 import sk.hudak.prco.manager.HtmlExportManager;
+import sk.hudak.prco.manager.UpdateProductDataListener;
 import sk.hudak.prco.manager.UpdateProductDataManager;
-import sk.hudak.prco.manager.UpdateProductInfoListener;
 import sk.hudak.prco.manager.WatchDogManager;
 import sk.hudak.prco.parser.HtmlParser;
 import sk.hudak.prco.service.InternalTxService;
@@ -223,17 +223,17 @@ public class Starter {
 
 
         // --- UPDATE PRICE DATA ---
-        UpdateProductInfoListener listener = updateStatusInfo ->
+        UpdateProductDataListener listener = updateStatusInfo ->
                 log.debug(">> eshop: {}, updated/waiting: {}/{}",
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
-//        updateProductDataManager.updateAllProductsDataForAllEshops(listener);
-//        updateProductDataManager.updateAllProductDataNotInAnyGroup(listener);
+//        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
+//        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
-//        updateProductDataManager.updateAllProductsDataForEshop(EshopUuid.PERINBABA, listener);
+        updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.MALL, listener);
         // updatne vsetky produkty v danej skupine
-//        updateProductDataManager.updateAllProductsDataInGroup(33L);
-//        updateProductDataManager.updateProduct(103L);
+//        updateProductDataManager.updateProductDataForEachProductInGroup(33L);
+//        updateProductDataManager.updateProductData(3118L);
 //        uiService.resetUpdateDateForAllProductsInEshop(EshopUuid.TESCO);
 //        uiService.updateProductPrice(449L, BigDecimal.valueOf(0.59));
 

@@ -51,7 +51,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 
 /**
- * Transacny delegator do dalsich servisov.
+ * Transaction wrapper for internal services.
  */
 @Slf4j
 @Service
@@ -447,6 +447,12 @@ public class InternalTxServiceImpl implements InternalTxService {
     @Transactional(readOnly = true)
     public List<ProductFullDto> findDuplicityProductsByNameAndPriceInEshop(EshopUuid eshopUuid) {
         return productService.findDuplicityProductsByNameAndPriceInEshop(eshopUuid);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Long> getProductWithUrl(String productUrl, Long productIdToIgnore) {
+        return productService.getProductWithUrl(productUrl, productIdToIgnore);
     }
 
     // tests

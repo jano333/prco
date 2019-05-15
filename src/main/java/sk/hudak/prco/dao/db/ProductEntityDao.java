@@ -32,4 +32,6 @@ public interface ProductEntityDao extends BaseDao<ProductEntity> {
     long countOfProductsWaitingToBeUpdated(EshopUuid eshopUuid, int olderThanInHours);
 
     long countOfProductsAlreadyUpdated(EshopUuid eshopUuid, int olderThanInHours);
+
+    Optional<Long> getProductWithUrl(String productUrl, Long productIdToIgnore);
 }

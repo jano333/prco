@@ -14,21 +14,36 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-// TODO javadoc
+/**
+ *
+ */
 public interface ProductService {
 
     /**
-     * @param productURL url of product
+     * @param productURL URL of product
      * @return true, if product exist (product table only)
      */
     boolean existProductWithUrl(String productURL);
 
+    /**
+     * @param productUpdateDataDto
+     */
     void updateProduct(ProductUpdateDataDto productUpdateDataDto);
 
+    /**
+     * @param productId      product id
+     * @param newCommonPrice
+     */
     void updateProductPrice(Long productId, BigDecimal newCommonPrice);
 
+    /**
+     * @param eshopUuid eshop unique identification
+     */
     void resetUpdateDateForAllProductsInEshop(EshopUuid eshopUuid);
 
+    /**
+     * @param productId product id
+     */
     void resetUpdateDateProduct(Long productId);
 
     /**
@@ -86,8 +101,18 @@ public interface ProductService {
 
     // ----------- FIND -----------
 
+    /**
+     * @param filter
+     * @return
+     */
     List<ProductFullDto> findProducts(ProductFilterUIDto filter);
 
+    /**
+     * @param groupId
+     * @param withPriceOnly
+     * @param eshopsToSkip
+     * @return
+     */
     List<ProductFullDto> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip);
 
     /**
@@ -101,9 +126,27 @@ public interface ProductService {
      */
     List<ProductInActionDto> findProductsInAction(EshopUuid eshopUuid);
 
+    /**
+     * @param eshopUuid
+     * @return
+     */
     List<ProductBestPriceInGroupDto> findProductsBestPriceInGroupDto(EshopUuid eshopUuid);
 
+    /**
+     * @return
+     */
     List<ProductFullDto> findProductsForExport();
 
+    /**
+     * @param eshopUuid
+     * @return
+     */
     List<ProductFullDto> findDuplicityProductsByNameAndPriceInEshop(EshopUuid eshopUuid);
+
+    /**
+     * @param productUrl        URL of product
+     * @param productIdToIgnore product id which will be ignored during finding
+     * @return product id if found, empty if not
+     */
+    Optional<Long> getProductWithUrl(String productUrl, Long productIdToIgnore);
 }

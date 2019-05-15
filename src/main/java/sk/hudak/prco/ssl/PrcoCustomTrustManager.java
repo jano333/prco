@@ -56,7 +56,7 @@ public class PrcoCustomTrustManager implements X509TrustManager {
 
     @Override
     public X509Certificate[] getAcceptedIssuers() {
-        log.debug("getAcceptedIssuers()");
+        log.trace("getAcceptedIssuers()");
         List<X509Certificate> issuers = new ArrayList<>();
         issuers.add(this.serverCert);
         Collections.addAll(issuers, this.javaDefaultTrustManager.getAcceptedIssuers());

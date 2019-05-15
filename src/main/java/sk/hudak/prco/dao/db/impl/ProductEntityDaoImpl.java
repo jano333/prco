@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Optional.ofNullable;
+
 @Component
 public class ProductEntityDaoImpl extends BaseDaoImpl<ProductEntity> implements ProductEntityDao {
 
@@ -48,7 +50,7 @@ public class ProductEntityDaoImpl extends BaseDaoImpl<ProductEntity> implements 
         query.where(QProductEntity.productEntity.lastTimeDataUpdated.isNull()
                 .or(QProductEntity.productEntity.lastTimeDataUpdated.lt(calculateDate(olderThanInHours))));
         query.limit(1);
-        return Optional.ofNullable(query.fetchFirst());
+        return ofNullable(query.fetchFirst());
     }
 
     @Override
@@ -119,6 +121,16 @@ public class ProductEntityDaoImpl extends BaseDaoImpl<ProductEntity> implements 
     @Override
     public long countOfAllProductInEshopUpdatedMax24Hours(EshopUuid eshopUuid) {
         return countOfProductsAlreadyUpdated(eshopUuid, OLDER_THAN_IN_HOURS);
+    }
+
+    @Override
+    public Optional<Long> getProductWithUrl(String productUrl, Long productIdToIgnore) {
+        return ofNullable(getQueryFactory()
+                .select(QProductEntity.productEntity.id)
+                .from(QProductEntity.productEntity)
+                .where(QProductEntity.productEntity.url.eq(productUrl)
+                        .and(QProductEntity.productEntity.id.ne(productIdToIgnore)))
+                .fetchFirst());
     }
 
     //FIXME move to DateUtils

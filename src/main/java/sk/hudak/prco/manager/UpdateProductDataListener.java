@@ -1,7 +1,7 @@
 package sk.hudak.prco.manager;
 
 @FunctionalInterface
-public interface UpdateProductInfoListener {
+public interface UpdateProductDataListener {
 
     void onUpdateStatus(UpdateStatusInfo updateStatusInfo);
 }

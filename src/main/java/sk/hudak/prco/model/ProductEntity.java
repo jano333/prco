@@ -35,7 +35,6 @@ public class ProductEntity extends DbEntity {
 
     /**
      * URL produktu
-     * - nastavuje sa raz iba pri prvom vytvoreni.
      */
     @Column(nullable = false, unique = true)
     private String url;
@@ -50,7 +49,6 @@ public class ProductEntity extends DbEntity {
 
     /**
      * Typ meratelnej jednotky(GRAM, MILILITER, KUS...)
-     * - nastavuje sa raz iba pri prvom vytvoreni
      */
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

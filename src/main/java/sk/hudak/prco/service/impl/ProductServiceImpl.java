@@ -327,10 +327,14 @@ public class ProductServiceImpl implements ProductService {
         notNull(updateData, "updateData");
         notNull(updateData.getId(), "id");
         notNullNotEmpty(updateData.getName(), "name");
+        notNullNotEmpty(updateData.getUrl(), "url");
         notNull(updateData.getPriceForPackage(), "priceForPackage");
 
         ProductDataUpdateEntity productEntity = productDataUpdateEntityDao.findById(updateData.getId());
         productEntity.setName(updateData.getName());
+        // can change because of redirect URL, that why update of url
+        productEntity.setUrl(updateData.getUrl());
+
         // prices
         productEntity.setPriceForPackage(updateData.getPriceForPackage());
         BigDecimal priceForOneItemInPackage = priceCalculator.calculatePriceForOneItemInPackage(
@@ -426,6 +430,14 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         return mapper.mapAsList(result, ProductFullDto.class);
+    }
+
+    @Override
+    public Optional<Long> getProductWithUrl(String productUrl, Long productIdToIgnore) {
+        notNullNotEmpty(productUrl, "productUrl");
+        notNull(productIdToIgnore, "productIdToIgnore");
+
+        return productEntityDao.getProductWithUrl(productUrl, productIdToIgnore);
     }
 
     private void internalLastTimeDataUpdated(Long productId, Date lastTimeDataUpdated) {

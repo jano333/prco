@@ -24,6 +24,8 @@ public class ProductDataUpdateEntity extends DbEntity {
 
     private String name;
 
+    private String url;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Unit unit;

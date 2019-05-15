@@ -14,8 +14,8 @@ import sk.hudak.prco.dto.product.ProductDetailInfo;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.exception.HttpErrorPrcoRuntimeException;
 import sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException;
+import sk.hudak.prco.manager.UpdateProductDataListener;
 import sk.hudak.prco.manager.UpdateProductDataManager;
-import sk.hudak.prco.manager.UpdateProductInfoListener;
 import sk.hudak.prco.manager.UpdateStatusInfo;
 import sk.hudak.prco.mapper.PrcoOrikaMapper;
 import sk.hudak.prco.parser.HtmlParser;
@@ -23,6 +23,7 @@ import sk.hudak.prco.service.InternalTxService;
 import sk.hudak.prco.task.TaskManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -51,21 +52,23 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
     private PrcoOrikaMapper mapper;
 
     @Override
-    public void updateAllProductsDataForAllEshops(UpdateProductInfoListener listener) {
-        for (EshopUuid eshopUuid : EshopUuid.values()) {
+    public void updateProductDataForEachProductInEachEshop(UpdateProductDataListener listener) {
 
-            updateAllProductsDataForEshop(eshopUuid, listener);
+        Arrays.stream(EshopUuid.values()).forEach(eshopUuid -> {
+
+            updateProductDataForEachProductInEshop(eshopUuid, listener);
             // kazdy dalsi spusti s 1 sekundovym oneskorenim
             //TODO dat do configu dany parameter
             sleepSafe(3);
-        }
+
+        });
     }
 
     @Override
-    public void updateAllProductDataNotInAnyGroup(UpdateProductInfoListener listener) {
-        //TODO process listener
+    public void updateProductDataForEachProductNotInAnyGroup(UpdateProductDataListener listener) {
 
         List<ProductFullDto> productsNotInAnyGroup = internalTxService.findProductsNotInAnyGroup();
+
         if (productsNotInAnyGroup.isEmpty()) {
             log.debug("nothing found for update");
             return;
@@ -74,19 +77,20 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
     }
 
     @Override
-    public void updateAllProductsDataInGroup(Long groupId) {
+    public void updateProductDataForEachProductInGroup(Long groupId, UpdateProductDataListener listener) {
         //TODO bug !!!!!! nech nevracia len tie,  ktore uz boli updatnute
 
         // ziskam zoznam produktov v danej skupine
         List<ProductFullDto> productsInGroup = internalTxService.findProductsInGroup(groupId, true);
+
         if (productsInGroup.isEmpty()) {
             log.debug("none products founds in group with id {}", groupId);
             return;
         }
-        updateProductData(productsInGroup, UpdateProductInfoListenerAdapter.INSTANCE);
+        updateProductData(productsInGroup, listener);
     }
 
-    private void updateProductData(List<ProductFullDto> productsForUpdate, UpdateProductInfoListener listener) {
+    private void updateProductData(List<ProductFullDto> productsForUpdate, UpdateProductDataListener listener) {
 
         // vytvorim mapu, ktore produkty patrie ktoremu eshopu(FIXME urobit na to servis osobiny nech rovno navratova hodnota je mapa)
         Map<EshopUuid, List<Long>> productsInEshop = new EnumMap<>(EshopUuid.class);
@@ -156,7 +160,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
     }
 
     @Override
-    public void updateAllProductsDataForEshop(@NonNull EshopUuid eshopUuid, @NonNull UpdateProductInfoListener listener) {
+    public void updateProductDataForEachProductInEshop(@NonNull EshopUuid eshopUuid, @NonNull UpdateProductDataListener listener) {
 
         taskManager.submitTask(eshopUuid, () -> {
 
@@ -167,22 +171,21 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
                 notifyUpdateListener(eshopUuid, listener);
 
                 Optional<ProductDetailInfo> productForUpdateOpt = internalTxService.getProductForUpdate(eshopUuid, eshopUuid.getOlderThanInHours());
+
                 while (productForUpdateOpt.isPresent()) {
                     ProductDetailInfo productDetailInfo = productForUpdateOpt.get();
 
                     UpdateProcessResult updateProcessResult = processUpdate(productDetailInfo);
 
                     if (UpdateProcessResult.ERR_HTML_PARSING_FAILED_404_ERROR.equals(updateProcessResult)) {
-//                        finishedWithError = true;
-//                        internalTxService.markProductAsUnavailable(productDetailInfo.getId());
                         internalTxService.removeProduct(productDetailInfo.getId());
-
                     }
 
                     if (taskManager.isTaskShouldStopped(eshopUuid)) {
                         taskManager.markTaskAsStopped(eshopUuid);
                         break;
                     }
+
                     sleepRandomSafe();
 
                     notifyUpdateListener(eshopUuid, listener);
@@ -200,12 +203,6 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
         });
     }
 
-    private void notifyUpdateListener(@NonNull EshopUuid eshopUuid, @NonNull UpdateProductInfoListener listener) {
-        listener.onUpdateStatus(mapper.map(
-                internalTxService.getStatisticForUpdateForEshop(eshopUuid, eshopUuid.getOlderThanInHours()),
-                UpdateStatusInfo.class));
-    }
-
     @Override
     public void updateProductData(Long productId) {
         EshopUuid eshopUuid = internalTxService.getEshopForProductId(productId);
@@ -216,10 +213,16 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
             boolean finishedWithError = false;
             try {
-                Optional<ProductDetailInfo> productForUpdate = internalTxService.getProductForUpdate(productId);
-                if (productForUpdate.isPresent()) {
+                Optional<ProductDetailInfo> productForUpdateOpt = internalTxService.getProductForUpdate(productId);
 
-                    processUpdate(productForUpdate.get());
+                if (productForUpdateOpt.isPresent()) {
+                    ProductDetailInfo productDetailInfo = productForUpdateOpt.get();
+
+                    UpdateProcessResult updateProcessResult = processUpdate(productDetailInfo);
+
+                    if (UpdateProcessResult.ERR_HTML_PARSING_FAILED_404_ERROR.equals(updateProcessResult)) {
+                        internalTxService.removeProduct(productDetailInfo.getId());
+                    }
 
                     if (taskManager.isTaskShouldStopped(eshopUuid)) {
                         taskManager.markTaskAsStopped(eshopUuid);
@@ -238,8 +241,15 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
     }
 
+    private void notifyUpdateListener(@NonNull EshopUuid eshopUuid, @NonNull UpdateProductDataListener listener) {
+        listener.onUpdateStatus(mapper.map(
+                internalTxService.getStatisticForUpdateForEshop(eshopUuid, eshopUuid.getOlderThanInHours()),
+                UpdateStatusInfo.class));
+    }
+
     private UpdateProcessResult processUpdate(ProductDetailInfo productDetailInfo) {
         log.debug("start updating data for product {}", productDetailInfo.getUrl());
+
         ProductUpdateData updateData;
         try {
             updateData = htmlParser.parseProductUpdateData(productDetailInfo.getUrl());
@@ -251,25 +261,45 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
                 return ERR_HTML_PARSING_FAILED_404_ERROR;
             }
             throw e;
+
         } catch (HttpSocketTimeoutPrcoRuntimeException e) {
             saveTimeout4Error(productDetailInfo.getEshopUuid(), productDetailInfo.getUrl(), e.getMessage(), e);
             throw e;
         }
-        if (updateData.isProductAvailable()) {
-            //FIXME premapovanie cez sk.hudak.prco mapper nie takto rucne, nech mam na jednom mieste tie preklapacky...
-            internalTxService.updateProduct(ProductUpdateDataDto.builder()
-                    .id(productDetailInfo.getId())
-                    .name(updateData.getName())
-                    .priceForPackage(updateData.getPriceForPackage())
-                    .productAction(updateData.getProductAction())
-                    .actionValidity(updateData.getActionValidity())
-                    .pictureUrl(updateData.getPictureUrl())
-                    .build());
-            return OK;
+
+        // if not available log error and finish
+        if (!updateData.isProductAvailable()) {
+            internalTxService.markProductAsUnavailable(productDetailInfo.getId());
+            return ERR_PRODUCT_IS_UNAVAILABLE;
         }
 
-        internalTxService.markProductAsUnavailable(productDetailInfo.getId());
-        return ERR_PRODUCT_IS_UNAVAILABLE;
+        Optional<Long> existSameProductId = internalTxService.getProductWithUrl(updateData.getUrl(), productDetailInfo.getId());
+
+        if (existSameProductId.isPresent()) {
+            log.debug("exist another product {} with url {}", existSameProductId.get(), updateData.getUrl());
+            log.debug("product {} will be removed, url {} ", productDetailInfo.getId(), productDetailInfo.getUrl());
+        }
+
+        Long productIdToBeUpdated = existSameProductId.isPresent() ? existSameProductId.get() : productDetailInfo.getId();
+
+
+        //FIXME premapovanie cez sk.hudak.prco mapper nie takto rucne, nech mam na jednom mieste tie preklapacky...
+        internalTxService.updateProduct(ProductUpdateDataDto.builder()
+                .id(productIdToBeUpdated)
+                .name(updateData.getName())
+                .url(updateData.getUrl())
+                .priceForPackage(updateData.getPriceForPackage())
+                .productAction(updateData.getProductAction())
+                .actionValidity(updateData.getActionValidity())
+                .pictureUrl(updateData.getPictureUrl())
+                .build());
+
+        // remove product with old URL
+        if (existSameProductId.isPresent()) {
+            internalTxService.removeProduct(productDetailInfo.getId());
+        }
+
+        return OK;
     }
 
     private void save404Error(EshopUuid eshopUuid, String url, String message, HttpErrorPrcoRuntimeException e) {
