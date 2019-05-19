@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.ProductUpdateDataDto;
 import sk.hudak.prco.dto.error.ErrorCreateDto;
@@ -29,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static sk.hudak.prco.api.ErrorType.HTTP_STATUS_ERR;
+import static sk.hudak.prco.api.ErrorType.TIME_OUT_ERR;
 import static sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.UpdateProcessResult.ERR_HTML_PARSING_FAILED_404_ERROR;
 import static sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.UpdateProcessResult.ERR_PRODUCT_IS_UNAVAILABLE;
 import static sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.UpdateProcessResult.OK;
@@ -52,7 +53,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
     private PrcoOrikaMapper mapper;
 
     @Override
-    public void updateProductDataForEachProductInEachEshop(UpdateProductDataListener listener) {
+    public void updateProductDataForEachProductInEachEshop(@NonNull UpdateProductDataListener listener) {
 
         Arrays.stream(EshopUuid.values()).forEach(eshopUuid -> {
 
@@ -65,7 +66,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
     }
 
     @Override
-    public void updateProductDataForEachProductNotInAnyGroup(UpdateProductDataListener listener) {
+    public void updateProductDataForEachProductNotInAnyGroup(@NonNull UpdateProductDataListener listener) {
 
         List<ProductFullDto> productsNotInAnyGroup = internalTxService.findProductsNotInAnyGroup();
 
@@ -77,7 +78,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
     }
 
     @Override
-    public void updateProductDataForEachProductInGroup(Long groupId, UpdateProductDataListener listener) {
+    public void updateProductDataForEachProductInGroup(Long groupId, @NonNull UpdateProductDataListener listener) {
         //TODO bug !!!!!! nech nevracia len tie,  ktore uz boli updatnute
 
         // ziskam zoznam produktov v danej skupine
@@ -241,12 +242,6 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
     }
 
-    private void notifyUpdateListener(@NonNull EshopUuid eshopUuid, @NonNull UpdateProductDataListener listener) {
-        listener.onUpdateStatus(mapper.map(
-                internalTxService.getStatisticForUpdateForEshop(eshopUuid, eshopUuid.getOlderThanInHours()),
-                UpdateStatusInfo.class));
-    }
-
     private UpdateProcessResult processUpdate(ProductDetailInfo productDetailInfo) {
         log.debug("start updating data for product {}", productDetailInfo.getUrl());
 
@@ -254,6 +249,8 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
         try {
             updateData = htmlParser.parseProductUpdateData(productDetailInfo.getUrl());
 
+
+            //FIXME spojit catch bloky ako jeden a dat metodu na handling errorov ak sa da
         } catch (HttpErrorPrcoRuntimeException e) {
             log.error("error while updating product, http status: " + e.getHttpStatus(), e);
             if (404 == e.getHttpStatus()) {
@@ -273,14 +270,14 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
             return ERR_PRODUCT_IS_UNAVAILABLE;
         }
 
-        Optional<Long> existSameProductId = internalTxService.getProductWithUrl(updateData.getUrl(), productDetailInfo.getId());
+        Optional<Long> existSameProductIdOpt = internalTxService.getProductWithUrl(updateData.getUrl(), productDetailInfo.getId());
 
-        if (existSameProductId.isPresent()) {
-            log.debug("exist another product {} with url {}", existSameProductId.get(), updateData.getUrl());
+        if (existSameProductIdOpt.isPresent()) {
+            log.debug("exist another product {} with url {}", existSameProductIdOpt.get(), updateData.getUrl());
             log.debug("product {} will be removed, url {} ", productDetailInfo.getId(), productDetailInfo.getUrl());
         }
 
-        Long productIdToBeUpdated = existSameProductId.isPresent() ? existSameProductId.get() : productDetailInfo.getId();
+        Long productIdToBeUpdated = existSameProductIdOpt.isPresent() ? existSameProductIdOpt.get() : productDetailInfo.getId();
 
 
         //FIXME premapovanie cez sk.hudak.prco mapper nie takto rucne, nech mam na jednom mieste tie preklapacky...
@@ -295,16 +292,23 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
                 .build());
 
         // remove product with old URL
-        if (existSameProductId.isPresent()) {
+        if (existSameProductIdOpt.isPresent()) {
             internalTxService.removeProduct(productDetailInfo.getId());
         }
 
         return OK;
     }
 
+    private void notifyUpdateListener(EshopUuid eshopUuid, UpdateProductDataListener listener) {
+        listener.onUpdateStatus(
+                mapper.map(internalTxService.getStatisticForUpdateForEshop(eshopUuid, eshopUuid.getOlderThanInHours()),
+                        UpdateStatusInfo.class)
+        );
+    }
+
     private void save404Error(EshopUuid eshopUuid, String url, String message, HttpErrorPrcoRuntimeException e) {
         ErrorCreateDto build = ErrorCreateDto.builder()
-                .errorType(ErrorType.HTTP_STATUS_ERR)
+                .errorType(HTTP_STATUS_ERR)
                 .eshopUuid(eshopUuid)
                 .url(url)
                 .message(message)
@@ -317,7 +321,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
     private void saveTimeout4Error(EshopUuid eshopUuid, String url, String message, HttpSocketTimeoutPrcoRuntimeException e) {
         ErrorCreateDto build = ErrorCreateDto.builder()
-                .errorType(ErrorType.TIME_OUT_ERR)
+                .errorType(TIME_OUT_ERR)
                 .eshopUuid(eshopUuid)
                 .url(url)
                 .message(message)
