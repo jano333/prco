@@ -100,32 +100,39 @@ public class FeedoProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        // skusim -> premim cena
+        // premim cena
         Elements select = documentDetailProduct.select("div[class=price price-premium] span");
         if (select.isEmpty()) {
-            // ak sa nenajde tak skusim -> akcna cena
+            // akcna cena
             select = documentDetailProduct.select("div[class=price price-discount] span");
-            if (select.isEmpty()) {
-                // ak sa nenajde tak skusim -> normalna cena
-                select = documentDetailProduct.select("div[class=price price-base] span");
-                if (select.isEmpty()) {
-                    // a este novinka
-                    select = documentDetailProduct.select("div[class=price] span[class=price-base]");
-                    if (select.isEmpty()) {
-                        return Optional.empty();
-                    }
-                }
-            }
+        }
+        if (select.isEmpty()) {
+            // normalna cena
+            select = documentDetailProduct.select("div[class=price price-base] span");
+        }
+        if (select.isEmpty()) {
+            // novinka
+            select = documentDetailProduct.select("div[class=price] span[class=price-base]");
+        }
+        if (select.isEmpty()) {
+            // dlhodobo zlacnená cena
+            select = documentDetailProduct.select("span.price.price-discount");
+        }
+
+        if (select.isEmpty()) {
+            return Optional.empty();
         }
 
         String html = select.get(0).html();
         if (StringUtils.isBlank(html)) {
             return Optional.empty();
         }
+
         int endIndex = html.indexOf("&nbsp;");
         if (-1 == endIndex) {
             return Optional.empty();
         }
+
         String cenaZaBalenie = html.substring(0, endIndex);
         return Optional.of(convertToBigDecimal(cenaZaBalenie));
     }
