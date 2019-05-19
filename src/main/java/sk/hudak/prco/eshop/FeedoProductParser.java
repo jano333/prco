@@ -78,13 +78,6 @@ public class FeedoProductParser extends JSoupProductParser {
                 .map(element -> element.select("h1 a").first())
                 .map(JsoupUtils::hrefAttribute)
                 .filter(StringUtils::isNotBlank)
-                .map(href -> {
-                    if (href.endsWith("/")) {
-                        return href.substring(0, href.length() - 1);
-                    } else {
-                        return href;
-                    }
-                })
                 .collect(Collectors.toList());
     }
 
