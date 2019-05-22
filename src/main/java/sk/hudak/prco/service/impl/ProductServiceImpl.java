@@ -285,6 +285,7 @@ public class ProductServiceImpl implements ProductService {
     public void resetUpdateDateForAllProductsInEshop(EshopUuid eshopUuid) {
         notNull(eshopUuid, ESHOP_UUID);
 
+        //FIXME robit bulkovo po 25 ks, nie vsetky natiahnut naraz
         productEntityDao.findByFilter(new ProductFilterUIDto(eshopUuid))
                 .forEach(productEntity -> {
                     productEntity.setLastTimeDataUpdated(null);
@@ -294,7 +295,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProductPrice(Long productId, BigDecimal newCommonPrice) {
+    public void updateProductCommonPrice(Long productId, BigDecimal newCommonPrice) {
         notNull(productId, PRODUCT_ID);
         notNull(newCommonPrice, "newCommonPrice");
         // TODO validacia na vecsie ako nula...
@@ -303,7 +304,7 @@ public class ProductServiceImpl implements ProductService {
         product.setCommonPrice(newCommonPrice);
         productEntityDao.update(product);
 
-        log.debug("product with id {} update common price to {}", productId, newCommonPrice);
+        log.debug("product with id {} was updated with common price {}", productId, newCommonPrice);
     }
 
     @Override

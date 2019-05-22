@@ -31,12 +31,16 @@ public interface ProductService {
     void updateProduct(ProductUpdateDataDto productUpdateDataDto);
 
     /**
+     * Update of 'common' price of product.
+     *
      * @param productId      product id
-     * @param newCommonPrice
+     * @param newCommonPrice common(bezna cena) productu
      */
-    void updateProductPrice(Long productId, BigDecimal newCommonPrice);
+    void updateProductCommonPrice(Long productId, BigDecimal newCommonPrice);
 
     /**
+     * set LastTimeDataUpdated to null
+     *
      * @param eshopUuid eshop unique identification
      */
     void resetUpdateDateForAllProductsInEshop(EshopUuid eshopUuid);

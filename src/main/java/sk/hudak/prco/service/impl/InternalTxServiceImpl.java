@@ -286,8 +286,8 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional
-    public void updateProductPrice(Long productId, BigDecimal newCommonPrice) {
-        productService.updateProductPrice(productId, newCommonPrice);
+    public void updateProductCommonPrice(Long productId, BigDecimal newCommonPrice) {
+        productService.updateProductCommonPrice(productId, newCommonPrice);
     }
 
     @Override

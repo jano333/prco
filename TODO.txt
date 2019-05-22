@@ -3,11 +3,6 @@ posledne 50
 -----------------------------------------------------------------------------------------------------------------------
 49:
 -----------------------------------------------------------------------------------------------------------------------
-10 BUG
-tieto dva produkty to su to iste... lebo na jednom z nich je tam redirect... skusit neako poriesit... na zaklade nazvu, pripadne vyslednej(redirect url)
-eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 169, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-pronutra-800g-dojcenske-mlieko/, last updated 03-01-2019 14:47:56
-eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 996, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-800g-dojcenske-mlieko/, last updated 03-01-2019 14:48:28
---------------------------------------------------------------------------------------------------------------------
 22 BUG
 Je to toiste(prest vsetky eshopy a vypisat duplicity na zaklade nazvu) !!!
 4. 0.22500€/kus 14,40€/balenie https://kidmarket.sk/jednorazove-plienky/177-pampers-active-baby-5-giant-pack-64ks.html

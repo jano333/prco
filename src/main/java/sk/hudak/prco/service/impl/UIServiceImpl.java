@@ -70,7 +70,7 @@ public class UIServiceImpl implements UIService {
 
     @Override
     public void updateCommonPrice(Long productId, BigDecimal newCommonPrice) {
-        internalTxService.updateProductPrice(productId, newCommonPrice);
+        internalTxService.updateProductCommonPrice(productId, newCommonPrice);
     }
 
     @Override
