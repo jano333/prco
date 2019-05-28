@@ -2,7 +2,9 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
+import sk.hudak.prco.eshop.EsoDrogeriaProductParser;
 import sk.hudak.prco.eshop.FeedoProductParser;
+import sk.hudak.prco.eshop.MallProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -60,10 +62,10 @@ public class ProductParserTest {
 
 
 //        Eso drogeria
-//        System.out.println(new EsoDrogeriaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+        System.out.println(new EsoDrogeriaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseProductNewData("https://www.esodrogeria.eu/PAMPERS-ACTIVE-BABY-DRY-3-MIDI-4-9KG-GIANT-PACK-90KS-d435.htm"));
-//                .parseProductUpdateData("https://www.esodrogeria.eu/PAMPERS-ACTIVE-BABY-DRY-3-MIDI-4-9KG-GIANT-PACK-90KS-d435.htm"));
+                .parseProductUpdateData("https://www.esodrogeria.eu/PAMPERS-ACTIVE-BABY-DRY-4-MAXI-PLUS-9-16KG-GIANT-PACK-70KS-d21676.htm"));
 
         // Amd drogeria
 //        System.out.println(new AmdDrogeriaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -97,10 +99,10 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.brendon.sk/Products/Details/84545"));
 //
 //        // Feedo
-        System.out.println(new FeedoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-                .parseUrlsOfProduct("pampers"));
+//        System.out.println(new FeedoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers"));
 //                .parseProductNewData("https://www.feedo.sk/pampers-active-baby-4-maxi-174ks-8-14kg-mesacna-zasoba-jednorazove-plienky/"));
-//                .parseProductUpdateData("https://www.feedo.sk/pampers-active-baby-4-10-15-kg-70-ks-giant-pack-jednorazove-plienky/"));
+//                .parseProductUpdateData("https://www.feedo.sk/lovela-biela-4-7-l-50-davek-praci-gel/"));
 //
         // Lekaren v kocke
 //        System.out.println(new LekarenVKockeProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -169,7 +171,7 @@ public class ProductParserTest {
 //        System.out.println(new MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers 4"));
 //                .parseProductNewData("http://mall.sk/plienky-pampers-7-18-kg/pampers-pure-protection-s4-28-ks-914-kg"));
-//                .parseProductUpdateData("http://mall.sk/plienky-pampers-7-18-kg/pampers-active-baby-4-maxi-7-14kg-giant-box-90ks"));
+//                .parseProductUpdateData("http://mall.sk/plienky-pampers-7-18-kg/pampers-pure-protection-s4-28-pcs-9-14-kg"));
 
         //        MamaAJa(UZ neexistuje)
 //        System.out.println(new MamaAJaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)

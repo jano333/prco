@@ -298,7 +298,7 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<ProductDetailInfo> getProductForUpdate(Long productId) {
+    public ProductDetailInfo getProductForUpdate(Long productId) {
         return productService.getProductForUpdate(productId);
     }
 

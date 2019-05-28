@@ -315,12 +315,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<ProductDetailInfo> getProductForUpdate(Long productId) {
+    public ProductDetailInfo getProductForUpdate(Long productId) {
         notNull(productId, PRODUCT_ID);
 
-        return of(mapper.map(
-                productEntityDao.findById(productId),
-                ProductDetailInfo.class));
+        return mapper.map(productEntityDao.findById(productId), ProductDetailInfo.class);
     }
 
     @Override

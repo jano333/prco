@@ -19,6 +19,8 @@ import java.util.Optional;
  */
 public interface ProductService {
 
+    //TODO niekde je delete a niekde remove na product ujednotit to ...
+
     /**
      * @param productURL URL of product
      * @return true, if product exist (product table only)
@@ -39,32 +41,37 @@ public interface ProductService {
     void updateProductCommonPrice(Long productId, BigDecimal newCommonPrice);
 
     /**
-     * set LastTimeDataUpdated to null
+     * set field 'LastTimeDataUpdated' to null for product in given eshop
      *
      * @param eshopUuid eshop unique identification
      */
     void resetUpdateDateForAllProductsInEshop(EshopUuid eshopUuid);
 
     /**
+     * set field 'lastTimeDataUpdated' to null for product with given id
+     *
      * @param productId product id
      */
     void resetUpdateDateProduct(Long productId);
 
     /**
-     * Resetne ceny a akcie na null, last update na aktualny datum
+     * Reset of all prices to null, same for action and 'lastTimeDataUpdated'.
      *
      * @param productId product id
      */
     void markProductAsUnavailable(Long productId);
 
     /**
+     * Move product to NotInteredted product. Before that it removes it from all group and after moving it delete it.
+     *
      * @param productId product id
      */
     void markProductAsNotInterested(Long productId);
 
-    //TODO niekde je delete a niekde remove...
 
     /**
+     * Remove product from all groups where it is and finally remove product itself.
+     *
      * @param productId product id
      */
     void removeProduct(Long productId);
@@ -72,19 +79,23 @@ public interface ProductService {
     // ----------- GET -----------
 
     /**
+     * Product data for product with given id.
+     *
      * @param productId product id
-     * @return
+     * @return product data
      */
     ProductAddingToGroupDto getProduct(Long productId);
 
     /**
+     * Eshop to which the product with given id belongs to.
+     *
      * @param productId product id
-     * @return
+     * @return eshop unique identifier
      */
     EshopUuid getEshopForProductId(Long productId);
 
     /**
-     * @param eshopUuid
+     * @param eshopUuid        eshop unique identifier
      * @param olderThanInHours
      * @return
      */
@@ -94,10 +105,10 @@ public interface ProductService {
      * @param productId product id
      * @return
      */
-    Optional<ProductDetailInfo> getProductForUpdate(Long productId);
+    ProductDetailInfo getProductForUpdate(Long productId);
 
     /**
-     * @param eshopUuid
+     * @param eshopUuid        eshop unique identifier
      * @param olderThanInHours
      * @return
      */
@@ -112,7 +123,7 @@ public interface ProductService {
     List<ProductFullDto> findProducts(ProductFilterUIDto filter);
 
     /**
-     * @param groupId
+     * @param groupId       id of group
      * @param withPriceOnly
      * @param eshopsToSkip
      * @return
@@ -125,13 +136,13 @@ public interface ProductService {
     List<ProductFullDto> findProductsNotInAnyGroup();
 
     /**
-     * @param eshopUuid eshop id
-     * @return return list of product in action for given eshop code <code>eshopUuid</code>
+     * @param eshopUuid eshop unique identifier
+     * @return list of product in action for given eshop
      */
     List<ProductInActionDto> findProductsInAction(EshopUuid eshopUuid);
 
     /**
-     * @param eshopUuid
+     * @param eshopUuid eshop unique identifier
      * @return
      */
     List<ProductBestPriceInGroupDto> findProductsBestPriceInGroupDto(EshopUuid eshopUuid);
@@ -142,7 +153,7 @@ public interface ProductService {
     List<ProductFullDto> findProductsForExport();
 
     /**
-     * @param eshopUuid
+     * @param eshopUuid eshop unique identifier
      * @return
      */
     List<ProductFullDto> findDuplicityProductsByNameAndPriceInEshop(EshopUuid eshopUuid);

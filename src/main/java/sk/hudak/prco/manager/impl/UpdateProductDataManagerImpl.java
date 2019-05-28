@@ -71,7 +71,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
         List<ProductFullDto> productsNotInAnyGroup = internalTxService.findProductsNotInAnyGroup();
 
         if (productsNotInAnyGroup.isEmpty()) {
-            log.debug("nothing found for update");
+            log.debug("none product found for update which is not in any group");
             return;
         }
         updateProductData(productsNotInAnyGroup, listener);
@@ -85,12 +85,78 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
         List<ProductFullDto> productsInGroup = internalTxService.findProductsInGroup(groupId, true);
 
         if (productsInGroup.isEmpty()) {
-            log.debug("none products founds in group with id {}", groupId);
+            log.debug("none product found for update in group with id {} ", groupId);
             return;
         }
         updateProductData(productsInGroup, listener);
     }
 
+    private void updateProductDataNg(List<ProductDetailInfo> productsForUpdate, UpdateProductDataListener listener) {
+
+        // vytvorim mapu, ktore produkty patrie ktoremu eshopu(FIXME urobit na to servis osobiny nech rovno navratova hodnota je mapa)
+        Map<EshopUuid, List<ProductDetailInfo>> productsInEshop = new EnumMap<>(EshopUuid.class);
+        productsForUpdate.forEach(productFullDto -> productsInEshop.put(productFullDto.getEshopUuid(), new ArrayList<>()));
+        productsForUpdate.forEach(productFullDto -> productsInEshop.get(productFullDto.getEshopUuid()).add(productFullDto));
+
+        for (Map.Entry<EshopUuid, List<ProductDetailInfo>> eshopUuidListEntry : productsInEshop.entrySet()) {
+
+            final EshopUuid eshopUuid = eshopUuidListEntry.getKey();
+
+            taskManager.submitTask(eshopUuid, () -> {
+
+                taskManager.markTaskAsRunning(eshopUuid);
+
+                boolean finishedWithError = false;
+
+                long countOfProductsAlreadyUpdated = 0;
+                long countOfProductsWaitingToBeUpdated = eshopUuidListEntry.getValue().size();
+
+                for (ProductDetailInfo productDetailInfo : eshopUuidListEntry.getValue()) {
+
+                    try {
+                        // updatnem zaznam
+                        processUpdate(productDetailInfo);
+
+                        countOfProductsAlreadyUpdated++;
+                        countOfProductsWaitingToBeUpdated--;
+                        listener.onUpdateStatus(new UpdateStatusInfo(countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated, eshopUuid));
+
+                        if (taskManager.isTaskShouldStopped(eshopUuid)) {
+                            taskManager.markTaskAsStopped(eshopUuid);
+                            break;
+                        }
+
+                        sleepRandomSafe();
+
+                    } catch (Exception e) {
+                        log.error("error while updating product data " +
+                                "Id: " + productDetailInfo.getId() + " " +
+                                "URL: " + productDetailInfo.getUrl(), e);
+                        log.debug("marking task for {} to finished with error", eshopUuid);
+                        finishedWithError = true;
+                        continue;
+                    }
+                }
+
+
+                // po prejdeni vsetkych produktov z daneho eshopu oznacim dany task za dokonceny
+                taskManager.markTaskAsFinished(eshopUuid, finishedWithError);
+            });
+
+            // kazdy dalsi task pre eshop spusti s 5 sekundovym oneskorenim
+            sleepSafe(5);
+        }
+
+
+    }
+
+    /**
+     * USE {@link #updateProductDataNg(List, UpdateProductDataListener)} instead
+     *
+     * @param productsForUpdate
+     * @param listener
+     */
+    @Deprecated
     private void updateProductData(List<ProductFullDto> productsForUpdate, UpdateProductDataListener listener) {
 
         // vytvorim mapu, ktore produkty patrie ktoremu eshopu(FIXME urobit na to servis osobiny nech rovno navratova hodnota je mapa)
@@ -117,16 +183,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
                     try {
                         // nacitam detaily produktu
-                        Optional<ProductDetailInfo> productForUpdateOpt = internalTxService.getProductForUpdate(productId);
-                        if (!productForUpdateOpt.isPresent()) {
-
-                            countOfProductsAlreadyUpdated++;
-                            countOfProductsWaitingToBeUpdated--;
-                            listener.onUpdateStatus(new UpdateStatusInfo(countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated, eshopUuid));
-
-                            continue;
-                        }
-                        productDetailInfo = productForUpdateOpt.get();
+                        productDetailInfo = internalTxService.getProductForUpdate(productId);
 
                         // updatnem zaznam
                         processUpdate(productDetailInfo);
@@ -213,22 +270,22 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
             taskManager.markTaskAsRunning(eshopUuid);
 
             boolean finishedWithError = false;
+            //TODO rozdelit na 2 try cach, 1 pre natiahnutie informacii, 2 pre parsovanie data(update)
             try {
-                Optional<ProductDetailInfo> productForUpdateOpt = internalTxService.getProductForUpdate(productId);
 
-                if (productForUpdateOpt.isPresent()) {
-                    ProductDetailInfo productDetailInfo = productForUpdateOpt.get();
+                //TODO tento privy riadok dat upne hore este predtym ako to pridam do tasku a z toho zistit aj eshop a tak spustit task...
 
-                    UpdateProcessResult updateProcessResult = processUpdate(productDetailInfo);
+                ProductDetailInfo productDetailInfo = internalTxService.getProductForUpdate(productId);
+                UpdateProcessResult updateProcessResult = processUpdate(productDetailInfo);
 
-                    if (UpdateProcessResult.ERR_HTML_PARSING_FAILED_404_ERROR.equals(updateProcessResult)) {
-                        internalTxService.removeProduct(productDetailInfo.getId());
-                    }
-
-                    if (taskManager.isTaskShouldStopped(eshopUuid)) {
-                        taskManager.markTaskAsStopped(eshopUuid);
-                    }
+                if (UpdateProcessResult.ERR_HTML_PARSING_FAILED_404_ERROR.equals(updateProcessResult)) {
+                    internalTxService.removeProduct(productDetailInfo.getId());
                 }
+
+                if (taskManager.isTaskShouldStopped(eshopUuid)) {
+                    taskManager.markTaskAsStopped(eshopUuid);
+                }
+
                 log.debug("none product found for update");
 
             } catch (Exception e) {
