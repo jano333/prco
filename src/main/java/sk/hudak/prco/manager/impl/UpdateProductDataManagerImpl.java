@@ -119,7 +119,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
                         countOfProductsAlreadyUpdated++;
                         countOfProductsWaitingToBeUpdated--;
-                        listener.onUpdateStatus(new UpdateStatusInfo(countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated, eshopUuid));
+                        listener.onUpdateStatus(new UpdateStatusInfo(eshopUuid, countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated));
 
                         if (taskManager.isTaskShouldStopped(eshopUuid)) {
                             taskManager.markTaskAsStopped(eshopUuid);
@@ -190,7 +190,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
                         countOfProductsAlreadyUpdated++;
                         countOfProductsWaitingToBeUpdated--;
-                        listener.onUpdateStatus(new UpdateStatusInfo(countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated, eshopUuid));
+                        listener.onUpdateStatus(new UpdateStatusInfo(eshopUuid, countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated));
 
                         if (taskManager.isTaskShouldStopped(eshopUuid)) {
                             taskManager.markTaskAsStopped(eshopUuid);
@@ -263,19 +263,24 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
     @Override
     public void updateProductData(Long productId) {
-        EshopUuid eshopUuid = internalTxService.getEshopForProductId(productId);
+
+        //TODO wrat do try catch bloku
+        ProductDetailInfo productDetailInfo = internalTxService.getProductForUpdate(productId);
+        final EshopUuid eshopUuid = productDetailInfo.getEshopUuid();
+
+
+        // spustim thread na parsovanie
+//        Future<ProductUpdateData> productUpdate = new SingleProductParserTask(taskManager).parseDataAsync(productDetailInfo);
+
+
+
 
         taskManager.submitTask(eshopUuid, () -> {
 
             taskManager.markTaskAsRunning(eshopUuid);
 
             boolean finishedWithError = false;
-            //TODO rozdelit na 2 try cach, 1 pre natiahnutie informacii, 2 pre parsovanie data(update)
             try {
-
-                //TODO tento privy riadok dat upne hore este predtym ako to pridam do tasku a z toho zistit aj eshop a tak spustit task...
-
-                ProductDetailInfo productDetailInfo = internalTxService.getProductForUpdate(productId);
                 UpdateProcessResult updateProcessResult = processUpdate(productDetailInfo);
 
                 if (UpdateProcessResult.ERR_HTML_PARSING_FAILED_404_ERROR.equals(updateProcessResult)) {
@@ -300,6 +305,11 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
     }
 
     private UpdateProcessResult processUpdate(ProductDetailInfo productDetailInfo) {
+        // TODO rozdelit na 3 metody
+        // TODO 1. nech je samotne parsovanie dat
+        // TODO 2. nech je spracovanie
+        // TODO 3. samotnhy update dat
+
         log.debug("start updating data for product {}", productDetailInfo.getUrl());
 
         ProductUpdateData updateData;

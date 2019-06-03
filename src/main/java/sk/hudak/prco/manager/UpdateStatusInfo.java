@@ -15,7 +15,7 @@ import sk.hudak.prco.api.EshopUuid;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateStatusInfo {
+    private EshopUuid eshopUuid;
     private long countOfProductsWaitingToBeUpdated;
     private long countOfProductsAlreadyUpdated;
-    private EshopUuid eshopUuid;
 }
