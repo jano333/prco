@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.manager.EshopThreadStatisticManager;
 import sk.hudak.prco.service.InternalTxService;
-import sk.hudak.prco.task.TaskManager;
+import sk.hudak.prco.task.EshopTaskManager;
+import sk.hudak.prco.task.TaskContext;
 import sk.hudak.prco.task.TaskStatus;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.Map;
 public class EshopThreadStatisticManagerImpl implements EshopThreadStatisticManager {
 
     @Autowired
-    private TaskManager taskManager;
+    private EshopTaskManager eshopTaskManager;
 
     @Autowired
     private InternalTxService internalTxService;
@@ -48,14 +49,14 @@ public class EshopThreadStatisticManagerImpl implements EshopThreadStatisticMana
     }
 
     private void doInOneLoop() {
-        Map<EshopUuid, TaskStatus> tasks = taskManager.getTasks();
+        Map<EshopUuid, TaskContext> tasks = eshopTaskManager.getTasks();
 
         List<EshopUuid> running = new ArrayList<>(EshopUuid.values().length);
         List<EshopUuid> finishedOk = new ArrayList<>(EshopUuid.values().length);
         List<EshopUuid> finishedNotOk = new ArrayList<>(EshopUuid.values().length);
 
-        for (Map.Entry<EshopUuid, TaskStatus> eshopUuidTaskStatusEntry : tasks.entrySet()) {
-            TaskStatus value = eshopUuidTaskStatusEntry.getValue();
+        for (Map.Entry<EshopUuid, TaskContext> eshopUuidTaskStatusEntry : tasks.entrySet()) {
+            TaskStatus value = eshopUuidTaskStatusEntry.getValue().getStatus();
             if (value.equals(TaskStatus.RUNNING)) {
                 running.add(eshopUuidTaskStatusEntry.getKey());
             }

@@ -14,7 +14,7 @@ import sk.hudak.prco.parser.EshopProductsParser;
 import sk.hudak.prco.parser.EshopUuidParser;
 import sk.hudak.prco.parser.HtmlParser;
 import sk.hudak.prco.service.InternalTxService;
-import sk.hudak.prco.task.TaskManager;
+import sk.hudak.prco.task.EshopTaskManager;
 import sk.hudak.prco.utils.ThreadUtils;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
     private HtmlParser htmlParser;
 
     @Autowired
-    private TaskManager taskManager;
+    private EshopTaskManager eshopTaskManager;
 
     @Autowired
     private EshopUuidParser eshopUuidParser;
@@ -81,9 +81,9 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
         notNullNotEmpty(searchKeyWord, "searchKeyWord");
 
         log.debug(">> addNewProductsByKeywordForEshop eshop: {}, searchKeyWord: {}", eshopUuid, searchKeyWord);
-        taskManager.submitTask(eshopUuid, () -> {
+        eshopTaskManager.submitTask(eshopUuid, () -> {
 
-            taskManager.markTaskAsRunning(eshopUuid);
+            eshopTaskManager.markTaskAsRunning(eshopUuid);
             boolean finishedWithError = false;
 
             try {
@@ -99,7 +99,7 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
                 finishedWithError = true;
 
             } finally {
-                taskManager.markTaskAsFinished(eshopUuid, finishedWithError);
+                eshopTaskManager.markTaskAsFinished(eshopUuid, finishedWithError);
             }
         });
         log.debug("<< addNewProductsByKeywordForEshop eshop {}, searchKeyWord {}", eshopUuid, searchKeyWord);
@@ -120,9 +120,9 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
         }
 
         eshopUrls.keySet().forEach(eshopUuid ->
-                taskManager.submitTask(eshopUuid, () -> {
+                eshopTaskManager.submitTask(eshopUuid, () -> {
 
-                    taskManager.markTaskAsRunning(eshopUuid);
+                    eshopTaskManager.markTaskAsRunning(eshopUuid);
                     boolean finishedWithError = false;
 
                     try {
@@ -133,7 +133,7 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
                         finishedWithError = true;
 
                     } finally {
-                        taskManager.markTaskAsFinished(eshopUuid, finishedWithError);
+                        eshopTaskManager.markTaskAsFinished(eshopUuid, finishedWithError);
                     }
                 }));
         log.debug("<< addNewProductsByUrl count of URLs: {}", countOfUrls);
@@ -143,8 +143,8 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
         int allUrlCount = urlList.size();
 
         for (int currentUrlIndex = 0; currentUrlIndex < allUrlCount; currentUrlIndex++) {
-            if (taskManager.isTaskShouldStopped(eshopUuid)) {
-                taskManager.markTaskAsStopped(eshopUuid);
+            if (eshopTaskManager.isTaskShouldStopped(eshopUuid)) {
+                eshopTaskManager.markTaskAsStopped(eshopUuid);
                 break;
             }
             log.debug("starting {} of {}", currentUrlIndex + 1, allUrlCount);

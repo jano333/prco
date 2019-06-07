@@ -11,7 +11,7 @@ import sk.hudak.prco.dto.internal.ProductUpdateData;
 import sk.hudak.prco.manager.WatchDogManager;
 import sk.hudak.prco.parser.HtmlParser;
 import sk.hudak.prco.service.InternalTxService;
-import sk.hudak.prco.task.TaskManager;
+import sk.hudak.prco.task.EshopTaskManager;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class WatchDogManagerImpl implements WatchDogManager {
     private InternalTxService internalTxService;
 
     @Autowired
-    private TaskManager taskManager;
+    private EshopTaskManager eshopTaskManager;
 
     @Autowired
     private HtmlParser parser;
@@ -57,12 +57,12 @@ public class WatchDogManagerImpl implements WatchDogManager {
         }
 
         // wait util all task are finished
-        boolean result = taskManager.isAnyTaskRunning();
+        boolean result = eshopTaskManager.isAnyTaskRunning();
         log.debug("is any task running: {}", result);
 
         while (result) {
             sleepSafe(5);
-            result = taskManager.isAnyTaskRunning();
+            result = eshopTaskManager.isAnyTaskRunning();
             log.debug("is any task running: {}", result);
         }
 
@@ -75,9 +75,9 @@ public class WatchDogManagerImpl implements WatchDogManager {
     }
 
     private void collect(List<WatchDogNotifyUpdateDto> productIdToBeNotified, EshopUuid eshopUuid, List<WatchDogDto> products) {
-        taskManager.markTaskAsRunning(eshopUuid);
+        eshopTaskManager.markTaskAsRunning(eshopUuid);
 
-        taskManager.submitTask(eshopUuid, () -> {
+        eshopTaskManager.submitTask(eshopUuid, () -> {
 
             boolean finishedWithError = false;
             try {
@@ -108,7 +108,7 @@ public class WatchDogManagerImpl implements WatchDogManager {
                 finishedWithError = true;
 
             } finally {
-                taskManager.markTaskAsFinished(eshopUuid, finishedWithError);
+                eshopTaskManager.markTaskAsFinished(eshopUuid, finishedWithError);
             }
         });
     }

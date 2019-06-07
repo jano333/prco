@@ -5,12 +5,17 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.task.SubmitTask;
-import sk.hudak.prco.task.TaskManager;
+import sk.hudak.prco.task.EshopTaskManager;
+import sk.hudak.prco.task.TaskContext;
 import sk.hudak.prco.task.TaskStatus;
+import sk.hudak.prco.utils.ThreadUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,21 +23,23 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import static sk.hudak.prco.utils.ThreadUtils.generateRandomSecondInInterval;
+
 @Slf4j
 @Component
-public class TaskManagerImpl implements TaskManager {
+public class EshopTaskManagerImpl implements EshopTaskManager {
 
     private Map<EshopUuid, ExecutorService> executors = new EnumMap<>(EshopUuid.class);
 
     @Getter
-    private Map<EshopUuid, TaskStatus> tasks = new ConcurrentHashMap<>(EshopUuid.values().length);
+    private Map<EshopUuid, TaskContext> tasks = new ConcurrentHashMap<>(EshopUuid.values().length);
 
     @PostConstruct
     public void init() {
-        for (EshopUuid eshopUuid : EshopUuid.values()) {
+        Arrays.stream(EshopUuid.values()).forEach(eshopUuid -> {
             executors.put(eshopUuid, createExecutorServiceForEshop(eshopUuid));
-            tasks.put(eshopUuid, TaskStatus.STOPPED);
-        }
+            tasks.put(eshopUuid, new TaskContext(TaskStatus.STOPPED));
+        });
     }
 
     @PreDestroy
@@ -44,28 +51,8 @@ public class TaskManagerImpl implements TaskManager {
 
     @Override
     public Future<?> submitTask(@NonNull EshopUuid eshopUuid, @NonNull Runnable task) {
+        log.debug("submitting new task for eshop {}", eshopUuid);
         return executors.get(eshopUuid).submit(task);
-    }
-
-    @Override
-    public <T, K> void submitTask(SubmitTask<T, K> internalTask, EshopUuid eshopUuid, T param1, K param2) {
-
-        submitTask(eshopUuid, () -> {
-
-            markTaskAsRunning(eshopUuid);
-
-            boolean finishedWithError = false;
-            try {
-                internalTask.doInTask(eshopUuid, param1, param2);
-
-            } catch (Exception e) {
-                log.error("error while executing task", e);
-                finishedWithError = true;
-
-            } finally {
-                markTaskAsFinished(eshopUuid, finishedWithError);
-            }
-        });
     }
 
     private ExecutorService createExecutorServiceForEshop(EshopUuid value) {
@@ -74,7 +61,7 @@ public class TaskManagerImpl implements TaskManager {
 
     @Override
     public boolean isTaskRunning(EshopUuid eshopUuid) {
-        return TaskStatus.RUNNING.equals(tasks.get(eshopUuid));
+        return TaskStatus.RUNNING.equals(tasks.get(eshopUuid).getStatus());
     }
 
     @Override
@@ -84,13 +71,13 @@ public class TaskManagerImpl implements TaskManager {
 
     @Override
     public boolean isTaskFinished(EshopUuid eshopUuid) {
-        TaskStatus other = tasks.get(eshopUuid);
+        TaskStatus other = tasks.get(eshopUuid).getStatus();
         return TaskStatus.FINISHED_OK.equals(other) || TaskStatus.FINISHED_WITH_ERROR.equals(other);
     }
 
     @Override
     public void markTaskAsShouldStopped(EshopUuid eshopUuid) {
-        tasks.put(eshopUuid, TaskStatus.SHOUD_STOP);
+        tasks.put(eshopUuid, new TaskContext(TaskStatus.SHOUD_STOP));
     }
 
     @Override
@@ -101,7 +88,7 @@ public class TaskManagerImpl implements TaskManager {
     @Override
     public void markTaskAsRunning(EshopUuid eshopUuid) {
         log.debug("marking task for eshop {} as {}", eshopUuid, TaskStatus.RUNNING);
-        tasks.put(eshopUuid, TaskStatus.RUNNING);
+        tasks.put(eshopUuid, new TaskContext(TaskStatus.RUNNING));
     }
 
     @Override
@@ -109,16 +96,16 @@ public class TaskManagerImpl implements TaskManager {
         log.debug("marking task for eshop {} as {}", eshopUuid, finishedWithError ? TaskStatus.FINISHED_WITH_ERROR : TaskStatus.FINISHED_OK);
 
         if (finishedWithError) {
-            tasks.put(eshopUuid, TaskStatus.FINISHED_WITH_ERROR);
+            tasks.put(eshopUuid, new TaskContext(TaskStatus.FINISHED_WITH_ERROR));
         } else {
-            tasks.put(eshopUuid, TaskStatus.FINISHED_OK);
+            tasks.put(eshopUuid, new TaskContext(TaskStatus.FINISHED_OK));
         }
     }
 
     @Override
     public void markTaskAsStopped(EshopUuid eshopUuid) {
         log.debug("marking task for eshop {} as {}", eshopUuid, TaskStatus.STOPPED);
-        tasks.put(eshopUuid, TaskStatus.STOPPED);
+        tasks.put(eshopUuid, new TaskContext(TaskStatus.STOPPED));
     }
 
     @Override
@@ -129,5 +116,40 @@ public class TaskManagerImpl implements TaskManager {
             }
         }
         return false;
+    }
+
+    @Override
+    public  void sleepIfNeeded(@NonNull EshopUuid eshopUuid) {
+        TaskContext currentContext = tasks.get(eshopUuid);
+        TaskStatus currentStatus = currentContext.getStatus();
+
+        log.debug("task status {}", currentContext);
+        if (TaskStatus.STOPPED.equals(currentStatus)) {
+            return;
+        }
+        if (isTaskFinished(eshopUuid)) {
+            LocalDateTime lastChanged = currentContext.getLastChanged()
+                    .toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+            LocalDateTime now = LocalDateTime.now();
+
+            long secondsBetween = ChronoUnit.SECONDS.between(lastChanged, now);
+
+            int secondInInterval = generateRandomSecondInInterval();
+
+            if (secondsBetween < secondInInterval) {
+                ThreadUtils.sleepSafe(secondInInterval);
+            }
+
+
+        }
+
+
+//        if (isTaskFinished(eshopUuid) && currentContext.getLastChanged().before()) {
+//
+//        }
+
+
     }
 }

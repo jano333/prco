@@ -1,17 +1,16 @@
 package sk.hudak.prco.task;
 
+import lombok.NonNull;
 import sk.hudak.prco.api.EshopUuid;
 
 import java.util.Map;
 import java.util.concurrent.Future;
 
-public interface TaskManager {
+public interface EshopTaskManager {
 
-    Map<EshopUuid, TaskStatus> getTasks();
+    Map<EshopUuid, TaskContext> getTasks();
 
     Future<?> submitTask(EshopUuid eshopUuid, Runnable task);
-
-    <T, K> void submitTask(SubmitTask<T, K> internalTask, EshopUuid eshopUuid, T param1, K param2);
 
     boolean isAnyTaskRunning();
 
@@ -31,4 +30,6 @@ public interface TaskManager {
     boolean isTaskShouldStopped(EshopUuid eshopUuid);
 
     void markTaskAsShouldStopped(EshopUuid eshopUuid);
+
+    void sleepIfNeeded(@NonNull EshopUuid eshopUuid);
 }

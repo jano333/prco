@@ -7,7 +7,7 @@ import sk.hudak.prco.manager.UpdateStatusInfo;
 @Slf4j
 public class UpdateProductDataListenerAdapter implements UpdateProductDataListener {
 
-    public static UpdateProductDataListener INSTANCE = new UpdateProductDataListenerAdapter();
+    public static UpdateProductDataListener EMPTY_INSTANCE = new UpdateProductDataListenerAdapter();
     public static UpdateProductDataListener LOG_INSTANCE = updateStatusInfo -> log.debug("{}", updateStatusInfo);
 
     @Override
