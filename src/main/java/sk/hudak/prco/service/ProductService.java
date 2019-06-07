@@ -76,6 +76,9 @@ public interface ProductService {
      */
     void removeProduct(Long productId);
 
+
+    void removeProductByUrl(String productUrl);
+
     // ----------- GET -----------
 
     /**

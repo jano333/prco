@@ -250,8 +250,15 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional
+
     public void removeProduct(Long productId) {
         productService.removeProduct(productId);
+    }
+
+    @Override
+    @Transactional
+    public void removeProductByUrl(String productUrl) {
+        productService.removeProductByUrl(productUrl);
     }
 
     @Override

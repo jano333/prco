@@ -23,6 +23,8 @@ public interface ProductEntityDao extends BaseDao<ProductEntity> {
 
     List<ProductEntity> findByFilter(ProductFilterUIDto filter);
 
+    Optional<ProductEntity> findByUrl(String productUrl);
+
     long count();
 
     long countOfAllProductInEshop(EshopUuid eshopUuid);

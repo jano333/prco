@@ -243,14 +243,34 @@ public class ProductServiceImpl implements ProductService {
 
         ProductEntity productEntity = productEntityDao.findById(productId);
 
+        removeProductFromGroup(productEntity);
+
+        productEntityDao.delete(productEntity);
+        log.debug("product with id {} was deleted", productId);
+    }
+
+    @Override
+    public void removeProductByUrl(String productUrl) {
+        notNullNotEmpty(productUrl, "productUrl");
+
+        productEntityDao.findByUrl(productUrl)
+                .ifPresent(entity -> {
+
+                            // remove from group
+                            removeProductFromGroup(entity);
+
+                            productEntityDao.delete(entity);
+                            log.debug("product with url {} has been removed", productUrl);
+                        }
+                );
+    }
+
+    private void removeProductFromGroup(ProductEntity productEntity) {
         for (GroupEntity groupEntity : groupEntityDao.findGroupsForProduct(productEntity.getId())) {
             groupEntity.getProducts().remove(productEntity);
             groupEntityDao.update(groupEntity);
             log.debug("removed product '{}' from group '{}'", productEntity.getName(), groupEntity.getName());
         }
-
-        productEntityDao.delete(productEntity);
-        log.debug("product with id {} was deleted", productId);
     }
 
     @Override

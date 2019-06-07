@@ -77,6 +77,13 @@ public class ProductEntityDaoImpl extends BaseDaoImpl<ProductEntity> implements 
     }
 
     @Override
+    public Optional<ProductEntity> findByUrl(String productUrl) {
+        JPAQuery<ProductEntity> query = from(QProductEntity.productEntity);
+        query.where(QProductEntity.productEntity.url.eq(productUrl));
+        return Optional.ofNullable(query.fetchFirst());
+    }
+
+    @Override
     public long count() {
         return getQueryFactory()
                 .select(QProductEntity.productEntity.id)
