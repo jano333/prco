@@ -18,7 +18,16 @@ public final class ThreadUtils {
     }
 
     public static void sleepRandomSafeBetween(int min, int max) {
-        sleepSafe(new Random().nextInt(max - min + 1) + min);
+        sleepSafe(generateRandomSecondInInterval(min, max));
+    }
+
+    public static int generateRandomSecondInInterval() {
+        return generateRandomSecondInInterval(5, 20);
+    }
+
+
+    public static int generateRandomSecondInInterval(int min, int max) {
+        return new Random().nextInt(max - min + 1) + min;
     }
 
     public static void sleepSafe(int second) {

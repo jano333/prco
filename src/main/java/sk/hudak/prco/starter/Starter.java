@@ -227,12 +227,15 @@ public class Starter {
                 log.debug(">> eshop: {}, updated/waiting: {}/{}",
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
-        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
+//        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
 //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
 //        updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.MALL, listener);
         // updatne vsetky produkty v danej skupine
 //        updateProductDataManager.updateProductDataForEachProductInGroup(33L);
+        updateProductDataManager.updateProductData(3118L);
+//        updateProductDataManager.updateProductData(3118L);
+//        updateProductDataManager.updateProductData(3118L);
 //        updateProductDataManager.updateProductData(3118L);
 //        uiService.resetUpdateDateForAllProductsInEshop(EshopUuid.TESCO);
 //        uiService.updateProductCommonPrice(449L, BigDecimal.valueOf(0.59));

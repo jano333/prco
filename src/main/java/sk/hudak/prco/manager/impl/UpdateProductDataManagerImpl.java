@@ -4,7 +4,6 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.ProductUpdateDataDto;
 import sk.hudak.prco.dto.error.ErrorCreateDto;
@@ -19,7 +18,7 @@ import sk.hudak.prco.manager.UpdateStatusInfo;
 import sk.hudak.prco.mapper.PrcoOrikaMapper;
 import sk.hudak.prco.parser.HtmlParser;
 import sk.hudak.prco.service.InternalTxService;
-import sk.hudak.prco.task.TaskManager;
+import sk.hudak.prco.task.EshopTaskManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +36,7 @@ import static sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe;
 import static sk.hudak.prco.utils.ThreadUtils.sleepSafe;
 
 @Slf4j
-@Component
+//@Component
 public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
     @Autowired
@@ -47,7 +46,7 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
     private HtmlParser htmlParser;
 
     @Autowired
-    private TaskManager taskManager;
+    private EshopTaskManager taskManager;
 
     @Autowired
     private PrcoOrikaMapper mapper;

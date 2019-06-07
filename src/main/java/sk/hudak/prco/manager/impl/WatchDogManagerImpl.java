@@ -11,7 +11,7 @@ import sk.hudak.prco.dto.internal.ProductUpdateData;
 import sk.hudak.prco.manager.WatchDogManager;
 import sk.hudak.prco.parser.HtmlParser;
 import sk.hudak.prco.service.InternalTxService;
-import sk.hudak.prco.task.TaskManager;
+import sk.hudak.prco.task.EshopTaskManager;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class WatchDogManagerImpl implements WatchDogManager {
     private InternalTxService internalTxService;
 
     @Autowired
-    private TaskManager taskManager;
+    private EshopTaskManager taskManager;
 
     @Autowired
     private HtmlParser parser;

@@ -14,7 +14,7 @@ import sk.hudak.prco.parser.EshopProductsParser;
 import sk.hudak.prco.parser.EshopUuidParser;
 import sk.hudak.prco.parser.HtmlParser;
 import sk.hudak.prco.service.InternalTxService;
-import sk.hudak.prco.task.TaskManager;
+import sk.hudak.prco.task.EshopTaskManager;
 import sk.hudak.prco.utils.ThreadUtils;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
     private HtmlParser htmlParser;
 
     @Autowired
-    private TaskManager taskManager;
+    private EshopTaskManager taskManager;
 
     @Autowired
     private EshopUuidParser eshopUuidParser;
