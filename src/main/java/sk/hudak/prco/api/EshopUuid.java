@@ -177,7 +177,7 @@ public enum EshopUuid {
             "https://www.magano.sk/produkty/search/" + PAGE_NUMBER_TEMP + "?term=" + KEYWORD_TEMP,
             5, 12, 12),
 
-    MALL("http://mall.sk",
+    MALL("https://www.mall.sk",
             "https://www.mall.sk/hladaj?s={keyword}",
             "https://www.mall.sk/hladaj?page={pageNumber}&s=" + KEYWORD_TEMP,
             2, 12, -1),
