@@ -106,6 +106,11 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
                     eshopTaskManager.markTaskAsFinished(eshopUuid, true);
                     return;
                 }
+
+                if (eshopTaskManager.isTaskShouldStopped(eshopUuid)) {
+                    eshopTaskManager.markTaskAsStopped(eshopUuid);
+                    break;
+                }
             }
 
             eshopTaskManager.markTaskAsFinished(eshopUuid, false);
@@ -275,6 +280,11 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
                     countOfProductsWaitingToBeUpdated--;
 
                     if (shouldContinueWithNexProduct(updateProcessResult)) {
+                        if (eshopTaskManager.isTaskShouldStopped(eshopUuid)) {
+                            eshopTaskManager.markTaskAsStopped(eshopUuid);
+                            break;
+                        }
+
                         sleepRandomSafe();
                         continue;
                     }
