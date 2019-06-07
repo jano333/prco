@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.builder.SearchUrlBuilder;
@@ -19,13 +19,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 import static sk.hudak.prco.api.EshopUuid.BRENDON;
 
 @Slf4j
-//@Component
+@Component
 public class BrendonProductParser extends JSoupProductParser {
 
     public BrendonProductParser(UnitParser unitParser,
@@ -64,49 +62,26 @@ public class BrendonProductParser extends JSoupProductParser {
 
     @Override
     protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        Element select = documentDetailProduct.select("div[class='col400']").first();
-        if (select == null) {
-            return empty();
-        }
-        Elements children = select.children();
-        StringBuilder str = new StringBuilder();
-        for (Element child : children) {
-            String tagName = child.tag().getName();
-            if ("a".equals(tagName)) {
-                str.append(child.children().first().text());
-                str.append(" ");
-            }
-            if ("span".equals(tagName)) {
-                str.append(child.text());
-            }
-        }
-        String result = str.toString();
-        if (StringUtils.isBlank(result)) {
-            return empty();
-        }
-        return of(result);
+        return Optional.ofNullable(documentDetailProduct.select("div.product-name > h1").first())
+                .map(Element::text);
     }
 
     @Override
     protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        return ofNullable(documentDetailProduct.select("#MainPicture").first())
-                .map(element -> element.attr("src"));
+        return ofNullable(documentDetailProduct.select("#picture-slider ul li img").first())
+                .map(element -> element.attr("data-src"));
     }
 
     @Override
     protected boolean isProductUnavailable(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("div[class='float-left']");
-        for (Element element : select) {
-            if ("Do koša".equals(element.text())) {
-                return false;
-            }
-        }
-        return true;
+        return !ofNullable(documentDetailProduct.select("#add-to-cart-button-11842402").first())
+                .isPresent();
     }
 
     @Override
     protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        return Optional.ofNullable(documentDetailProduct.select("span[class='margin-right40']").first())
+        Element first = documentDetailProduct.select("div.product-price span").first();
+        return ofNullable(first)
                 .map(Element::text)
                 .map(String::trim)
                 .filter(StringUtils::isNotBlank)
