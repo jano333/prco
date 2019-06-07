@@ -46,6 +46,8 @@ public class ErrorHandlerImpl implements ErrorHandler {
         log.error("http status: " + e.getHttpStatus());
         if (404 == e.getHttpStatus()) {
             save404Error(productDetailInfo.getEshopUuid(), productDetailInfo.getUrl(), e.getMessage(), e);
+            internalTxService.removeProduct(productDetailInfo.getId());
+
             return ERR_PARSING_ERROR_HTTP_STATUS_404;
         }
 
