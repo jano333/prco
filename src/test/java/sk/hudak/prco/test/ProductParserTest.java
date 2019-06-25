@@ -2,8 +2,6 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.EsoDrogeriaProductParser;
-import sk.hudak.prco.eshop.FeedoProductParser;
 import sk.hudak.prco.eshop.MallProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
@@ -41,7 +39,7 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/obrusky-hygienicke/pro-deti/pampers-vlhcene-ubrousky-baby-fresh-64ks-14882.html"));
 //                .parseProductUpdateData("https://www.drogerka.sk/pampers-premium-care-detske-plienky-junior-44-ks?search=pampers"));
 //
-         // Giga lekaren
+        // Giga lekaren
 //        System.out.println(new GigaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseProductNewData("https://www.gigalekaren.sk/produkt/pampers-premium-care-newborn-2-5kg-88ks/"));
@@ -62,10 +60,10 @@ public class ProductParserTest {
 
 
 //        Eso drogeria
-        System.out.println(new EsoDrogeriaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new EsoDrogeriaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseProductNewData("https://www.esodrogeria.eu/PAMPERS-ACTIVE-BABY-DRY-3-MIDI-4-9KG-GIANT-PACK-90KS-d435.htm"));
-                .parseProductUpdateData("https://www.esodrogeria.eu/PAMPERS-ACTIVE-BABY-DRY-4-MAXI-PLUS-9-16KG-GIANT-PACK-70KS-d21676.htm"));
+//                .parseProductUpdateData("https://www.esodrogeria.eu/PAMPERS-ACTIVE-BABY-DRY-4-MAXI-PLUS-9-16KG-GIANT-PACK-70KS-d21676.htm"));
 
         // Amd drogeria
 //        System.out.println(new AmdDrogeriaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -95,8 +93,8 @@ public class ProductParserTest {
 //        // Brendon
 //        System.out.println(new BrendonProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
-//                .parseProductNewData("https://www.brendon.sk/Products/Details/118437"));
-//                .parseProductUpdateData("https://www.brendon.sk/Products/Details/84545"));
+//                .parseProductNewData("https://www.brendon.sk/Products/Details/118424"));
+//                .parseProductUpdateData("https://www.brendon.sk/Products/Details/118424"));
 //
 //        // Feedo
 //        System.out.println(new FeedoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -110,11 +108,11 @@ public class ProductParserTest {
 //                .parseProductNewData("https://www.lekarenvkocke.sk/zq63a34d05b2ee15854983854d75bc3696-pampers-premium-care-1-newborn-detske-plienky-od-narodenia-2-5-kg-1x22-ks"));
 //                .parseProductUpdateData("https://www.lekarenvkocke.sk/zqcca7c9d69cc89a501513a05ef16592f4-nutrilon-4-batolacia-mliecna-vyziva-v-prasku-24-36-mesiacov-inov-2018-1x800-g"));
 //
-//        // MaxikovyHracky
+        // MaxikovyHracky
 //        System.out.println(new MaxikovyHrackyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("lego"));
-//                .parseProductNewData("https://www.maxikovy-hracky.cz/pampers-active-baby-3-midi-174ks"));
-//                .parseProductUpdateData("https://www.maxikovy-hracky.cz/pampers-active-baby-monthly-box-s4-152ks?zmena_meny=EUR"));
+//                .parseProductNewData("https://www.maxikovy-hracky.cz/pampers-active-baby-monthly-box-s4-152ks"));
+//                .parseProductUpdateData("https://www.maxikovy-hracky.cz/pampers-active-baby-monthly-box-s4-152ks"));
 
 //        // FourKids
 //        System.out.println(new FourKidsProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -168,8 +166,8 @@ public class ProductParserTest {
 
 
 //         MALL
-//        System.out.println(new MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-//                .parseUrlsOfProduct("pampers 4"));
+        System.out.println(new MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+                .parseUrlsOfProduct("pampers"));
 //                .parseProductNewData("http://mall.sk/plienky-pampers-7-18-kg/pampers-pure-protection-s4-28-ks-914-kg"));
 //                .parseProductUpdateData("http://mall.sk/plienky-pampers-7-18-kg/pampers-pure-protection-s4-28-pcs-9-14-kg"));
 

@@ -1,5 +1,80 @@
 posledne 50
 *********************************
+2019-06-07 14:02:06,452 ERROR [LEKAREN_EXPRES] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:247] error creating document for url 'https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-active-baby-vpp-4-maxi-plus-53ks-17305.html':  org.jsoup.HttpStatusException: HTTP error fetching URL. Status=500, URL=https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-active-baby-vpp-4-maxi-plus-53ks-17305.html
+org.jsoup.HttpStatusException: HTTP error fetching URL
+	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:682)
+	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:629)
+	at org.jsoup.helper.HttpConnection.execute(HttpConnection.java:261)
+	at org.jsoup.helper.HttpConnection.get(HttpConnection.java:250)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:238)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:174)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.parseOneProductUpdateData(UpdateProductDataManagerImpl.java:171)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.internalParseAndUpdate(UpdateProductDataManagerImpl.java:163)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateProductDataForEachProductInEshop$9(UpdateProductDataManagerImpl.java:98)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+2019-06-07 14:02:06,453 ERROR [LEKAREN_EXPRES] [] s.h.p.m.i.ErrorHandlerImpl [ErrorHandlerImpl.java:31] error while parsing product data for product https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-active-baby-vpp-4-maxi-plus-53ks-17305.html
+sk.hudak.prco.exception.HttpErrorPrcoRuntimeException: error creating document for url 'https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-active-baby-vpp-4-maxi-plus-53ks-17305.html':  org.jsoup.HttpStatusException: HTTP error fetching URL. Status=500, URL=https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-active-baby-vpp-4-maxi-plus-53ks-17305.html
+	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:248)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:174)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.parseOneProductUpdateData(UpdateProductDataManagerImpl.java:171)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.internalParseAndUpdate(UpdateProductDataManagerImpl.java:163)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateProductDataForEachProductInEshop$9(UpdateProductDataManagerImpl.java:98)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.jsoup.HttpStatusException: HTTP error fetching URL
+	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:682)
+	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:629)
+	at org.jsoup.helper.HttpConnection.execute(HttpConnection.java:261)
+	at org.jsoup.helper.HttpConnection.get(HttpConnection.java:250)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:238)
+	... 10 common frames omitted
+----------------------------
+TODO overit ci sa dana chyba ulozi do DB
+2019-06-07 13:55:40,211 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.t.i.EshopTaskManagerImpl [EshopTaskManagerImpl.java:126] task status TaskContext(status=STOPPED, lastChanged=Fri Jun 07 13:55:18 CEST 2019)
+2019-06-07 13:55:40,211 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.t.i.EshopTaskManagerImpl [EshopTaskManagerImpl.java:90] marking task for eshop MAXIKOVY_HRACKY as RUNNING
+2019-06-07 13:55:40,215 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.s.Starter [Starter.java:231] >> eshop: MAXIKOVY_HRACKY, updated/waiting: 0/17
+2019-06-07 13:55:40,215 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:227] request URL: https://www.maxikovy-hracky.cz/pampers-active-baby-monthly-box-s4-152ks
+2019-06-07 13:55:40,216 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:230] userAgent: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko
+2019-06-07 13:55:40,289 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.s.PrcoCustomTrustManager [PrcoCustomTrustManager.java:53] delegating checking to java default trust manager
+2019-06-07 13:55:40,541 ERROR [MAXIKOVY_HRACKY] [] s.h.p.m.i.ErrorHandlerImpl [ErrorHandlerImpl.java:31] error while parsing product data for product https://www.maxikovy-hracky.cz/pampers-active-baby-monthly-box-s4-152ks
+sk.hudak.prco.exception.PrcoRuntimeException: error while converting value 999 Kč to java.math.BigDecimal
+	at sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal(ConvertUtils.java:23)
+	at java.util.Optional.map(Optional.java:215)
+	at sk.hudak.prco.eshop.MaxikovyHrackyProductParser.parseProductPriceForPackage(MaxikovyHrackyProductParser.java:102)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:197)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.parseOneProductUpdateData(UpdateProductDataManagerImpl.java:171)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.internalParseAndUpdate(UpdateProductDataManagerImpl.java:163)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateProductDataForEachProductInEshop$9(UpdateProductDataManagerImpl.java:98)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.NumberFormatException: null
+	at java.math.BigDecimal.<init>(BigDecimal.java:494)
+	at java.math.BigDecimal.<init>(BigDecimal.java:383)
+	at java.math.BigDecimal.<init>(BigDecimal.java:806)
+	at sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal(ConvertUtils.java:20)
+	... 12 common frames omitted
+2019-06-07 13:55:40,541 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.t.i.EshopTaskManagerImpl [EshopTaskManagerImpl.java:96] marking task for eshop MAXIKOVY_HRACKY as FINISHED_WITH_ERROR
+2019-06-07 13:55:40,547 DEBUG [BRENDON] [] s.h.p.s.Starter [Starter.java:231] >> eshop: BRENDON, updated/waiting: 1/8
+2019-06-07 13:55:40,548 DEBUG [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:227] request URL: https://www.brendon.sk/Products/Details/118431
+2019-06-07 13:55:40,548 DEBUG [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:230] userAgent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1
+2019-06-07 13:55:40,952 WARN [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:178] redirecting:
+2019-06-07 13:55:40,952 WARN [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:179] from https://www.brendon.sk/Products/Details/118431
+
+
+
 -----------------------------------------------------------------------------------------------------------------------
 49:
 -----------------------------------------------------------------------------------------------------------------------

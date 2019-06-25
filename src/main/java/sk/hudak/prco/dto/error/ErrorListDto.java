@@ -6,6 +6,8 @@ import lombok.ToString;
 import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.api.EshopUuid;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @ToString
@@ -19,4 +21,5 @@ public class ErrorListDto {
     private String fullMsg;
     private String url;
     private String additionalInfo;
+    private Date updated;
 }

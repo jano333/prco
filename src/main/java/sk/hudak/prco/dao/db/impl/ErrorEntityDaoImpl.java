@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.dao.db.ErrorEntityDao;
+import sk.hudak.prco.dto.error.ErrorFindFilterDto;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.model.ErrorEntity;
 import sk.hudak.prco.model.QErrorEntity;
@@ -66,6 +67,31 @@ public class ErrorEntityDaoImpl extends BaseDaoImpl<ErrorEntity> implements Erro
                 .from(QErrorEntity.errorEntity)
                 .where(QErrorEntity.errorEntity.updated.lt(calculateDate(unitCount, timeUnit)))
                 .fetch();
+    }
+
+    @Override
+    public List<ErrorEntity> findErrorsByFilter(ErrorFindFilterDto findDto) {
+        JPAQuery<ErrorEntity> query = getQueryFactory()
+                .select(QErrorEntity.errorEntity)
+                .from(QErrorEntity.errorEntity);
+
+        if (findDto.getErrorTypes() != null) {
+            query.where(QErrorEntity.errorEntity.errorType.in(findDto.getErrorTypes()));
+        }
+        if (findDto.getErrorTypesToSkip() != null) {
+            query.where(QErrorEntity.errorEntity.errorType.notIn(findDto.getErrorTypesToSkip()));
+        }
+
+        if (findDto.getStatusCodes() != null) {
+            query.where(QErrorEntity.errorEntity.statusCode.in(findDto.getStatusCodes()));
+        }
+        if (findDto.getStatusCodesToSkip() != null) {
+            query.where(QErrorEntity.errorEntity.statusCode.isNull()
+                    .or(QErrorEntity.errorEntity.statusCode.notIn(findDto.getStatusCodesToSkip())));
+        }
+        query.limit(findDto.getLimit());
+        query.orderBy(new OrderSpecifier<>(Order.DESC, QErrorEntity.errorEntity.updated));
+        return query.fetch();
     }
 
     @Override

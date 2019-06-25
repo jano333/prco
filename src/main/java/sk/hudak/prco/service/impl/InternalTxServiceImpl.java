@@ -12,6 +12,7 @@ import sk.hudak.prco.dto.WatchDogAddDto;
 import sk.hudak.prco.dto.WatchDogDto;
 import sk.hudak.prco.dto.WatchDogNotifyUpdateDto;
 import sk.hudak.prco.dto.error.ErrorCreateDto;
+import sk.hudak.prco.dto.error.ErrorFindFilterDto;
 import sk.hudak.prco.dto.error.ErrorListDto;
 import sk.hudak.prco.dto.group.GroupCreateDto;
 import sk.hudak.prco.dto.group.GroupFilterDto;
@@ -424,6 +425,12 @@ public class InternalTxServiceImpl implements InternalTxService {
     @Transactional(readOnly = true)
     public List<ErrorListDto> findErrorByMaxCount(int limit, ErrorType errorType) {
         return errorService.findErrorByMaxCount(limit, errorType);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ErrorListDto> findErrorsByFilter(ErrorFindFilterDto findDto) {
+        return errorService.findErrorsByFilter(findDto);
     }
 
     @Override

@@ -145,15 +145,15 @@ public class NewProductServiceImpl implements NewProductService {
         ProductNewData productNewData = htmlParser.parseProductNewData(productEntity.getUrl());
 
         if (productNewData.getUnit() == null) {
-            if (StringUtils.isBlank(productEntity.getPictureUrl()) && productNewData.getPictureUrl() != null) {
+            if (StringUtils.isBlank(productEntity.getPictureUrl()) && productNewData.getPictureUrl().isPresent()) {
                 log.debug("updating product picture url to {}", productNewData.getPictureUrl());
-                productEntity.setPictureUrl(productNewData.getPictureUrl());
+                productEntity.setPictureUrl(productNewData.getPictureUrl().get());
                 newProductEntityDao.update(productEntity);
             }
 
             log.warn("parsing unit data failed for name {}", productEntity.getName());
             errorService.createError(ErrorCreateDto.builder()
-                    .errorType(ErrorType.PARSING_PRODUCT_INFO_ERR)
+                    .errorType(ErrorType.PARSING_PRODUCT_UNIT_ERR)
                     .url(productEntity.getUrl())
                     .eshopUuid(productEntity.getEshopUuid())
                     .additionalInfo(productEntity.getName())
@@ -167,7 +167,7 @@ public class NewProductServiceImpl implements NewProductService {
             productEntity.setValid(Boolean.TRUE);
             log.debug("new product with id {} was updated with unit data {}", productEntity.getId(),
                     new UnitTypeValueCount(productNewData.getUnit(), productNewData.getUnitValue(), productNewData.getUnitPackageCount()));
-            productEntity.setPictureUrl(productNewData.getPictureUrl());
+            productEntity.setPictureUrl(productNewData.getPictureUrl().isPresent() ? productNewData.getPictureUrl().get() : null);
             newProductEntityDao.update(productEntity);
         }
     }

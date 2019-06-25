@@ -7,6 +7,7 @@ import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.dao.db.ErrorEntityDao;
 import sk.hudak.prco.dao.db.NotInterestedProductDbDao;
 import sk.hudak.prco.dto.error.ErrorCreateDto;
+import sk.hudak.prco.dto.error.ErrorFindFilterDto;
 import sk.hudak.prco.dto.error.ErrorListDto;
 import sk.hudak.prco.mapper.PrcoOrikaMapper;
 import sk.hudak.prco.model.ErrorEntity;
@@ -71,14 +72,15 @@ public class ErrorServiceImpl implements ErrorService {
                 return doInsert(createDto);
             }
             // update
+            entity.setEshopUuid(createDto.getEshopUuid());
             entity.setErrorType(createDto.getErrorType());
             entity.setStatusCode(createDto.getStatusCode());
             entity.setMessage(createDto.getMessage());
             entity.setFullMsg(createDto.getFullMsg());
-            entity.setUrl(createDto.getUrl());
             entity.setAdditionalInfo(createDto.getAdditionalInfo());
             errorEntityDao.update(entity);
-            log.debug("update entity {} with id {}", entity.getClass().getSimpleName(), entity.getId());
+            log.debug("update entity {} with id {}, type {}, msg '{}'", entity.getClass().getSimpleName(), entity.getId(),
+                    entity.getErrorType(), entity.getMessage());
 
             return entity.getId();
 
@@ -89,7 +91,9 @@ public class ErrorServiceImpl implements ErrorService {
     }
 
     private Long doInsert(ErrorCreateDto createDto) {
+        //TODO cez orika mapper
         ErrorEntity entity = new ErrorEntity();
+        entity.setEshopUuid(createDto.getEshopUuid());
         entity.setErrorType(createDto.getErrorType());
         entity.setStatusCode(createDto.getStatusCode());
         entity.setMessage(createDto.getMessage());
@@ -98,7 +102,7 @@ public class ErrorServiceImpl implements ErrorService {
         entity.setAdditionalInfo(createDto.getAdditionalInfo());
 
         Long id = errorEntityDao.save(entity);
-        log.debug("create entity {} with id {}", entity.getClass().getSimpleName(), entity.getId());
+        log.debug("create entity {} with id {} msg: {}", entity.getClass().getSimpleName(), entity.getId(), entity.getMessage());
         return id;
     }
 
@@ -122,6 +126,16 @@ public class ErrorServiceImpl implements ErrorService {
         //TODO not empty
 
         return errorEntityDao.findByTypes(errorTypes).stream()
+                .map(entity -> prcoMapper.map(entity, ErrorListDto.class))
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<ErrorListDto> findErrorsByFilter(ErrorFindFilterDto findDto) {
+        notNull(findDto, "findDto");
+
+        return errorEntityDao.findErrorsByFilter(findDto).stream()
                 .map(entity -> prcoMapper.map(entity, ErrorListDto.class))
                 .collect(Collectors.toList());
     }

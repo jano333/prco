@@ -1,6 +1,7 @@
 package sk.hudak.prco.manager.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.ErrorType;
@@ -84,18 +85,29 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
         eshopTaskManager.submitTask(eshopUuid, () -> {
 
             eshopTaskManager.markTaskAsRunning(eshopUuid);
-            boolean finishedWithError = false;
 
+            List<String> urlList;
             try {
                 // vyparsujem vsetky url-cky produktov, ktore sa najdu na strankach(prechadza aj pageovane stranky)
-                List<String> urlList = htmlParser.searchProductUrls(eshopUuid, searchKeyWord);
+                urlList = htmlParser.searchProductUrls(eshopUuid, searchKeyWord);
 
+            } catch (Exception e) {
+                log.error("error while parsing eshop products URLs", e);
+                logErrorParsingProductUrls(eshopUuid, searchKeyWord, e);
+                eshopTaskManager.markTaskAsFinished(eshopUuid, true);
+                return;
+            }
+
+
+            boolean finishedWithError = false;
+            try {
                 //TODO toto volanie dat do osobitneho try catch bloku a zalogovat ze sa nepodarilo ulozit a nie ze sa nepodarilo vyparsovat
+
                 createNewProducts(eshopUuid, urlList);
 
             } catch (Exception e) {
-                logErrorParsingProductUrls(eshopUuid, searchKeyWord);
                 log.error(ERROR_WHILE_CREATING_NEW_PRODUCT, e);
+                logErrorParsingProductUrls(eshopUuid, searchKeyWord, e);
                 finishedWithError = true;
 
             } finally {
@@ -115,7 +127,8 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
         // roztriedim URL podla typu eshopu
         Map<EshopUuid, List<String>> eshopUrls = new EnumMap<>(EshopUuid.class);
         for (String productUrl : productsUrl) {
-            eshopUrls.computeIfAbsent(eshopUuidParser.parseEshopUuid(productUrl), eshopUuid -> new ArrayList<>())
+            eshopUrls.computeIfAbsent(eshopUuidParser.parseEshopUuid(productUrl),
+                    eshopUuid -> new ArrayList<>())
                     .add(productUrl);
         }
 
@@ -143,10 +156,12 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
         int allUrlCount = urlList.size();
 
         for (int currentUrlIndex = 0; currentUrlIndex < allUrlCount; currentUrlIndex++) {
+
             if (eshopTaskManager.isTaskShouldStopped(eshopUuid)) {
                 eshopTaskManager.markTaskAsStopped(eshopUuid);
                 break;
             }
+
             log.debug("starting {} of {}", currentUrlIndex + 1, allUrlCount);
             String productUrl = urlList.get(currentUrlIndex);
 
@@ -162,13 +177,14 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
             //TODO pridat kontrolu na dostupnost proudku, alza nebol dostupny preto nevrati mene.... a padne toto
 
             // je len tmp fix
-            if (productNewData.getName() == null) {
+            if (!productNewData.getName().isPresent()) {
                 log.warn("new product not contains name, skipping to next product");
                 continue;
             }
-            if (productNewData.getUnit() == null) {
-                logErrorParsingUnit(eshopUuid, productUrl, productNewData.getName());
-            }
+            // rusim logovanie unit, lebo to moze byt produkt ktory to ani nema, teda ani ma nezaujima...
+//            if (productNewData.getUnit() == null) {
+//                logErrorParsingUnit(eshopUuid, productUrl, productNewData.getName().get());
+//            }
 
             // preklopim a pridavam do DB
             internalTxService.createNewProduct(mapper.map(productNewData, NewProductCreateDto.class));
@@ -179,17 +195,19 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
         }
     }
 
-    private void logErrorParsingProductUrls(EshopUuid eshopUuid, String searchKeyWord) {
+    private void logErrorParsingProductUrls(EshopUuid eshopUuid, String searchKeyWord, Exception e) {
         internalTxService.createError(ErrorCreateDto.builder()
                 .errorType(ErrorType.PARSING_PRODUCT_URLS)
                 .eshopUuid(eshopUuid)
+                .message(e.getMessage())
+                .fullMsg(ExceptionUtils.getStackTrace(e))
                 .additionalInfo(searchKeyWord)
                 .build());
     }
 
     private void logErrorParsingUnit(EshopUuid eshopUuid, String productUrl, String productName) {
         internalTxService.createError(ErrorCreateDto.builder()
-                .errorType(ErrorType.PARSING_PRODUCT_INFO_ERR)
+                .errorType(ErrorType.PARSING_PRODUCT_UNIT_ERR)
                 .eshopUuid(eshopUuid)
                 .url(productUrl)
                 .additionalInfo(productName)

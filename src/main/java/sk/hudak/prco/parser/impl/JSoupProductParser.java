@@ -88,10 +88,28 @@ public abstract class JSoupProductParser implements EshopProductsParser {
      */
     protected abstract boolean isProductUnavailable(Document documentDetailProduct);
 
+    /**
+     * TODO
+     *
+     * @param documentDetailProduct
+     * @return
+     */
     protected abstract Optional<String> parseProductNameFromDetail(Document documentDetailProduct);
 
+    /**
+     * TODO
+     *
+     * @param documentDetailProduct
+     * @return
+     */
     protected abstract Optional<String> parseProductPictureURL(Document documentDetailProduct);
 
+    /**
+     * TODO
+     *
+     * @param documentDetailProduct
+     * @return
+     */
     protected abstract Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct);
 
     //TODO nasledovne 2 metody spojit do jednej a urobit aj navratovy typ
@@ -136,7 +154,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
 
     @Override
     public ProductNewData parseProductNewData(@NonNull String productUrl) {
-        //FIXME prepisat tak ako je parseProductUpdateData myslim tym tie optional
+        //FIXME prepisat tak ako je parseProductUpdateData myslim tym tie optional(overit ci uz to tak nie je)
 
         Document document = retrieveDocument(productUrl);
 
@@ -146,26 +164,24 @@ public abstract class JSoupProductParser implements EshopProductsParser {
 
         Optional<String> nameOpt = parseProductNameFromDetail(document);
         logWarningIfNull(nameOpt, "productName", document.location());
-        if (!nameOpt.isPresent()) {
-            //TODO nemala by tu byt vynimka?
-            return builder.build();
-        }
-        builder.name(nameOpt.get());
+        builder.name(nameOpt);
 
         Optional<String> pictureUrlOpt = internalParseProductPictureURL(document, productUrl);
-        if (pictureUrlOpt.isPresent()) {
-            builder.pictureUrl(pictureUrlOpt.get());
+        logWarningIfNull(pictureUrlOpt, "pictureUrl", document.location());
+        builder.pictureUrl(pictureUrlOpt);
+
+        // ak nemame nazov produktu nemozeme pokracovat v parsovani 'unit'
+        if (!nameOpt.isPresent()) {
+            return builder.build();
         }
 
         Optional<UnitTypeValueCount> unitTypeValueCountOpt = parseUnitValueCount(document, nameOpt.get());
-        if (!unitTypeValueCountOpt.isPresent()) {
-            return builder.build();
+        if (unitTypeValueCountOpt.isPresent()) {
+            builder.unit(unitTypeValueCountOpt.get().getUnit());
+            builder.unitValue(unitTypeValueCountOpt.get().getValue());
+            builder.unitPackageCount(unitTypeValueCountOpt.get().getPackageCount());
         }
-        return builder
-                .unit(unitTypeValueCountOpt.get().getUnit())
-                .unitValue(unitTypeValueCountOpt.get().getValue())
-                .unitPackageCount(unitTypeValueCountOpt.get().getPackageCount())
-                .build();
+        return builder.build();
     }
 
 

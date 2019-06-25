@@ -3,9 +3,12 @@ package sk.hudak.prco.starter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.Unit;
 import sk.hudak.prco.dto.UnitData;
+import sk.hudak.prco.dto.error.ErrorFindFilterDto;
+import sk.hudak.prco.dto.error.ErrorListDto;
 import sk.hudak.prco.dto.group.GroupCreateDto;
 import sk.hudak.prco.dto.group.GroupFilterDto;
 import sk.hudak.prco.dto.group.GroupIdNameDto;
@@ -153,14 +156,14 @@ public class Starter {
         // pampers zelene 5
 //        uiService.addProductsToGroup(321L,1698L, 1699L);
 
-        showAllGroups();
+//        showAllGroups();
 //        uiService.removeProductsFromGroup(1L, 994L, 1226L);
 
 
 //        uiService.deleteProducts(169L, 802L);
 
 
-        showDuplicityProductsInEshops();
+//        showDuplicityProductsInEshops();
 
 //        internalTxService.deleteNotInterestedProducts(
 //                97L,
@@ -178,6 +181,9 @@ public class Starter {
         // pampers 5
 //        showProductsInGroup(321L, true);
 
+
+//        internalTxService.removeProductByUrl("https://www.brendon.sk/Products/Details/118425");
+
         showProductsInGroupForFb(257L, true, EshopUuid.METRO);
 
         // nutrilon 4
@@ -194,13 +200,13 @@ public class Starter {
 
 
 //        showAllProductsInAllGroups();
-        showProductsNotInAnyGroup();
+//        showProductsNotInAnyGroup();
 
 
 //        existProduct("https://www.feedo.sk/pampers-active-baby-4-box-120ks-9-16-kg-jednorazove-plienky/");
 //        showProductsInEshop(EshopUuid.TESCO);
 //        showProductsInEshop(EshopUuid.METRO);
-        showProductsInEshopInAction(EshopUuid.TESCO);
+//        showProductsInEshopInAction(EshopUuid.TESCO);
 //        showProductsInEshopInAction(EshopUuid.METRO);
 //        showProductInActionAll();
 
@@ -210,16 +216,25 @@ public class Starter {
 
 //        watchDogService.notifyByEmail(Collections.emptyList());
 
-//        List<ErrorListDto> byTypes = internalTxService.findErrorByMaxCount(50, null);
-//        System.out.println("Errors:");
-//        for (ErrorListDto errorListDto : byTypes) {
-//            System.out.println("[" + errorListDto.getId() + "] " +
-//                    "type " + errorListDto.getErrorType() + " " +
-//                    "status " + errorListDto.getStatusCode() + " " +
-//                    "message " + errorListDto.getMessage() + " " +
+//        List<ErrorListDto> byTypes = internalTxService.findErrorsByFilter(new ErrorFindFilterDto(50, new ErrorType[]{}, new ErrorType[]{}));
+        List<ErrorListDto> byTypes = internalTxService.findErrorsByFilter(ErrorFindFilterDto.builder()
+                .limit(50)
+                .errorTypesToSkip(new ErrorType[]{ErrorType.HTTP_STATUS_404_ERR})
+                .statusCodesToSkip(new String[]{"404"})
+                .build());
+
+        System.out.println("Errors:");
+        for (ErrorListDto errorListDto : byTypes) {
+            System.out.println(
+                    errorListDto.getEshopUuid() + " " +
+                            "[" + errorListDto.getId() + "] " +
+                            formatDate(errorListDto.getUpdated()) + " " +
+                            errorListDto.getErrorType() + " " +
+                            "status: " + errorListDto.getStatusCode() + " " +
+                            "message: " + errorListDto.getMessage() + " " +
 //                    "fullMessage " + errorListDto.getFullMsg() + " " +
-//                    "url " + errorListDto.getUrl());
-//        }
+                            "url " + errorListDto.getUrl());
+        }
 
 
         // --- UPDATE PRICE DATA ---
@@ -227,7 +242,7 @@ public class Starter {
                 log.debug(">> eshop: {}, updated/waiting: {}/{}",
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
-        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
+//        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
 //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
 //        updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.MALL, listener);

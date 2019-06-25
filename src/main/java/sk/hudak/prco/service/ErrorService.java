@@ -2,6 +2,7 @@ package sk.hudak.prco.service;
 
 import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.dto.error.ErrorCreateDto;
+import sk.hudak.prco.dto.error.ErrorFindFilterDto;
 import sk.hudak.prco.dto.error.ErrorListDto;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public interface ErrorService {
     List<ErrorListDto> findErrorByMaxCount(int limit, ErrorType errorType);
 
     List<ErrorListDto> findErrorsByTypes(ErrorType... errorTypes);
+
+    List<ErrorListDto> findErrorsByFilter(ErrorFindFilterDto findDto);
 
     Map<ErrorType, Long> getStatisticForErrors();
 

@@ -12,7 +12,9 @@ import sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException;
 import sk.hudak.prco.manager.ErrorHandler;
 import sk.hudak.prco.service.InternalTxService;
 
+import static sk.hudak.prco.api.ErrorType.HTTP_STATUS_404_ERR;
 import static sk.hudak.prco.api.ErrorType.HTTP_STATUS_ERR;
+import static sk.hudak.prco.api.ErrorType.PARSING_PRODUCT_INFO_ERR;
 import static sk.hudak.prco.api.ErrorType.TIME_OUT_ERR;
 import static sk.hudak.prco.manager.impl.UpdateProcessResult.ERR_PARSING_ERROR_GENERIC;
 import static sk.hudak.prco.manager.impl.UpdateProcessResult.ERR_PARSING_ERROR_HTTP_STATUS_404;
@@ -28,7 +30,7 @@ public class ErrorHandlerImpl implements ErrorHandler {
 
     @Override
     public UpdateProcessResult processParsingError(Exception error, ProductDetailInfo productDetailInfo) {
-        log.error("error while parsing product data for product {}", productDetailInfo.getUrl(), error);
+        log.error("error while parsing product data for product " + productDetailInfo.getUrl(), error);
 
         if (error instanceof HttpErrorPrcoRuntimeException) {
             return handleHttpErrorPrcoRuntimeException((HttpErrorPrcoRuntimeException) error, productDetailInfo);
@@ -36,21 +38,19 @@ public class ErrorHandlerImpl implements ErrorHandler {
 
         if (error instanceof HttpSocketTimeoutPrcoRuntimeException) {
             return handleHttpSocketTimeoutPrcoRuntimeException((HttpSocketTimeoutPrcoRuntimeException) error, productDetailInfo);
-
         }
 
+        saveGenericParsingError(productDetailInfo.getEshopUuid(), productDetailInfo.getUrl(), error.getMessage(), error);
         return ERR_PARSING_ERROR_GENERIC;
     }
 
     private UpdateProcessResult handleHttpErrorPrcoRuntimeException(HttpErrorPrcoRuntimeException e, ProductDetailInfo productDetailInfo) {
         log.error("http status: " + e.getHttpStatus());
+        saveInvalidHttpStatusError(productDetailInfo.getEshopUuid(), productDetailInfo.getUrl(), e.getMessage(), e);
         if (404 == e.getHttpStatus()) {
-            save404Error(productDetailInfo.getEshopUuid(), productDetailInfo.getUrl(), e.getMessage(), e);
             internalTxService.removeProduct(productDetailInfo.getId());
-
             return ERR_PARSING_ERROR_HTTP_STATUS_404;
         }
-
         return ERR_PARSING_ERROR_HTTP_STATUS_INVALID;
     }
 
@@ -59,28 +59,34 @@ public class ErrorHandlerImpl implements ErrorHandler {
         return ERR_PARSING_ERROR_HTTP_TIMEOUT;
     }
 
+    private void saveInvalidHttpStatusError(EshopUuid eshopUuid, String url, String message, HttpErrorPrcoRuntimeException e) {
+        internalTxService.createError(ErrorCreateDto.builder()
+                .errorType(404 == e.getHttpStatus() ? HTTP_STATUS_404_ERR : HTTP_STATUS_ERR)
+                .eshopUuid(eshopUuid)
+                .url(url)
+                .message(message)
+                .statusCode(String.valueOf(e.getHttpStatus()))
+                .fullMsg(ExceptionUtils.getStackTrace(e))
+                .build());
+    }
+
+    private void saveGenericParsingError(EshopUuid eshopUuid, String url, String message, Exception error) {
+        internalTxService.createError(ErrorCreateDto.builder()
+                .errorType(PARSING_PRODUCT_INFO_ERR)
+                .eshopUuid(eshopUuid)
+                .url(url)
+                .message(message)
+                .fullMsg(ExceptionUtils.getStackTrace(error))
+                .build());
+    }
+
     private void saveTimeout4Error(EshopUuid eshopUuid, String url, String message, HttpSocketTimeoutPrcoRuntimeException e) {
-        ErrorCreateDto build = ErrorCreateDto.builder()
+        internalTxService.createError(ErrorCreateDto.builder()
                 .errorType(TIME_OUT_ERR)
                 .eshopUuid(eshopUuid)
                 .url(url)
                 .message(message)
                 .fullMsg(ExceptionUtils.getStackTrace(e))
-                .build();
-
-        internalTxService.createError(build);
-    }
-
-    private void save404Error(EshopUuid eshopUuid, String url, String message, HttpErrorPrcoRuntimeException e) {
-        ErrorCreateDto build = ErrorCreateDto.builder()
-                .errorType(HTTP_STATUS_ERR)
-                .eshopUuid(eshopUuid)
-                .url(url)
-                .message(message)
-                .statusCode("" + 404)
-                .fullMsg(ExceptionUtils.getStackTrace(e))
-                .build();
-
-        internalTxService.createError(build);
+                .build());
     }
 }
