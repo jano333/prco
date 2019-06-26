@@ -46,11 +46,11 @@ public class ErrorHandlerImpl implements ErrorHandler {
 
     private UpdateProcessResult handleHttpErrorPrcoRuntimeException(HttpErrorPrcoRuntimeException e, ProductDetailInfo productDetailInfo) {
         log.error("http status: " + e.getHttpStatus());
-        saveInvalidHttpStatusError(productDetailInfo.getEshopUuid(), productDetailInfo.getUrl(), e.getMessage(), e);
         if (404 == e.getHttpStatus()) {
             internalTxService.removeProduct(productDetailInfo.getId());
             return ERR_PARSING_ERROR_HTTP_STATUS_404;
         }
+        saveInvalidHttpStatusError(productDetailInfo.getEshopUuid(), productDetailInfo.getUrl(), e.getMessage(), e);
         return ERR_PARSING_ERROR_HTTP_STATUS_INVALID;
     }
 
