@@ -1,6 +1,7 @@
 package sk.hudak.prco.eshop;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -16,22 +17,26 @@ import sk.hudak.prco.utils.JsoupUtils;
 import sk.hudak.prco.utils.UserAgentDataHolder;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
 
 import static sk.hudak.prco.api.EshopUuid.MALL;
 import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
 import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
+import static sk.hudak.prco.utils.PatternUtils.NUMBER_AT_LEAST_ONE;
+import static sk.hudak.prco.utils.PatternUtils.createMatcher;
 
 @Slf4j
 @Component
 public class MallProductParser extends JSoupProductParser {
 
-    private static final int MAX_COUNT_OF_PRODUCT_PRE_PAGE = 36;
+    private static final int MAX_COUNT_OF_PRODUCT_PRE_PAGE = 48;
 
     @Autowired
     public MallProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
@@ -50,15 +55,25 @@ public class MallProductParser extends JSoupProductParser {
 
     @Override
     protected int parseCountOfPages(Document documentList) {
-        StringBuilder htmlTree = new StringBuilder()
-                .append("span[data-sel=productCountNumber]");
-        String pocetProduktov = documentList.select(htmlTree.toString()).first().text();
-        double pocet = Double.parseDouble(pocetProduktov);
-        double pocetStranNezaokruhleny = pocet / (double) MAX_COUNT_OF_PRODUCT_PRE_PAGE;
-        BigDecimal bigDecimal = BigDecimal.valueOf(pocetStranNezaokruhleny);
-        bigDecimal = bigDecimal.setScale(0, BigDecimal.ROUND_HALF_UP);
-        int pocetStran = bigDecimal.intValue();
-        return pocetStran;
+        Optional<String> scriptContent = documentList.getElementsByTag("script").stream()
+                .map(Element::html)
+                .filter(content -> content.contains("var CONFIGURATION"))
+                .findFirst();
+
+        if (!scriptContent.isPresent()) {
+            return 1;
+        }
+        // "total":107,"products"
+        Matcher matcher = createMatcher(scriptContent.get(), "\"total\":", NUMBER_AT_LEAST_ONE, ",\"products\"");
+        if (matcher.find()) {
+            return new BigDecimal(Optional.ofNullable(matcher.group(2))
+                    .filter(NumberUtils::isParsable)
+                    .map(Integer::valueOf)
+                    .get())
+                    .divide(new BigDecimal(MAX_COUNT_OF_PRODUCT_PRE_PAGE), RoundingMode.CEILING)
+                    .intValue();
+        }
+        return 1;
     }
 
     @Override

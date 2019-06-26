@@ -180,7 +180,7 @@ public enum EshopUuid {
     MALL("https://www.mall.sk",
             "https://www.mall.sk/hladaj?s={keyword}",
             "https://www.mall.sk/hladaj?page={pageNumber}&s=" + KEYWORD_TEMP,
-            2, 12, -1),
+            3, 12, -1),
 
     //TODO tento skoncil
     @Deprecated
