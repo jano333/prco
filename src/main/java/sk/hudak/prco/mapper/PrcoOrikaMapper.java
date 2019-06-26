@@ -1,11 +1,15 @@
 package sk.hudak.prco.mapper;
 
+import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.impl.ConfigurableMapper;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.dto.error.ErrorListDto;
 import sk.hudak.prco.dto.group.GroupIdNameDto;
+import sk.hudak.prco.dto.internal.ProductNewData;
 import sk.hudak.prco.dto.internal.StatisticForUpdateForEshopDto;
+import sk.hudak.prco.dto.newproduct.NewProductCreateDto;
 import sk.hudak.prco.dto.newproduct.NewProductFullDto;
 import sk.hudak.prco.dto.product.ProductAddingToGroupDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
@@ -35,6 +39,27 @@ public class PrcoOrikaMapper extends ConfigurableMapper {
         config_StatisticForUpdateForEshopDto_To_UpdateStatusInfo(factory);
 
         config_ErrorEntity_To_ErrorListDto(factory);
+
+        config_ProductNewData_To_NewProductCreateDto(factory);
+    }
+
+    private void config_ProductNewData_To_NewProductCreateDto(MapperFactory mapperFactory) {
+        mapperFactory.classMap(ProductNewData.class, NewProductCreateDto.class)
+                .customize(new CustomMapper<ProductNewData, NewProductCreateDto>() {
+                    @Override
+                    public void mapAtoB(ProductNewData productNewData, NewProductCreateDto newProductCreateDto, MappingContext context) {
+                        if (productNewData.getName() != null && productNewData.getName().isPresent()) {
+                            newProductCreateDto.setName(productNewData.getName().get());
+                        }
+                        if (productNewData.getPictureUrl() != null && productNewData.getPictureUrl().isPresent()) {
+                            newProductCreateDto.setPictureUrl(productNewData.getPictureUrl().get());
+                        }
+                    }
+                })
+                .fieldMap("name").exclude().add()
+                .fieldMap("pictureUrl").exclude().add()
+                .byDefault()
+                .register();
     }
 
     private void config_ProductEntity_to_NotInterestedProductEntity(MapperFactory mapperFactory) {

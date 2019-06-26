@@ -154,15 +154,19 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
             return true;
         }
 
+        if (ERR_UPDATE_ERROR_PRODUCT_IS_UNAVAILABLE.equals(updateProcessResult)) {
+            return true;
+        }
+
         //TODO impl pre ktore typy chyb sa ma process zastavit(teda dalsi product z daneho ehopu uz nebude spracovany)
         return false;
     }
 
     private UpdateProcessResult internalParseAndUpdate(ProductDetailInfo productDetailInfo, UpdateProductDataListener listener) {
-        // parsovanie
+        // parsing
         ParsingDataResponse parsingDataResponse = parseOneProductUpdateData(productDetailInfo);
 
-        // respon proceessing and updating if ok
+        // response processing and updating if ok
         return processParsingDataResponse(parsingDataResponse, productDetailInfo, listener);
     }
 
