@@ -20,9 +20,9 @@ import java.math.BigDecimal;
 @ToString
 public class NewProductCreateDto implements DtoAble {
 
+    private EshopUuid eshopUuid;
     private String url;
     private String name;
-    private EshopUuid eshopUuid;
 
     private Unit unit;
     private BigDecimal unitValue;
