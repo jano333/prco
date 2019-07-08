@@ -25,6 +25,7 @@ import sk.hudak.prco.service.ErrorService;
 import sk.hudak.prco.service.NewProductService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -37,6 +38,8 @@ import static sk.hudak.prco.utils.Validate.notNullNotEmpty;
 @Slf4j
 @Service("newProductService")
 public class NewProductServiceImpl implements NewProductService {
+
+    private static final String NEW_PRODUCT_ID = "newProductId";
 
     @Autowired
     private NewProductEntityDbDao newProductEntityDao;
@@ -56,7 +59,7 @@ public class NewProductServiceImpl implements NewProductService {
     @Override
     public Long createNewProduct(NewProductCreateDto newProductCreateDto) {
         try {
-            notNull(newProductCreateDto, "newProductInfo");
+            notNull(newProductCreateDto, "newProductCreateDto");
             notNull(newProductCreateDto.getEshopUuid(), "eshopUuid");
             notNullNotEmpty(newProductCreateDto.getUrl(), "url");
             notNullNotEmpty(newProductCreateDto.getName(), "name");
@@ -82,12 +85,12 @@ public class NewProductServiceImpl implements NewProductService {
             log.debug("create new entity {} with id {}", entity.getClass().getSimpleName(), entity.getId());
             return id;
 
+        } catch (PrcoRuntimeException e) {
+            throw e;
+
         } catch (Exception e) {
             String errMsg = "error creating " + ProductNewData.class.getSimpleName();
             log.debug(errMsg, e);
-            if (e instanceof PrcoRuntimeException) {
-                throw (PrcoRuntimeException) e;
-            }
             throw new PrcoRuntimeException(errMsg, e);
         }
     }
@@ -99,7 +102,7 @@ public class NewProductServiceImpl implements NewProductService {
 
     @Override
     public NewProductFullDto getNewProduct(Long newProductId) {
-        notNull(newProductId, "newProductId");
+        notNull(newProductId, NEW_PRODUCT_ID);
 
         return mapper.map(newProductEntityDao.findById(newProductId), NewProductFullDto.class);
     }
@@ -110,13 +113,14 @@ public class NewProductServiceImpl implements NewProductService {
                 .map(newProductEntity -> mapper.map(newProductEntity, NewProductInfoDetail.class));
     }
 
+    @Override
     public long getCountOfInvalidNewProduct() {
         return newProductEntityDao.countOfAllInvalidNewProduct();
     }
 
     @Override
     public void repairInvalidUnitForNewProduct(Long newProductId, UnitData validUnitData) {
-        notNull(newProductId, "newProductId");
+        notNull(newProductId, NEW_PRODUCT_ID);
         notNull(validUnitData, "validUnitData");
         notNull(validUnitData.getUnit(), "unit");
         notNull(validUnitData.getUnitValue(), "unitValue");
@@ -139,21 +143,21 @@ public class NewProductServiceImpl implements NewProductService {
 
     @Override
     public void reprocessProductData(Long newProductId) {
-        notNull(newProductId, "newProductId");
+        notNull(newProductId, NEW_PRODUCT_ID);
 
         NewProductEntity productEntity = newProductEntityDao.findById(newProductId);
         // parsujem
         ProductNewData productNewData = htmlParser.parseProductNewData(productEntity.getUrl());
 
-        // update name
+        // name
         productNewData.getName()
                 .filter(StringUtils::isNotBlank)
-                .ifPresent(name -> productEntity.setName(name));
+                .ifPresent(productEntity::setName);
 
-        // update picture URL
+        // picture URL
         productNewData.getPictureUrl()
                 .filter(StringUtils::isNotBlank)
-                .ifPresent(pictureUrl -> productEntity.setPictureUrl(pictureUrl));
+                .ifPresent(productEntity::setPictureUrl);
 
         if (productNewData.getUnit() != null) {
             productEntity.setUnit(productNewData.getUnit());
@@ -199,11 +203,9 @@ public class NewProductServiceImpl implements NewProductService {
 
         final int[] countOfRepaired = {0};
 
-        invalidProductList.stream().forEach(productEntity -> {
+        invalidProductList.forEach(productEntity -> {
             Optional<UnitTypeValueCount> unitTypeValueCountOpt = unitParser.parseUnitTypeValueCount(productEntity.getName());
-            if (unitTypeValueCountOpt.isPresent()) {
-                UnitTypeValueCount unitTypeValueCount = unitTypeValueCountOpt.get();
-
+            unitTypeValueCountOpt.ifPresent(unitTypeValueCount -> {
                 productEntity.setUnit(unitTypeValueCount.getUnit());
                 productEntity.setUnitValue(unitTypeValueCount.getValue());
                 productEntity.setUnitPackageCount(unitTypeValueCount.getPackageCount());
@@ -211,7 +213,7 @@ public class NewProductServiceImpl implements NewProductService {
                 newProductEntityDao.update(productEntity);
 
                 countOfRepaired[0]++;
-            }
+            });
         });
         log.info("count of repaired products: {}", countOfRepaired[0]);
         return countOfRepaired[0];
@@ -272,9 +274,8 @@ public class NewProductServiceImpl implements NewProductService {
 
     @Override
     public void deleteNewProducts(Long... newProductIds) {
-        for (Long newProductId : newProductIds) {
-            newProductEntityDao.delete(newProductEntityDao.findById(newProductId));
-        }
+        Arrays.stream(newProductIds)
+                .forEach(newProductId -> newProductEntityDao.delete(newProductEntityDao.findById(newProductId)));
     }
 
     @Override
