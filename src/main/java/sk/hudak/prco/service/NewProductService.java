@@ -54,11 +54,11 @@ public interface NewProductService {
     void repairInvalidUnitForNewProduct(Long newProductId, UnitData correctUnitData);
 
     /**
-     * sprusti este raz zistovanie UnitData na zaklade nazvu productu.
+     * sprusti este raz parsovanie dat pre new product
      *
      * @param newProductId new product id
      */
-    void repairInvalidUnitForNewProductByReprocessing(Long newProductId);
+    void reprocessProductData(Long newProductId);
 
     /**
      * Potvrdi, ze data pre unit, value, a package count odpovedaju tomu co je v nazve produktu,
@@ -75,7 +75,7 @@ public interface NewProductService {
      * @param maxCountOfInvalid maximalny pocet productov, ktore sa maju opravit
      * @return pocet skutocne opravenych
      */
-    long fixAutomaticalyProductUnitData(int maxCountOfInvalid);
+    long fixAutomaticallyProductUnitData(int maxCountOfInvalid);
 
     /**
      * Vyhladavanie pre UI na zaklade filtra.

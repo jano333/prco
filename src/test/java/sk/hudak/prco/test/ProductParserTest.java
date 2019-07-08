@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.MallProductParser;
+import sk.hudak.prco.eshop.ManagoProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -46,9 +46,9 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.gigalekaren.sk/produkt/pampers-active-baby-vpp-junior-11-18kg-50ks/"));
 //
         // Manago
-//        System.out.println(new ManagoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+        System.out.println(new ManagoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
-//                .parseProductNewData("https://www.magano.sk/pampers-detske-vlhcene-utierky-64ks-fresh-clean"));
+                .parseProductNewData("https://www.magano.sk/pampers-active-baby-6-10kg-vel-3-90ks"));
 //                .parseProductUpdateData("https://www.magano.sk/pampers-pants-midi-60ks-6-11kg-velkost-3"));
 
 
@@ -166,8 +166,8 @@ public class ProductParserTest {
 
 
 //         MALL
-        System.out.println(new MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-                .parseUrlsOfProduct("pampers"));
+//        System.out.println(new MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers"));
 //                .parseProductNewData("http://mall.sk/plienky-pampers-7-18-kg/pampers-pure-protection-s4-28-ks-914-kg"));
 //                .parseProductUpdateData("http://mall.sk/plienky-pampers-7-18-kg/pampers-pure-protection-s4-28-pcs-9-14-kg"));
 

@@ -100,7 +100,7 @@ public class UIServiceImpl implements UIService {
 
     @Override
     public void tryToRepairInvalidUnitForNewProductByReprocessing(Long newProductId) {
-        internalTxService.repairInvalidUnitForNewProductByReprocessing(newProductId);
+        internalTxService.reprocessProductData(newProductId);
     }
 
     @Override

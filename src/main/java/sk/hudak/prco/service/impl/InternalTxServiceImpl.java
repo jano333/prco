@@ -125,8 +125,8 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional
-    public void repairInvalidUnitForNewProductByReprocessing(Long newProductId) {
-        newProductService.repairInvalidUnitForNewProductByReprocessing(newProductId);
+    public void reprocessProductData(Long newProductId) {
+        newProductService.reprocessProductData(newProductId);
     }
 
     @Override
@@ -137,8 +137,8 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional
-    public long fixAutomaticalyProductUnitData(int maxCountOfInvalid) {
-        return newProductService.fixAutomaticalyProductUnitData(maxCountOfInvalid);
+    public long fixAutomaticallyProductUnitData(int maxCountOfInvalid) {
+        return newProductService.fixAutomaticallyProductUnitData(maxCountOfInvalid);
     }
 
     @Override

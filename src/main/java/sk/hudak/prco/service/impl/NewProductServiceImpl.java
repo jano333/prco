@@ -138,19 +138,32 @@ public class NewProductServiceImpl implements NewProductService {
     }
 
     @Override
-    public void repairInvalidUnitForNewProductByReprocessing(Long newProductId) {
+    public void reprocessProductData(Long newProductId) {
         notNull(newProductId, "newProductId");
         NewProductEntity productEntity = newProductEntityDao.findById(newProductId);
         // parsujem
         ProductNewData productNewData = htmlParser.parseProductNewData(productEntity.getUrl());
 
-        if (productNewData.getUnit() == null) {
-            if (StringUtils.isBlank(productEntity.getPictureUrl()) && productNewData.getPictureUrl().isPresent()) {
-                log.debug("updating product picture url to {}", productNewData.getPictureUrl());
-                productEntity.setPictureUrl(productNewData.getPictureUrl().get());
-                newProductEntityDao.update(productEntity);
-            }
+        // update name
+        productNewData.getName()
+                .filter(StringUtils::isNotBlank)
+                .ifPresent(name -> productEntity.setName(name));
 
+        // update picture URL
+        productNewData.getPictureUrl()
+                .filter(StringUtils::isNotBlank)
+                .ifPresent(pictureUrl -> productEntity.setPictureUrl(pictureUrl));
+
+        if (productNewData.getUnit() != null) {
+            productEntity.setUnit(productNewData.getUnit());
+            productEntity.setUnitValue(productNewData.getUnitValue());
+            productEntity.setUnitPackageCount(productNewData.getUnitPackageCount());
+            productEntity.setValid(Boolean.TRUE);
+            log.debug("new product with id {} was updated with unit data {}", productEntity.getId(),
+                    new UnitTypeValueCount(productNewData.getUnit(),
+                            productNewData.getUnitValue(), productNewData.getUnitPackageCount()));
+
+        } else {
             log.warn("parsing unit data failed for name {}", productEntity.getName());
             errorService.createError(ErrorCreateDto.builder()
                     .errorType(ErrorType.PARSING_PRODUCT_UNIT_ERR)
@@ -158,18 +171,9 @@ public class NewProductServiceImpl implements NewProductService {
                     .eshopUuid(productEntity.getEshopUuid())
                     .additionalInfo(productEntity.getName())
                     .build());
-
-
-        } else {
-            productEntity.setUnit(productNewData.getUnit());
-            productEntity.setUnitValue(productNewData.getUnitValue());
-            productEntity.setUnitPackageCount(productNewData.getUnitPackageCount());
-            productEntity.setValid(Boolean.TRUE);
-            log.debug("new product with id {} was updated with unit data {}", productEntity.getId(),
-                    new UnitTypeValueCount(productNewData.getUnit(), productNewData.getUnitValue(), productNewData.getUnitPackageCount()));
-            productEntity.setPictureUrl(productNewData.getPictureUrl().isPresent() ? productNewData.getPictureUrl().get() : null);
-            newProductEntityDao.update(productEntity);
         }
+
+        newProductEntityDao.update(productEntity);
     }
 
     @Override
@@ -177,7 +181,7 @@ public class NewProductServiceImpl implements NewProductService {
         atLeastOneIsNotNull(newProductIds, "newProductIds");
 
         Stream.of(newProductIds)
-                .map(id -> newProductEntityDao.findById(id))
+                .map(newProductEntityDao::findById)
                 .forEach(entity -> {
                     entity.setConfirmValidity(Boolean.TRUE);
                     newProductEntityDao.update(entity);
@@ -186,7 +190,7 @@ public class NewProductServiceImpl implements NewProductService {
     }
 
     @Override
-    public long fixAutomaticalyProductUnitData(int maxCountOfInvalid) {
+    public long fixAutomaticallyProductUnitData(int maxCountOfInvalid) {
         notNegativeAndNotZeroValue(maxCountOfInvalid, "maxCountOfInvalid");
 
         List<NewProductEntity> invalidProductList = newProductEntityDao.findInvalid(maxCountOfInvalid);

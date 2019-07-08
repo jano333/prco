@@ -3,7 +3,6 @@ package sk.hudak.prco.starter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.Unit;
 import sk.hudak.prco.dto.UnitData;
@@ -216,10 +215,9 @@ public class Starter {
 
 //        watchDogService.notifyByEmail(Collections.emptyList());
 
-//        List<ErrorListDto> byTypes = internalTxService.findErrorsByFilter(new ErrorFindFilterDto(50, new ErrorType[]{}, new ErrorType[]{}));
         List<ErrorListDto> byTypes = internalTxService.findErrorsByFilter(ErrorFindFilterDto.builder()
                 .limit(50)
-                .errorTypesToSkip(new ErrorType[]{ErrorType.HTTP_STATUS_404_ERR})
+//                .errorTypesToSkip(new ErrorType[]{ErrorType.HTTP_STATUS_404_ERR})
                 .statusCodesToSkip(new String[]{"404"})
                 .build());
 
@@ -248,6 +246,8 @@ public class Starter {
 //        updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.MALL, listener);
         // updatne vsetky produkty v danej skupine
 //        updateProductDataManager.updateProductDataForEachProductInGroup(33L);
+
+//        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 //        updateProductDataManager.updateProductData(3118L);
 //        uiService.resetUpdateDateForAllProductsInEshop(EshopUuid.TESCO);
 //        uiService.updateProductCommonPrice(449L, BigDecimal.valueOf(0.59));
@@ -275,7 +275,7 @@ public class Starter {
         // ---
 //        internalTxService.confirmUnitDataForNewProducts(36L, 38L);
         // ---
-//        long l = internalTxService.fixAutomaticalyProductUnitData(5);
+//        long l = internalTxService.fixAutomaticallyProductUnitData(5);
         // ---
 //        internalTxService.markNewProductAsInterested(33L,34L,36L);
 
