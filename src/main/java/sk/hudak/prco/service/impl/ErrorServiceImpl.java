@@ -169,8 +169,9 @@ public class ErrorServiceImpl implements ErrorService {
                 count++;
             }
         }
-        log.debug("remove older count {}", toBeDeleted.size());
+        log.debug("removed older errors, count {}", toBeDeleted.size());
 
+        //TODO doc a do osobitnej metody
         List<String> fistTenURL = notInterestedProductDbDao.findFistTenURL();
         if (!fistTenURL.isEmpty()) {
             toBeDeleted = errorEntityDao.findByUrls(fistTenURL);
