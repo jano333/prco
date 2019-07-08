@@ -101,7 +101,6 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
 
             boolean finishedWithError = false;
             try {
-                //TODO toto volanie dat do osobitneho try catch bloku a zalogovat ze sa nepodarilo ulozit a nie ze sa nepodarilo vyparsovat
 
                 createNewProducts(eshopUuid, urlList);
 
