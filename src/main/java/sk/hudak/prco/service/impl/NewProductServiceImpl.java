@@ -140,6 +140,7 @@ public class NewProductServiceImpl implements NewProductService {
     @Override
     public void reprocessProductData(Long newProductId) {
         notNull(newProductId, "newProductId");
+
         NewProductEntity productEntity = newProductEntityDao.findById(newProductId);
         // parsujem
         ProductNewData productNewData = htmlParser.parseProductNewData(productEntity.getUrl());
