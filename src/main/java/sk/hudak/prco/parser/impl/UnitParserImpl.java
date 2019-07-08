@@ -53,6 +53,12 @@ public class UnitParserImpl implements UnitParser {
         if (matcher.find()) {
             return createKus(matcher.group(2), "1");
         }
+
+        // Pampers New Baby 1 Newborn - 2 x 43 ks
+        matcher = createMatcher(productName, "-", SPACE, NUMBER_AT_LEAST_ONE, SPACE, "x", SPACE, NUMBER_AT_LEAST_ONE, SPACE, "ks");
+        if (matcher.find()) {
+            return createKus(matcher.group(7), matcher.group(3));
+        }
         // "Pampers Fresh Clean Čistiace Obrúsky 4x64 Kusov"
         // "Pampers Obrúsky Natural Clean 6×64 ks"
         matcher = createMatcher(productName, SPACE, NUMBER_AT_LEAST_ONE, "x|×", NUMBER_AT_LEAST_ONE, SPACE, "kusov|ks");
@@ -129,13 +135,13 @@ public class UnitParserImpl implements UnitParser {
             return createKus(matcher.group(1));
         }
 
-        //Pampers Active Baby Veľ. 6, 56 Plienok, 13-18 kg
+        // Pampers Active Baby Veľ. 6, 56 Plienok, 13-18 kg
         matcher = createMatcher(productName, NUMBER_AT_LEAST_ONE, SPACE, "plienok");
         if (matcher.find()) {
             return createKus(matcher.group(1));
         }
 
-        //Pampers Premium Care Veľkosť 5, Plienky x88, 11kg-16kg
+        // Pampers Premium Care Veľkosť 5, Plienky x88, 11kg-16kg
         matcher = createMatcher(productName, "plienky", SPACE, "x", NUMBER_AT_LEAST_ONE, ",", SPACE);
         if (matcher.find()) {
             return createKus(matcher.group(4));
