@@ -58,6 +58,7 @@ public class PrcoSSLContants {
 
         ALLOWED_HOSTNAME.add("elbiahosting.sk");
         ALLOWED_HOSTNAME.add("www.magano.sk");
+        ALLOWED_HOSTNAME.add("blueweb-3.vshosting.cz");
 
         ALLOWED_HOSTNAME.add("www.esodrogeria.eu");
 
@@ -65,6 +66,7 @@ public class PrcoSSLContants {
 
         ALLOWED_HOSTNAME.add("moonlake.cz");
         ALLOWED_HOSTNAME.add("www.lekarenexpres.sk");
+
 
 
 
