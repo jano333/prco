@@ -43,6 +43,7 @@ public class WatchDogServiceImpl implements WatchDogService {
         notNull(addDto, "addDto");
         notNullNotEmpty(addDto.getProductUrl(), "productUrl");
         notNull(addDto.getMaxPriceToBeInterestedIn(), "maxPriceToBeInterestedIn");
+
         // check if already exist with this URL
         if (watchDogEntityDao.existWithUrl(addDto.getProductUrl())) {
             throw new PrcoRuntimeException("Product with URL " + addDto.getProductUrl() + " already exist");
@@ -52,6 +53,7 @@ public class WatchDogServiceImpl implements WatchDogService {
         entity.setEshopUuid(eshopUuidParser.parseEshopUuid(addDto.getProductUrl()));
         entity.setProductUrl(addDto.getProductUrl());
         entity.setMaxPriceToBeInterestedIn(addDto.getMaxPriceToBeInterestedIn());
+
         Long id = watchDogEntityDao.save(entity);
         log.debug("create new entity {} with id {}", entity.getClass().getSimpleName(), entity.getId());
 
