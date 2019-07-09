@@ -17,12 +17,12 @@ public class GroupProductKeywordsDaoImpl extends BaseDaoImpl<GroupProductKeyword
     }
 
     @Override
-    public GroupProductKeywordsEntity findByGroupId(Long groupId) {
+    public List<GroupProductKeywordsEntity> findByGroupId(Long groupId) {
         return getQueryFactory()
                 .select(QGroupProductKeywordsEntity.groupProductKeywordsEntity)
                 .from(QGroupProductKeywordsEntity.groupProductKeywordsEntity)
                 .where(QGroupProductKeywordsEntity.groupProductKeywordsEntity.group.id.eq(groupId))
-                .fetchFirst();
+                .fetch();
     }
 
     @Override

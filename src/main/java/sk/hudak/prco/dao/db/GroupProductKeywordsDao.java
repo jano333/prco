@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface GroupProductKeywordsDao extends BaseDao<GroupProductKeywordsEntity> {
 
-    GroupProductKeywordsEntity findByGroupId(Long groupId);
+    List<GroupProductKeywordsEntity> findByGroupId(Long groupId);
 
     List<String[]> findKeywordsForGroupId(Long groupId);
 }

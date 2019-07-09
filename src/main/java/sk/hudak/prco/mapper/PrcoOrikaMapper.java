@@ -36,6 +36,7 @@ public class PrcoOrikaMapper extends ConfigurableMapper {
 
 
         config_GroupEntity_To_GroupIdNameDto(factory);
+
         config_StatisticForUpdateForEshopDto_To_UpdateStatusInfo(factory);
 
         config_ErrorEntity_To_ErrorListDto(factory);

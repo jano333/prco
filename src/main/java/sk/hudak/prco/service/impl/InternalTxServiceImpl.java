@@ -20,6 +20,7 @@ import sk.hudak.prco.dto.group.GroupIdNameDto;
 import sk.hudak.prco.dto.group.GroupListDto;
 import sk.hudak.prco.dto.group.GroupListExtendedDto;
 import sk.hudak.prco.dto.group.GroupProductKeywordsCreateDto;
+import sk.hudak.prco.dto.group.GroupProductKeywordsFullDto;
 import sk.hudak.prco.dto.group.GroupUpdateDto;
 import sk.hudak.prco.dto.internal.StatisticForUpdateForEshopDto;
 import sk.hudak.prco.dto.newproduct.NewProductCreateDto;
@@ -479,6 +480,12 @@ public class InternalTxServiceImpl implements InternalTxService {
     @Transactional
     public Long createGroupProductKeywords(GroupProductKeywordsCreateDto groupProductKeywordsCreateDto) {
         return groupProductKeywordsService.createGroupProductKeywords(groupProductKeywordsCreateDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<GroupProductKeywordsFullDto> getGroupProductKeywordsByGroupId(Long groupId) {
+        return groupProductKeywordsService.getGroupProductKeywordsByGroupId(groupId);
     }
 
     // tests

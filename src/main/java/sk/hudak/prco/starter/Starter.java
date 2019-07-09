@@ -13,6 +13,7 @@ import sk.hudak.prco.dto.group.GroupFilterDto;
 import sk.hudak.prco.dto.group.GroupIdNameDto;
 import sk.hudak.prco.dto.group.GroupListExtendedDto;
 import sk.hudak.prco.dto.group.GroupProductKeywordsCreateDto;
+import sk.hudak.prco.dto.group.GroupProductKeywordsFullDto;
 import sk.hudak.prco.dto.group.GroupUpdateDto;
 import sk.hudak.prco.dto.newproduct.NewProductInfoDetail;
 import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFindDto;
@@ -237,6 +238,7 @@ public class Starter {
 
 
 //        createGroupKeyWords();
+        showGroupKeysWords();
 
         // --- UPDATE PRICE DATA ---
         UpdateProductDataListener listener = updateStatusInfo ->
@@ -311,6 +313,12 @@ public class Starter {
                 449L,
                 Arrays.asList("pampers", "premium", "s0"))
         );
+    }
+
+    private void showGroupKeysWords() {
+        Optional<GroupProductKeywordsFullDto> groupProductKeywordsByGroupId = internalTxService.getGroupProductKeywordsByGroupId(449L);
+
+        System.out.println(groupProductKeywordsByGroupId.get());
     }
 
     private void showDuplicityProductsInEshops() {
