@@ -6,6 +6,7 @@ public interface InternalTxService extends
         ProductService,
         NotInterestedProductService,
         GroupService,
+        GroupProductKeywordsService,
         ErrorService,
         WatchDogService
 {

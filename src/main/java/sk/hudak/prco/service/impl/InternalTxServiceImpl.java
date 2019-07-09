@@ -19,6 +19,7 @@ import sk.hudak.prco.dto.group.GroupFilterDto;
 import sk.hudak.prco.dto.group.GroupIdNameDto;
 import sk.hudak.prco.dto.group.GroupListDto;
 import sk.hudak.prco.dto.group.GroupListExtendedDto;
+import sk.hudak.prco.dto.group.GroupProductKeywordsCreateDto;
 import sk.hudak.prco.dto.group.GroupUpdateDto;
 import sk.hudak.prco.dto.internal.StatisticForUpdateForEshopDto;
 import sk.hudak.prco.dto.newproduct.NewProductCreateDto;
@@ -35,6 +36,7 @@ import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.dto.product.ProductInActionDto;
 import sk.hudak.prco.dto.product.ProductUnitDataDto;
 import sk.hudak.prco.service.ErrorService;
+import sk.hudak.prco.service.GroupProductKeywordsService;
 import sk.hudak.prco.service.GroupService;
 import sk.hudak.prco.service.InternalTxService;
 import sk.hudak.prco.service.NewProductService;
@@ -85,6 +87,10 @@ public class InternalTxServiceImpl implements InternalTxService {
     @Inject
     @Named("errorService")
     private ErrorService errorService;
+
+    @Inject
+    @Named("groupProductKeywordsService")
+    private GroupProductKeywordsService groupProductKeywordsService;
 
     @Override
     @Transactional(readOnly = true)
@@ -467,6 +473,12 @@ public class InternalTxServiceImpl implements InternalTxService {
     @Transactional(readOnly = true)
     public Optional<Long> getProductWithUrl(String productUrl, Long productIdToIgnore) {
         return productService.getProductWithUrl(productUrl, productIdToIgnore);
+    }
+
+    @Override
+    @Transactional
+    public Long createGroupProductKeywords(GroupProductKeywordsCreateDto groupProductKeywordsCreateDto) {
+        return groupProductKeywordsService.createGroupProductKeywords(groupProductKeywordsCreateDto);
     }
 
     // tests

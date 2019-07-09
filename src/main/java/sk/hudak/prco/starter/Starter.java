@@ -12,6 +12,7 @@ import sk.hudak.prco.dto.group.GroupCreateDto;
 import sk.hudak.prco.dto.group.GroupFilterDto;
 import sk.hudak.prco.dto.group.GroupIdNameDto;
 import sk.hudak.prco.dto.group.GroupListExtendedDto;
+import sk.hudak.prco.dto.group.GroupProductKeywordsCreateDto;
 import sk.hudak.prco.dto.group.GroupUpdateDto;
 import sk.hudak.prco.dto.newproduct.NewProductInfoDetail;
 import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFindDto;
@@ -235,15 +236,17 @@ public class Starter {
         }
 
 
+//        createGroupKeyWords();
+
         // --- UPDATE PRICE DATA ---
         UpdateProductDataListener listener = updateStatusInfo ->
-                log.debug(">> eshop: {}, updated/waiting: {}/{}",
+                log.debug(">> eshop: {}, updated/waitingJSoupProductParser: {}/{}",
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
 //        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
 //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
-//        updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.MALL, listener);
+//        updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.LEKAREN_BELLA, listener);
         // updatne vsetky produkty v danej skupine
 //        updateProductDataManager.updateProductDataForEachProductInGroup(33L);
 
@@ -301,6 +304,13 @@ public class Starter {
 //                348L,
 //                new UnitData(Unit.KILOGRAM, new BigDecimal(5.6), Integer.valueOf(1)));
 
+    }
+
+    private void createGroupKeyWords() {
+        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
+                449L,
+                Arrays.asList("pampers", "premium", "s0"))
+        );
     }
 
     private void showDuplicityProductsInEshops() {
