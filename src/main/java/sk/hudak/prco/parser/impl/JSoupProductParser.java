@@ -259,9 +259,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
             String errMsg = "error creating document for url '" + productUrl + "': ";
             if (e instanceof HttpStatusException) {
                 HttpStatusException se = (HttpStatusException) e;
-                errMsg = errMsg + " " + se.toString();
-                log.error(errMsg, e);
-                throw new HttpErrorPrcoRuntimeException(se.getStatusCode(), errMsg, e);
+                throw new HttpErrorPrcoRuntimeException(se.getStatusCode(), errMsg + " " + se.toString(), e);
 
             } else if (e instanceof SocketTimeoutException) {
                 throw new HttpSocketTimeoutPrcoRuntimeException((SocketTimeoutException) e);
