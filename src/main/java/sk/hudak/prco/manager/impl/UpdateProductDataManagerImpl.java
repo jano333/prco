@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static sk.hudak.prco.manager.impl.UpdateProcessResult.ERR_PARSING_ERROR_HTTP_STATUS_404;
 import static sk.hudak.prco.manager.impl.UpdateProcessResult.ERR_UPDATE_ERROR_PRODUCT_IS_UNAVAILABLE;
 import static sk.hudak.prco.manager.impl.UpdateProcessResult.OK;
 import static sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe;
@@ -155,6 +156,10 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
         }
 
         if (ERR_UPDATE_ERROR_PRODUCT_IS_UNAVAILABLE.equals(updateProcessResult)) {
+            return true;
+        }
+
+        if (ERR_PARSING_ERROR_HTTP_STATUS_404.equals(updateProcessResult)) {
             return true;
         }
 
