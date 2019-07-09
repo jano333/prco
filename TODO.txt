@@ -1,4 +1,17 @@
-posledne 50
+Pampers New Baby-Dry 3-6kg veľ.2 43ks
+pampers 2 zelene
+*********************************
+Pampers New Baby-Dry 2-5kg veľ.1 43ks
+pampes 1 zelene
+*********************************
+Pampers Active Baby Mini 4-8kg veľ.2 100ks
+pampers 2 zelene
+*********************************
+Pampers Active Baby 11-16kg veľ.5 64ks
+pridat ako grupa pampes 5 zelene
+*********************************
+Pampers Active Baby plienky Extra Large veľ.6 13-18kg 56ks
+pridat ako grupa pampers 4 zelene
 *********************************
 2019-06-07 14:02:06,452 ERROR [LEKAREN_EXPRES] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:247] error creating document for url 'https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-active-baby-vpp-4-maxi-plus-53ks-17305.html':  org.jsoup.HttpStatusException: HTTP error fetching URL. Status=500, URL=https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-active-baby-vpp-4-maxi-plus-53ks-17305.html
 org.jsoup.HttpStatusException: HTTP error fetching URL
