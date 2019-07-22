@@ -67,4 +67,15 @@ public class GroupProductKeywordsServiceImpl implements GroupProductKeywordsServ
                 .collect(Collectors.toList()));
         return Optional.of(dto);
     }
+
+    @Override
+    public void removeAllKeywordForGroupId(Long groupId) {
+        notNull(groupId, "groupId");
+
+        groupProductKeywordsDao
+                .findByGroupId(groupId)
+                .forEach(entity -> groupProductKeywordsDao.delete(entity));
+
+        log.debug("all keywords for group id {}", groupId);
+    }
 }

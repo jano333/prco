@@ -1,6 +1,7 @@
 package sk.hudak.prco.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sk.hudak.prco.api.ErrorType;
@@ -46,8 +47,6 @@ import sk.hudak.prco.service.ProductCommonService;
 import sk.hudak.prco.service.ProductService;
 import sk.hudak.prco.service.WatchDogService;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -61,37 +60,33 @@ import java.util.concurrent.Future;
 @Service
 public class InternalTxServiceImpl implements InternalTxService {
 
-    @Inject
-    @Named("newProductService")
-    private NewProductService newProductService;
+    private final NewProductService newProductService;
+    private final ProductCommonService productCommonService;
+    private final ProductService productService;
+    private final NotInterestedProductService notInterestedProductService;
+    private final GroupService groupService;
+    private final WatchDogService watchDogService;
+    private final ErrorService errorService;
+    private final GroupProductKeywordsService groupProductKeywordsService;
 
-    @Inject
-    @Named("productCommonService")
-    private ProductCommonService productCommonService;
+    public InternalTxServiceImpl(@Qualifier("newProductService") NewProductService newProductService,
+                                 @Qualifier("productCommonService") ProductCommonService productCommonService,
+                                 @Qualifier("productService") ProductService productService,
+                                 @Qualifier("notInterestedProductService") NotInterestedProductService notInterestedProductService,
+                                 @Qualifier("groupService") GroupService groupService,
+                                 @Qualifier("watchDogService") WatchDogService watchDogService,
+                                 @Qualifier("errorService") ErrorService errorService,
+                                 @Qualifier("groupProductKeywordsService") GroupProductKeywordsService groupProductKeywordsService) {
 
-    @Inject
-    @Named("productService")
-    private ProductService productService;
-
-    @Inject
-    @Named("notInterestedProductService")
-    private NotInterestedProductService notInterestedProductService;
-
-    @Inject
-    @Named("groupService")
-    private GroupService groupService;
-
-    @Inject
-    @Named("watchDogService")
-    private WatchDogService watchDogService;
-
-    @Inject
-    @Named("errorService")
-    private ErrorService errorService;
-
-    @Inject
-    @Named("groupProductKeywordsService")
-    private GroupProductKeywordsService groupProductKeywordsService;
+        this.newProductService = newProductService;
+        this.productCommonService = productCommonService;
+        this.productService = productService;
+        this.notInterestedProductService = notInterestedProductService;
+        this.groupService = groupService;
+        this.watchDogService = watchDogService;
+        this.errorService = errorService;
+        this.groupProductKeywordsService = groupProductKeywordsService;
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -486,6 +481,12 @@ public class InternalTxServiceImpl implements InternalTxService {
     @Transactional(readOnly = true)
     public Optional<GroupProductKeywordsFullDto> getGroupProductKeywordsByGroupId(Long groupId) {
         return groupProductKeywordsService.getGroupProductKeywordsByGroupId(groupId);
+    }
+
+    @Override
+    @Transactional
+    public void removeAllKeywordForGroupId(Long groupId) {
+        groupProductKeywordsService.removeAllKeywordForGroupId(groupId);
     }
 
     // tests

@@ -10,6 +10,7 @@ public enum GroupProductKeywords {
 
     //    TODO pridat zoznam ktore nesmie mat, data aby do nutrilon 4 nam nedava nutrilon 4 profutura
 
+    @Deprecated
     PAMPERS_PREMIUM_0(
             449L,
             asList("pampers", "pro", "care", "s0"),
@@ -19,6 +20,8 @@ public enum GroupProductKeywords {
             asList("pampers", "premium", "procare", "0"),
             asList("pampers", "premium", "care", "newborn", "0")
     ),
+
+    @Deprecated
     PAMPERS_PREMIUM_1(
             450L,
             asList("pampers", "pro", "care", "s1"),
@@ -31,7 +34,7 @@ public enum GroupProductKeywords {
             asList("pampers", "premium", "newborn", "1"),
             asList("pampers", "premium", "procare", "1"),
             asList("pampers", "premiumcare", "1")
-            ),
+    ),
     PAMPERS_PREMIUM_2(
             451L,
             asList("pampers", "premium", "2"),
@@ -243,7 +246,8 @@ public enum GroupProductKeywords {
             asList("nutrilon", "4")),
     NUTRILON_5(
             257L,
-            asList("nutrilon", "5")),;
+            asList("nutrilon", "5")),
+    ;
 
     @Getter
     private Long groupId;
