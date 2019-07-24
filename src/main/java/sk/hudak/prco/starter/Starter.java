@@ -229,10 +229,10 @@ public class Starter {
 
         // --- UPDATE PRICE DATA ---
         UpdateProductDataListener listener = updateStatusInfo ->
-                log.debug(">> eshop: {}, updated/waitingJSoupProductParser: {}/{}",
+                log.debug(">> eshop: {}, updated/waiting: {}/{}",
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
-        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
+//        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
 //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
 //        updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.LEKAREN_BELLA, listener);

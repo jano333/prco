@@ -1,7 +1,16 @@
-*********
+
+*****************************************************************************************
+dava zle automaticky groupu:
+Pampers Pure Protection 3 6-10 kg plienkové nohavičky 31 kusov
+a dava
+PAMPERS_ZELENE_3
+TODO: urobit group keywordy aj pre pants vsetky velkosti a prest zoznam notinteresting s nazvom pampers
+*****************************************************************************************
 Pampers New Baby-Dry 3-6kg veľ.2 43ks
 pampers 2 zelene
 *********************************
+2019-07-24 11:49:39,869 DEBUG [BAMBINO] [] s.h.p.s.Starter [Starter.java:232] >> eshop: BAMBINO, updated/waitingJSoupProductParser: 77/3
+******************
 Pampers New Baby-Dry 2-5kg veľ.1 43ks
 pampes 1 zelene
 *********************************

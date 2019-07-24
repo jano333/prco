@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.internal.ProductNewData;
 import sk.hudak.prco.dto.internal.ProductUpdateData;
-import sk.hudak.prco.exception.PrcoRuntimeException;
+import sk.hudak.prco.exception.EshopParserNotFoundPrcoException;
 import sk.hudak.prco.parser.EshopProductsParser;
 import sk.hudak.prco.parser.EshopUuidParser;
 import sk.hudak.prco.parser.HtmlParser;
@@ -70,6 +70,6 @@ public class JsoupHtmlParser implements HtmlParser {
         return productParsers.stream()
                 .filter(f -> f.getEshopUuid().equals(eshopUuid))
                 .findFirst()
-                .orElseThrow(() -> new PrcoRuntimeException("Parser implementation for eshop " + eshopUuid + " not found."));
+                .orElseThrow(() -> new EshopParserNotFoundPrcoException(eshopUuid));
     }
 }
