@@ -1,6 +1,6 @@
 package sk.hudak.prco.utils;
 
-import sk.hudak.prco.exception.PrcoRuntimeException;
+import sk.hudak.prco.exception.StringToNumberConvertPrcoException;
 
 import java.math.BigDecimal;
 
@@ -20,7 +20,7 @@ public class ConvertUtils {
             return new BigDecimal(value.replace(COMMA, DOT));
 
         } catch (Exception e) {
-            throw new PrcoRuntimeException("error while converting value " + value + " to " + BigDecimal.class.getName(), e);
+            throw new StringToNumberConvertPrcoException(value, e);
         }
     }
 }

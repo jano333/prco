@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.error.ErrorCreateDto;
 import sk.hudak.prco.dto.product.ProductDetailInfo;
-import sk.hudak.prco.exception.HttpErrorPrcoRuntimeException;
+import sk.hudak.prco.exception.HttpErrorPrcoException;
 import sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException;
 import sk.hudak.prco.manager.ErrorHandler;
 import sk.hudak.prco.service.InternalTxService;
@@ -32,8 +32,8 @@ public class ErrorHandlerImpl implements ErrorHandler {
     public UpdateProcessResult processParsingError(Exception error, ProductDetailInfo productDetailInfo) {
         log.error("error while parsing product data for product " + productDetailInfo.getUrl(), error);
 
-        if (error instanceof HttpErrorPrcoRuntimeException) {
-            return handleHttpErrorPrcoRuntimeException((HttpErrorPrcoRuntimeException) error, productDetailInfo);
+        if (error instanceof HttpErrorPrcoException) {
+            return handleHttpErrorPrcoRuntimeException((HttpErrorPrcoException) error, productDetailInfo);
         }
 
         if (error instanceof HttpSocketTimeoutPrcoRuntimeException) {
@@ -44,7 +44,7 @@ public class ErrorHandlerImpl implements ErrorHandler {
         return ERR_PARSING_ERROR_GENERIC;
     }
 
-    private UpdateProcessResult handleHttpErrorPrcoRuntimeException(HttpErrorPrcoRuntimeException e, ProductDetailInfo productDetailInfo) {
+    private UpdateProcessResult handleHttpErrorPrcoRuntimeException(HttpErrorPrcoException e, ProductDetailInfo productDetailInfo) {
         log.error("http status: " + e.getHttpStatus());
         if (404 == e.getHttpStatus()) {
             internalTxService.removeProduct(productDetailInfo.getId());
@@ -59,7 +59,7 @@ public class ErrorHandlerImpl implements ErrorHandler {
         return ERR_PARSING_ERROR_HTTP_TIMEOUT;
     }
 
-    private void saveInvalidHttpStatusError(EshopUuid eshopUuid, String url, String message, HttpErrorPrcoRuntimeException e) {
+    private void saveInvalidHttpStatusError(EshopUuid eshopUuid, String url, String message, HttpErrorPrcoException e) {
         internalTxService.createError(ErrorCreateDto.builder()
                 .errorType(404 == e.getHttpStatus() ? HTTP_STATUS_404_ERR : HTTP_STATUS_ERR)
                 .eshopUuid(eshopUuid)

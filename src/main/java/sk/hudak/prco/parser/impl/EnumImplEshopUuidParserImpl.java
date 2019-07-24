@@ -2,7 +2,7 @@ package sk.hudak.prco.parser.impl;
 
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.exception.PrcoRuntimeException;
+import sk.hudak.prco.exception.EshopNotFoundPrcoException;
 import sk.hudak.prco.parser.EshopUuidParser;
 
 import java.util.Arrays;
@@ -27,6 +27,6 @@ public class EnumImplEshopUuidParserImpl implements EshopUuidParser {
         return Arrays.stream(EshopUuid.values())
                 .filter(eshopUuid -> productUrl.startsWith(eshopUuid.getProductStartUrl()))
                 .findFirst()
-                .orElseThrow(() -> new PrcoRuntimeException(EshopUuid.class.getSimpleName() + " for " + productUrl + " not found"));
+                .orElseThrow(() -> new EshopNotFoundPrcoException(productUrl));
     }
 }

@@ -11,7 +11,8 @@ import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.dto.UnitTypeValueCount;
 import sk.hudak.prco.dto.internal.ProductNewData;
 import sk.hudak.prco.dto.internal.ProductUpdateData;
-import sk.hudak.prco.exception.HttpErrorPrcoRuntimeException;
+import sk.hudak.prco.exception.HttpErrorPrcoException;
+import sk.hudak.prco.exception.HttpErrorProductNotFoundPrcoException;
 import sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.exception.ProductNameNotFoundException;
@@ -162,25 +163,25 @@ public abstract class JSoupProductParser implements EshopProductsParser {
                 .url(productUrl)
                 .eshopUuid(getEshopUuid());
 
-        Optional<String> nameOpt = parseProductNameFromDetail(document);
-        logWarningIfNull(nameOpt, "productName", document.location());
-        builder.name(nameOpt);
+        Optional<String> productNameOpt = parseProductNameFromDetail(document);
+        logWarningIfNull(productNameOpt, "productName", document.location());
+        builder.name(productNameOpt);
 
-        Optional<String> pictureUrlOpt = internalParseProductPictureURL(document, productUrl);
-        logWarningIfNull(pictureUrlOpt, "pictureUrl", document.location());
-        builder.pictureUrl(pictureUrlOpt);
+        Optional<String> productPictureUrlOpt = internalParseProductPictureURL(document, productUrl);
+        logWarningIfNull(productPictureUrlOpt, "pictureUrl", document.location());
+        builder.pictureUrl(productPictureUrlOpt);
 
         // ak nemame nazov produktu nemozeme pokracovat v parsovani 'unit'
-        if (!nameOpt.isPresent()) {
+        if (!productNameOpt.isPresent()) {
             return builder.build();
         }
 
-        Optional<UnitTypeValueCount> unitTypeValueCountOpt = parseUnitValueCount(document, nameOpt.get());
-        if (unitTypeValueCountOpt.isPresent()) {
-            builder.unit(unitTypeValueCountOpt.get().getUnit());
-            builder.unitValue(unitTypeValueCountOpt.get().getValue());
-            builder.unitPackageCount(unitTypeValueCountOpt.get().getPackageCount());
-        }
+        parseUnitValueCount(document, productNameOpt.get())
+                .ifPresent(unitTypeValueCount ->
+                        builder.unit(unitTypeValueCount.getUnit())
+                                .unitValue(unitTypeValueCount.getValue())
+                                .unitPackageCount(unitTypeValueCount.getPackageCount()));
+
         return builder.build();
     }
 
@@ -188,6 +189,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
     @Override
     public ProductUpdateData parseProductUpdateData(@NonNull String productUrl) {
         Document document = retrieveDocument(productUrl);
+
         // because there could be redirect
         String realProductUrl = document.location();
         if (!productUrl.equals(realProductUrl)) {
@@ -261,7 +263,13 @@ public abstract class JSoupProductParser implements EshopProductsParser {
             String errMsg = "error creating document for url '" + productUrl + "': ";
             if (e instanceof HttpStatusException) {
                 HttpStatusException se = (HttpStatusException) e;
-                throw new HttpErrorPrcoRuntimeException(se.getStatusCode(), errMsg + " " + se.toString(), e);
+                int statusCode = se.getStatusCode();
+                if (404 == statusCode) {
+                    throw new HttpErrorProductNotFoundPrcoException(errMsg + " " + se.toString(), e);
+                } else {
+                    throw new HttpErrorPrcoException(statusCode, errMsg + " " + se.toString(), e);
+                }
+
 
             } else if (e instanceof SocketTimeoutException) {
                 throw new HttpSocketTimeoutPrcoRuntimeException((SocketTimeoutException) e);
