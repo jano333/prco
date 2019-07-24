@@ -25,7 +25,6 @@ import sk.hudak.prco.model.ProductEntity;
 import sk.hudak.prco.service.ProductCommonService;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -86,27 +85,32 @@ public class ProductCommonServiceImpl implements ProductCommonService {
     public void markNewProductAsInterested(Long... newProductIds) {
         atLeastOneIsNotNull(newProductIds, "newProductIds");
 
-        //FIXME cez foreach iterovat
-        for (Long newProductId : newProductIds) {
+        Arrays.asList(newProductIds).forEach(newProductId -> {
 
-            // vyhladam povodny produkt
+            // find existing new product
             NewProductEntity newProductEntity = newProductEntityDao.findById(newProductId);
 
             if (!Boolean.TRUE.equals(newProductEntity.getConfirmValidity())) {
                 throw new PrcoRuntimeException(newProductEntity.getClass().getSimpleName() + " with id " + newProductEntity.getId() + " is not confirmed.");
             }
 
-            // premapujem do noveho
-            ProductEntity productEntity = mapper.map(newProductEntity, ProductEntity.class);
+            // overim ci uz s takou URL neexistuje PRODUCT... ak ano tak ho len odsranim z NEW a nerobim save do ProductEntity
+            if (productEntityDao.existWithUrl(newProductEntity.getUrl())) {
+                log.debug("product with url {} already exist in products -> deleting from new", newProductEntity.getUrl());
 
-            // ulozim ho
-            productEntityDao.save(productEntity);
-            log.debug("created new {} with id {}", ProductEntity.class.getSimpleName(), productEntity.getId());
+            } else {
+                // map NewProductEntity -> ProductEntity
+                ProductEntity productEntity = mapper.map(newProductEntity, ProductEntity.class);
 
-            // odmazem povodne data
+                // save new ProductEntity
+                productEntityDao.save(productEntity);
+                log.debug("created new {} with id {}", productEntity.getClass().getSimpleName(), productEntity.getId());
+            }
+
+            // remove NewProductEntity
             newProductEntityDao.delete(newProductEntity);
-            log.debug("deleted {} with id {}", NewProductEntity.class.getSimpleName(), newProductEntity.getId());
-        }
+            log.debug("deleted {} with id {}", newProductEntity.getClass().getSimpleName(), newProductEntity.getId());
+        });
     }
 
     @Override
@@ -115,17 +119,19 @@ public class ProductCommonServiceImpl implements ProductCommonService {
 
         for (Long newProductId : newProductIds) {
 
-            // vyhladam povodny produkt
+            // find existing product
             NewProductEntity newProductEntity = newProductEntityDao.findById(newProductId);
 
-            // premapujem do noveho
+            //TODO tak ako v metode hore impl -> overim ci uz s takou URL neexistuje PRODUCT...
+
+            // map NewProductEntity -> NotInterestedProductEntity
             NotInterestedProductEntity notInterestedProductEntity = mapper.map(newProductEntity, NotInterestedProductEntity.class);
 
-            // ulozim ho
+            // save new NotInterestedProductEntity
             notInterestedProductDbDao.save(notInterestedProductEntity);
             log.trace("created new {} with id {}", NotInterestedProductEntity.class.getSimpleName(), notInterestedProductEntity.getId());
 
-            // odmazem stary
+            // remove NewProductEntity
             newProductEntityDao.delete(newProductEntity);
             log.debug("deleted {} with id {}", NewProductEntity.class.getSimpleName(), newProductEntity.getId());
         }
@@ -157,16 +163,8 @@ public class ProductCommonServiceImpl implements ProductCommonService {
 
         // premapovanie a save do DB
         notExistingYet.forEach(dto -> {
-            NewProductEntity entity = mapper.map(dto, NewProductEntity.class);
-            //TODO remove
-            if (entity.getCreated() == null) {
-                entity.setCreated(new Date());
-            }
-            if (entity.getUpdated() == null) {
-                entity.setUpdated(entity.getCreated());
-            }
-
-            newProductEntityDao.save(entity);
+            // NewProductFullDto -> NewProductEntity
+            newProductEntityDao.save(mapper.map(dto, NewProductEntity.class));
         });
 
         return notExistingYet.size();
@@ -228,6 +226,7 @@ public class ProductCommonServiceImpl implements ProductCommonService {
 
         List<String> groupNames = groupEntityDao.findAllGroupNames();
         Map<String, Long> countProductInGroup = new HashMap<>(groupNames.size());
+        // FIXME cez stream prepisat
         for (String groupName : groupNames) {
             countProductInGroup.put(groupName, groupOfProductFindEntityDao.countOfProductInGroup(groupName));
         }
