@@ -86,13 +86,14 @@ public class ProductCommonServiceImpl implements ProductCommonService {
     public void markNewProductAsInterested(Long... newProductIds) {
         atLeastOneIsNotNull(newProductIds, "newProductIds");
 
+        //FIXME cez foreach iterovat
         for (Long newProductId : newProductIds) {
 
             // vyhladam povodny produkt
             NewProductEntity newProductEntity = newProductEntityDao.findById(newProductId);
 
             if (!Boolean.TRUE.equals(newProductEntity.getConfirmValidity())) {
-                throw new PrcoRuntimeException(NewProductEntity.class.getSimpleName() + " with id " + newProductEntity.getId() + " is not confirmed.");
+                throw new PrcoRuntimeException(newProductEntity.getClass().getSimpleName() + " with id " + newProductEntity.getId() + " is not confirmed.");
             }
 
             // premapujem do noveho
