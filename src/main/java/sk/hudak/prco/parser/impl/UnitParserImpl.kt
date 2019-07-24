@@ -8,9 +8,9 @@ import sk.hudak.prco.parser.UnitParser
 import sk.hudak.prco.utils.CalculationUtils.recalculateToKilograms
 import sk.hudak.prco.utils.CalculationUtils.recalculateToLites
 import sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal
-import sk.hudak.prco.utils.PatternUtils.Companion.NUMBER_AT_LEAST_ONE
-import sk.hudak.prco.utils.PatternUtils.Companion.SPACE
-import sk.hudak.prco.utils.PatternUtils.Companion.createMatcher
+import sk.hudak.prco.utils.PatternUtils.NUMBER_AT_LEAST_ONE
+import sk.hudak.prco.utils.PatternUtils.SPACE
+import sk.hudak.prco.utils.PatternUtils.createMatcher
 import java.math.BigDecimal
 import java.util.*
 
