@@ -1,14 +1,13 @@
-package sk.hudak.prco.parser;
+package sk.hudak.prco.parser
 
-import sk.hudak.prco.dto.UnitTypeValueCount;
-
-import java.util.Optional;
+import sk.hudak.prco.dto.UnitTypeValueCount
+import java.util.*
 
 /**
  * Created by jan.hudak on 9/21/2017.
  */
 @FunctionalInterface
-public interface UnitParser {
+interface UnitParser {
 
     /**
      * Parse unit data base on product name.
@@ -16,5 +15,5 @@ public interface UnitParser {
      * @param productName name of product
      * @return parsed unit data from product name
      */
-    Optional<UnitTypeValueCount> parseUnitTypeValueCount(String productName);
+    fun parseUnitTypeValueCount(productName: String): Optional<UnitTypeValueCount>
 }

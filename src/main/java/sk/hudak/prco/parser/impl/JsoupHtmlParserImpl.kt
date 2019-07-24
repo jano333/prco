@@ -20,7 +20,7 @@ class JsoupHtmlParserImpl(
     }
 
     override fun searchProductUrls(eshopUuid: EshopUuid, searchKeyWord: String): MutableList<String> {
-        log.debug("start searching for keyword '{}'", searchKeyWord)
+        log.debug("start searching for keyword '$searchKeyWord'")
 
         val result = findParserForEshop(eshopUuid).parseUrlsOfProduct(searchKeyWord)
 
@@ -46,7 +46,7 @@ class JsoupHtmlParserImpl(
 
     private fun findParserForEshop(eshopUuid: EshopUuid): EshopProductsParser {
         return productParsers.stream()
-                .filter { eshopProductsParser -> eshopProductsParser.eshopUuid.equals(eshopUuid) }
+                .filter { eshopProductsParser -> eshopProductsParser.eshopUuid == eshopUuid }
                 .findFirst()
                 .orElseThrow { EshopParserNotFoundPrcoException(eshopUuid) }
     }

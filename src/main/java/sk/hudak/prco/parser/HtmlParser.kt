@@ -9,7 +9,7 @@ interface HtmlParser {
     fun searchProductUrls(eshopUuid: EshopUuid, searchKeyWord: String): List<String>
 
     /**
-     * Urobi connet na danu URL a vyparsuje html data o produkte.
+     * Urobi connect na danu URL a vyparsuje html data o produkte.
      *
      * @param productUrl
      * @return
