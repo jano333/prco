@@ -245,7 +245,7 @@ public class Starter {
 //        uiService.updateProductCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-//        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
+        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PILULKA_24, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "nutrilon");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "lovela");
