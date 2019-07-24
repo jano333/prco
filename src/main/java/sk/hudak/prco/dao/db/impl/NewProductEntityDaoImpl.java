@@ -13,6 +13,8 @@ import sk.hudak.prco.model.QNewProductEntity;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Optional.ofNullable;
+
 @Component
 public class NewProductEntityDaoImpl extends BaseDaoImpl<NewProductEntity> implements NewProductEntityDbDao {
 
@@ -29,10 +31,10 @@ public class NewProductEntityDaoImpl extends BaseDaoImpl<NewProductEntity> imple
 
     @Override
     public Optional<NewProductEntity> findFirstInvalid() {
-        JPAQuery<NewProductEntity> query = from(QNewProductEntity.newProductEntity);
-        query.where(QNewProductEntity.newProductEntity.valid.eq(Boolean.FALSE));
-        query.limit(1);
-        return Optional.ofNullable(query.fetchFirst());
+        return ofNullable(from(QNewProductEntity.newProductEntity)
+                .where(QNewProductEntity.newProductEntity.valid.eq(Boolean.FALSE))
+                .limit(1)
+                .fetchFirst());
     }
 
     @Override
@@ -49,33 +51,35 @@ public class NewProductEntityDaoImpl extends BaseDaoImpl<NewProductEntity> imple
 
     @Override
     public long getCountOfAllNewProducts() {
-        return from(QNewProductEntity.newProductEntity).fetchCount();
+        return from(QNewProductEntity.newProductEntity)
+                .fetchCount();
     }
 
     @Override
     public boolean existWithUrl(String url) {
-        JPAQuery<NewProductEntity> query = from(QNewProductEntity.newProductEntity);
-        query.where(QNewProductEntity.newProductEntity.url.equalsIgnoreCase(url));
-        return query.fetchCount() > 0;
+        return from(QNewProductEntity.newProductEntity)
+                .where(QNewProductEntity.newProductEntity.url.equalsIgnoreCase(url))
+                .fetchCount() > 0;
     }
 
     @Override
     public List<NewProductEntity> findInvalid(int maxCountOfInvalid) {
-        JPAQuery<NewProductEntity> query = from(QNewProductEntity.newProductEntity);
-        query.where(QNewProductEntity.newProductEntity.valid.eq(Boolean.FALSE));
-        query.limit(maxCountOfInvalid);
-        return query.fetch();
+        return from(QNewProductEntity.newProductEntity)
+                .where(QNewProductEntity.newProductEntity.valid.eq(Boolean.FALSE))
+                .limit(maxCountOfInvalid)
+                .fetch();
     }
 
     @Override
     public long countOfAllInvalidNewProduct() {
-        JPAQuery<NewProductEntity> query = from(QNewProductEntity.newProductEntity);
-        query.where(QNewProductEntity.newProductEntity.valid.eq(Boolean.FALSE));
-        return query.fetchCount();
+        return from(QNewProductEntity.newProductEntity)
+                .where(QNewProductEntity.newProductEntity.valid.eq(Boolean.FALSE))
+                .fetchCount();
     }
 
     @Override
     public List<NewProductEntity> findAll() {
-        return from(QNewProductEntity.newProductEntity).fetch();
+        return from(QNewProductEntity.newProductEntity)
+                .fetch();
     }
 }

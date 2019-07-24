@@ -31,9 +31,9 @@ public class ProductEntityDaoImpl extends BaseDaoImpl<ProductEntity> implements 
 
     @Override
     public boolean existWithUrl(String url) {
-        JPAQuery<ProductEntity> query = from(QProductEntity.productEntity);
-        query.where(QProductEntity.productEntity.url.equalsIgnoreCase(url));
-        return query.fetchCount() > 0;
+        return from(QProductEntity.productEntity)
+                .where(QProductEntity.productEntity.url.equalsIgnoreCase(url))
+                .fetchCount() > 0;
     }
 
     /**
@@ -45,12 +45,12 @@ public class ProductEntityDaoImpl extends BaseDaoImpl<ProductEntity> implements 
      */
     @Override
     public Optional<ProductEntity> findProductForUpdate(EshopUuid eshopUuid, int olderThanInHours) {
-        JPAQuery<ProductEntity> query = from(QProductEntity.productEntity);
-        query.where(QProductEntity.productEntity.eshopUuid.eq(eshopUuid));
-        query.where(QProductEntity.productEntity.lastTimeDataUpdated.isNull()
-                .or(QProductEntity.productEntity.lastTimeDataUpdated.lt(calculateDate(olderThanInHours))));
-        query.limit(1);
-        return ofNullable(query.fetchFirst());
+        return ofNullable(from(QProductEntity.productEntity)
+                .where(QProductEntity.productEntity.eshopUuid.eq(eshopUuid))
+                .where(QProductEntity.productEntity.lastTimeDataUpdated.isNull()
+                        .or(QProductEntity.productEntity.lastTimeDataUpdated.lt(calculateDate(olderThanInHours))))
+                .limit(1)
+                .fetchFirst());
     }
 
     @Override
@@ -78,9 +78,9 @@ public class ProductEntityDaoImpl extends BaseDaoImpl<ProductEntity> implements 
 
     @Override
     public Optional<ProductEntity> findByUrl(String productUrl) {
-        JPAQuery<ProductEntity> query = from(QProductEntity.productEntity);
-        query.where(QProductEntity.productEntity.url.eq(productUrl));
-        return Optional.ofNullable(query.fetchFirst());
+        return ofNullable(from(QProductEntity.productEntity)
+                .where(QProductEntity.productEntity.url.eq(productUrl))
+                .fetchFirst());
     }
 
     @Override

@@ -34,17 +34,18 @@ public class NotInterestedProductDaoImpl extends BaseDaoImpl<NotInterestedProduc
         if (findDto.getEshopUuid() != null) {
             from.where(QNotInterestedProductEntity.notInterestedProductEntity.eshopUuid.eq(findDto.getEshopUuid()));
         }
-
         return from.fetch();
     }
 
     @Override
     public List<String> findFistTenURL() {
         return from(QNotInterestedProductEntity.notInterestedProductEntity)
-                .limit(10)
                 .orderBy(new OrderSpecifier<>(Order.DESC, QNotInterestedProductEntity.notInterestedProductEntity.created))
+                .limit(10)
                 .fetch()
-                .stream().map(entity -> entity.getUrl()).collect(Collectors.toList());
+                .stream()
+                .map(entity -> entity.getUrl())
+                .collect(Collectors.toList());
 
     }
 }
