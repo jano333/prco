@@ -2,7 +2,7 @@ package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.ManagoProductParser;
+import sk.hudak.prco.eshop.Pilulka24ProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -20,12 +20,18 @@ public class ProductParserTest {
 
         SearchUrlBuilder searchUrlBuilder = new SearchUrlBuilderImpl();
 
-////         Lekaren Bella
+//         Pilulka24
+        System.out.println(new Pilulka24ProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//                .parseUrlsOfProduct("pampers"));
+//                .parseProductNewData("https://www.pilulka24.sk/pampers-activebaby-giant-pack-3-midi-90"));
+                .parseProductUpdateData("https://www.pilulka24.sk/pampers-wipes-64-ks-natural-clean-napln"));
+//
+// Lekaren Bella
 //        System.out.println(new LekarenBellaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 ////                .parseUrlsOfProduct("pampers"));
 //                .parseProductNewData("https://www.lekaren-bella.sk/zbozi/3616340/pampers-kalhotkove-plenky-jumbo-pack-s3-60ks"));
 ////                .parseProductUpdateData("https://www.lekaren-bella.sk/zbozi/3134039/pampers-active-baby-vpp-4-maxi-58ks"));
-
+//
 //         Drogerka
 //        System.out.println(new DrogerkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 ////                .parseUrlsOfProduct("pampers"));
@@ -46,9 +52,9 @@ public class ProductParserTest {
 //                .parseProductUpdateData("https://www.gigalekaren.sk/produkt/pampers-active-baby-vpp-junior-11-18kg-50ks/"));
 //
         // Manago
-        System.out.println(new ManagoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new ManagoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
-                .parseProductNewData("https://www.magano.sk/pampers-active-baby-6-10kg-vel-3-90ks"));
+//                .parseProductNewData("https://www.magano.sk/pampers-active-baby-6-10kg-vel-3-90ks"));
 //                .parseProductUpdateData("https://www.magano.sk/pampers-pants-midi-60ks-6-11kg-velkost-3"));
 
 

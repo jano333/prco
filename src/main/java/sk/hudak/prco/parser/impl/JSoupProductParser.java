@@ -245,7 +245,9 @@ public abstract class JSoupProductParser implements EshopProductsParser {
             String userAgent = getUserAgent();
             log.debug("userAgent: {}", userAgent);
 
-            Connection connection = Jsoup.connect(productUrl).userAgent(userAgent).timeout(getTimeout());
+            Connection connection = Jsoup.connect(productUrl)
+                    .userAgent(userAgent)
+                    .timeout(getTimeout());
 
             if (getCookie() != null && !getCookie().isEmpty()) {
                 connection.cookies(getCookie());

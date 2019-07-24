@@ -20,6 +20,8 @@ public class PrcoSSLContants {
         ALLOWED_HOSTNAME.add("pilulka.cz");
         ALLOWED_HOSTNAME.add("www.pilulka.sk");
 
+        ALLOWED_HOSTNAME.add("www.pilulka24.sk");
+
         ALLOWED_HOSTNAME.add("www.feedo.sk");
 
         ALLOWED_HOSTNAME.add("obi.at");

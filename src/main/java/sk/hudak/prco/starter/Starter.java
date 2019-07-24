@@ -7,12 +7,10 @@ import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.Unit;
 import sk.hudak.prco.dto.UnitData;
 import sk.hudak.prco.dto.error.ErrorFindFilterDto;
-import sk.hudak.prco.dto.error.ErrorListDto;
 import sk.hudak.prco.dto.group.GroupCreateDto;
 import sk.hudak.prco.dto.group.GroupFilterDto;
 import sk.hudak.prco.dto.group.GroupIdNameDto;
 import sk.hudak.prco.dto.group.GroupListExtendedDto;
-import sk.hudak.prco.dto.group.GroupProductKeywordsCreateDto;
 import sk.hudak.prco.dto.group.GroupProductKeywordsFullDto;
 import sk.hudak.prco.dto.group.GroupUpdateDto;
 import sk.hudak.prco.dto.newproduct.NewProductInfoDetail;
@@ -41,11 +39,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static java.util.Arrays.asList;
 
 /**
  * Created by jan.hudak on 9/29/2017.
@@ -217,27 +216,15 @@ public class Starter {
 
 //        watchDogService.notifyByEmail(Collections.emptyList());
 
-        List<ErrorListDto> byTypes = internalTxService.findErrorsByFilter(ErrorFindFilterDto.builder()
-                .limit(50)
-//                .errorTypesToSkip(new ErrorType[]{ErrorType.HTTP_STATUS_404_ERR})
-                .statusCodesToSkip(new String[]{"404"})
-                .build());
-
         System.out.println("Errors:");
-        for (ErrorListDto errorListDto : byTypes) {
-            System.out.println(
-                    errorListDto.getEshopUuid() + " " +
-                            "[" + errorListDto.getId() + "] " +
-                            formatDate(errorListDto.getUpdated()) + " " +
-                            errorListDto.getErrorType() + " " +
-                            "status: " + errorListDto.getStatusCode() + " " +
-                            "message: " + errorListDto.getMessage() + " " +
-//                    "fullMessage " + errorListDto.getFullMsg() + " " +
-                            "url " + errorListDto.getUrl());
-        }
+        internalTxService.findErrorsByFilter(ErrorFindFilterDto.builder()
+//                .errorTypesToSkip(new ErrorType[]{ErrorType.HTTP_STATUS_404_ERR})
+                        .statusCodesToSkip(new String[]{"404"})
+                        .limit(50)
+                        .build()
+        ).forEach(errorListDto -> System.out.println(errorListDto.customToString()));
 
-
-//        createGroupKeyWords();
+        createGroupKeyWords();
         showGroupKeysWords();
 
         // --- UPDATE PRICE DATA ---
@@ -259,7 +246,7 @@ public class Starter {
 
         // --- ADD NEW PRODUCTS ---
 //        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "pampers");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PILULKA_24, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "nutrilon");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "lovela");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PERINBABA, "pampers 5");
@@ -309,16 +296,53 @@ public class Starter {
     }
 
     private void createGroupKeyWords() {
-        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
-                449L,
-                Arrays.asList("pampers", "premium", "s0"))
-        );
+//        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
+//                452L,
+//                asList("pampers", "pro", "care", "s2")));
+//        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
+//                452L,
+//                asList("pampers", "premium", "2")));
+//        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
+//                452L,
+//                asList("pampers", "premium", "care", "2")));
+//
+//        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
+//                452L,
+//                asList("pampers", "premium", "care", "2,")));
+//        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
+//                452L,
+//                asList("pampers", "premium", "care", "s2")));
+//        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
+//                452L,
+//                asList("pampers", "premium", "care", "newborn", "(2)")));
+//        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
+//                452L,
+//                asList("pampers", "premium", "pack", "s2")));
+//
+//        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
+//                452L,
+//                asList("pampers", "premium", "newborn", "2")));
+//        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
+//                452L,
+//                asList("pampers", "premium", "procare", "2")));
+//        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
+//                452L,
+//                asList("pampers", "premiumcare", "2")));
+
     }
 
     private void showGroupKeysWords() {
-        Optional<GroupProductKeywordsFullDto> groupProductKeywordsByGroupId = internalTxService.getGroupProductKeywordsByGroupId(449L);
-
+        Optional<GroupProductKeywordsFullDto> groupProductKeywordsByGroupId
+                = internalTxService.getGroupProductKeywordsByGroupId(449L);
         System.out.println(groupProductKeywordsByGroupId.get());
+        groupProductKeywordsByGroupId = internalTxService.getGroupProductKeywordsByGroupId(450L);
+        System.out.println(groupProductKeywordsByGroupId.get());
+//        groupProductKeywordsByGroupId = internalTxService.getGroupProductKeywordsByGroupId(451L);
+//        System.out.println(groupProductKeywordsByGroupId.get());
+//        groupProductKeywordsByGroupId = internalTxService.getGroupProductKeywordsByGroupId(452L);
+//        System.out.println(groupProductKeywordsByGroupId.get());
+
+
     }
 
     private void showDuplicityProductsInEshops() {
@@ -493,8 +517,8 @@ public class Starter {
         // vypis
         System.out.println();
         System.out.println("'" + group.getName() + "' id " + groupId + " count " + productsInGroup.size() + " withPriceOnly " + withPriceOnly);
-        if (!Arrays.asList(eshopsToSkip).isEmpty()) {
-            System.out.println("Preskakujem eshopy: " + Arrays.asList(eshopsToSkip));
+        if (!asList(eshopsToSkip).isEmpty()) {
+            System.out.println("Preskakujem eshopy: " + asList(eshopsToSkip));
         }
         for (ProductFullDto product : productsInGroup) {
             System.out.println("eshop: " + product.getEshopUuid().name() +

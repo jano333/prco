@@ -70,12 +70,12 @@ public enum EshopUuid {
 
     AMD_DROGERIA("https://www.amddrogeria.sk",
             "https://www.amddrogeria.sk/catalog/search/?q=" + KEYWORD_TEMP,
-            "https://www.amddrogeria.sk/catalog/search/?q={keyword}&offset=" + OFFSET_TEMP,
+            "https://www.amddrogeria.sk/catalog/search/?q=" + KEYWORD_TEMP + "&offset=" + OFFSET_TEMP,
             5, 12, 24),
 
     BAMBINO("https://www.bambino.sk",
             "https://www.bambino.sk/vyhladavanie?search=" + KEYWORD_TEMP,
-            "https://www.bambino.sk/vyhladavanie/{pageNumber}?search={keyword}",
+            "https://www.bambino.sk/vyhladavanie/{pageNumber}?search=" + KEYWORD_TEMP,
             4, 12, -1),
 
     BRENDON("https://www.brendon.sk",
@@ -230,8 +230,15 @@ public enum EshopUuid {
             PHARMACY,
             "https://www.pilulka.sk",
             "https://www.pilulka.sk/hledat?q=" + KEYWORD_TEMP,
-            "https://www.pilulka.sk/hledat?q={keyword}&page={pageNumber}",
+            "https://www.pilulka.sk/hledat?q=" + KEYWORD_TEMP + "&page=" + PAGE_NUMBER_TEMP,
             5, 12, -1),
+
+    PILULKA_24(
+            PHARMACY,
+            "https://www.pilulka24.sk/",
+            "https://www.pilulka24.sk/" + KEYWORD_TEMP,
+            "https://www.pilulka24.sk/" + KEYWORD_TEMP + "?page=" + PAGE_NUMBER_TEMP + "&pageTo=0",
+            5, 12, 40),
 
     TESCO("https://potravinydomov.itesco.sk",
             "https://potravinydomov.itesco.sk/groceries/sk-SK/search?query={keyword}",
