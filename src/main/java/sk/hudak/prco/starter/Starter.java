@@ -439,7 +439,7 @@ public class Starter {
             return "";
         }
 
-        return String.valueOf(CalculationUtils.calculatePercetage(priceForPackage, commonPrice)) + "%";
+        return String.valueOf(CalculationUtils.INSTANCE.calculatePercetage(priceForPackage, commonPrice)) + "%";
 
     }
 

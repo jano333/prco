@@ -19,7 +19,7 @@ class JsoupHtmlParserImpl(
         val log = LoggerFactory.getLogger(JsoupHtmlParserImpl::class.java)
     }
 
-    override fun searchProductUrls(eshopUuid: EshopUuid, searchKeyWord: String): MutableList<String> {
+    override fun searchProductUrls(eshopUuid: EshopUuid, searchKeyWord: String): List<String> {
         log.debug("start searching for keyword '$searchKeyWord'")
 
         val result = findParserForEshop(eshopUuid).parseUrlsOfProduct(searchKeyWord)
