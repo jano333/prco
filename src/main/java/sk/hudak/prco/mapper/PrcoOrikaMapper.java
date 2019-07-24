@@ -30,9 +30,9 @@ public class PrcoOrikaMapper extends ConfigurableMapper {
         config_NewProductEntity_To_NotInterestedProductEntity(factory);
         config_NewProductEntity_To_NewProductFullDto(factory);
 
+        config_ProductEntity_to_NotInterestedProductEntity(factory);
         config_ProductEntity_To_ProductFullDto(factory);
         config_ProductEntity_To_ProductAddingToGroupDto(factory);
-        config_ProductEntity_to_NotInterestedProductEntity(factory);
 
 
         config_GroupEntity_To_GroupIdNameDto(factory);
