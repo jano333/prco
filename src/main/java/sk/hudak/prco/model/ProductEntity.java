@@ -85,7 +85,7 @@ public class ProductEntity extends DbEntity {
     @Column(precision = 11, scale = 5)
     private BigDecimal priceForUnit;
 
-    // nastavijem podla potreby aka je bezna cena daneho vyrobku... aby som vedel realne povedat aka zlava je...
+    // nastavujem podla potreby aka je bezna cena daneho vyrobku... aby som vedel realne povedat aka zlava je...
     @Column(precision = 11, scale = 5)
     private BigDecimal commonPrice;
 
