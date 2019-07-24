@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 import static sk.hudak.prco.api.EshopUuid.FEEDO;
 import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
+import static sk.hudak.prco.utils.JsoupUtils.calculateCountOfPages;
 import static sk.hudak.prco.utils.JsoupUtils.existElement;
 import static sk.hudak.prco.utils.JsoupUtils.getTextFromFirstElementByClass;
 import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
@@ -57,19 +58,6 @@ public class FeedoProductParser extends JSoupProductParser {
                 .orElseThrow(() -> new PrcoRuntimeException("None product count found for: " + documentList.location()));
 
         return calculateCountOfPages(Integer.valueOf(countOfProductString), getEshopUuid().getMaxCountOfProductOnPage());
-    }
-
-    //TODO move to utils...
-    public static int calculateCountOfPages(int countOfProduct, int pagging) {
-        int hh = countOfProduct % pagging;
-
-        int result = countOfProduct / pagging;
-
-        if (hh > 0) {
-            return result + 1;
-        } else {
-            return result;
-        }
     }
 
     @Override

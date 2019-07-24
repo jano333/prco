@@ -11,6 +11,18 @@ public class JsoupUtils {
     private JsoupUtils() {
     }
 
+    public static int calculateCountOfPages(int countOfProduct, int pagging) {
+        int hh = countOfProduct % pagging;
+
+        int result = countOfProduct / pagging;
+
+        if (hh > 0) {
+            return result + 1;
+        } else {
+            return result;
+        }
+    }
+
     public static String hrefAttribute(Element element) {
         if (element == null) {
             return null;
@@ -23,6 +35,13 @@ public class JsoupUtils {
             return null;
         }
         return element.attr("src");
+    }
+
+    public static String dataSrcAttribute(Element element) {
+        if (element == null) {
+            return null;
+        }
+        return element.attr("data-src");
     }
 
     public static boolean existElement(@NonNull Document document, @NonNull String cssQuery) {
