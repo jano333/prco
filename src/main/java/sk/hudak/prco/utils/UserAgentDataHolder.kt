@@ -1,28 +1,25 @@
-package sk.hudak.prco.utils;
+package sk.hudak.prco.utils
 
-import lombok.NonNull;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.EshopUuid;
-
-import javax.annotation.PostConstruct;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.Map;
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
+import java.util.*
+import javax.annotation.PostConstruct
 
 @Component
-public class UserAgentDataHolder {
+class UserAgentDataHolder {
 
-    private Map<EshopUuid, String> userAgents = new EnumMap<>(EshopUuid.class);
+    //TODO zmenit po konvertovani EhopUuid
+    private val userAgents = EnumMap<EshopUuid, String>(EshopUuid::class.java)
 
     @PostConstruct
-    public void init() {
-        Arrays.stream(EshopUuid.values()).forEach(
-                eshopUuid -> userAgents.put(eshopUuid, UserAgentManager.getRandom())
-        );
+    fun init() {
+        Arrays.stream(EshopUuid.values()).forEach { eshopUuid ->
+            userAgents[eshopUuid] = UserAgentManager.getRandom()
+        }
     }
 
-    public String getUserAgentForEshop(@NonNull EshopUuid eshopUuid) {
-        return userAgents.get(eshopUuid);
+    fun getUserAgentForEshop(eshopUuid: EshopUuid): String {
+        return userAgents[eshopUuid]!!
     }
 
 }
