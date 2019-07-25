@@ -1,56 +1,51 @@
-package sk.hudak.prco.utils;
+package sk.hudak.prco.utils
 
-import lombok.NonNull;
-import org.apache.commons.lang3.StringUtils;
-import sk.hudak.prco.exception.PrcoRuntimeException;
-import sk.hudak.prco.exception.RequiredParameterException;
+import sk.hudak.prco.exception.PrcoRuntimeException
+import sk.hudak.prco.exception.RequiredParameterException
 
-import java.util.Collection;
+object Validate {
 
-public class Validate {
+    private const val ONE = 1
 
-    private static final int ONE = 1;
-
-    private Validate() {
-        //no instance
-    }
-
-    public static void notNull(Object value, @NonNull String parameterName) {
+    @JvmStatic
+    fun notNull(value: Any?, parameterName: String) {
         if (value == null) {
-            throw new RequiredParameterException(parameterName);
+            throw RequiredParameterException(parameterName)
         }
     }
 
-    public static void notNullNotEmpty(String value, @NonNull String parameterName) {
-        notNull(value, parameterName);
-        if (StringUtils.isBlank(value)) {
-            throw new RequiredParameterException(parameterName);
+    @JvmStatic
+    fun notNullNotEmpty(value: String?, parameterName: String) {
+        if (value.isNullOrEmpty()) {
+            throw RequiredParameterException(parameterName)
         }
     }
 
-    public static void notNullNotEmpty(String[] value, @NonNull String parameterName) {
-        notNull(value, parameterName);
-        if (value.length == 0) {
-            throw new RequiredParameterException(parameterName);
+    @JvmStatic
+    fun notNullNotEmpty(values: Array<String>?, parameterName: String) {
+        if (values.isNullOrEmpty()) {
+            throw RequiredParameterException(parameterName)
         }
     }
 
-    public static void notNullNotEmpty(Collection<?> value, @NonNull String parameterName) {
-        notNull(value, parameterName);
-        if (value.isEmpty()) {
-            throw new RequiredParameterException(parameterName);
+    @JvmStatic
+    fun notNullNotEmpty(values: Collection<*>?, parameterName: String) {
+        if (values.isNullOrEmpty()) {
+            throw RequiredParameterException(parameterName)
         }
     }
 
-    public static void atLeastOneIsNotNull(Long[] values, @NonNull String parameterName) {
-        if (values == null || values.length == 0) {
-            throw new PrcoRuntimeException("At least one parameter " + parameterName + " is required");
+    @JvmStatic
+    fun atLeastOneIsNotNull(values: Array<Long>?, parameterName: String) {
+        if (values.isNullOrEmpty()) {
+            throw PrcoRuntimeException("At least one parameter $parameterName is required")
         }
     }
 
-    public static void notNegativeAndNotZeroValue(int value, @NonNull String parameterName) {
+    @JvmStatic
+    fun notNegativeAndNotZeroValue(value: Int, parameterName: String) {
         if (value < ONE) {
-            throw new PrcoRuntimeException("Value is zero or negative for " + parameterName + " .");
+            throw PrcoRuntimeException("Value is zero or negative for $parameterName .")
         }
     }
 

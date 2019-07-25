@@ -1,4 +1,5 @@
 
+For KOTLIN remove Optional keyword, use ? instead
 *****************************************************************************************
 dava zle automaticky groupu:
 Pampers Pure Protection 3 6-10 kg plienkové nohavičky 31 kusov
