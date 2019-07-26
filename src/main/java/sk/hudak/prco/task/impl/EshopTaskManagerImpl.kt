@@ -1,6 +1,5 @@
 package sk.hudak.prco.task.impl
 
-import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
@@ -20,7 +19,6 @@ import java.util.concurrent.Future
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
-@Slf4j
 @Component
 class EshopTaskManagerImpl : EshopTaskManager {
 
@@ -30,8 +28,8 @@ class EshopTaskManagerImpl : EshopTaskManager {
     private val executors = EnumMap<EshopUuid, ExecutorService>(EshopUuid::class.java)
     private val internalTask = ConcurrentHashMap<EshopUuid, TaskContext>(EshopUuid.values().size)
 
-
     //FIXME KT ci sa neda neako inak aby nebola internalTask(pozri povodnu java o co islo)
+    //TODO skusit init {} pozri PrcoCustomHostnameVerifier a porovnaj java -> kotlin
     override val tasks: Map<EshopUuid, TaskContext>
         get() {
             return internalTask
