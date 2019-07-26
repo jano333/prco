@@ -1,6 +1,6 @@
-package sk.hudak.prco.api;
+package sk.hudak.prco.api
 
-public enum BestPriceInGroup {
+enum class BestPriceInGroup {
     /**
      * V pripade ak je to cena daneho produktu najlepsie v skupine v ktorej sa nachadza.
      * Len za predpokladu ze sa nachadza len jednej skupine.

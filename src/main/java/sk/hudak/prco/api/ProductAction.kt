@@ -1,5 +1,5 @@
-package sk.hudak.prco.api;
+package sk.hudak.prco.api
 
-public enum ProductAction {
+enum class ProductAction {
     NON_ACTION, IN_ACTION
 }

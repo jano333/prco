@@ -1,9 +1,9 @@
-package sk.hudak.prco.api;
+package sk.hudak.prco.api
 
 /**
  * Created by jan.hudak on 9/21/2017.
  */
-public enum Unit {
+enum class Unit {
 
     KUS,
     LITER,
@@ -11,5 +11,5 @@ public enum Unit {
 
     //TODO doriesit ako to robit ci,
     METER,
-    DAVKA,
+    DAVKA
 }

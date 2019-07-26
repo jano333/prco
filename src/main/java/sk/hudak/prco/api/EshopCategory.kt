@@ -1,8 +1,7 @@
-package sk.hudak.prco.api;
+package sk.hudak.prco.api
 
-public enum EshopCategory {
+enum class EshopCategory {
     PHARMACY, // lekaren
     DRUGSTORE, // drogeria
-    INE,
-    ;
+    INE
 }

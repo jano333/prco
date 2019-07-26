@@ -1,14 +1,8 @@
-package sk.hudak.prco.api;
+package sk.hudak.prco.api
 
-public final class SearchTemplateConstants {
-
-    public static final String KEYWORD_TEMP = "{keyword}";
-    public static final String PAGE_NUMBER_TEMP = "{pageNumber}";
-    public static final String OFFSET_TEMP = "{offset}";
-    public static final String LIMIT_TEMP = "{limit}";
-
-    private SearchTemplateConstants() {
-    }
-
-
+object SearchTemplateConstants {
+    const val KEYWORD_TEMP = "{keyword}"
+    const val PAGE_NUMBER_TEMP = "{pageNumber}"
+    const val OFFSET_TEMP = "{offset}"
+    const val LIMIT_TEMP = "{limit}"
 }
