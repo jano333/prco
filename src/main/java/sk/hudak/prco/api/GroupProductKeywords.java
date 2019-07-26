@@ -1,7 +1,5 @@
 package sk.hudak.prco.api;
 
-import lombok.Getter;
-
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -249,14 +247,21 @@ public enum GroupProductKeywords {
             asList("nutrilon", "5")),
     ;
 
-    @Getter
+
     private Long groupId;
 
-    @Getter
     private List<List<String>> choices;
 
     GroupProductKeywords(Long groupId, List<String>... choices) {
         this.groupId = groupId;
         this.choices = asList(choices);
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public List<List<String>> getChoices() {
+        return choices;
     }
 }
