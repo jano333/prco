@@ -1,60 +1,56 @@
-package sk.hudak.prco.ssl;
+package sk.hudak.prco.ssl
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory
+import java.net.Socket
+import java.security.Principal
+import java.security.PrivateKey
+import java.security.cert.X509Certificate
+import javax.net.ssl.KeyManagerFactory
+import javax.net.ssl.X509KeyManager
 
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.X509KeyManager;
-import java.net.Socket;
-import java.security.Principal;
-import java.security.PrivateKey;
-import java.security.cert.X509Certificate;
+class PrcoCustomKeyManager @Throws(Exception::class)
+constructor() : X509KeyManager {
 
-@Slf4j
-public class PrcoCustomKeyManager implements X509KeyManager {
-
-
-    private X509KeyManager javaDefaultKeyManager;
-
-    public PrcoCustomKeyManager() throws Exception {
-        log.debug("inicializing");
-        this.javaDefaultKeyManager = (X509KeyManager) getJavaDefaultKeyManager();
+    companion object {
+        val log = LoggerFactory.getLogger(PrcoCustomKeyManager::class.java)
     }
 
-    private static KeyManager getJavaDefaultKeyManager() throws Exception {
-        KeyManagerFactory kmg = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        kmg.init(null, null);
+    private val javaDefaultKeyManager: X509KeyManager
+
+    init {
+        log.debug("initializing")
+        this.javaDefaultKeyManager = getJavaDefaultKeyManager()
+    }
+
+    @Throws(Exception::class)
+    private fun getJavaDefaultKeyManager(): X509KeyManager {
+        val kmg = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm())
+        kmg.init(null, null)
         // beriem prvy
-        return kmg.getKeyManagers()[0];
+        return kmg.keyManagers[0] as X509KeyManager
     }
 
-    @Override
-    public String chooseClientAlias(String[] keyType, Principal[] issuers, Socket socket) {
-        return javaDefaultKeyManager.chooseClientAlias(keyType, issuers, socket);
+    override fun chooseClientAlias(keyType: Array<String>, issuers: Array<Principal>, socket: Socket): String {
+        return javaDefaultKeyManager.chooseClientAlias(keyType, issuers, socket)
     }
 
-    @Override
-    public String chooseServerAlias(String keyType, Principal[] issuers, Socket socket) {
-        return javaDefaultKeyManager.chooseServerAlias(keyType, issuers, socket);
+    override fun chooseServerAlias(keyType: String, issuers: Array<Principal>, socket: Socket): String {
+        return javaDefaultKeyManager.chooseServerAlias(keyType, issuers, socket)
     }
 
-    @Override
-    public X509Certificate[] getCertificateChain(String alias) {
-        return javaDefaultKeyManager.getCertificateChain(alias);
+    override fun getCertificateChain(alias: String): Array<X509Certificate> {
+        return javaDefaultKeyManager.getCertificateChain(alias)
     }
 
-    @Override
-    public String[] getClientAliases(String keyType, Principal[] issuers) {
-        return javaDefaultKeyManager.getClientAliases(keyType, issuers);
+    override fun getClientAliases(keyType: String, issuers: Array<Principal>): Array<String> {
+        return javaDefaultKeyManager.getClientAliases(keyType, issuers)
     }
 
-    @Override
-    public PrivateKey getPrivateKey(String alias) {
-        return javaDefaultKeyManager.getPrivateKey(alias);
+    override fun getPrivateKey(alias: String): PrivateKey {
+        return javaDefaultKeyManager.getPrivateKey(alias)
     }
 
-    @Override
-    public String[] getServerAliases(String keyType, Principal[] issuers) {
-        return javaDefaultKeyManager.getServerAliases(keyType, issuers);
+    override fun getServerAliases(keyType: String, issuers: Array<Principal>): Array<String> {
+        return javaDefaultKeyManager.getServerAliases(keyType, issuers)
     }
 }

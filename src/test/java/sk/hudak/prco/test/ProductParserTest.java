@@ -11,7 +11,7 @@ public class ProductParserTest {
 
     public static void main(String[] args) {
 
-        PrcoSslManager.getInstance().init();
+        PrcoSslManager.INSTANCE.init();
 
         UserAgentDataHolder userAgentDataHolder = new UserAgentDataHolder();
         userAgentDataHolder.init();

@@ -1,90 +1,67 @@
-package sk.hudak.prco.ssl;
+package sk.hudak.prco.ssl
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory
+import sk.hudak.prco.exception.PrcoRuntimeException
+import java.net.Socket
+import java.security.Principal
+import java.security.PrivateKey
+import java.security.cert.CertificateException
+import java.security.cert.X509Certificate
+import javax.net.ssl.*
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509KeyManager;
-import javax.net.ssl.X509TrustManager;
-import java.net.Socket;
-import java.security.Principal;
-import java.security.PrivateKey;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
-@Slf4j
-public class PrcoSslManager {
+object PrcoSslManager {
 
-        private static PrcoSslManager instance;
+    fun init(): SSLContext {
+        try {
+            val sslContext = SSLContext.getInstance("SSL")
 
-        private X509TrustManager prcoCustomTrustManager;
-        private X509KeyManager prcoCustomKeyManager;
-        private HostnameVerifier prcoCustomHostnameVerifier;
+            val trustManagers = arrayOf<TrustManager>(PrcoCustomTrustManager())
+            val keymanagers = arrayOf<KeyManager>(PrcoCustomKeyManager())
 
-        private PrcoSslManager() {
-            // no instance
+            sslContext.init(keymanagers, trustManagers, null)
+
+            HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.socketFactory)
+
+            HttpsURLConnection.setDefaultHostnameVerifier(PrcoCustomHostnameVerifier())
+
+            return sslContext
+
+        } catch (e: Exception) {
+            throw PrcoRuntimeException("SSL initialization error.", e)
         }
+    }
 
-        public static PrcoSslManager getInstance() {
-            if (PrcoSslManager.instance == null) {
-                PrcoSslManager.instance = new PrcoSslManager();
-            }
-            return PrcoSslManager.instance;
-        }
 
-        public SSLContext init() throws RuntimeException {
-            try {
-                SSLContext sslContext = SSLContext.getInstance("SSL");
+    //    /**
+    //     * pozri:
+    //     * http://cxf.apache.org/docs/client-http-transport-including-ssl-support
+    //     * .html
+    //     *
+    //     * @param httpConduit
+    //     * @throws RuntimeException
+    //     */
+    //    public void initCxf(HTTPConduit httpConduit) throws RuntimeException {
+    //        logger.debug("inicializing SSL for CXF");
+    //
+    //        try {
+    //            TLSClientParameters tlsParams = new TLSClientParameters();
+    //            tlsParams.setDisableCNCheck(true);
+    //
+    //            TrustManager[] trustManagers = new TrustManager[]{getJefCustomTrustManager()};
+    //            tlsParams.setTrustManagers(trustManagers);
+    //
+    //            KeyManager[] keymanagers = new KeyManager[]{getJefCustomKeyManager()};
+    //            tlsParams.setKeyManagers(keymanagers);
+    //
+    //            httpConduit.setTlsClientParameters(tlsParams);
+    //
+    //        } catch (Exception e) {
+    //            throw new RuntimeException("SSL for cxf inicialization error.", e);
+    //        }
+    //    }
 
-                TrustManager[] trustManagers = new TrustManager[]{getJefCustomTrustManager()};
-                KeyManager[] keymanagers = new KeyManager[]{getJefCustomKeyManager()};
-
-                sslContext.init(keymanagers, trustManagers, null);
-
-                HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
-
-                HttpsURLConnection.setDefaultHostnameVerifier(getJefCustomHostnameVerifier());
-
-                return sslContext;
-
-            } catch (Exception e) {
-                throw new RuntimeException("SSL initialization error.", e);
-            }
-        }
-
-//    /**
-//     * pozri:
-//     * http://cxf.apache.org/docs/client-http-transport-including-ssl-support
-//     * .html
-//     *
-//     * @param httpConduit
-//     * @throws RuntimeException
-//     */
-//    public void initCxf(HTTPConduit httpConduit) throws RuntimeException {
-//        logger.debug("inicializing SSL for CXF");
-//
-//        try {
-//            TLSClientParameters tlsParams = new TLSClientParameters();
-//            tlsParams.setDisableCNCheck(true);
-//
-//            TrustManager[] trustManagers = new TrustManager[]{getJefCustomTrustManager()};
-//            tlsParams.setTrustManagers(trustManagers);
-//
-//            KeyManager[] keymanagers = new KeyManager[]{getJefCustomKeyManager()};
-//            tlsParams.setKeyManagers(keymanagers);
-//
-//            httpConduit.setTlsClientParameters(tlsParams);
-//
-//        } catch (Exception e) {
-//            throw new RuntimeException("SSL for cxf inicialization error.", e);
-//        }
-//    }
-
-	/*@Deprecated
+    /*@Deprecated
     public void initMock() throws AmcBusinessException {
 		logger.warn("using mock trust manage, key manager and host name verifier");
 		try {
@@ -99,112 +76,88 @@ public class PrcoSslManager {
 		}
 	}*/
 
-        private X509TrustManager getJefCustomTrustManager() throws Exception {
-            if (prcoCustomTrustManager == null) {
-                prcoCustomTrustManager = new PrcoCustomTrustManager();
-            }
-            return prcoCustomTrustManager;
+    private class MockTrustManager : X509TrustManager {
+
+        companion object {
+            val log = LoggerFactory.getLogger(MockTrustManager::class.java)
         }
 
-        private X509KeyManager getJefCustomKeyManager() throws Exception {
-            if (prcoCustomKeyManager == null) {
-                prcoCustomKeyManager = new PrcoCustomKeyManager();
-            }
-            return prcoCustomKeyManager;
+        init {
+            log.warn("using mock trust manager")
         }
 
-        private HostnameVerifier getJefCustomHostnameVerifier() {
-            if (prcoCustomHostnameVerifier == null) {
-                prcoCustomHostnameVerifier = new PrcoCustomHostnameVerifier();
-            }
-            return prcoCustomHostnameVerifier;
+        @Throws(CertificateException::class)
+        override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {
+            log.warn("checkClientTrusted()")
         }
 
+        @Throws(CertificateException::class)
+        override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
+            log.warn("checkServerTrusted()")
+        }
 
-        @Slf4j
-private static class MockTrustManager implements X509TrustManager {
-
-
-    public MockTrustManager() {
-        log.warn("using mock trust manager");
+        override fun getAcceptedIssuers(): Array<X509Certificate>? {
+            log.warn("getAcceptedIssuers()")
+            return null
+        }
     }
 
-    @Override
-    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-        log.warn("checkClientTrusted()");
+    private class MockHostnameVerifier : HostnameVerifier {
+
+        companion object {
+            val log = LoggerFactory.getLogger(MockHostnameVerifier::class.java)
+        }
+
+        init {
+            log.warn("using mock host name verifier")
+        }
+
+        override fun verify(hostname: String, session: SSLSession): Boolean {
+            log.warn("verify")
+            return true
+        }
     }
 
-    @Override
-    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-        log.warn("checkServerTrusted()");
+    private class MockKeyManager : X509KeyManager {
+
+        companion object {
+            val log = LoggerFactory.getLogger(MockKeyManager::class.java)
+        }
+
+        init {
+            log.warn("using mock key manager")
+        }
+
+        override fun chooseClientAlias(keyType: Array<String>, issuers: Array<Principal>, socket: Socket): String? {
+            log.warn("chooseClientAlias")
+            return null
+        }
+
+        override fun chooseServerAlias(keyType: String, issuers: Array<Principal>, socket: Socket): String? {
+            log.warn("chooseServerAlias")
+            return null
+        }
+
+        override fun getCertificateChain(alias: String): Array<X509Certificate>? {
+            log.warn("getCertificateChain")
+            return null
+        }
+
+        override fun getClientAliases(keyType: String, issuers: Array<Principal>): Array<String>? {
+            log.warn("getClientAliases")
+            return null
+        }
+
+        override fun getPrivateKey(alias: String): PrivateKey? {
+            log.warn("getPrivateKey")
+            return null
+        }
+
+        override fun getServerAliases(keyType: String, issuers: Array<Principal>): Array<String>? {
+            log.warn("getServerAliases")
+            return null
+        }
     }
 
-    @Override
-    public X509Certificate[] getAcceptedIssuers() {
-        log.warn("getAcceptedIssuers()");
-        return null;
-    }
-}
 
-@Slf4j
-private static class MockHostnameVerifier implements HostnameVerifier {
-
-
-
-    public MockHostnameVerifier() {
-        log.warn("using mock host name verifier");
-    }
-
-    @Override
-    public boolean verify(String hostname, SSLSession session) {
-        log.warn("verify");
-        return true;
-    }
-}
-
-@Slf4j
-@SuppressWarnings("unused")
-private static class MockKeyManager implements X509KeyManager {
-
-
-    public MockKeyManager() {
-        log.warn("using mock key manager");
-    }
-
-    @Override
-    public String chooseClientAlias(String[] keyType, Principal[] issuers, Socket socket) {
-        log.warn("chooseClientAlias");
-        return null;
-    }
-
-    @Override
-    public String chooseServerAlias(String keyType, Principal[] issuers, Socket socket) {
-        log.warn("chooseServerAlias");
-        return null;
-    }
-
-    @Override
-    public X509Certificate[] getCertificateChain(String alias) {
-        log.warn("getCertificateChain");
-        return null;
-    }
-
-    @Override
-    public String[] getClientAliases(String keyType, Principal[] issuers) {
-        log.warn("getClientAliases");
-        return null;
-    }
-
-    @Override
-    public PrivateKey getPrivateKey(String alias) {
-        log.warn("getPrivateKey");
-        return null;
-    }
-
-    @Override
-    public String[] getServerAliases(String keyType, Principal[] issuers) {
-        log.warn("getServerAliases");
-        return null;
-    }
-}
 }

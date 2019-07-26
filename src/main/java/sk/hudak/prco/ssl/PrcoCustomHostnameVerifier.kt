@@ -1,33 +1,36 @@
-package sk.hudak.prco.ssl;
+package sk.hudak.prco.ssl
 
-import lombok.extern.slf4j.Slf4j;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSession;
+import lombok.extern.slf4j.Slf4j
+import org.slf4j.LoggerFactory
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.HttpsURLConnection
+import javax.net.ssl.SSLSession
 
 @Slf4j
-public class PrcoCustomHostnameVerifier implements HostnameVerifier {
+class PrcoCustomHostnameVerifier : HostnameVerifier {
 
-    private HostnameVerifier javaDefaultHostnameVerifier;
-
-    /**
-     * Povoluje prechod pre {@link PrcoSSLContants#ALLOWED_HOSTNAME}. Pre ostatne
-     * deleguje volanie do java default host name verifikatora.
-     */
-    public PrcoCustomHostnameVerifier() {
-        log.debug("inicializing");
-        this.javaDefaultHostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier();
+    companion object {
+        val log = LoggerFactory.getLogger(PrcoCustomHostnameVerifier::class.java)
     }
 
-    @Override
-    public boolean verify(String hostname, SSLSession session) {
-        log.debug("verify {}", hostname);
+    private val javaDefaultHostnameVerifier: HostnameVerifier
+
+    /**
+     * Povoluje prechod pre [PrcoSSLContants.ALLOWED_HOSTNAME]. Pre ostatne
+     * deleguje volanie do java default host name verifikatora.
+     */
+    init {
+        log.debug("initializing")
+        this.javaDefaultHostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier()
+    }
+
+    override fun verify(hostname: String, session: SSLSession): Boolean {
+        log.debug("verify $hostname")
         if (PrcoSSLContants.ALLOWED_HOSTNAME.contains(hostname)) {
-            return true;
+            return true
         }
-        log.debug("delegating verifying to java default host name");
-        return javaDefaultHostnameVerifier.verify(hostname, session);
+        log.debug("delegating verifying to java default host name")
+        return javaDefaultHostnameVerifier.verify(hostname, session)
     }
 
 }
