@@ -1,12 +1,10 @@
-package sk.hudak.prco.exception;
+package sk.hudak.prco.exception
 
-public class PrcoRuntimeException extends RuntimeException {
+open class PrcoRuntimeException : RuntimeException {
 
-    public PrcoRuntimeException(String message) {
-        super(message);
-    }
+    constructor(message: String) :
+            super(message)
 
-    public PrcoRuntimeException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    constructor(message: String, cause: Throwable) :
+            super(message, cause)
 }

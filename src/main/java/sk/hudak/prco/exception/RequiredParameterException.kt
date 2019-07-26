@@ -1,8 +1,4 @@
-package sk.hudak.prco.exception;
+package sk.hudak.prco.exception
 
-public class RequiredParameterException extends PrcoRuntimeException {
-
-    public RequiredParameterException(String parameterName) {
-        super("parameter " + parameterName + " is null/empty");
-    }
-}
+class RequiredParameterException(parameterName: String) :
+        PrcoRuntimeException("parameter $parameterName is null/empty")

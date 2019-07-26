@@ -1,19 +1,24 @@
-package sk.hudak.prco.exception;
+package sk.hudak.prco.exception
 
-import lombok.Getter;
+import java.net.SocketTimeoutException
 
-public class HttpErrorPrcoException extends PrcoRuntimeException {
 
-    @Getter
-    private final int httpStatus;
+open class HttpErrorPrcoException : PrcoRuntimeException {
 
-    public HttpErrorPrcoException(int httpStatus, String message) {
-        super(message);
-        this.httpStatus = httpStatus;
+    val httpStatus: Int
+
+    constructor(httpStatus: Int, message: String) : super(message) {
+        this.httpStatus = httpStatus
     }
 
-    public HttpErrorPrcoException(int httpStatus, String message, Throwable cause) {
-        super(message, cause);
-        this.httpStatus = httpStatus;
+    constructor(httpStatus: Int, message: String, cause: Throwable) :
+            super(message, cause) {
+        this.httpStatus = httpStatus
     }
 }
+
+class HttpErrorProductNotFoundPrcoException(message: String, cause: Throwable) :
+        HttpErrorPrcoException(404, message, cause)
+
+class HttpSocketTimeoutPrcoRuntimeException(e: SocketTimeoutException) :
+        PrcoRuntimeException("timeout", e)
