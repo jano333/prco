@@ -1,9 +1,10 @@
-package sk.hudak.prco.task;
+package sk.hudak.prco.task
 
-import sk.hudak.prco.api.EshopUuid;
+import sk.hudak.prco.api.EshopUuid
 
 @FunctionalInterface
-public interface SubmitTask<T, K> {
+interface SubmitTask<T, K> {
 
-    void doInTask(EshopUuid eshopUuid, T param1, K param2) throws Exception;
+    @Throws(Exception::class)
+    fun doInTask(eshopUuid: EshopUuid, param1: T, param2: K)
 }

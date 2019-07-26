@@ -1,35 +1,31 @@
-package sk.hudak.prco.task;
+package sk.hudak.prco.task
 
-import lombok.NonNull;
-import sk.hudak.prco.api.EshopUuid;
+import sk.hudak.prco.api.EshopUuid
+import java.util.concurrent.Future
 
-import java.util.Map;
-import java.util.concurrent.Future;
+interface EshopTaskManager {
 
-public interface EshopTaskManager {
+    val tasks: Map<EshopUuid, TaskContext>
 
-    Map<EshopUuid, TaskContext> getTasks();
+    val isAnyTaskRunning: Boolean
 
-    Future<?> submitTask(EshopUuid eshopUuid, Runnable task);
+    fun submitTask(eshopUuid: EshopUuid, task: Runnable): Future<*>
 
-    boolean isAnyTaskRunning();
+    fun isTaskRunning(eshopUuid: EshopUuid): Boolean
 
-    boolean isTaskRunning(EshopUuid eshopUuid);
+    fun markTaskAsRunning(eshopUuid: EshopUuid)
 
-    void markTaskAsRunning(EshopUuid eshopUuid);
+    fun isTaskStopped(eshopUuid: EshopUuid): Boolean
 
-    boolean isTaskStopped(EshopUuid eshopUuid);
+    fun markTaskAsStopped(eshopUuid: EshopUuid)
 
-    void markTaskAsStopped(EshopUuid eshopUuid);
+    fun isTaskFinished(eshopUuid: EshopUuid): Boolean
 
+    fun markTaskAsFinished(eshopUuid: EshopUuid, finishedWithError: Boolean)
 
-    boolean isTaskFinished(EshopUuid eshopUuid);
+    fun isTaskShouldStopped(eshopUuid: EshopUuid): Boolean
 
-    void markTaskAsFinished(EshopUuid eshopUuid, boolean finishedWithError);
+    fun markTaskAsShouldStopped(eshopUuid: EshopUuid)
 
-    boolean isTaskShouldStopped(EshopUuid eshopUuid);
-
-    void markTaskAsShouldStopped(EshopUuid eshopUuid);
-
-    void sleepIfNeeded(@NonNull EshopUuid eshopUuid);
+    fun sleepIfNeeded(eshopUuid: EshopUuid)
 }

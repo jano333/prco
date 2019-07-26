@@ -1,16 +1,21 @@
-package sk.hudak.prco.task;
+package sk.hudak.prco.task
 
-import java.util.concurrent.Callable;
+import java.util.concurrent.Callable
 
-public abstract class VoidTask implements Callable<Void> {
+//TODO zbavit sa exception
+abstract class VoidTask : Callable<Unit> {
 
-    @Override
-    public final Void call() throws Exception {
-        doInTask();
-        return null;
+//    override fun call() {
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//    }
+
+    @Throws(Exception::class)
+    override fun call() {
+        doInTask()
     }
 
-    protected abstract void doInTask() throws Exception;
+    @Throws(Exception::class)
+    protected abstract fun doInTask()
 
 
 }

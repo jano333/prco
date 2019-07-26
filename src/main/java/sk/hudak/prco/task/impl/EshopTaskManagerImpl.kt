@@ -1,155 +1,134 @@
-package sk.hudak.prco.task.impl;
+package sk.hudak.prco.task.impl
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.task.EshopTaskManager;
-import sk.hudak.prco.task.TaskContext;
-import sk.hudak.prco.task.TaskStatus;
-import sk.hudak.prco.utils.ThreadUtils;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
-import static sk.hudak.prco.utils.ThreadUtils.generateRandomSecondInInterval;
+import lombok.extern.slf4j.Slf4j
+import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.task.EshopTaskManager
+import sk.hudak.prco.task.TaskContext
+import sk.hudak.prco.task.TaskStatus
+import sk.hudak.prco.utils.ThreadUtils
+import sk.hudak.prco.utils.ThreadUtils.generateRandomSecondInInterval
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
+import java.util.*
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
+import javax.annotation.PostConstruct
+import javax.annotation.PreDestroy
 
 @Slf4j
 @Component
-public class EshopTaskManagerImpl implements EshopTaskManager {
+class EshopTaskManagerImpl : EshopTaskManager {
 
-    private Map<EshopUuid, ExecutorService> executors = new EnumMap<>(EshopUuid.class);
+    companion object {
+        val log = LoggerFactory.getLogger(EshopTaskManagerImpl::class.java)
+    }
+    private val executors = EnumMap<EshopUuid, ExecutorService>(EshopUuid::class.java)
+    private val internalTask = ConcurrentHashMap<EshopUuid, TaskContext>(EshopUuid.values().size)
 
-    @Getter
-    private Map<EshopUuid, TaskContext> tasks = new ConcurrentHashMap<>(EshopUuid.values().length);
+
+    //FIXME KT ci sa neda neako inak aby nebola internalTask(pozri povodnu java o co islo)
+    override val tasks: Map<EshopUuid, TaskContext>
+        get() {
+            return internalTask
+        }
+
+    override val isAnyTaskRunning: Boolean
+        get() {
+            for (eshopUuid in EshopUuid.values()) {
+                if (isTaskRunning(eshopUuid)) {
+                    return true
+                }
+            }
+            return false
+        }
 
     @PostConstruct
-    public void init() {
-        Arrays.stream(EshopUuid.values()).forEach(eshopUuid -> {
-            executors.put(eshopUuid, createExecutorServiceForEshop(eshopUuid));
-            tasks.put(eshopUuid, new TaskContext(TaskStatus.STOPPED));
-        });
+    fun init() {
+        Arrays.stream(EshopUuid.values()).forEach { eshopUuid ->
+            executors[eshopUuid] = createExecutorServiceForEshop(eshopUuid)
+            internalTask[eshopUuid] = TaskContext(TaskStatus.STOPPED)
+        }
     }
 
     @PreDestroy
-    public void tearDown() {
-        for (EshopUuid eshopUuid : executors.keySet()) {
-            executors.get(eshopUuid).shutdownNow();
+    fun tearDown() {
+        for (eshopUuid in executors.keys) {
+            executors[eshopUuid]?.shutdownNow()
         }
     }
 
-    @Override
-    public Future<?> submitTask(@NonNull EshopUuid eshopUuid, @NonNull Runnable task) {
-        log.debug("submitting new task for eshop {}", eshopUuid);
-        return executors.get(eshopUuid).submit(task);
+    private fun createExecutorServiceForEshop(value: EshopUuid): ExecutorService {
+        return Executors.newSingleThreadExecutor { r -> Thread(r, value.name) }
     }
 
-    private ExecutorService createExecutorServiceForEshop(EshopUuid value) {
-        return Executors.newSingleThreadExecutor(r -> new Thread(r, value.name()));
+    override fun submitTask(eshopUuid: EshopUuid, task: Runnable): Future<*> {
+        log.debug("submitting new task for eshop $eshopUuid")
+        return executors[eshopUuid]!!.submit(task)
     }
 
-    @Override
-    public boolean isTaskRunning(EshopUuid eshopUuid) {
-        return TaskStatus.RUNNING.equals(tasks.get(eshopUuid).getStatus());
+    override fun isTaskRunning(eshopUuid: EshopUuid): Boolean {
+        return TaskStatus.RUNNING == internalTask[eshopUuid]?.status
     }
 
-    @Override
-    public boolean isTaskStopped(EshopUuid eshopUuid) {
-        return TaskStatus.STOPPED.equals(tasks.get(eshopUuid));
+    override fun isTaskStopped(eshopUuid: EshopUuid): Boolean {
+        return TaskStatus.STOPPED == internalTask[eshopUuid]?.status
     }
 
-    @Override
-    public boolean isTaskFinished(EshopUuid eshopUuid) {
-        TaskStatus other = tasks.get(eshopUuid).getStatus();
-        return TaskStatus.FINISHED_OK.equals(other) || TaskStatus.FINISHED_WITH_ERROR.equals(other);
+    override fun isTaskFinished(eshopUuid: EshopUuid): Boolean {
+        val other = internalTask[eshopUuid]?.status
+        return TaskStatus.FINISHED_OK == other || TaskStatus.FINISHED_WITH_ERROR == other
     }
 
-    @Override
-    public void markTaskAsShouldStopped(EshopUuid eshopUuid) {
-        tasks.put(eshopUuid, new TaskContext(TaskStatus.SHOUD_STOP));
+    override fun isTaskShouldStopped(eshopUuid: EshopUuid): Boolean {
+        return TaskStatus.SHOUD_STOP == internalTask[eshopUuid]?.status
     }
 
-    @Override
-    public boolean isTaskShouldStopped(EshopUuid eshopUuid) {
-        return TaskStatus.SHOUD_STOP.equals(tasks.get(eshopUuid));
+    override fun markTaskAsShouldStopped(eshopUuid: EshopUuid) {
+        internalTask[eshopUuid] = TaskContext(TaskStatus.SHOUD_STOP)
     }
 
-    @Override
-    public void markTaskAsRunning(EshopUuid eshopUuid) {
-        log.debug("marking task for eshop {} as {}", eshopUuid, TaskStatus.RUNNING);
-        tasks.put(eshopUuid, new TaskContext(TaskStatus.RUNNING));
+    override fun markTaskAsRunning(eshopUuid: EshopUuid) {
+        log.debug("marking task for eshop $eshopUuid as ${TaskStatus.RUNNING}")
+        internalTask[eshopUuid] = TaskContext(TaskStatus.RUNNING)
     }
 
-    @Override
-    public void markTaskAsFinished(EshopUuid eshopUuid, boolean finishedWithError) {
-        log.debug("marking task for eshop {} as {}", eshopUuid, finishedWithError ? TaskStatus.FINISHED_WITH_ERROR : TaskStatus.FINISHED_OK);
-
-        if (finishedWithError) {
-            tasks.put(eshopUuid, new TaskContext(TaskStatus.FINISHED_WITH_ERROR));
-        } else {
-            tasks.put(eshopUuid, new TaskContext(TaskStatus.FINISHED_OK));
-        }
+    override fun markTaskAsFinished(eshopUuid: EshopUuid, finishedWithError: Boolean) {
+        val newTaskStatus = if (finishedWithError) TaskStatus.FINISHED_WITH_ERROR else TaskStatus.FINISHED_OK
+        log.debug("marking task for eshop $eshopUuid as $newTaskStatus")
+        internalTask[eshopUuid] = TaskContext(newTaskStatus)
     }
 
-    @Override
-    public void markTaskAsStopped(EshopUuid eshopUuid) {
-        log.debug("marking task for eshop {} as {}", eshopUuid, TaskStatus.STOPPED);
-        tasks.put(eshopUuid, new TaskContext(TaskStatus.STOPPED));
+    override fun markTaskAsStopped(eshopUuid: EshopUuid) {
+        log.debug("marking task for eshop $eshopUuid as ${TaskStatus.STOPPED}")
+        internalTask[eshopUuid] = TaskContext(TaskStatus.STOPPED)
     }
 
-    @Override
-    public boolean isAnyTaskRunning() {
-        for (EshopUuid eshopUuid : EshopUuid.values()) {
-            if (isTaskRunning(eshopUuid)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    override fun sleepIfNeeded(eshopUuid: EshopUuid) {
+        val currentContext = internalTask[eshopUuid]!!
+        val currentStatus = currentContext.status
 
-    @Override
-    public  void sleepIfNeeded(@NonNull EshopUuid eshopUuid) {
-        TaskContext currentContext = tasks.get(eshopUuid);
-        TaskStatus currentStatus = currentContext.getStatus();
-
-        log.debug("task status {}", currentContext);
-        if (TaskStatus.STOPPED.equals(currentStatus)) {
-            return;
+        log.debug("task status $currentContext")
+        if (TaskStatus.STOPPED == currentStatus) {
+            return
         }
         if (isTaskFinished(eshopUuid)) {
-            LocalDateTime lastChanged = currentContext.getLastChanged()
+            val lastChanged = currentContext.lastChanged
                     .toInstant()
                     .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime();
-            LocalDateTime now = LocalDateTime.now();
+                    .toLocalDateTime()
 
-            long secondsBetween = ChronoUnit.SECONDS.between(lastChanged, now);
+            val secondsBetween = ChronoUnit.SECONDS.between(lastChanged, LocalDateTime.now())
 
-            int secondInInterval = generateRandomSecondInInterval();
+            val secondInInterval = generateRandomSecondInInterval()
 
             if (secondsBetween < secondInInterval) {
-                ThreadUtils.sleepSafe(secondInInterval);
+                ThreadUtils.sleepSafe(secondInInterval)
             }
-
-
         }
-
-
-//        if (isTaskFinished(eshopUuid) && currentContext.getLastChanged().before()) {
-//
-//        }
-
-
     }
 }

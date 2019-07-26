@@ -1,6 +1,6 @@
-package sk.hudak.prco.task;
+package sk.hudak.prco.task
 
-public enum TaskStatus {
+enum class TaskStatus {
     RUNNING,
     SHOUD_STOP, // pomocny interny stav
     STOPPED,
