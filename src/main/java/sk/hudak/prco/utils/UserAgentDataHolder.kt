@@ -24,7 +24,7 @@ class UserAgentDataHolder {
 
 }
 
-object UserAgentManager {
+private object UserAgentManager {
 
     val FIREFOX_1 = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1"
     val FIREFOX_2 = "Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0"
