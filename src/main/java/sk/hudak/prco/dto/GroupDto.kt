@@ -1,8 +1,6 @@
-package sk.hudak.prco.dto.group
+package sk.hudak.prco.dto
 
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.dto.DtoAble
-import sk.hudak.prco.dto.IdNameDto
 import java.util.*
 
 class GroupCreateDto : DtoAble {

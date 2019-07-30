@@ -1,7 +1,7 @@
 package sk.hudak.prco.service;
 
-import sk.hudak.prco.dto.group.GroupProductKeywordsCreateDto;
-import sk.hudak.prco.dto.group.GroupProductKeywordsFullDto;
+import sk.hudak.prco.dto.GroupProductKeywordsCreateDto;
+import sk.hudak.prco.dto.GroupProductKeywordsFullDto;
 
 import java.util.Optional;
 

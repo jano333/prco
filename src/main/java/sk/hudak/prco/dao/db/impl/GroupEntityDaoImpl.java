@@ -10,7 +10,7 @@ import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dao.db.GroupEntityDao;
 import sk.hudak.prco.dao.db.GroupOfProductFindEntityDao;
 import sk.hudak.prco.dao.db.ProductEntityDao;
-import sk.hudak.prco.dto.group.GroupFilterDto;
+import sk.hudak.prco.dto.GroupFilterDto;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.model.GroupEntity;
 import sk.hudak.prco.model.ProductEntity;

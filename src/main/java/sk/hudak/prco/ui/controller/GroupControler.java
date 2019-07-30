@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import sk.hudak.prco.dto.group.GroupListDto;
+import sk.hudak.prco.dto.GroupListDto;
 
 import java.util.List;
 

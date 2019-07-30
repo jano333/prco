@@ -1,4 +1,4 @@
-package sk.hudak.prco.dto.internal
+package sk.hudak.prco.dto
 
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.ProductAction

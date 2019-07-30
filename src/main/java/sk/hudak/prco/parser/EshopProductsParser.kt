@@ -1,8 +1,8 @@
 package sk.hudak.prco.parser
 
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.dto.internal.ProductNewData
-import sk.hudak.prco.dto.internal.ProductUpdateData
+import sk.hudak.prco.dto.ProductNewData
+import sk.hudak.prco.dto.ProductUpdateData
 import sk.hudak.prco.exception.ProductNameNotFoundException
 
 interface EshopProductsParser {

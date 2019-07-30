@@ -10,7 +10,7 @@ import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.api.Unit;
 import sk.hudak.prco.dto.DtoAble;
-import sk.hudak.prco.dto.group.GroupIdNameDto;
+import sk.hudak.prco.dto.GroupIdNameDto;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

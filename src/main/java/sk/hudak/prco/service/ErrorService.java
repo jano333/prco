@@ -1,9 +1,9 @@
 package sk.hudak.prco.service;
 
 import sk.hudak.prco.api.ErrorType;
-import sk.hudak.prco.dto.error.ErrorCreateDto;
-import sk.hudak.prco.dto.error.ErrorFindFilterDto;
-import sk.hudak.prco.dto.error.ErrorListDto;
+import sk.hudak.prco.dto.ErrorCreateDto;
+import sk.hudak.prco.dto.ErrorFindFilterDto;
+import sk.hudak.prco.dto.ErrorListDto;
 
 import java.util.List;
 import java.util.Map;

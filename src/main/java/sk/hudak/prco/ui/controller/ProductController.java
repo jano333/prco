@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import sk.hudak.prco.api.GroupProductKeywords;
-import sk.hudak.prco.dto.group.GroupFilterDto;
+import sk.hudak.prco.dto.GroupFilterDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.dto.product.ProductNotInAnyGroupDto;
 import sk.hudak.prco.manager.GroupProductResolver;

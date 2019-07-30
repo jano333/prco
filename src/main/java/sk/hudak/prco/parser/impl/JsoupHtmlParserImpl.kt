@@ -3,8 +3,8 @@ package sk.hudak.prco.parser.impl
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.dto.internal.ProductNewData
-import sk.hudak.prco.dto.internal.ProductUpdateData
+import sk.hudak.prco.dto.ProductNewData
+import sk.hudak.prco.dto.ProductUpdateData
 import sk.hudak.prco.exception.EshopParserNotFoundPrcoException
 import sk.hudak.prco.parser.EshopProductsParser
 import sk.hudak.prco.parser.EshopUuidParser

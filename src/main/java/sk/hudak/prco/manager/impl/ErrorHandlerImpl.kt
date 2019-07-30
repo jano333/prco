@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.ErrorType.*
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.dto.error.ErrorCreateDto
+import sk.hudak.prco.dto.ErrorCreateDto
 import sk.hudak.prco.dto.product.ProductDetailInfo
 import sk.hudak.prco.exception.HttpErrorPrcoException
 import sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException
@@ -33,7 +33,7 @@ class ErrorHandlerImpl(val internalTxService: InternalTxService) : ErrorHandler 
             return handleHttpSocketTimeoutPrcoRuntimeException(error, productDetailInfo)
         }
 
-        saveGenericParsingError(productDetailInfo.eshopUuid, productDetailInfo.url, error.message, error)
+        saveGenericParsingError(productDetailInfo.eshopUuid!!, productDetailInfo.url!!, error.message, error)
         return ERR_PARSING_ERROR_GENERIC
     }
 
@@ -43,12 +43,12 @@ class ErrorHandlerImpl(val internalTxService: InternalTxService) : ErrorHandler 
             internalTxService.removeProduct(productDetailInfo.id)
             return ERR_PARSING_ERROR_HTTP_STATUS_404
         }
-        saveInvalidHttpStatusError(productDetailInfo.eshopUuid, productDetailInfo.url, e.message, e)
+        saveInvalidHttpStatusError(productDetailInfo.eshopUuid!!, productDetailInfo.url!!, e.message, e)
         return ERR_PARSING_ERROR_HTTP_STATUS_INVALID
     }
 
     private fun handleHttpSocketTimeoutPrcoRuntimeException(error: HttpSocketTimeoutPrcoRuntimeException, productDetailInfo: ProductDetailInfo): UpdateProcessResult {
-        saveTimeout4Error(productDetailInfo.eshopUuid, productDetailInfo.url, error.message, error)
+        saveTimeout4Error(productDetailInfo.eshopUuid!!, productDetailInfo.url!!, error.message, error)
         return ERR_PARSING_ERROR_HTTP_TIMEOUT
     }
 

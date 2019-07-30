@@ -1,8 +1,7 @@
-package sk.hudak.prco.dto.error
+package sk.hudak.prco.dto
 
 import sk.hudak.prco.api.ErrorType
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.dto.DtoAble
 import java.text.SimpleDateFormat
 import java.util.*
 

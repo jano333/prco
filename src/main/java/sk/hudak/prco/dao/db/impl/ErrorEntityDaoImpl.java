@@ -6,7 +6,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.dao.db.ErrorEntityDao;
-import sk.hudak.prco.dto.error.ErrorFindFilterDto;
+import sk.hudak.prco.dto.ErrorFindFilterDto;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.model.ErrorEntity;
 import sk.hudak.prco.model.QErrorEntity;

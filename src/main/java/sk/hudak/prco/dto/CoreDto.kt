@@ -22,6 +22,7 @@ abstract class IdNameDto : DtoAble {
 }
 
 class UnitData(val unit: Unit, val unitValue: BigDecimal, val unitPackageCount: Int?)
+
 data class UnitTypeValueCount(
         val unit: Unit,
         val value: BigDecimal,

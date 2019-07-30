@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.api.Unit;
-import sk.hudak.prco.dto.newproduct.NewProductFullDto;
+import sk.hudak.prco.dto.NewProductFullDto;
 import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFindDto;
 import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.product.ProductFullDto;

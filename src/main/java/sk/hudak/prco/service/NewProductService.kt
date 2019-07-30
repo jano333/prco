@@ -1,11 +1,7 @@
 package sk.hudak.prco.service
 
 
-import sk.hudak.prco.dto.UnitData
-import sk.hudak.prco.dto.newproduct.NewProductCreateDto
-import sk.hudak.prco.dto.newproduct.NewProductFilterUIDto
-import sk.hudak.prco.dto.newproduct.NewProductFullDto
-import sk.hudak.prco.dto.newproduct.NewProductInfoDetail
+import sk.hudak.prco.dto.*
 import sk.hudak.prco.dto.product.ProductUnitDataDto
 
 /**
