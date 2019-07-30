@@ -1,90 +1,77 @@
-package sk.hudak.prco.model;
+package sk.hudak.prco.model
 
-import lombok.Getter;
-import lombok.Setter;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.Unit;
-import sk.hudak.prco.model.core.DbEntity;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import java.math.BigDecimal;
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.Unit
+import sk.hudak.prco.model.core.DbEntity
+import java.math.BigDecimal
+import javax.persistence.*
 
 /**
  * Novo pridane produkty.
  */
-@Getter
-@Setter
 @Entity(name = "NEW_PRODUCT")
-public class NewProductEntity extends DbEntity {
+class NewProductEntity : DbEntity() {
 
     @Id
     @GeneratedValue(generator = "NEW_PRODUCT_SEC", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "NEW_PRODUCT_SEC", sequenceName = "NEW_PRODUCT_SEC", allocationSize = 1)
-    private Long id;
+    override var id: Long? = null
 
     /**
      * URL produktu - nastavuje sa pri vytvoreni.
      */
     @Column(nullable = false, unique = true)
-    private String url;
+    var url: String? = null
 
     /**
      * Nazov produktu - nastavuje sa pri prvom vytvoreni.
      */
     @Column(nullable = false)
-    private String name;
+    var name: String? = null
 
     /**
      * Unikatny identifikator eshopu ku ktoremu patri dany produkt - nastavuje sa pri prvom vytvoreni.
      */
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private EshopUuid eshopUuid;
+    var eshopUuid: EshopUuid? = null
 
     /**
      * Typ meratelnej jednotky(GRAM, MILILITER, KUS...),
      * nepovinne, lebo sa nemuselo podarit vyparsovat.
      */
     @Enumerated(EnumType.STRING)
-    private Unit unit;
+    var unit: Unit? = null
 
     /**
      * Hodnota jednotky, napr. 100, 20, ...
      * nepovinne, lebo sa nemuselo podarit vyparsovat.
      */
     @Column(precision = 11, scale = 5)
-    private BigDecimal unitValue;
+    var unitValue: BigDecimal? = null
 
     /**
      * Pocet kusov v baleni
      * nepovinne, lebo sa nemuselo podarit vyparsovat.
      */
-    private Integer unitPackageCount;
+    var unitPackageCount: Int? = null
 
     /**
      * flag, ktory definuje, ci su vyplnene vsetky udaje (unit, unitValue, unitPackageCount)
      */
     @Column(nullable = false)
-    private Boolean valid;
+    var valid: Boolean? = null
 
     /**
      * flag, ktory urcuje ci to niekto skontroloval ze su tam naozaj spravne hodnoty
      * (unit, unitValue, a unitPackageCount)
      */
     @Column(nullable = false)
-    private Boolean confirmValidity;
+    var confirmValidity: Boolean? = null
 
     /**
      * URL obrazku, k danemu produktu.
      * nepovinne, lebo sa nemuselo podarit vyparsovat.
      */
-    private String pictureUrl;
-
+    var pictureUrl: String? = null
 }

@@ -21,5 +21,6 @@ public interface NewProductEntityDbDao extends BaseDao<NewProductEntity> {
 
     List<NewProductEntity> findByFilter(NewProductFilterUIDto filter);
 
+    //TODO rename na countOfAllNewProducts
     long getCountOfAllNewProducts();
 }

@@ -4,7 +4,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.builder.SearchUrlBuilder;
@@ -27,7 +26,8 @@ import static sk.hudak.prco.utils.JsoupUtils.existElement;
 import static sk.hudak.prco.utils.JsoupUtils.getTextFromFirstElementByClass;
 import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
 
-@Component
+//@Component
+//TODO zrusit presli pod mall eshop
 public class BambinoProductParser extends JSoupProductParser {
 
     private static final int PAGING = 24;

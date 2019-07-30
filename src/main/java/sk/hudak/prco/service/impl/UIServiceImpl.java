@@ -45,7 +45,7 @@ public class UIServiceImpl implements UIService {
 
     @Override
     public void confirmUnitDataForNewProduct(Long newProductId) {
-        internalTxService.confirmUnitDataForNewProducts(newProductId);
+        internalTxService.confirmUnitDataForNewProducts(new Long[]{newProductId});
     }
 
     @Override
@@ -90,7 +90,7 @@ public class UIServiceImpl implements UIService {
 
     @Override
     public List<ProductFullDto> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip) {
-        return internalTxService.findProductsInGroup(groupId,withPriceOnly, eshopsToSkip);
+        return internalTxService.findProductsInGroup(groupId, withPriceOnly, eshopsToSkip);
     }
 
     @Override

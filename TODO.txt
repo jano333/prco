@@ -1,4 +1,53 @@
-
+*************
+Bambino je Mall -> drusit bambino eshop
+0 WARN [main] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:67] for eshop BAMBINO none parser found
+*************
+toto nie je pravda
+2019-07-30 09:13:48,661 WARN [PILULKA] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:203] to https://www.pilulka.sk/pampers-active-baby-mqp-5-junior-124ks-utierky-zadarmo
+2019-07-30 09:13:48,661 INFO [PILULKA] [] s.h.p.s.i.ProductServiceImpl [ProductServiceImpl.java:397] product with id 1381 was reset/mark as unavailable
+*************
+2019-07-30 09:13:17,058 ERROR [MALL] [] s.h.p.m.i.ErrorHandlerImpl [ErrorHandlerImpl.kt:24] error while parsing product data for product sk.hudak.prco.dto.product.ProductDetailInfo@191f3fad.url
+sk.hudak.prco.exception.EshopNotFoundPrcoException: EshopUuid for http://mall.sk/plienky-pampers-3-6-kg/pampers-plienky-premium-value-pack-s2-68ks not found
+*************
+2019-07-30 09:13:09,039 DEBUG [GIGA_LEKAREN] [] s.h.p.t.i.EshopTaskManagerImpl [EshopTaskManagerImpl.kt:113] task status TaskContext(status=STOPPED, lastChanged=Tue Jul 30 09:12:55 CEST 2019)
+2019-07-30 09:13:09,039 DEBUG [GIGA_LEKAREN] [] s.h.p.t.i.EshopTaskManagerImpl [EshopTaskManagerImpl.kt:94] marking task for eshop GIGA_LEKAREN as RUNNING
+2019-07-30 09:13:09,039 DEBUG [GIGA_LEKAREN] [] s.h.p.s.Starter [Starter.java:232] >> eshop: GIGA_LEKAREN, updated/waiting: 0/45
+2019-07-30 09:13:09,039 DEBUG [GIGA_LEKAREN] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:248] request URL: https://www.gigalekaren.sk/produkt/nutrilon-1-6x800g/
+2019-07-30 09:13:09,039 DEBUG [GIGA_LEKAREN] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:251] userAgent: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko
+2019-07-30 09:13:09,155 DEBUG [GIGA_LEKAREN] [] s.h.p.s.PrcoCustomTrustManager [PrcoCustomTrustManager.kt:47] server cert subject name CN=dave.onebit.cz,OU=dave,O=ONEsolution s.r.o.,ST=Czech Republic,C=CZ
+2019-07-30 09:13:09,186 DEBUG [GIGA_LEKAREN] [] s.h.p.s.PrcoCustomHostnameVerifier [PrcoCustomHostnameVerifier.kt:28] verify www.gigalekaren.sk
+2019-07-30 09:13:19,188 ERROR [GIGA_LEKAREN] [] s.h.p.m.i.ErrorHandlerImpl [ErrorHandlerImpl.kt:24] error while parsing product data for product sk.hudak.prco.dto.product.ProductDetailInfo@7c08950e.url
+sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException: timeout
+	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:278)
+	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:196)
+	at sk.hudak.prco.parser.impl.JsoupHtmlParserImpl.parseProductUpdateData(JsoupHtmlParserImpl.kt:36)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.parseOneProductUpdateData(UpdateProductDataManagerImpl.java:180)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.internalParseAndUpdate(UpdateProductDataManagerImpl.java:172)
+	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateProductDataForEachProductInEshop$2(UpdateProductDataManagerImpl.java:99)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.net.SocketInputStream.socketRead0(Native Method)
+*************
+2019-07-30 09:13:00,182 ERROR [ALZA] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:281] error creating document for url 'https://www.alza.sk/maxi/pampers-premium-care-vel-4-maxi-168-ks-mesacne-balenie-d4842712.htm':
+javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+*************
+2019-07-30 09:13:19,188 ERROR [GIGA_LEKAREN] [] s.h.p.m.i.ErrorHandlerImpl [ErrorHandlerImpl.kt:24] error while parsing product data for product sk.hudak.prco.dto.product.ProductDetailInfo@7c08950e.url
+sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException: timeout
+*************
+toto tiz nie je pravda
+ product is unavailable: https://www.mall.sk/plienky-pampers-2/pampers-pleny-active-baby-4-maxi-mesicni-baleni-152-ks
+*******************
+2019-07-29 10:10:05,610 ERROR [LEKAREN_BELLA] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:108] error while creating new product
+sk.hudak.prco.exception.RequiredParameterException: parameter name is null/empty
+	at sk.hudak.prco.utils.Validate.notNullNotEmpty(Validate.kt:20)
+	at sk.hudak.prco.service.impl.NewProductServiceImpl.createNewProduct(NewProductServiceImpl.kt:62)
+	at sk.hudak.prco.service.impl.InternalTxServiceImpl.createNewProduct(InternalTxServiceImpl.java:100)
+	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$FastClassBySpringCGLIB$$6a8a885c.invoke(<generated>)
+********************
 For KOTLIN remove Optional keyword, use ? instead
 *****************************************************************************************
 dava zle automaticky groupu:

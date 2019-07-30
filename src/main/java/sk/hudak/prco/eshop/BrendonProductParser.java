@@ -74,7 +74,7 @@ public class BrendonProductParser extends JSoupProductParser {
 
     @Override
     protected boolean isProductUnavailable(Document documentDetailProduct) {
-        return !ofNullable(documentDetailProduct.select("#add-to-cart-button-11842402").first())
+        return !ofNullable(documentDetailProduct.select("div.add-to-cart-panel button[value='Pridať do košíka']").first())
                 .isPresent();
     }
 

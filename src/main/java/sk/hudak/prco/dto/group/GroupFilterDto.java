@@ -1,11 +1,9 @@
 package sk.hudak.prco.dto.group;
 
-import lombok.Getter;
 import lombok.NonNull;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.DtoAble;
 
-@Getter
 public class GroupFilterDto implements DtoAble {
     private Long[] ids;
     private String name;
@@ -36,5 +34,21 @@ public class GroupFilterDto implements DtoAble {
     public GroupFilterDto(@NonNull Long id, EshopUuid... eshopsToSkip) {
         this.ids = new Long[]{id};
         this.eshopsToSkip = eshopsToSkip;
+    }
+
+    public Long[] getIds() {
+        return ids;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public EshopUuid getEshopOnly() {
+        return eshopOnly;
+    }
+
+    public EshopUuid[] getEshopsToSkip() {
+        return eshopsToSkip;
     }
 }

@@ -1,19 +1,41 @@
 package sk.hudak.prco.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
 import java.math.BigDecimal;
 
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class WatchDogAddDto {
+
     private String productUrl;
     private BigDecimal maxPriceToBeInterestedIn;
+
+    public WatchDogAddDto() {
+    }
+
+    public WatchDogAddDto(String productUrl, BigDecimal maxPriceToBeInterestedIn) {
+        this.productUrl = productUrl;
+        this.maxPriceToBeInterestedIn = maxPriceToBeInterestedIn;
+    }
+
+    public String getProductUrl() {
+        return productUrl;
+    }
+
+    public void setProductUrl(String productUrl) {
+        this.productUrl = productUrl;
+    }
+
+    public BigDecimal getMaxPriceToBeInterestedIn() {
+        return maxPriceToBeInterestedIn;
+    }
+
+    public void setMaxPriceToBeInterestedIn(BigDecimal maxPriceToBeInterestedIn) {
+        this.maxPriceToBeInterestedIn = maxPriceToBeInterestedIn;
+    }
+
+    @Override
+    public String toString() {
+        return "WatchDogAddDto{" +
+                "productUrl='" + productUrl + '\'' +
+                ", maxPriceToBeInterestedIn=" + maxPriceToBeInterestedIn +
+                '}';
+    }
 }

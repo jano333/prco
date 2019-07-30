@@ -1,6 +1,5 @@
 package sk.hudak.prco.utils
 
-import sk.hudak.prco.utils.Validate.notNull
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -11,8 +10,6 @@ object CalculationUtils {
 
     @JvmStatic
     fun recalculateToKilograms(grams: BigDecimal): BigDecimal {
-        notNull(grams, "grams")
-
         return grams.divide(VALUE_1000, SCALE, RoundingMode.HALF_UP)
     }
 

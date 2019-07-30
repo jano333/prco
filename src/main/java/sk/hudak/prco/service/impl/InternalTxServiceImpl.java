@@ -96,19 +96,19 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional
-    public Long createNewProduct(NewProductCreateDto newProductCreateDto) {
+    public long createNewProduct(NewProductCreateDto newProductCreateDto) {
         return newProductService.createNewProduct(newProductCreateDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public NewProductFullDto getNewProduct(Long newProductId) {
+    public NewProductFullDto getNewProduct(long newProductId) {
         return newProductService.getNewProduct(newProductId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<NewProductInfoDetail> findFirstInvalidNewProduct() {
+    public NewProductInfoDetail findFirstInvalidNewProduct() {
         return newProductService.findFirstInvalidNewProduct();
     }
 

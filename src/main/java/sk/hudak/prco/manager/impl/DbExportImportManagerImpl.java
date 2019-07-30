@@ -236,19 +236,17 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
                     .withHeader(NEW_PRODUCTS_HEADERS)
                     .withFirstRecordAsHeader().parse(in)
                     .forEach(record -> {
-                        NewProductFullDto dto = NewProductFullDto.builder()
-                                .created(readDateNullSafe(record.get(CREATED)))
-                                .updated(readDateNullSafe(record.get(UPDATED)))
-                                .url(record.get(URL))
-                                .name(record.get(NAME))
-                                .eshopUuid(readEshopUuidNullSafe(record.get(ESHOP_UUID)))
-                                .unit(readUnitNullSafe(record.get(UNIT)))
-                                .unitValue(readBigDecimalNullSafe(record.get(UNIT_VALUE)))
-                                .unitPackageCount(readIntegerNullSafe(record.get(UNIT_PACKAGE_COUNT)))
-                                .valid(readBooleanNullSafe(record.get(VALID)))
-                                .confirmValidity(readBooleanNullSafe(record.get(CONFIRM_VALIDITY)))
-                                .build();
-
+                        NewProductFullDto dto = new NewProductFullDto();
+                        dto.setCreated(readDateNullSafe(record.get(CREATED)));
+                        dto.setUpdated(readDateNullSafe(record.get(UPDATED)));
+                        dto.setUrl(record.get(URL));
+                        dto.setName(record.get(NAME));
+                        dto.setEshopUuid(readEshopUuidNullSafe(record.get(ESHOP_UUID)));
+                        dto.setUnit(readUnitNullSafe(record.get(UNIT)));
+                        dto.setUnitValue(readBigDecimalNullSafe(record.get(UNIT_VALUE)));
+                        dto.setUnitPackageCount(readIntegerNullSafe(record.get(UNIT_PACKAGE_COUNT)));
+                        dto.setValid(readBooleanNullSafe(record.get(VALID)));
+                        dto.setConfirmValidity(readBooleanNullSafe(record.get(CONFIRM_VALIDITY)));
                         result.add(dto);
                     });
 

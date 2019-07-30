@@ -1,8 +1,8 @@
 package sk.hudak.prco.test;
 
 import sk.hudak.prco.builder.SearchUrlBuilder;
-import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
-import sk.hudak.prco.eshop.Pilulka24ProductParser;
+import sk.hudak.prco.builder.SearchUrlBuilderImpl;
+import sk.hudak.prco.eshop.MallProductParser;
 import sk.hudak.prco.parser.impl.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
@@ -21,10 +21,10 @@ public class ProductParserTest {
         SearchUrlBuilder searchUrlBuilder = new SearchUrlBuilderImpl();
 
 //         Pilulka24
-        System.out.println(new Pilulka24ProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//        System.out.println(new Pilulka24ProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseProductNewData("https://www.pilulka24.sk/pampers-activebaby-giant-pack-3-midi-90"));
-                .parseProductUpdateData("https://www.pilulka24.sk/pampers-wipes-64-ks-natural-clean-napln"));
+//                .parseProductUpdateData("https://www.pilulka24.sk/pampers-wipes-64-ks-natural-clean-napln"));
 //
 // Lekaren Bella
 //        System.out.println(new LekarenBellaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -100,7 +100,7 @@ public class ProductParserTest {
 //        System.out.println(new BrendonProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
 //                .parseProductNewData("https://www.brendon.sk/Products/Details/118424"));
-//                .parseProductUpdateData("https://www.brendon.sk/Products/Details/118424"));
+//                .parseProductUpdateData("https://www.brendon.sk/nutrilon-4-800g-kojenecke-mlieko-4269802"));
 //
 //        // Feedo
 //        System.out.println(new FeedoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -172,10 +172,10 @@ public class ProductParserTest {
 
 
 //         MALL
-//        System.out.println(new MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+        System.out.println(new MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 //                .parseUrlsOfProduct("pampers"));
-//                .parseProductNewData("http://mall.sk/plienky-pampers-7-18-kg/pampers-pure-protection-s4-28-ks-914-kg"));
-//                .parseProductUpdateData("http://mall.sk/plienky-pampers-7-18-kg/pampers-pure-protection-s4-28-pcs-9-14-kg"));
+//                .parseProductNewData("https://www.mall.sk/detske-kase/nutrilon-mlecna-ha-kase-ryzova-4-x-225g"));
+                .parseProductUpdateData("https://www.mall.sk/plienky-pampers-2/pampers-pleny-active-baby-4-maxi-mesicni-baleni-152-ks"));
 
         //        MamaAJa(UZ neexistuje)
 //        System.out.println(new MamaAJaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)

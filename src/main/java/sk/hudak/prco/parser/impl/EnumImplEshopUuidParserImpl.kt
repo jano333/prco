@@ -6,7 +6,6 @@ import sk.hudak.prco.exception.EshopNotFoundPrcoException
 import sk.hudak.prco.parser.EshopUuidParser
 import java.util.*
 
-
 @Component
 class EnumImplEshopUuidParserImpl : EshopUuidParser {
 

@@ -1,17 +1,11 @@
 package sk.hudak.prco.dto.error;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import sk.hudak.prco.api.ErrorType;
 import sk.hudak.prco.api.EshopUuid;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Getter
-@Setter
-@ToString
 public class ErrorListDto {
 
     private Long id;
@@ -24,6 +18,77 @@ public class ErrorListDto {
     private String additionalInfo;
     private Date updated;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public EshopUuid getEshopUuid() {
+        return eshopUuid;
+    }
+
+    public void setEshopUuid(EshopUuid eshopUuid) {
+        this.eshopUuid = eshopUuid;
+    }
+
+    public ErrorType getErrorType() {
+        return errorType;
+    }
+
+    public void setErrorType(ErrorType errorType) {
+        this.errorType = errorType;
+    }
+
+    public String getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(String statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getFullMsg() {
+        return fullMsg;
+    }
+
+    public void setFullMsg(String fullMsg) {
+        this.fullMsg = fullMsg;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
 
     public String customToString() {
         return new StringBuilder().append(getEshopUuid()).append(" ")
@@ -42,5 +107,20 @@ public class ErrorListDto {
             return "";
         }
         return new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(date);
+    }
+
+    @Override
+    public String toString() {
+        return "ErrorListDto{" +
+                "id=" + id +
+                ", eshopUuid=" + eshopUuid +
+                ", errorType=" + errorType +
+                ", statusCode='" + statusCode + '\'' +
+                ", message='" + message + '\'' +
+                ", fullMsg='" + fullMsg + '\'' +
+                ", url='" + url + '\'' +
+                ", additionalInfo='" + additionalInfo + '\'' +
+                ", updated=" + updated +
+                '}';
     }
 }

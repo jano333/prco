@@ -5,7 +5,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
@@ -38,8 +37,9 @@ public class MallProductParser extends JSoupProductParser {
 
     private static final int MAX_COUNT_OF_PRODUCT_PRE_PAGE = 48;
 
-    @Autowired
-    public MallProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
+    public MallProductParser(UnitParser unitParser,
+                             UserAgentDataHolder userAgentDataHolder,
+                             SearchUrlBuilder searchUrlBuilder) {
         super(unitParser, userAgentDataHolder, searchUrlBuilder);
     }
 
@@ -86,7 +86,15 @@ public class MallProductParser extends JSoupProductParser {
 
     @Override
     protected boolean isProductUnavailable(Document documentDetailProduct) {
-        return notExistElement(documentDetailProduct, "button[id=add-to-cart]");
+        boolean b = notExistElement(documentDetailProduct, "button[id=add-to-cart]");
+        if (!b) {
+            return b;
+        }
+        Optional<String> s = Optional.ofNullable(documentDetailProduct.select("span[class='btn-inset lay-block']").first())
+                .map(Element::text);
+        boolean present = s
+                .isPresent();
+        return present;
     }
 
     @Override

@@ -176,7 +176,8 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
             //TODO pridat kontrolu na dostupnost proudku, alza nebol dostupny preto nevrati mene.... a padne toto
 
             // je len tmp fix
-            if (!productNewData.getName().isPresent()) {
+            if (null == productNewData.getName()) {
+                //TODO log do error logu? asi ano
                 log.warn("new product not contains name, skipping to next product");
                 continue;
             }
@@ -195,22 +196,25 @@ public class AddingNewProductManagerImpl implements AddingNewProductManager {
     }
 
     private void logErrorParsingProductUrls(EshopUuid eshopUuid, String searchKeyWord, Exception e) {
-        internalTxService.createError(ErrorCreateDto.builder()
-                .errorType(ErrorType.PARSING_PRODUCT_URLS)
-                .eshopUuid(eshopUuid)
-                .message(e.getMessage())
-                .fullMsg(ExceptionUtils.getStackTrace(e))
-                .additionalInfo(searchKeyWord)
-                .build());
+        internalTxService.createError(new ErrorCreateDto(
+                eshopUuid,
+                ErrorType.PARSING_PRODUCT_URLS,
+                null,
+                e.getMessage(),
+                ExceptionUtils.getStackTrace(e),
+                null,
+                searchKeyWord));
     }
 
     private void logErrorParsingUnit(EshopUuid eshopUuid, String productUrl, String productName) {
-        internalTxService.createError(ErrorCreateDto.builder()
-                .errorType(ErrorType.PARSING_PRODUCT_UNIT_ERR)
-                .eshopUuid(eshopUuid)
-                .url(productUrl)
-                .additionalInfo(productName)
-                .build());
+        internalTxService.createError(new ErrorCreateDto(
+                eshopUuid,
+                ErrorType.PARSING_PRODUCT_UNIT_ERR,
+                null,
+                null,
+                null,
+                productUrl,
+                productName));
     }
 
     private boolean existParserFor(EshopUuid eshopUuid) {

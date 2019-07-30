@@ -1,7 +1,5 @@
 package sk.hudak.prco.api;
 
-import lombok.Getter;
-
 import static sk.hudak.prco.api.EshopCategory.DRUGSTORE;
 import static sk.hudak.prco.api.EshopCategory.PHARMACY;
 import static sk.hudak.prco.api.SearchTemplateConstants.KEYWORD_TEMP;
@@ -257,7 +255,6 @@ public enum EshopUuid {
 
     private int maxCountOfProductOnPage;
 
-    @Getter
     private EshopCategory category;
 
     EshopUuid(EshopCategory category, String productStartUrl, String searchTemplateUrl, String searchTemplateUrlWithPageNumber,
@@ -290,6 +287,10 @@ public enum EshopUuid {
      */
     public String getProductStartUrl() {
         return productStartUrl;
+    }
+
+    public EshopCategory getCategory() {
+        return category;
     }
 
     /**

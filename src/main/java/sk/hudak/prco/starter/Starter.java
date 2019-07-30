@@ -232,7 +232,7 @@ public class Starter {
                 log.debug(">> eshop: {}, updated/waiting: {}/{}",
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
-        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
+//        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
 //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
 //        updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.LEKAREN_BELLA, listener);
@@ -592,12 +592,12 @@ public class Starter {
     public void UC_fixOneInvalidNewProduct() {
         System.out.println("pocet neplatnych: " + internalTxService.getCountOfInvalidNewProduct());
 
-        Optional<NewProductInfoDetail> firstInvalidNewProductInfo = internalTxService.findFirstInvalidNewProduct();
-        if (!firstInvalidNewProductInfo.isPresent()) {
+        NewProductInfoDetail firstInvalidNewProductInfo = internalTxService.findFirstInvalidNewProduct();
+        if (firstInvalidNewProductInfo != null) {
             System.out.println("je to null");
             return;
         }
-        System.out.println(firstInvalidNewProductInfo.get());
+        System.out.println(firstInvalidNewProductInfo);
 
         //TODO z GUI vyplnit spravne data
         internalTxService.repairInvalidUnitForNewProduct(

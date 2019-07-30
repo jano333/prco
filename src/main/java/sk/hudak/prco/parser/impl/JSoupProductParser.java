@@ -159,30 +159,35 @@ public abstract class JSoupProductParser implements EshopProductsParser {
 
         Document document = retrieveDocument(productUrl);
 
-        ProductNewData.ProductNewDataBuilder builder = ProductNewData.builder()
-                .url(productUrl)
-                .eshopUuid(getEshopUuid());
+        ProductNewData result = new ProductNewData();
+        result.setUrl(productUrl);
+        result.setEshopUuid(getEshopUuid());
 
         Optional<String> productNameOpt = parseProductNameFromDetail(document);
         logWarningIfNull(productNameOpt, "productName", document.location());
-        builder.name(productNameOpt);
+        if (productNameOpt.isPresent()) {
+            result.setName(productNameOpt.get());
+        }
 
         Optional<String> productPictureUrlOpt = internalParseProductPictureURL(document, productUrl);
         logWarningIfNull(productPictureUrlOpt, "pictureUrl", document.location());
-        builder.pictureUrl(productPictureUrlOpt);
+        if (productPictureUrlOpt.isPresent()) {
+            result.setPictureUrl(productPictureUrlOpt.get());
+        }
 
         // ak nemame nazov produktu nemozeme pokracovat v parsovani 'unit'
         if (!productNameOpt.isPresent()) {
-            return builder.build();
+            return result;
         }
 
         parseUnitValueCount(document, productNameOpt.get())
-                .ifPresent(unitTypeValueCount ->
-                        builder.unit(unitTypeValueCount.getUnit())
-                                .unitValue(unitTypeValueCount.getValue())
-                                .unitPackageCount(unitTypeValueCount.getPackageCount()));
+                .ifPresent(unitTypeValueCount -> {
+                    result.setUnit(unitTypeValueCount.getUnit());
+                    result.setUnitValue(unitTypeValueCount.getValue());
+                    result.setUnitPackageCount(unitTypeValueCount.getPackageCount());
+                });
 
-        return builder.build();
+        return result;
     }
 
 
@@ -200,10 +205,10 @@ public abstract class JSoupProductParser implements EshopProductsParser {
 
         // ak je produkt nedostupny tak nastavim len url a eshop uuid
         if (isProductUnavailable(document)) {
-            log.debug("product is unavailable: {} ", productUrl);
-            return ProductUpdateData.builder()
-                    .url(realProductUrl)
-                    .eshopUuid(getEshopUuid()).build();
+            //TODO pridat ako osobitnu chybu, pripadne do osobitnej tabulku na vyhodnotenie ak je napr.
+            // 5 produktov po sebe oznacenych za nedostupnych tak overit ci je to naozaj tak
+            log.warn("product is unavailable: {} ", productUrl);
+            return new ProductUpdateData(realProductUrl, getEshopUuid());
         }
 
         // product name
@@ -227,17 +232,15 @@ public abstract class JSoupProductParser implements EshopProductsParser {
         // product picture
         Optional<String> pictureUrl = internalParseProductPictureURL(document, productUrl);
 
-        return ProductUpdateData.builder()
-                .url(realProductUrl)
-                .eshopUuid(getEshopUuid())
-                .name(productName)
-                .priceForPackage(productPriceForPackage)
+        return new ProductUpdateData(
+                realProductUrl,
+                getEshopUuid(),
+                productName,
+                productPriceForPackage,
                 // FIXME spojit do jedneho ohladne product action
-                .productAction(productAction.isPresent() ? productAction.get() : null)
-                .actionValidity(productActionValidity.isPresent() ? productActionValidity.get() : null)
-
-                .pictureUrl(pictureUrl.isPresent() ? pictureUrl.get() : null)
-                .build();
+                productAction.isPresent() ? productAction.get() : null,
+                productActionValidity.isPresent() ? productActionValidity.get() : null,
+                pictureUrl.isPresent() ? pictureUrl.get() : null);
     }
 
     protected Document retrieveDocument(@NonNull String productUrl) {

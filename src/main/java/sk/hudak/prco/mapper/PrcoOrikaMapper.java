@@ -23,6 +23,10 @@ import sk.hudak.prco.model.ProductEntity;
 @Component
 public class PrcoOrikaMapper extends ConfigurableMapper {
 
+    // uroit tiredu ktore rozsuje jednotlive class
+    //TODO zrusit tuto class a pouzit v kotline:
+    // https://stackoverflow.com/questions/39199426/better-way-to-map-kotlin-data-objects-to-data-objects
+
     @Override
     protected void configure(MapperFactory factory) {
 
@@ -49,11 +53,11 @@ public class PrcoOrikaMapper extends ConfigurableMapper {
                 .customize(new CustomMapper<ProductNewData, NewProductCreateDto>() {
                     @Override
                     public void mapAtoB(ProductNewData productNewData, NewProductCreateDto newProductCreateDto, MappingContext context) {
-                        if (productNewData.getName() != null && productNewData.getName().isPresent()) {
-                            newProductCreateDto.setName(productNewData.getName().get());
+                        if (productNewData.getName() != null) {
+                            newProductCreateDto.setName(productNewData.getName());
                         }
-                        if (productNewData.getPictureUrl() != null && productNewData.getPictureUrl().isPresent()) {
-                            newProductCreateDto.setPictureUrl(productNewData.getPictureUrl().get());
+                        if (productNewData.getPictureUrl() != null) {
+                            newProductCreateDto.setPictureUrl(productNewData.getPictureUrl());
                         }
                     }
                 })

@@ -1,3 +1,6 @@
+pridat osobitnu tabulku na produkty ktore su nedostupne, ci naozaj su nedostupne alebo neaky
+vehodnocovanie ze ak je napr 5 po sebe produktov oznacenych na nedostupne tak to dat do zoznamu na preverenie
+
 ---------------------------------------------------------------------------------------------------------------------------------
 FEATURE:
 pozormyslat a pridat do kazdeho eshopu max timeout 15 sekund..

@@ -6,7 +6,7 @@ import org.junit.Test;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.SearchTemplateConstants;
 import sk.hudak.prco.builder.SearchUrlBuilder;
-import sk.hudak.prco.builder.impl.SearchUrlBuilderImpl;
+import sk.hudak.prco.builder.SearchUrlBuilderImpl;
 
 import java.util.Arrays;
 import java.util.HashMap;
