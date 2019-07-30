@@ -15,7 +15,7 @@ data class ErrorCreateDto(val eshopUuid: EshopUuid? = null,
                           val additionalInfo: String? = null) : DtoAble
 
 //TODO prorobit na data class
-class ErrorFindFilterDto {
+class ErrorFindFilterDto : DtoAble {
 
     companion object {
         const val DEFAULT_COUNT_LIMIT = 50
@@ -28,18 +28,16 @@ class ErrorFindFilterDto {
     var statusCodesToSkip: Array<String>? = null
 
     override fun toString(): String {
-        return "ErrorFindFilterDto{" +
-                "limit=" + limit +
-                ", errorTypes=" + Arrays.toString(errorTypes) +
-                ", errorTypesToSkip=" + Arrays.toString(errorTypesToSkip) +
-                ", statusCodes=" + Arrays.toString(statusCodes) +
-                ", statusCodesToSkip=" + Arrays.toString(statusCodesToSkip) +
-                '}'.toString()
+        return "ErrorFindFilterDto(limit=$limit, " +
+                "errorTypes=${Arrays.toString(errorTypes)}, " +
+                "errorTypesToSkip=${Arrays.toString(errorTypesToSkip)}," +
+                " statusCodes=${Arrays.toString(statusCodes)}, " +
+                "statusCodesToSkip=${Arrays.toString(statusCodesToSkip)})"
     }
 }
 
 //TODO prorobit na data class
-class ErrorListDto {
+class ErrorListDto : DtoAble {
 
     var id: Long? = null
     var eshopUuid: EshopUuid? = null
@@ -70,17 +68,17 @@ class ErrorListDto {
     }
 
     override fun toString(): String {
-        return "ErrorListDto{" +
-                "id=" + id +
-                ", eshopUuid=" + eshopUuid +
-                ", errorType=" + errorType +
-                ", statusCode='" + statusCode + '\''.toString() +
-                ", message='" + message + '\''.toString() +
-                ", fullMsg='" + fullMsg + '\''.toString() +
-                ", url='" + url + '\''.toString() +
-                ", additionalInfo='" + additionalInfo + '\''.toString() +
-                ", updated=" + updated +
-                '}'.toString()
+        return "ErrorListDto(id=$id, " +
+                "eshopUuid=$eshopUuid, " +
+                "errorType=$errorType, " +
+                "statusCode=$statusCode, " +
+                "message=$message, " +
+                "fullMsg=$fullMsg, " +
+                "url=$url, " +
+                "additionalInfo=$additionalInfo, " +
+                "updated=$updated)"
     }
+
+
 }
 

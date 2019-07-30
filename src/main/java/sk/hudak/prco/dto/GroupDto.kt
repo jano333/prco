@@ -30,10 +30,7 @@ class GroupListDto : DtoAble {
     var name: String? = null
 
     override fun toString(): String {
-        return "GroupListDto{" +
-                "id=" + id +
-                ", name='" + name + '\''.toString() +
-                '}'.toString()
+        return "GroupListDto(id=$id, name=$name)"
     }
 }
 
@@ -42,15 +39,6 @@ class GroupListExtendedDto : DtoAble {
     var name: String? = null
     var countOfProduct: Long? = null
     var countOfProductInEshop: Map<EshopUuid, Long> = EnumMap(EshopUuid::class.java)
-
-    override fun toString(): String {
-        return "GroupListExtendedDto{" +
-                "id=" + id +
-                ", name='" + name + '\''.toString() +
-                ", countOfProduct=" + countOfProduct +
-                ", countOfProductInEshop=" + countOfProductInEshop +
-                '}'.toString()
-    }
 
     override fun equals(o: Any?): Boolean {
         if (this === o) return true
@@ -64,6 +52,10 @@ class GroupListExtendedDto : DtoAble {
 
     override fun hashCode(): Int {
         return Objects.hash(id, name, countOfProduct, countOfProductInEshop)
+    }
+
+    override fun toString(): String {
+        return "GroupListExtendedDto(id=$id, name=$name, countOfProduct=$countOfProduct, countOfProductInEshop=$countOfProductInEshop)"
     }
 }
 

@@ -14,10 +14,7 @@ abstract class IdNameDto : DtoAble {
     var name: String? = null
 
     override fun toString(): String {
-        return "IdNameDto{" +
-                "id=" + id +
-                ", name='" + name + '\''.toString() +
-                '}'.toString()
+        return "IdNameDto(id=$id, name=$name)"
     }
 }
 

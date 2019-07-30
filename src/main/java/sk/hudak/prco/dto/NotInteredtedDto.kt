@@ -8,7 +8,7 @@ import java.util.*
 data class NotInterestedProductFindDto(
         val eshopUuid: EshopUuid? = null) : DtoAble
 
-class NotInterestedProductFullDto {
+class NotInterestedProductFullDto : DtoAble {
     var created: Date? = null
     var updated: Date? = null
     var id: Long? = null
@@ -20,16 +20,14 @@ class NotInterestedProductFullDto {
     var unitPackageCount: Int? = null
 
     override fun toString(): String {
-        return "NotInterestedProductFullDto{" +
-                "created=" + created +
-                ", updated=" + updated +
-                ", id=" + id +
-                ", url='" + url + '\''.toString() +
-                ", name='" + name + '\''.toString() +
-                ", eshopUuid=" + eshopUuid +
-                ", unit=" + unit +
-                ", unitValue=" + unitValue +
-                ", unitPackageCount=" + unitPackageCount +
-                '}'.toString()
+        return "NotInterestedProductFullDto(created=$created, " +
+                "updated=$updated, " +
+                "id=$id, " +
+                "url=$url, " +
+                "name=$name, " +
+                "eshopUuid=$eshopUuid, " +
+                "unit=$unit, " +
+                "unitValue=$unitValue, " +
+                "unitPackageCount=$unitPackageCount)"
     }
 }

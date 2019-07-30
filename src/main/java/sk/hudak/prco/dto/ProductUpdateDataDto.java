@@ -9,6 +9,8 @@ import sk.hudak.prco.api.ProductAction;
 import java.math.BigDecimal;
 import java.util.Date;
 
+// TODO kde sa toto pouziva
+
 @Getter
 @Setter
 @ToString
