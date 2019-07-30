@@ -337,17 +337,15 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
                     .withHeader(NOT_ITERESTED_PRODUCTS_HEADERS)
                     .withFirstRecordAsHeader().parse(in)
                     .forEach(record -> {
-                        NotInterestedProductFullDto dto = NotInterestedProductFullDto.builder()
-                                .created(readDateNullSafe(record.get(CREATED)))
-                                .updated(readDateNullSafe(record.get(UPDATED)))
-                                .url(record.get(URL))
-                                .name(record.get(NAME))
-                                .eshopUuid(readEshopUuidNullSafe(record.get(ESHOP_UUID)))
-                                .unit(readUnitNullSafe(record.get(UNIT)))
-                                .unitValue(readBigDecimalNullSafe(record.get(UNIT_VALUE)))
-                                .unitPackageCount(readIntegerNullSafe(record.get(UNIT_PACKAGE_COUNT)))
-                                .build();
-
+                        NotInterestedProductFullDto dto = new NotInterestedProductFullDto();
+                        dto.setCreated(readDateNullSafe(record.get(CREATED)));
+                        dto.setUpdated(readDateNullSafe(record.get(UPDATED)));
+                        dto.setUrl(record.get(URL));
+                        dto.setName(record.get(NAME));
+                        dto.setEshopUuid(readEshopUuidNullSafe(record.get(ESHOP_UUID)));
+                        dto.setUnit(readUnitNullSafe(record.get(UNIT)));
+                        dto.setUnitValue(readBigDecimalNullSafe(record.get(UNIT_VALUE)));
+                        dto.setUnitPackageCount(readIntegerNullSafe(record.get(UNIT_PACKAGE_COUNT)));
                         result.add(dto);
                     });
 

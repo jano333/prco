@@ -230,11 +230,10 @@ public class ProductServiceImpl implements ProductService {
         notNull(eshopUuid, ESHOP_UUID);
         notNegativeAndNotZeroValue(olderThanInHours, "olderThanInHours");
 
-        return StatisticForUpdateForEshopDto.builder()
-                .countOfProductsWaitingToBeUpdated(productEntityDao.countOfProductsWaitingToBeUpdated(eshopUuid, olderThanInHours))
-                .countOfProductsAlreadyUpdated(productEntityDao.countOfProductsAlreadyUpdated(eshopUuid, olderThanInHours))
-                .eshopUuid(eshopUuid)
-                .build();
+        return new StatisticForUpdateForEshopDto(
+                eshopUuid,
+                productEntityDao.countOfProductsWaitingToBeUpdated(eshopUuid, olderThanInHours),
+                productEntityDao.countOfProductsAlreadyUpdated(eshopUuid, olderThanInHours));
     }
 
     @Override
