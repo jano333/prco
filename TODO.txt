@@ -28,9 +28,6 @@ sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException: timeout
 Caused by: java.net.SocketTimeoutException: Read timed out
 	at java.net.SocketInputStream.socketRead0(Native Method)
 *************
-2019-07-30 09:13:00,182 ERROR [ALZA] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:281] error creating document for url 'https://www.alza.sk/maxi/pampers-premium-care-vel-4-maxi-168-ks-mesacne-balenie-d4842712.htm':
-javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
-*************
 2019-07-30 09:13:19,188 ERROR [GIGA_LEKAREN] [] s.h.p.m.i.ErrorHandlerImpl [ErrorHandlerImpl.kt:24] error while parsing product data for product sk.hudak.prco.dto.product.ProductDetailInfo@7c08950e.url
 sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException: timeout
 *************

@@ -1,23 +1,79 @@
-package sk.hudak.prco.task.impl
+package sk.hudak.prco.task
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.task.EshopTaskManager
-import sk.hudak.prco.task.TaskContext
-import sk.hudak.prco.task.TaskStatus
 import sk.hudak.prco.utils.ThreadUtils
-import sk.hudak.prco.utils.ThreadUtils.generateRandomSecondInInterval
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.util.*
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.Future
+import java.util.concurrent.*
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
+
+enum class TaskStatus {
+    RUNNING,
+    SHOUD_STOP, // pomocny interny stav
+    STOPPED,
+    FINISHED_OK,
+    FINISHED_WITH_ERROR
+}
+
+data class TaskContext @JvmOverloads constructor(
+        val status: TaskStatus,
+        val lastChanged: Date = Date())
+
+//TODO zbavit sa exception
+abstract class VoidTask : Callable<Unit> {
+
+//    override fun call() {
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//    }
+
+    @Throws(Exception::class)
+    override fun call() {
+        doInTask()
+    }
+
+    @Throws(Exception::class)
+    protected abstract fun doInTask()
+}
+
+@FunctionalInterface
+interface SubmitTask<T, K> {
+
+    @Throws(Exception::class)
+    fun doInTask(eshopUuid: EshopUuid, param1: T, param2: K)
+}
+
+
+interface EshopTaskManager {
+
+    val tasks: Map<EshopUuid, TaskContext>
+
+    val isAnyTaskRunning: Boolean
+
+    fun submitTask(eshopUuid: EshopUuid, task: Runnable): Future<*>
+
+    fun isTaskRunning(eshopUuid: EshopUuid): Boolean
+
+    fun markTaskAsRunning(eshopUuid: EshopUuid)
+
+    fun isTaskStopped(eshopUuid: EshopUuid): Boolean
+
+    fun markTaskAsStopped(eshopUuid: EshopUuid)
+
+    fun isTaskFinished(eshopUuid: EshopUuid): Boolean
+
+    fun markTaskAsFinished(eshopUuid: EshopUuid, finishedWithError: Boolean)
+
+    fun isTaskShouldStopped(eshopUuid: EshopUuid): Boolean
+
+    fun markTaskAsShouldStopped(eshopUuid: EshopUuid)
+
+    fun sleepIfNeeded(eshopUuid: EshopUuid)
+}
 
 @Component
 class EshopTaskManagerImpl : EshopTaskManager {
@@ -25,6 +81,7 @@ class EshopTaskManagerImpl : EshopTaskManager {
     companion object {
         val log = LoggerFactory.getLogger(EshopTaskManagerImpl::class.java)
     }
+
     private val executors = EnumMap<EshopUuid, ExecutorService>(EshopUuid::class.java)
     private val internalTask = ConcurrentHashMap<EshopUuid, TaskContext>(EshopUuid.values().size)
 
@@ -122,7 +179,7 @@ class EshopTaskManagerImpl : EshopTaskManager {
 
             val secondsBetween = ChronoUnit.SECONDS.between(lastChanged, LocalDateTime.now())
 
-            val secondInInterval = generateRandomSecondInInterval()
+            val secondInInterval = ThreadUtils.generateRandomSecondInInterval()
 
             if (secondsBetween < secondInInterval) {
                 ThreadUtils.sleepSafe(secondInInterval)
@@ -130,3 +187,5 @@ class EshopTaskManagerImpl : EshopTaskManager {
         }
     }
 }
+
+
