@@ -38,8 +38,8 @@ public class ProductParserTest {
         ProductParserTest test = new ProductParserTest();
 
 //        System.out.println(test.parseUrlsOfProduct(EshopUuid.MALL, "pampers"));
-//        System.out.println(test.parseProductNewData("https://www.pilulka24.sk/pampers-activebaby-giant-pack-3-midi-90"));
-        System.out.println(test.parseProductUpdateData("https://www.pilulka.sk/pampers-active-baby-mqp-5-junior-124ks-utierky-zadarmo"));
+        System.out.println(test.parseProductNewData("https://www.alza.sk/maxi/pampers-premium-care-vel-4-maxi-168-ks-mesacne-balenie-d4842712.htm"));
+//        System.out.println(test.parseProductUpdateData("https://www.pilulka.sk/pampers-active-baby-mqp-5-junior-124ks-utierky-zadarmo"));
     }
 
     private EshopProductsParser getParserForEshop(EshopUuid eshopUuid) {
