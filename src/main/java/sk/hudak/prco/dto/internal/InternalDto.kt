@@ -54,7 +54,7 @@ class ProductUpdateData : InternalMarkerDto {
 
 
     constructor(url: String, eshopUuid: EshopUuid,
-                name: String?, priceForPackage: BigDecimal?, productAction: ProductAction?, actionValidity: Date, pictureUrl: String) {
+                name: String?, priceForPackage: BigDecimal?, productAction: ProductAction?, actionValidity: Date?, pictureUrl: String?) {
         // povinne
         this.url = url
         this.eshopUuid = eshopUuid
