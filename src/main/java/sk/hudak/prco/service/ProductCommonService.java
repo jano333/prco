@@ -1,9 +1,9 @@
 package sk.hudak.prco.service;
 
 import sk.hudak.prco.dto.NewProductFullDto;
+import sk.hudak.prco.dto.NotInterestedProductFindDto;
+import sk.hudak.prco.dto.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.ProductStatisticInfoDto;
-import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFindDto;
-import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
 
 import java.util.List;

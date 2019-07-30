@@ -1,43 +1,43 @@
-package sk.hudak.prco.model;
+package sk.hudak.prco.model
 
-import lombok.Getter;
-import lombok.Setter;
-import sk.hudak.prco.model.core.DbEntity;
+import sk.hudak.prco.model.core.DbEntity
+import java.util.*
+import javax.persistence.*
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.UniqueConstraint;
-import java.util.ArrayList;
-import java.util.List;
-
-@Getter
-@Setter
 @Entity(name = "GROUP_OF_PRODUCT")
-public class GroupEntity extends DbEntity {
+class GroupEntity : DbEntity() {
 
     @Id
     @GeneratedValue(generator = "GROUP_SEC", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "GROUP_SEC", sequenceName = "GROUP_SEC", allocationSize = 1)
-    private Long id;
+    override var id: Long? = null
 
     @Column(name = "NAME", nullable = false, unique = true)
-    private String name;
+    var name: String? = null
 
     // zoznam produktov v danej grupe
     @ManyToMany
-    @JoinTable(
-            name = "GROUP_PRODUCT",
-            joinColumns = @JoinColumn(name = "GROUP_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"GROUP_ID", "PRODUCT_ID"})
-    )
-    private List<ProductEntity> products = new ArrayList<>();
+    @JoinTable(name = "GROUP_PRODUCT", joinColumns = [JoinColumn(name = "GROUP_ID", referencedColumnName = "ID")], inverseJoinColumns = [JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")], uniqueConstraints = [UniqueConstraint(columnNames = ["GROUP_ID", "PRODUCT_ID"])])
+    var products: List<ProductEntity> = ArrayList()
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as GroupEntity
+
+        if (id != other.id) return false
+        if (name != other.name) return false
+        if (products != other.products) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id?.hashCode() ?: 0
+        result = 31 * result + (name?.hashCode() ?: 0)
+        result = 31 * result + products.hashCode()
+        return result
+    }
 
 }

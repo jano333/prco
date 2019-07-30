@@ -6,7 +6,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import lombok.NonNull;
 import org.springframework.stereotype.Repository;
 import sk.hudak.prco.dao.db.NotInterestedProductDbDao;
-import sk.hudak.prco.dto.notinteretedproduct.NotInterestedProductFindDto;
+import sk.hudak.prco.dto.NotInterestedProductFindDto;
 import sk.hudak.prco.model.NotInterestedProductEntity;
 import sk.hudak.prco.model.QNotInterestedProductEntity;
 
