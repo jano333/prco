@@ -10,7 +10,7 @@ import sk.hudak.prco.api.EshopUuid;
 @Setter
 @ToString
 @Builder
-public class StatisticForUpdateForEshopDto implements InternalDto {
+public class StatisticForUpdateForEshopDto implements InternallDto {
     private long countOfProductsWaitingToBeUpdated;
     private long countOfProductsAlreadyUpdated;
     private EshopUuid eshopUuid;

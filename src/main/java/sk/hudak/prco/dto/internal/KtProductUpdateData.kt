@@ -12,7 +12,7 @@ data class KtProductUpdateData(val url: String?,
                                var priceForPackage: BigDecimal?,
 
                                var productAction: ProductAction?,
-                               var actionValidity: Date?) : InternalDto {
+                               var actionValidity: Date?) : InternallDto {
 
     fun isProductAvailable(): Boolean {
         return name != null && priceForPackage != null

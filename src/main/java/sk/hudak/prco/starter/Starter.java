@@ -217,12 +217,11 @@ public class Starter {
 //        watchDogService.notifyByEmail(Collections.emptyList());
 
         System.out.println("Errors:");
-        internalTxService.findErrorsByFilter(ErrorFindFilterDto.builder()
-//                .errorTypesToSkip(new ErrorType[]{ErrorType.HTTP_STATUS_404_ERR})
-                        .statusCodesToSkip(new String[]{"404"})
-                        .limit(50)
-                        .build()
-        ).forEach(errorListDto -> System.out.println(errorListDto.customToString()));
+        ErrorFindFilterDto errorFindFilterDto = new ErrorFindFilterDto();
+        errorFindFilterDto.setStatusCodesToSkip(new String[]{"404"});
+        errorFindFilterDto.setLimit(50);
+        internalTxService.findErrorsByFilter(errorFindFilterDto)
+                .forEach(errorListDto -> System.out.println(errorListDto.customToString()));
 
         createGroupKeyWords();
         showGroupKeysWords();

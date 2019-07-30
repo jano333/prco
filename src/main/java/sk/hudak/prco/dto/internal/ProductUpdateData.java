@@ -6,7 +6,7 @@ import sk.hudak.prco.api.ProductAction;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class ProductUpdateData implements InternalDto {
+public class ProductUpdateData implements InternallDto {
 
     // povinne
     private String url;

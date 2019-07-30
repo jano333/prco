@@ -11,7 +11,7 @@ data class ProductNewData(
         var unit: Unit? = null,
         var unitValue: BigDecimal? = null,
         var unitPackageCount: Int? = null,
-        var pictureUrl: String? = null) : InternalDto {
+        var pictureUrl: String? = null) : InternallDto {
     //TODO poprehadzovat na optional tie ktore mozu byt null
 
 
