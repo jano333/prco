@@ -1,13 +1,13 @@
-package sk.hudak.prco.manager;
+package sk.hudak.prco.manager.addprocess
 
-import sk.hudak.prco.api.EshopUuid;
+import sk.hudak.prco.api.EshopUuid
 
-public interface AddingNewProductManager {
+interface AddingNewProductManager {
 
     /**
      * @param productsUrl list of new product URL's
      */
-    void addNewProductsByUrl(String... productsUrl);
+    fun addNewProductsByUrl(vararg productsUrl: String)
 
     /**
      * Vyhlada produkty s danym klucovym slovom pre konkretny eshop a ulozi ich do tabulky NEW_PRODUCT.
@@ -15,17 +15,17 @@ public interface AddingNewProductManager {
      * @param eshopUuid     eshop identifikator
      * @param searchKeyWord search key word
      */
-    void addNewProductsByKeywordForEshop(EshopUuid eshopUuid, String searchKeyWord);
+    fun addNewProductsByKeywordForEshop(eshopUuid: EshopUuid, searchKeyWord: String)
 
     /**
      * Vyhlada produkty s danym klucovym slovom pre vsetky eshopy a ulozi ich do tabulky NEW_PRODUCT.
      *
      * @param searchKeyWord search key word
      */
-    void addNewProductsByKeywordForAllEshops(String searchKeyWord);
+    fun addNewProductsByKeywordForAllEshops(searchKeyWord: String)
 
     /**
      * @param searchKeyWords search key words
      */
-    void addNewProductsByKeywordsForAllEshops(String... searchKeyWords);
+    fun addNewProductsByKeywordsForAllEshops(vararg searchKeyWords: String)
 }

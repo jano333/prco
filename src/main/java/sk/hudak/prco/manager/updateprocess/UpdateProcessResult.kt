@@ -1,6 +1,6 @@
-package sk.hudak.prco.manager.impl;
+package sk.hudak.prco.manager.updateprocess
 
-public enum UpdateProcessResult {
+enum class UpdateProcessResult {
 
     // parsing errors
     ERR_PARSING_ERROR_GENERIC,
@@ -14,6 +14,5 @@ public enum UpdateProcessResult {
     //TODO overit kde je pouzita
     ERR_HTML_PARSING_FAILED_404_ERROR,
 
-    OK,
-    ;
+    OK
 }

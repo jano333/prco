@@ -1,4 +1,4 @@
-package sk.hudak.prco.manager.impl;
+package sk.hudak.prco.manager.updateprocess;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +10,7 @@ import sk.hudak.prco.dto.ProductUpdateData;
 import sk.hudak.prco.dto.ProductUpdateDataDto;
 import sk.hudak.prco.dto.product.ProductDetailInfo;
 import sk.hudak.prco.dto.product.ProductFullDto;
-import sk.hudak.prco.manager.ErrorHandler;
-import sk.hudak.prco.manager.UpdateProductDataListener;
-import sk.hudak.prco.manager.UpdateProductDataManager;
-import sk.hudak.prco.manager.UpdateStatusInfo;
+import sk.hudak.prco.manager.error.ErrorHandler;
 import sk.hudak.prco.mapper.PrcoOrikaMapper;
 import sk.hudak.prco.parser.HtmlParser;
 import sk.hudak.prco.service.InternalTxService;
@@ -26,9 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static sk.hudak.prco.manager.impl.UpdateProcessResult.ERR_PARSING_ERROR_HTTP_STATUS_404;
-import static sk.hudak.prco.manager.impl.UpdateProcessResult.ERR_UPDATE_ERROR_PRODUCT_IS_UNAVAILABLE;
-import static sk.hudak.prco.manager.impl.UpdateProcessResult.OK;
+import static sk.hudak.prco.manager.updateprocess.UpdateProcessResult.ERR_PARSING_ERROR_HTTP_STATUS_404;
+import static sk.hudak.prco.manager.updateprocess.UpdateProcessResult.ERR_UPDATE_ERROR_PRODUCT_IS_UNAVAILABLE;
+import static sk.hudak.prco.manager.updateprocess.UpdateProcessResult.OK;
 import static sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe;
 import static sk.hudak.prco.utils.ThreadUtils.sleepSafe;
 

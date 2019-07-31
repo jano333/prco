@@ -1,4 +1,4 @@
-package sk.hudak.prco.manager.impl;
+package sk.hudak.prco.manager.export;
 
 import org.springframework.beans.factory.annotation.Value;
 import sk.hudak.prco.service.InternalTxService;

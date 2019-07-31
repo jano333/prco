@@ -1,7 +1,7 @@
-package sk.hudak.prco.manager;
+package sk.hudak.prco.manager.updateprocess
 
 @FunctionalInterface
-public interface UpdateProductDataListener {
+interface UpdateProductDataListener {
 
-    void onUpdateStatus(UpdateStatusInfo updateStatusInfo);
+    fun onUpdateStatus(updateStatusInfo: UpdateStatusInfo)
 }

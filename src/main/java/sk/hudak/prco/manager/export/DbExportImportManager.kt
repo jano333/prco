@@ -1,21 +1,21 @@
-package sk.hudak.prco.manager;
+package sk.hudak.prco.manager.export
 
-public interface DbExportImportManager {
+interface DbExportImportManager {
 
-    void exportAllTablesToCsvFiles();
+    fun exportAllTablesToCsvFiles()
 
-    void exportNewProducts();
+    fun exportNewProducts()
 
-    void exportProducts();
+    fun exportProducts()
 
-    void exportNotInterestedProducts();
+    fun exportNotInterestedProducts()
 
-    void importAllTables();
+    fun importAllTables()
 
-    void importNewProductsFromCsv();
+    fun importNewProductsFromCsv()
 
-    void importProductsFromCsv();
+    fun importProductsFromCsv()
 
-    void importNotIterestedProductsFromCsv();
+    fun importNotIterestedProductsFromCsv()
 
 }

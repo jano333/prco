@@ -1,4 +1,4 @@
-package sk.hudak.prco.manager.impl;
+package sk.hudak.prco.manager.addprocess;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -9,7 +9,6 @@ import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.ErrorCreateDto;
 import sk.hudak.prco.dto.ProductNewData;
 import sk.hudak.prco.dto.product.NewProductCreateDto;
-import sk.hudak.prco.manager.AddingNewProductManager;
 import sk.hudak.prco.mapper.PrcoOrikaMapper;
 import sk.hudak.prco.parser.EshopProductsParser;
 import sk.hudak.prco.parser.EshopUuidParser;

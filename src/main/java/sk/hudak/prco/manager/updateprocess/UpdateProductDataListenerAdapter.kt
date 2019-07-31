@@ -1,17 +1,24 @@
-package sk.hudak.prco.manager.impl;
+package sk.hudak.prco.manager.updateprocess
 
-import lombok.extern.slf4j.Slf4j;
-import sk.hudak.prco.manager.UpdateProductDataListener;
-import sk.hudak.prco.manager.UpdateStatusInfo;
+import org.slf4j.LoggerFactory
 
-@Slf4j
-public class UpdateProductDataListenerAdapter implements UpdateProductDataListener {
+class UpdateProductDataListenerAdapter : UpdateProductDataListener {
 
-    public static UpdateProductDataListener EMPTY_INSTANCE = new UpdateProductDataListenerAdapter();
-    public static UpdateProductDataListener LOG_INSTANCE = updateStatusInfo -> log.debug("{}", updateStatusInfo);
+    companion object {
+        val log = LoggerFactory.getLogger(UpdateProductDataListenerAdapter::class.java)!!
 
-    @Override
-    public void onUpdateStatus(UpdateStatusInfo updateStatusInfo) {
+        @JvmField
+        val EMPTY_INSTANCE: UpdateProductDataListener = UpdateProductDataListenerAdapter()
+
+        @JvmField
+        val LOG_INSTANCE: UpdateProductDataListener = object : UpdateProductDataListener {
+            override fun onUpdateStatus(updateStatusInfo: UpdateStatusInfo) {
+                log.debug(updateStatusInfo.toString())
+            }
+        }
+    }
+
+    override fun onUpdateStatus(updateStatusInfo: UpdateStatusInfo) {
         // do nothing
     }
 }

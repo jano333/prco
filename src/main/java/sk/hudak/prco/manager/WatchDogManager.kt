@@ -1,10 +1,10 @@
-package sk.hudak.prco.manager;
+package sk.hudak.prco.manager
 
-import java.math.BigDecimal;
+import java.math.BigDecimal
 
-public interface WatchDogManager {
+interface WatchDogManager {
 
-    void startWatching(String productUrl, BigDecimal maxPriceToBeInterestedIn);
+    fun startWatching(productUrl: String, maxPriceToBeInterestedIn: BigDecimal)
 
-    void collectAllUpdateAndSendEmail();
+    fun collectAllUpdateAndSendEmail()
 }

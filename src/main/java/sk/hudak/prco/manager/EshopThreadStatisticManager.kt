@@ -1,5 +1,5 @@
-package sk.hudak.prco.manager;
+package sk.hudak.prco.manager
 
-public interface EshopThreadStatisticManager {
-    void startShowingStatistics();
+interface EshopThreadStatisticManager {
+    fun startShowingStatistics()
 }

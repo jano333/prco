@@ -1,6 +1,6 @@
-package sk.hudak.prco.manager;
+package sk.hudak.prco.manager.export
 
-public interface HtmlExportManager {
+interface HtmlExportManager {
 
-    void buildHtml();
+    fun buildHtml()
 }

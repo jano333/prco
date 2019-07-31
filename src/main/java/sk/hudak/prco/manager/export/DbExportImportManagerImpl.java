@@ -1,4 +1,4 @@
-package sk.hudak.prco.manager.impl;
+package sk.hudak.prco.manager.export;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
@@ -12,7 +12,6 @@ import sk.hudak.prco.dto.product.NotInterestedProductFindDto;
 import sk.hudak.prco.dto.product.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.exception.PrcoRuntimeException;
-import sk.hudak.prco.manager.DbExportImportManager;
 
 import javax.annotation.PostConstruct;
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package sk.hudak.prco.manager.impl
+package sk.hudak.prco.manager.error
 
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.slf4j.LoggerFactory
@@ -9,8 +9,8 @@ import sk.hudak.prco.dto.ErrorCreateDto
 import sk.hudak.prco.dto.product.ProductDetailInfo
 import sk.hudak.prco.exception.HttpErrorPrcoException
 import sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException
-import sk.hudak.prco.manager.ErrorHandler
-import sk.hudak.prco.manager.impl.UpdateProcessResult.*
+import sk.hudak.prco.manager.updateprocess.UpdateProcessResult
+import sk.hudak.prco.manager.updateprocess.UpdateProcessResult.*
 import sk.hudak.prco.service.InternalTxService
 
 @Component

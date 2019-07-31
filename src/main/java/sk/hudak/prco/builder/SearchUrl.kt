@@ -9,6 +9,7 @@ import java.net.URL
 
 interface SearchUrlBuilder {
 
+    //TODo spojit do jenej metody posledny bude volitelny paramer
     fun buildSearchUrl(eshopUuid: EshopUuid, searchKeyword: String): String
 
     fun buildSearchUrl(eshopUuid: EshopUuid, searchKeyWord: String, currentPageNumber: Int): String

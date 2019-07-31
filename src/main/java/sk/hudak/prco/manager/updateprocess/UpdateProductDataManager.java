@@ -1,4 +1,4 @@
-package sk.hudak.prco.manager;
+package sk.hudak.prco.manager.updateprocess;
 
 import sk.hudak.prco.api.EshopUuid;
 

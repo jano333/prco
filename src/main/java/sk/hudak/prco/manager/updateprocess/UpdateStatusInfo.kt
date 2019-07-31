@@ -1,21 +1,25 @@
-package sk.hudak.prco.manager;
+package sk.hudak.prco.manager.updateprocess
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import sk.hudak.prco.api.EshopUuid;
+import sk.hudak.prco.api.EshopUuid
 
-@Getter
-@Setter
-@Builder
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
-public class UpdateStatusInfo {
-    private EshopUuid eshopUuid;
-    private long countOfProductsWaitingToBeUpdated;
-    private long countOfProductsAlreadyUpdated;
+class UpdateStatusInfo {
+    var eshopUuid: EshopUuid? = null
+    var countOfProductsWaitingToBeUpdated: Long = 0
+    var countOfProductsAlreadyUpdated: Long = 0
+
+    constructor() {}
+
+    constructor(eshopUuid: EshopUuid, countOfProductsWaitingToBeUpdated: Long, countOfProductsAlreadyUpdated: Long) {
+        this.eshopUuid = eshopUuid
+        this.countOfProductsWaitingToBeUpdated = countOfProductsWaitingToBeUpdated
+        this.countOfProductsAlreadyUpdated = countOfProductsAlreadyUpdated
+    }
+
+    override fun toString(): String {
+        return "UpdateStatusInfo{" +
+                "eshopUuid=" + eshopUuid +
+                ", countOfProductsWaitingToBeUpdated=" + countOfProductsWaitingToBeUpdated +
+                ", countOfProductsAlreadyUpdated=" + countOfProductsAlreadyUpdated +
+                '}'.toString()
+    }
 }
