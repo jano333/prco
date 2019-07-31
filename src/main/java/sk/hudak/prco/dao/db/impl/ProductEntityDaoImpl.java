@@ -25,7 +25,7 @@ public class ProductEntityDaoImpl extends BaseDaoImpl<ProductEntity> implements 
     public static final int OLDER_THAN_IN_HOURS = 24;
 
     @Override
-    public ProductEntity findById(Long id) {
+    public ProductEntity findById(long id) {
         return findById(ProductEntity.class, id);
     }
 

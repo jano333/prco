@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class ErrorEntityDaoImpl extends BaseDaoImpl<ErrorEntity> implements ErrorEntityDao {
 
     @Override
-    public ErrorEntity findById(Long id) {
+    public ErrorEntity findById(long id) {
         return findById(ErrorEntity.class, id);
     }
 

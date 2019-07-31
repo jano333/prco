@@ -1,197 +1,177 @@
-package sk.hudak.prco.service.impl;
+package sk.hudak.prco.service.impl
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.Unit;
-import sk.hudak.prco.dao.db.GroupEntityDao;
-import sk.hudak.prco.dao.db.ProductEntityDao;
-import sk.hudak.prco.dto.GroupCreateDto;
-import sk.hudak.prco.dto.GroupFilterDto;
-import sk.hudak.prco.dto.GroupIdNameDto;
-import sk.hudak.prco.dto.GroupListDto;
-import sk.hudak.prco.dto.GroupListExtendedDto;
-import sk.hudak.prco.dto.GroupUpdateDto;
-import sk.hudak.prco.exception.PrcoRuntimeException;
-import sk.hudak.prco.mapper.PrcoOrikaMapper;
-import sk.hudak.prco.model.GroupEntity;
-import sk.hudak.prco.model.ProductEntity;
-import sk.hudak.prco.service.GroupService;
-
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static sk.hudak.prco.utils.Validate.atLeastOneIsNotNull;
-import static sk.hudak.prco.utils.Validate.notNull;
-import static sk.hudak.prco.utils.Validate.notNullNotEmpty;
+import lombok.extern.slf4j.Slf4j
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.dao.db.GroupEntityDao
+import sk.hudak.prco.dao.db.ProductEntityDao
+import sk.hudak.prco.dto.*
+import sk.hudak.prco.exception.PrcoRuntimeException
+import sk.hudak.prco.mapper.PrcoOrikaMapper
+import sk.hudak.prco.model.GroupEntity
+import sk.hudak.prco.service.GroupService
+import sk.hudak.prco.utils.Validate.notEmpty
+import sk.hudak.prco.utils.Validate.notNull
+import sk.hudak.prco.utils.Validate.notNullNotEmpty
+import java.util.*
+import java.util.stream.Collectors
 
 @Slf4j
 @Service("groupService")
-public class GroupServiceImpl implements GroupService {
+class GroupServiceImpl(
+        @Autowired private val productEntityDao: ProductEntityDao,
+        @Autowired private val groupEntityDao: GroupEntityDao,
+        @Autowired private val prcoMapper: PrcoOrikaMapper) : GroupService {
 
-    public static final String PRODUCT_IDS = "productIds";
+    companion object {
+        val log = LoggerFactory.getLogger(GroupServiceImpl::class.java)!!
 
-    @Autowired
-    private ProductEntityDao productEntityDao;
+        const val PRODUCT_IDS = "productIds"
+    }
 
-    @Autowired
-    private GroupEntityDao groupEntityDao;
-
-    @Autowired
-    private PrcoOrikaMapper prcoMapper;
-
-    @Override
-    public Long createGroup(GroupCreateDto createDto) {
-        notNull(createDto, "createDto");
-        notNullNotEmpty(createDto.getName(), "name");
+    override fun createGroup(createDto: GroupCreateDto): Long {
+        notEmpty(createDto.name, "name")
 
         // validacia, ci uz group s takym nazvom existuje
-        if (groupEntityDao.findGroupByName(createDto.getName()).isPresent()) {
-            throw new PrcoRuntimeException(GroupEntity.class.getSimpleName() + " with name '" + createDto.getName() + "' already exist");
+        if (groupEntityDao.findGroupByName(createDto.name) != null) {
+            throw PrcoRuntimeException(GroupEntity::class.java.simpleName + " with name '" + createDto.name + "' already exist")
         }
 
-        GroupEntity entity = new GroupEntity();
-        entity.setName(createDto.getName());
-        if (createDto.getProductIds() != null) {
-            entity.setProducts(createDto.getProductIds().stream()
-                    .map(productEntityDao::findById)
-                    .collect(Collectors.toList()));
+        val entity = GroupEntity()
+        entity.name = createDto.name
+        if (createDto.productIds != null) {
+            entity.products = createDto.productIds.stream()
+                    .map { productEntityDao.findById(it) }
+                    .collect(Collectors.toList())
         }
 
-        Long id = groupEntityDao.save(entity);
-        log.debug("create entity {} with id {}", entity.getClass().getSimpleName(), entity.getId());
-        return id;
+        val id = groupEntityDao.save(entity)
+        log.debug("create entity {} with id {}", entity.javaClass.simpleName, entity.id)
+        //TODO !! nakonci odsranit ked budu urobene DAO
+        return id!!
     }
 
-    @Override
-    public void updateGroup(GroupUpdateDto updateDto) {
-        notNull(updateDto, "updateDto");
-        notNull(updateDto.getId(), "id");
-        notNullNotEmpty(updateDto.getName(), "name");
+    override fun updateGroup(updateDto: GroupUpdateDto) {
+        notNull(updateDto.id, "id")
+        notNullNotEmpty(updateDto.name, "name")
 
-        if (groupEntityDao.existGroupByName(updateDto.getName(), updateDto.getId())) {
-            throw new PrcoRuntimeException("Another " + GroupEntity.class.getSimpleName() + " with name '" + updateDto.getName() + "' already exist");
+        if (groupEntityDao.existGroupByName(updateDto.name!!, updateDto.id)) {
+            throw PrcoRuntimeException("Another " + GroupEntity::class.java.simpleName + " with name '" + updateDto.name + "' already exist")
         }
 
-        GroupEntity groupEntity = groupEntityDao.findById(updateDto.getId());
+        val groupEntity = groupEntityDao.findById(updateDto.id!!)
         //FIXME cez Oriku
-        groupEntity.setName(updateDto.getName());
-        groupEntityDao.update(groupEntity);
+        groupEntity.name = updateDto.name
+        groupEntityDao.update(groupEntity)
 
-        log.debug("update entity {} with id {}", GroupEntity.class.getSimpleName(), updateDto.getId());
+        log.debug("update entity {} with id {}", GroupEntity::class.java.simpleName, updateDto.id)
     }
 
-    @Override
-    public void addProductsToGroup(Long groupId, Long... productIds) {
-        notNull(groupId, "groupId");
-        notNull(productIds, PRODUCT_IDS);
-        atLeastOneIsNotNull(productIds, PRODUCT_IDS);
+    override fun addProductsToGroup(groupId: Long, vararg productIds: Long) {
+        notNull(productIds, PRODUCT_IDS)
+        //TODO
+        //        atLeastOneIsNotNull(productIds, PRODUCT_IDS);
 
         //FIXME fix optimalizaciu lebo to viem pridat cez id cka do tabulky...
-        GroupEntity groupEntity = groupEntityDao.findById(groupId);
-        boolean isGroupEmpty = groupEntity.getProducts().isEmpty();
+        val groupEntity = groupEntityDao.findById(groupId)
+        val isGroupEmpty = groupEntity.products.isEmpty()
 
-        for (Long productId : productIds) {
-            ProductEntity productEntity = productEntityDao.findById(productId);
+        for (productId in productIds) {
+            val productEntity = productEntityDao.findById(productId)
 
             // kontorola ci uz taky produkt v skupine nie je...
-            List<Long> groupProudctIds = groupEntity.getProducts().stream()
-                    .map(ProductEntity::getId)
-                    .collect(Collectors.toList());
-            if (groupProudctIds.contains(productEntity.getId())) {
-                throw new PrcoRuntimeException("Group width id " + groupId + " already contains product with id " + productId);
+            val groupProudctIds = groupEntity.products.stream()
+                    .map { it.id }
+                    .collect(Collectors.toList())
+
+            if (groupProudctIds.contains(productEntity.id)) {
+                throw PrcoRuntimeException("Group width id $groupId already contains product with id $productId")
             }
 
             // kontrola, ci unit pridavaneho produktu je rovnaka ako unit uz pridaneho produktu
             if (!isGroupEmpty) {
-                Unit unitInGroup = groupEntity.getProducts().get(0).getUnit();
-                if (!unitInGroup.equals(productEntity.getUnit())) {
-                    throw new PrcoRuntimeException("Unit not match. Group unit " + unitInGroup + ", product unit " + productEntity.getUnit());
+                val unitInGroup = groupEntity.products[0].unit
+                if (unitInGroup != productEntity.unit) {
+                    throw PrcoRuntimeException("Unit not match. Group unit " + unitInGroup + ", product unit " + productEntity.unit)
                 }
             }
 
-            groupEntity.getProducts().add(productEntity);
-            log.debug("adding product {} to group {}", productEntity.getName(), groupEntity.getName());
+            groupEntity.products.add(productEntity)
+            log.debug("adding product {} to group {}", productEntity.name, groupEntity.name)
         }
 
-        groupEntityDao.update(groupEntity);
-        log.debug("update entity {} with id {}", groupEntity.getClass().getSimpleName(), groupEntity.getId());
+        groupEntityDao.update(groupEntity)
+        log.debug("update entity {} with id {}", groupEntity.javaClass.simpleName, groupEntity.id)
     }
 
-    @Override
-    public void removeProductsFromGroup(Long groupId, Long... productIds) {
-        notNull(groupId, "groupId");
-        notNull(productIds, PRODUCT_IDS);
-        atLeastOneIsNotNull(productIds, PRODUCT_IDS);
+    override fun removeProductsFromGroup(groupId: Long?, vararg productIds: Long) {
+        notNull(groupId, "groupId")
+        notNull(productIds, PRODUCT_IDS)
+        //TODO
+        //        atLeastOneIsNotNull(productIds, PRODUCT_IDS);
 
-        GroupEntity groupEntity = groupEntityDao.findById(groupId);
+        val groupEntity = groupEntityDao.findById(groupId!!)
 
-        for (Long productId : productIds) {
-            groupEntity.getProducts().remove(productEntityDao.findById(productId));
+        for (productId in productIds) {
+            groupEntity.products.remove(productEntityDao.findById(productId))
         }
 
-        groupEntityDao.update(groupEntity);
+        groupEntityDao.update(groupEntity)
 
-        log.debug("products id {} removed from group {}", productIds, groupId);
+        log.debug("products id {} removed from group {}", productIds, groupId)
     }
 
-    @Override
-    public List<GroupListDto> getGroupsWithoutProduct(Long productId) {
-        notNull(productId, "productId");
+    override fun getGroupsWithoutProduct(productId: Long?): List<GroupListDto> {
+        notNull(productId, "productId")
 
         return groupEntityDao.findGroupsWithoutProduct(productId).stream()
-                .map(entity -> prcoMapper.map(entity, GroupListDto.class))
-                .collect(Collectors.toList());
+                .map { entity -> prcoMapper.map(entity, GroupListDto::class.java) }
+                .collect(Collectors.toList())
     }
 
-    @Override
-    public List<GroupListDto> findGroups(GroupFilterDto groupFilterDto) {
-        notNull(groupFilterDto, "groupFilterDto");
-
+    override fun findGroups(groupFilterDto: GroupFilterDto): List<GroupListDto> {
         return groupEntityDao.findGroups(groupFilterDto).stream()
-                .map(entity -> prcoMapper.map(entity, GroupListDto.class))
-                .collect(Collectors.toList());
+                .map { entity -> prcoMapper.map(entity, GroupListDto::class.java) }
+                .collect(Collectors.toList())
     }
 
-    @Override
-    public List<GroupListExtendedDto> findAllGroupExtended() {
-        return groupEntityDao.findGroups(new GroupFilterDto()).stream()
-                .map(groupEntity -> {
+    override fun findAllGroupExtended(): List<GroupListExtendedDto> {
+        return groupEntityDao.findGroups(GroupFilterDto()).stream()
+                .map { groupEntity ->
                     //FIXME cez orika mapper
-                    GroupListExtendedDto dto = new GroupListExtendedDto();
-                    dto.setId(groupEntity.getId());
-                    dto.setName(groupEntity.getName());
-                    dto.setCountOfProduct(Long.valueOf(groupEntity.getProducts().size()));
-                    dto.setCountOfProductInEshop(findCountOfProductInGroupPerEshop(groupEntity));
-                    return dto;
-                })
-                .collect(Collectors.toList());
+                    val dto = GroupListExtendedDto()
+                    dto.id = groupEntity.id
+                    dto.name = groupEntity.name
+                    dto.countOfProduct = java.lang.Long.valueOf(groupEntity.products.size.toLong())
+                    dto.countOfProductInEshop = findCountOfProductInGroupPerEshop(groupEntity)
+                    dto
+                }
+                .collect(Collectors.toList())
     }
 
-    @Override
-    public GroupIdNameDto getGroupById(Long groupId) {
-        return prcoMapper.map(groupEntityDao.findById(groupId), GroupIdNameDto.class);
+    override fun getGroupById(groupId: Long?): GroupIdNameDto {
+        return prcoMapper.map(groupEntityDao.findById(groupId!!), GroupIdNameDto::class.java)
     }
 
-    private Map<EshopUuid, Long> findCountOfProductInGroupPerEshop(GroupEntity groupEntity) {
-        List<ProductEntity> products = groupEntity.getProducts();
+    private fun findCountOfProductInGroupPerEshop(groupEntity: GroupEntity): Map<EshopUuid, Long> {
+        val products = groupEntity.products
         if (products.isEmpty()) {
-            return Collections.emptyMap();
+            return emptyMap()
         }
-        Map<EshopUuid, Long> result = new EnumMap<>(EshopUuid.class);
-        products.stream().forEach(productEntity -> {
-            EshopUuid eshopUuid = productEntity.getEshopUuid();
+        val result = EnumMap<EshopUuid, Long>(EshopUuid::class.java)
+        products.stream().forEach { productEntity ->
+            val eshopUuid = productEntity.eshopUuid
             if (!result.containsKey(eshopUuid)) {
-                result.put(eshopUuid, 1L);
+                result[eshopUuid] = 1L
             } else {
-                long previousValue = result.get(eshopUuid).longValue();
-                result.put(eshopUuid, ++previousValue);
+                var previousValue = result[eshopUuid]!!
+                result[eshopUuid] = previousValue.plus(1L)
             }
-        });
-        return result;
+        }
+        return result
     }
+
+
 }

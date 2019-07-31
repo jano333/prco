@@ -1,148 +1,133 @@
-package sk.hudak.prco.dao.db.impl;
+package sk.hudak.prco.dao.db.impl
 
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.jpa.impl.JPAQuery;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.dao.db.GroupEntityDao;
-import sk.hudak.prco.dao.db.GroupOfProductFindEntityDao;
-import sk.hudak.prco.dao.db.ProductEntityDao;
-import sk.hudak.prco.dto.GroupFilterDto;
-import sk.hudak.prco.exception.PrcoRuntimeException;
-import sk.hudak.prco.model.GroupEntity;
-import sk.hudak.prco.model.ProductEntity;
-import sk.hudak.prco.model.QGroupEntity;
-
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import com.querydsl.core.types.Order
+import com.querydsl.core.types.OrderSpecifier
+import org.apache.commons.lang3.StringUtils
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.dao.db.GroupEntityDao
+import sk.hudak.prco.dao.db.GroupOfProductFindEntityDao
+import sk.hudak.prco.dao.db.ProductEntityDao
+import sk.hudak.prco.dto.GroupFilterDto
+import sk.hudak.prco.exception.PrcoRuntimeException
+import sk.hudak.prco.model.GroupEntity
+import sk.hudak.prco.model.ProductEntity
+import sk.hudak.prco.model.QGroupEntity
+import java.math.BigDecimal
+import java.util.*
+import java.util.stream.Collectors
 
 @Component
-public class GroupEntityDaoImpl extends BaseDaoImpl<GroupEntity> implements GroupEntityDao {
+class GroupEntityDaoImpl(
+        @Autowired private val productEntityDao: ProductEntityDao,
+        @Autowired private val groupOfProductFindEntityDao: GroupOfProductFindEntityDao
+) : BaseDaoImpl<GroupEntity>(), GroupEntityDao {
 
-    @Autowired
-    private ProductEntityDao productEntityDao;
 
-    @Autowired
-    private GroupOfProductFindEntityDao groupOfProductFindEntityDao;
-
-    @Override
-    public GroupEntity findById(Long id) {
-        return findById(GroupEntity.class, id);
+    override fun findById(id: Long): GroupEntity {
+        return findById(GroupEntity::class.java, id)
     }
 
-    @Override
-    public List<GroupEntity> findGroups(GroupFilterDto groupFilterDto) {
-        JPAQuery<GroupEntity> query = from(QGroupEntity.groupEntity);
+    override fun findGroups(groupFilterDto: GroupFilterDto): List<GroupEntity> {
+        val query = from(QGroupEntity.groupEntity)
         // ids
-        Long[] ids = groupFilterDto.getIds();
+        val ids = groupFilterDto.ids
         if (ids != null) {
-            query.where(QGroupEntity.groupEntity.id.in(ids));
+            query.where(QGroupEntity.groupEntity.id.`in`(*ids))
         }
         // name
-        String name = groupFilterDto.getName();
+        val name = groupFilterDto.name
         if (StringUtils.isNotBlank(name)) {
-            query.where(QGroupEntity.groupEntity.name.isNotNull());
-            query.where(QGroupEntity.groupEntity.name.eq(name));
+            query.where(QGroupEntity.groupEntity.name.isNotNull)
+            query.where(QGroupEntity.groupEntity.name.eq(name!!))
         }
         // eshop only
-        EshopUuid eshopOnly = groupFilterDto.getEshopOnly();
+        val eshopOnly = groupFilterDto.eshopOnly
         if (eshopOnly != null) {
             //TODO impl
         }
-        query.orderBy(new OrderSpecifier<>(Order.ASC, QGroupEntity.groupEntity.name));
-        return query.fetch();
+        query.orderBy(OrderSpecifier(Order.ASC, QGroupEntity.groupEntity.name))
+        return query.fetch()
     }
 
-    @Override
-    public List<GroupEntity> findGroupsWithoutProduct(Long productId) {
+    override fun findGroupsWithoutProduct(productId: Long?): List<GroupEntity> {
         //FIXME optimalizovat
-        ProductEntity byId = productEntityDao.findById(productId);
-        JPAQuery<GroupEntity> query = from(QGroupEntity.groupEntity);
-        query.where(QGroupEntity.groupEntity.products.contains(byId).not());
-        query.orderBy(new OrderSpecifier<>(Order.ASC, QGroupEntity.groupEntity.name));
-        return query.distinct().fetch();
+        val byId = productEntityDao.findById(productId!!)
+        val query = from(QGroupEntity.groupEntity)
+        query.where(QGroupEntity.groupEntity.products.contains(byId).not())
+        query.orderBy(OrderSpecifier(Order.ASC, QGroupEntity.groupEntity.name))
+        return query.distinct().fetch()
     }
 
-    @Override
-    public Optional<GroupEntity> findGroupByName(String groupName) {
-        JPAQuery<GroupEntity> query = from(QGroupEntity.groupEntity);
-        query.where(QGroupEntity.groupEntity.name.eq(groupName));
-        return Optional.ofNullable(query.fetchFirst());
+    override fun findGroupByName(groupName: String): GroupEntity? {
+        val query = from(QGroupEntity.groupEntity)
+        query.where(QGroupEntity.groupEntity.name.eq(groupName))
+        return query.fetchFirst()
     }
 
-    @Override
-    public boolean existGroupByName(String groupName, Long groupIdToSkip) {
-        getQueryFactory()
+    override fun existGroupByName(groupName: String, groupIdToSkip: Long?): Boolean {
+        queryFactory
                 .select(QGroupEntity.groupEntity.id)
                 .from(QGroupEntity.groupEntity)
-                .where(QGroupEntity.groupEntity.id.ne(groupIdToSkip))
+                .where(QGroupEntity.groupEntity.id.ne(groupIdToSkip!!))
                 .where(QGroupEntity.groupEntity.name.eq(groupName))
-                .exists();
+                .exists()
 
 
-        JPAQuery<GroupEntity> query = from(QGroupEntity.groupEntity);
+        val query = from(QGroupEntity.groupEntity)
         if (groupIdToSkip != null) {
-            query.where(QGroupEntity.groupEntity.id.ne(groupIdToSkip));
+            query.where(QGroupEntity.groupEntity.id.ne(groupIdToSkip))
         }
-        query.where(QGroupEntity.groupEntity.name.eq(groupName));
+        query.where(QGroupEntity.groupEntity.name.eq(groupName))
         //FIXME optimalizovat na exist...
-        return query.fetchFirst() != null;
+        return query.fetchFirst() != null
     }
 
-    @Override
-    public List<ProductEntity> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip) {
-        JPAQuery<GroupEntity> query = from(QGroupEntity.groupEntity);
-        query.where(QGroupEntity.groupEntity.id.eq(groupId));
-        GroupEntity groupEntity = query.fetchFirst();
-        if (groupEntity == null) {
-            throw new PrcoRuntimeException(GroupEntity.class.getSimpleName() + " not found by id " + groupId);
-        }
-        //FIXME cez DB urobit neaky komplikovany select..
-        List<ProductEntity> products = groupEntity.getProducts();
+    override fun findProductsInGroup(groupId: Long?, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductEntity> {
+        val query = from(QGroupEntity.groupEntity)
+        query.where(QGroupEntity.groupEntity.id.eq(groupId!!))
+        val groupEntity = query.fetchFirst()
+                ?: throw PrcoRuntimeException(GroupEntity::class.java.simpleName + " not found by id " + groupId)
+
+//FIXME cez DB urobit neaky komplikovany select..
+        val products = groupEntity.products
         //filter na tie, ktore maju cenu
-        Stream<ProductEntity> productEntityStream = products.stream();
+        var productEntityStream = products.stream()
         if (withPriceOnly) {
-            productEntityStream = productEntityStream.filter(p -> p.getPriceForUnit() != null);
+            productEntityStream = productEntityStream.filter { p -> p.priceForUnit != null }
         }
         if (eshopsToSkip != null) {
-            productEntityStream = productEntityStream.filter(p -> !Arrays.asList(eshopsToSkip).contains(p.getEshopUuid()));
+            productEntityStream = productEntityStream.filter { p -> !Arrays.asList(*eshopsToSkip).contains(p.eshopUuid) }
         }
 
-        List<ProductEntity> withValidPriceForPackage = productEntityStream.collect(Collectors.toList());
+        val withValidPriceForPackage = productEntityStream.collect(Collectors.toList())
 
         // FIXME cez db query
-//        Collections.sort(withValidPriceForPackage, Comparator.comparing(ProductEntity::getPriceForUnit));
-        Collections.sort(withValidPriceForPackage, Comparator.comparing(
-                productEntity -> productEntity.getPriceForUnit() != null ? productEntity.getPriceForUnit() : BigDecimal.ZERO)
-        );
+        //        Collections.sort(withValidPriceForPackage, Comparator.comparing(ProductEntity::getPriceForUnit));
+        Collections.sort(withValidPriceForPackage,
+                Comparator.comparing<ProductEntity?, BigDecimal?> { productEntity ->
+                    if (productEntity?.priceForUnit != null)
+                        productEntity.priceForUnit else BigDecimal.ZERO
+                }
+        )
 
-        return withValidPriceForPackage;
+        return withValidPriceForPackage
     }
 
-    @Override
-    public List<String> findAllGroupNames() {
-        return getQueryFactory()
+    override fun findAllGroupNames(): List<String> {
+        return queryFactory
                 .select(QGroupEntity.groupEntity.name)
                 .from(QGroupEntity.groupEntity)
-                .fetch();
+                .fetch()
     }
 
-    @Override
-    public List<GroupEntity> findGroupsForProduct(Long productId) {
-        return getQueryFactory()
+    override fun findGroupsForProduct(productId: Long?): List<GroupEntity> {
+        return queryFactory
                 .select(QGroupEntity.groupEntity)
                 .from(QGroupEntity.groupEntity)
-                .where(QGroupEntity.groupEntity.id.in(groupOfProductFindEntityDao.findGroupIdsWithProductId(productId)))
-                .fetch();
+                .where(QGroupEntity.groupEntity.id.`in`(groupOfProductFindEntityDao!!.findGroupIdsWithProductId(productId)))
+                .fetch()
     }
 
 

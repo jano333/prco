@@ -12,7 +12,7 @@ import java.util.List;
 public class WatchDogEntityDaoImpl extends BaseDaoImpl<WatchDogEntity> implements WatchDogEntityDao {
 
     @Override
-    public WatchDogEntity findById(Long id) {
+    public WatchDogEntity findById(long id) {
         return findById(WatchDogEntity.class, id);
     }
 

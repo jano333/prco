@@ -8,7 +8,7 @@ interface BaseDao<T : DbEntity> {
 
     fun update(entity: T)
 
-    fun findById(id: Long?): T
+    fun findById(id: Long): T
 
     fun delete(entity: T)
 }

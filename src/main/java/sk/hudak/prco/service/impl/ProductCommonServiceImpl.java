@@ -1,6 +1,7 @@
 package sk.hudak.prco.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static sk.hudak.prco.utils.Validate.atLeastOneIsNotNull;
 import static sk.hudak.prco.utils.Validate.notNull;
 import static sk.hudak.prco.utils.Validate.notNullNotEmpty;
 
@@ -82,11 +82,11 @@ public class ProductCommonServiceImpl implements ProductCommonService {
     }
 
     @Override
-    public void markNewProductAsInterested(Long... newProductIds) {
-        atLeastOneIsNotNull(newProductIds, "newProductIds");
+    public void markNewProductAsInterested(long... newProductIds) {
+        //TODO
+//        atLeastOneIsNotNull(newProductIds, "newProductIds");
 
-        Arrays.asList(newProductIds).forEach(newProductId -> {
-
+        Arrays.stream(newProductIds).forEach(newProductId -> {
             // find existing new product
             NewProductEntity newProductEntity = newProductEntityDao.findById(newProductId);
 
@@ -114,8 +114,8 @@ public class ProductCommonServiceImpl implements ProductCommonService {
     }
 
     @Override
-    public void markNewProductAsNotInterested(Long... newProductIds) {
-        atLeastOneIsNotNull(newProductIds, "newProductIds");
+    public void markNewProductAsNotInterested(long... newProductIds) {
+//        atLeastOneIsNotNull(newProductIds, "newProductIds");
 
         for (Long newProductId : newProductIds) {
 
@@ -171,7 +171,7 @@ public class ProductCommonServiceImpl implements ProductCommonService {
     }
 
     @Override
-    public long importProducts(List<ProductFullDto> productList) {
+    public long importProducts(@NotNull List<? extends ProductFullDto> productList) {
         notNull(productList, "productList");
 
         productList.forEach(dto -> {
@@ -192,6 +192,7 @@ public class ProductCommonServiceImpl implements ProductCommonService {
 
         return notExistingYet.size();
     }
+
 
     @Override
     public long importNotInterestedProducts(List<NotInterestedProductFullDto> productList) {

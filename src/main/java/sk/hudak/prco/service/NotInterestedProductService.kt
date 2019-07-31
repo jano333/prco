@@ -1,10 +1,10 @@
-package sk.hudak.prco.service;
+package sk.hudak.prco.service
 
-import sk.hudak.prco.api.EshopUuid;
+import sk.hudak.prco.api.EshopUuid
 
-public interface NotInterestedProductService {
+interface NotInterestedProductService {
 
-    void deleteNotInterestedProducts(Long... notInterestedProductIds);
+    fun deleteNotInterestedProducts(vararg notInterestedProductIds: Long)
 
-    void deleteNotInterestedProducts(EshopUuid eshopUuid);
+    fun deleteNotInterestedProducts(eshopUuid: EshopUuid)
 }

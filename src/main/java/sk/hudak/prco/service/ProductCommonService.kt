@@ -1,42 +1,44 @@
-package sk.hudak.prco.service;
+package sk.hudak.prco.service
 
-import sk.hudak.prco.dto.ProductStatisticInfoDto;
-import sk.hudak.prco.dto.product.NewProductFullDto;
-import sk.hudak.prco.dto.product.NotInterestedProductFindDto;
-import sk.hudak.prco.dto.product.NotInterestedProductFullDto;
-import sk.hudak.prco.dto.product.ProductFullDto;
+import sk.hudak.prco.dto.ProductStatisticInfoDto
+import sk.hudak.prco.dto.product.NewProductFullDto
+import sk.hudak.prco.dto.product.NotInterestedProductFindDto
+import sk.hudak.prco.dto.product.NotInterestedProductFullDto
+import sk.hudak.prco.dto.product.ProductFullDto
 
-import java.util.List;
+interface ProductCommonService {
 
-public interface ProductCommonService {
+    val statisticsOfProducts: ProductStatisticInfoDto
 
     /**
      * @param productURL
-     * @return true, ak produkt s danou <code>url</code> uz existuje v {@link sk.hudak.prco.model.NewProductEntity},
-     * {@link sk.hudak.prco.model.NotInterestedProductEntity} alebo {@link sk.hudak.prco.model.ProductEntity}
+     * @return true, ak produkt s danou `url` uz existuje v [sk.hudak.prco.model.NewProductEntity],
+     * [sk.hudak.prco.model.NotInterestedProductEntity] alebo [sk.hudak.prco.model.ProductEntity]
      * inak false
      */
-    boolean existProductWithURL(String productURL);
+    fun existProductWithURL(productURL: String): Boolean
 
     /**
      * Oznaci dane produkty, ze o ne mam zaujem.
-     * <p>
-     * Implementacne: presunie zaznam z {@link sk.hudak.prco.model.NewProductEntity} do {@link sk.hudak.prco.model.ProductEntity}
      *
-     * @param newProductIds zoznam idcok z {@link sk.hudak.prco.model.NewProductEntity}
+     *
+     * Implementacne: presunie zaznam z [sk.hudak.prco.model.NewProductEntity] do [sk.hudak.prco.model.ProductEntity]
+     *
+     * @param newProductIds zoznam idcok z [sk.hudak.prco.model.NewProductEntity]
      */
-    void markNewProductAsInterested(Long... newProductIds);
+    fun markNewProductAsInterested(vararg newProductIds: Long)
 
     /**
      * Oznaci dane produkty, ze o ne mam zaujem.
-     * <p>
-     * Implementacne: presunie zaznam z {@link sk.hudak.prco.model.NewProductEntity} do {@link sk.hudak.prco.model.NotInterestedProductEntity}
      *
-     * @param newProductIds zoznam idcok z {@link sk.hudak.prco.model.NewProductEntity}
+     *
+     * Implementacne: presunie zaznam z [sk.hudak.prco.model.NewProductEntity] do [sk.hudak.prco.model.NotInterestedProductEntity]
+     *
+     * @param newProductIds zoznam idcok z [sk.hudak.prco.model.NewProductEntity]
      */
-    void markNewProductAsNotInterested(Long... newProductIds);
+    fun markNewProductAsNotInterested(vararg newProductIds: Long)
 
-    List<NotInterestedProductFullDto> findNotInterestedProducts(NotInterestedProductFindDto findDto);
+    fun findNotInterestedProducts(findDto: NotInterestedProductFindDto): List<NotInterestedProductFullDto>
 
     /**
      * Importne pokial tam taky este nie je...,
@@ -44,11 +46,9 @@ public interface ProductCommonService {
      * @param newProductList
      * @return pocet skutocne imortnutych
      */
-    long importNewProducts(List<NewProductFullDto> newProductList);
+    fun importNewProducts(newProductList: List<NewProductFullDto>): Long
 
-    long importProducts(List<ProductFullDto> productList);
+    fun importProducts(productList: List<ProductFullDto>): Long
 
-    long importNotInterestedProducts(List<NotInterestedProductFullDto> notInterestedProductList);
-
-    ProductStatisticInfoDto getStatisticsOfProducts();
+    fun importNotInterestedProducts(notInterestedProductList: List<NotInterestedProductFullDto>): Long
 }

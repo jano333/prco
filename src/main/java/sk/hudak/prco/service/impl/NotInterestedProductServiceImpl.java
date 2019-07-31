@@ -18,7 +18,7 @@ public class NotInterestedProductServiceImpl implements NotInterestedProductServ
     private NotInterestedProductDbDao notInterestedProductDbDao;
 
     @Override
-    public void deleteNotInterestedProducts(@NonNull Long... notInterestedProductIds) {
+    public void deleteNotInterestedProducts(@NonNull long... notInterestedProductIds) {
         for (Long notInterestedProductId : notInterestedProductIds) {
             notInterestedProductDbDao.delete(notInterestedProductDbDao.findById(notInterestedProductId));
             log.debug("product with id {} was removed", notInterestedProductId);

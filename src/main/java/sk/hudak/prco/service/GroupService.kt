@@ -1,29 +1,22 @@
-package sk.hudak.prco.service;
+package sk.hudak.prco.service
 
-import sk.hudak.prco.dto.GroupCreateDto;
-import sk.hudak.prco.dto.GroupFilterDto;
-import sk.hudak.prco.dto.GroupIdNameDto;
-import sk.hudak.prco.dto.GroupListDto;
-import sk.hudak.prco.dto.GroupListExtendedDto;
-import sk.hudak.prco.dto.GroupUpdateDto;
+import sk.hudak.prco.dto.*
 
-import java.util.List;
+interface GroupService {
 
-public interface GroupService {
+    fun createGroup(createDto: GroupCreateDto): Long
 
-    Long createGroup(GroupCreateDto createDto);
+    fun updateGroup(updateDto: GroupUpdateDto)
 
-    void updateGroup(GroupUpdateDto updateDto);
+    fun addProductsToGroup(groupId: Long, vararg productIds: Long)
 
-    void addProductsToGroup(Long groupId, Long... productIds);
+    fun removeProductsFromGroup(groupId: Long?, vararg productIds: Long)
 
-    void removeProductsFromGroup(Long groupId, Long... productIds);
+    fun getGroupsWithoutProduct(productId: Long?): List<GroupListDto>
 
-    List<GroupListDto> getGroupsWithoutProduct(Long productId);
+    fun findGroups(groupFilterDto: GroupFilterDto): List<GroupListDto>
 
-    List<GroupListDto> findGroups(GroupFilterDto groupFilterDto);
+    fun findAllGroupExtended(): List<GroupListExtendedDto>
 
-    List<GroupListExtendedDto> findAllGroupExtended();
-
-    GroupIdNameDto getGroupById(Long groupId);
+    fun getGroupById(groupId: Long?): GroupIdNameDto
 }

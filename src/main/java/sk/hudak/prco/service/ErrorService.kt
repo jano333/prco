@@ -1,34 +1,31 @@
-package sk.hudak.prco.service;
+package sk.hudak.prco.service
 
-import sk.hudak.prco.api.ErrorType;
-import sk.hudak.prco.dto.ErrorCreateDto;
-import sk.hudak.prco.dto.ErrorFindFilterDto;
-import sk.hudak.prco.dto.ErrorListDto;
+import sk.hudak.prco.api.ErrorType
+import sk.hudak.prco.dto.ErrorCreateDto
+import sk.hudak.prco.dto.ErrorFindFilterDto
+import sk.hudak.prco.dto.ErrorListDto
+import java.util.concurrent.Future
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Future;
+interface ErrorService {
 
-public interface ErrorService {
+    val statisticForErrors: Map<ErrorType, Long>
 
     // TODO cron na odmazavanie
 
-    Long createError(ErrorCreateDto createDto);
+    fun createError(createDto: ErrorCreateDto): Long?
 
-    List<ErrorListDto> findAll();
+    fun findAll(): List<ErrorListDto>
 
     /**
-     * Najde maximalne <code>limit</code> error zotriedenych od najnovsieho po najstarsi
+     * Najde maximalne `limit` error zotriedenych od najnovsieho po najstarsi
      * @param limit
      * @return
      */
-    List<ErrorListDto> findErrorByMaxCount(int limit, ErrorType errorType);
+    fun findErrorByMaxCount(limit: Int, errorType: ErrorType): List<ErrorListDto>
 
-    List<ErrorListDto> findErrorsByTypes(ErrorType... errorTypes);
+    fun findErrorsByTypes(vararg errorTypes: ErrorType): List<ErrorListDto>
 
-    List<ErrorListDto> findErrorsByFilter(ErrorFindFilterDto findDto);
-
-    Map<ErrorType, Long> getStatisticForErrors();
+    fun findErrorsByFilter(findDto: ErrorFindFilterDto): List<ErrorListDto>
 
     /**
      * Odmaze:
@@ -36,5 +33,5 @@ public interface ErrorService {
      * - vsetky chyby, ktore maju URL rovnaku ako v not interested produkts
      * -
      */
-    Future<Void> startErrorCleanUp();
+    fun startErrorCleanUp(): Future<Void>
 }

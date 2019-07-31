@@ -25,7 +25,7 @@ public class NewProductEntityDaoImpl extends BaseDaoImpl<NewProductEntity> imple
     }
 
     @Override
-    public NewProductEntity findById(Long id) {
+    public NewProductEntity findById(long id) {
         return findById(NewProductEntity.class, id);
     }
 

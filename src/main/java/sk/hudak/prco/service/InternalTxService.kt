@@ -1,6 +1,6 @@
-package sk.hudak.prco.service;
+package sk.hudak.prco.service
 
-public interface InternalTxService extends
+interface InternalTxService :
         NewProductService,
         ProductCommonService,
         ProductService,
@@ -8,9 +8,8 @@ public interface InternalTxService extends
         GroupService,
         GroupProductKeywordsService,
         ErrorService,
-        WatchDogService
-{
+        WatchDogService {
 
 
-    void test();
+    fun test()
 }

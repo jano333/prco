@@ -14,6 +14,13 @@ object Validate {
         }
     }
 
+    fun notEmpty(value: String, parameterName: String) {
+        if (value.isBlank()) {
+            throw RequiredParameterException(parameterName)
+        }
+    }
+
+
     @JvmStatic
     fun notNullNotEmpty(value: String?, parameterName: String) {
         if (value.isNullOrEmpty()) {

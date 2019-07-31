@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class GroupProductKeywordsDaoImpl extends BaseDaoImpl<GroupProductKeywordsEntity> implements GroupProductKeywordsDao {
 
     @Override
-    public GroupProductKeywordsEntity findById(Long id) {
+    public GroupProductKeywordsEntity findById(long id) {
         return findById(GroupProductKeywordsEntity.class, id);
     }
 

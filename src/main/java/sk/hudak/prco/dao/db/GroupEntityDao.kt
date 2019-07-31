@@ -1,29 +1,27 @@
-package sk.hudak.prco.dao.db;
+package sk.hudak.prco.dao.db
 
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.dao.BaseDao;
-import sk.hudak.prco.dto.GroupFilterDto;
-import sk.hudak.prco.model.GroupEntity;
-import sk.hudak.prco.model.ProductEntity;
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.dao.BaseDao
+import sk.hudak.prco.dto.GroupFilterDto
+import sk.hudak.prco.model.GroupEntity
+import sk.hudak.prco.model.ProductEntity
 
-import java.util.List;
-import java.util.Optional;
+interface GroupEntityDao : BaseDao<GroupEntity> {
 
-public interface GroupEntityDao extends BaseDao<GroupEntity> {
-
-    Optional<GroupEntity> findGroupByName(String groupName);
+    //FIXME navratova hodnata nech je boolen ci existuje!!
+    fun findGroupByName(groupName: String): GroupEntity?
 
     //TODO zmenit navratovu hodnotu na Optional<GroupEntity>
-    boolean existGroupByName(String name, Long groupIdToSkip);
+    fun existGroupByName(name: String, groupIdToSkip: Long?): Boolean
 
-    List<GroupEntity> findGroupsWithoutProduct(Long productId);
+    fun findGroupsWithoutProduct(productId: Long?): List<GroupEntity>
 
-    List<GroupEntity> findGroups(GroupFilterDto groupFilterDto);
+    fun findGroups(groupFilterDto: GroupFilterDto): List<GroupEntity>
 
     //TODO move to ProductService...
-    List<ProductEntity> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip);
+    fun findProductsInGroup(groupId: Long?, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductEntity>
 
-    List<String> findAllGroupNames();
+    fun findAllGroupNames(): List<String>
 
     /**
      * Zoznam vsetkych group, v ktorych sa dany product nachadza.
@@ -31,5 +29,5 @@ public interface GroupEntityDao extends BaseDao<GroupEntity> {
      * @param productId
      * @return
      */
-    List<GroupEntity> findGroupsForProduct(Long productId);
+    fun findGroupsForProduct(productId: Long?): List<GroupEntity>
 }

@@ -125,12 +125,15 @@ public class UIServiceImpl implements UIService {
 
     @Override
     public void addProductsToGroup(Long groupId, Long... productIds) {
-        internalTxService.addProductsToGroup(groupId, productIds);
+        //TODO
+//        internalTxService.addProductsToGroup(groupId, productIds);
+
     }
 
     @Override
     public void removeProductsFromGroup(Long groupId, Long... productIds) {
-        internalTxService.removeProductsFromGroup(groupId, productIds);
+        //TODO
+//        internalTxService.removeProductsFromGroup(groupId, productIds);
     }
 
     @Override

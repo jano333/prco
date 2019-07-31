@@ -1,8 +1,6 @@
 package sk.hudak.prco.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import org.jetbrains.annotations.Nullable;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.api.Unit;
@@ -18,14 +16,12 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Produkty, o ktore mam zaujem a aktualizujem ich cenu.
  */
-@Getter
-@Setter
 @Entity(name = "PRODUCT")
-@EqualsAndHashCode
 public class ProductEntity extends DbEntity {
 
     @Id
@@ -102,5 +98,153 @@ public class ProductEntity extends DbEntity {
     // URL na obrazok produktu
     private String productPictureUrl;
 
+    @Nullable
+    @Override
+    public Long getId() {
+        return id;
+    }
 
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public EshopUuid getEshopUuid() {
+        return eshopUuid;
+    }
+
+    public void setEshopUuid(EshopUuid eshopUuid) {
+        this.eshopUuid = eshopUuid;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigDecimal getUnitValue() {
+        return unitValue;
+    }
+
+    public void setUnitValue(BigDecimal unitValue) {
+        this.unitValue = unitValue;
+    }
+
+    public Integer getUnitPackageCount() {
+        return unitPackageCount;
+    }
+
+    public void setUnitPackageCount(Integer unitPackageCount) {
+        this.unitPackageCount = unitPackageCount;
+    }
+
+    public BigDecimal getPriceForPackage() {
+        return priceForPackage;
+    }
+
+    public void setPriceForPackage(BigDecimal priceForPackage) {
+        this.priceForPackage = priceForPackage;
+    }
+
+    public BigDecimal getPriceForOneItemInPackage() {
+        return priceForOneItemInPackage;
+    }
+
+    public void setPriceForOneItemInPackage(BigDecimal priceForOneItemInPackage) {
+        this.priceForOneItemInPackage = priceForOneItemInPackage;
+    }
+
+    public BigDecimal getPriceForUnit() {
+        return priceForUnit;
+    }
+
+    public void setPriceForUnit(BigDecimal priceForUnit) {
+        this.priceForUnit = priceForUnit;
+    }
+
+    public BigDecimal getCommonPrice() {
+        return commonPrice;
+    }
+
+    public void setCommonPrice(BigDecimal commonPrice) {
+        this.commonPrice = commonPrice;
+    }
+
+    public Date getLastTimeDataUpdated() {
+        return lastTimeDataUpdated;
+    }
+
+    public void setLastTimeDataUpdated(Date lastTimeDataUpdated) {
+        this.lastTimeDataUpdated = lastTimeDataUpdated;
+    }
+
+    public ProductAction getProductAction() {
+        return productAction;
+    }
+
+    public void setProductAction(ProductAction productAction) {
+        this.productAction = productAction;
+    }
+
+    public Date getActionValidTo() {
+        return actionValidTo;
+    }
+
+    public void setActionValidTo(Date actionValidTo) {
+        this.actionValidTo = actionValidTo;
+    }
+
+    public String getProductPictureUrl() {
+        return productPictureUrl;
+    }
+
+    public void setProductPictureUrl(String productPictureUrl) {
+        this.productPictureUrl = productPictureUrl;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductEntity that = (ProductEntity) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(url, that.url) &&
+                eshopUuid == that.eshopUuid &&
+                unit == that.unit &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(unitValue, that.unitValue) &&
+                Objects.equals(unitPackageCount, that.unitPackageCount) &&
+                Objects.equals(priceForPackage, that.priceForPackage) &&
+                Objects.equals(priceForOneItemInPackage, that.priceForOneItemInPackage) &&
+                Objects.equals(priceForUnit, that.priceForUnit) &&
+                Objects.equals(commonPrice, that.commonPrice) &&
+                Objects.equals(lastTimeDataUpdated, that.lastTimeDataUpdated) &&
+                productAction == that.productAction &&
+                Objects.equals(actionValidTo, that.actionValidTo) &&
+                Objects.equals(productPictureUrl, that.productPictureUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, url, eshopUuid, unit, name, unitValue, unitPackageCount, priceForPackage, priceForOneItemInPackage, priceForUnit, commonPrice, lastTimeDataUpdated, productAction, actionValidTo, productPictureUrl);
+    }
 }

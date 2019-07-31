@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class NotInterestedProductDaoImpl extends BaseDaoImpl<NotInterestedProductEntity> implements NotInterestedProductDbDao {
 
     @Override
-    public NotInterestedProductEntity findById(Long id) {
+    public NotInterestedProductEntity findById(long id) {
         return findById(NotInterestedProductEntity.class, id);
     }
 

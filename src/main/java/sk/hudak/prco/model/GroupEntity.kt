@@ -1,7 +1,6 @@
 package sk.hudak.prco.model
 
 import sk.hudak.prco.model.core.DbEntity
-import java.util.*
 import javax.persistence.*
 
 @Entity(name = "GROUP_OF_PRODUCT")
@@ -18,7 +17,7 @@ class GroupEntity : DbEntity() {
     // zoznam produktov v danej grupe
     @ManyToMany
     @JoinTable(name = "GROUP_PRODUCT", joinColumns = [JoinColumn(name = "GROUP_ID", referencedColumnName = "ID")], inverseJoinColumns = [JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")], uniqueConstraints = [UniqueConstraint(columnNames = ["GROUP_ID", "PRODUCT_ID"])])
-    var products: List<ProductEntity> = ArrayList()
+    var products: MutableList<ProductEntity> = mutableListOf()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -39,5 +38,6 @@ class GroupEntity : DbEntity() {
         result = 31 * result + products.hashCode()
         return result
     }
+
 
 }

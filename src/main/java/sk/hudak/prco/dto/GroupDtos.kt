@@ -6,7 +6,7 @@ import java.util.*
 class GroupCreateDto : DtoAble {
 
     // nazov (povinne)
-    var name: String? = null
+    lateinit var name: String
 
     // zoznam produktov v danej grupe (nepovinne)
     var productIds: List<Long> = ArrayList()

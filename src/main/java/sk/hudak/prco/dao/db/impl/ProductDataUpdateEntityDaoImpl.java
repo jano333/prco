@@ -8,7 +8,7 @@ import sk.hudak.prco.model.ProductDataUpdateEntity;
 public class ProductDataUpdateEntityDaoImpl extends BaseDaoImpl<ProductDataUpdateEntity> implements ProductDataUpdateEntityDao {
 
     @Override
-    public ProductDataUpdateEntity findById(Long id) {
+    public ProductDataUpdateEntity findById(long id) {
         return findById(ProductDataUpdateEntity.class, id);
     }
 }

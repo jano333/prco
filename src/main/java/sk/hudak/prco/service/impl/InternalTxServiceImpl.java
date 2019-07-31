@@ -1,6 +1,7 @@
 package sk.hudak.prco.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -151,13 +152,13 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional
-    public void markNewProductAsInterested(Long... newProductIds) {
+    public void markNewProductAsInterested(long... newProductIds) {
         productCommonService.markNewProductAsInterested(newProductIds);
     }
 
     @Override
     @Transactional
-    public void markNewProductAsNotInterested(Long... newProductIds) {
+    public void markNewProductAsNotInterested(long... newProductIds) {
         productCommonService.markNewProductAsNotInterested(newProductIds);
     }
 
@@ -326,7 +327,7 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional
-    public long importProducts(List<ProductFullDto> productList) {
+    public long importProducts(@NotNull List<? extends ProductFullDto> productList) {
         return productCommonService.importProducts(productList);
     }
 
@@ -346,7 +347,7 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional
-    public Long createGroup(GroupCreateDto createDto) {
+    public long createGroup(GroupCreateDto createDto) {
         return groupService.createGroup(createDto);
     }
 
@@ -358,13 +359,13 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional
-    public void addProductsToGroup(Long groupId, Long... productId) {
+    public void addProductsToGroup(long groupId, long... productId) {
         groupService.addProductsToGroup(groupId, productId);
     }
 
     @Override
     @Transactional
-    public void removeProductsFromGroup(Long groupId, Long... productIds) {
+    public void removeProductsFromGroup(Long groupId, long... productIds) {
         groupService.removeProductsFromGroup(groupId, productIds);
     }
 
@@ -455,7 +456,7 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional
-    public void deleteNotInterestedProducts(Long... notInterestedProductIds) {
+    public void deleteNotInterestedProducts(long... notInterestedProductIds) {
         notInterestedProductService.deleteNotInterestedProducts(notInterestedProductIds);
     }
 
