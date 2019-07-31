@@ -7,8 +7,8 @@ import sk.hudak.prco.api.ErrorType.*
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ErrorCreateDto
 import sk.hudak.prco.dto.product.ProductDetailInfo
-import sk.hudak.prco.exception.HttpErrorPrcoException
 import sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException
+import sk.hudak.prco.exception.HttpStatusErrorPrcoException
 import sk.hudak.prco.manager.updateprocess.UpdateProcessResult
 import sk.hudak.prco.manager.updateprocess.UpdateProcessResult.*
 import sk.hudak.prco.service.InternalTxService
@@ -25,7 +25,7 @@ class ErrorHandlerImpl(val internalTxService: InternalTxService) : ErrorHandler 
 
         //FIXME skusit cez when
 
-        if (error is HttpErrorPrcoException) {
+        if (error is HttpStatusErrorPrcoException) {
             return handleHttpErrorPrcoRuntimeException(error, productDetailInfo)
         }
 
@@ -37,7 +37,7 @@ class ErrorHandlerImpl(val internalTxService: InternalTxService) : ErrorHandler 
         return ERR_PARSING_ERROR_GENERIC
     }
 
-    private fun handleHttpErrorPrcoRuntimeException(e: HttpErrorPrcoException, productDetailInfo: ProductDetailInfo): UpdateProcessResult {
+    private fun handleHttpErrorPrcoRuntimeException(e: HttpStatusErrorPrcoException, productDetailInfo: ProductDetailInfo): UpdateProcessResult {
         log.error("http status: " + e.httpStatus)
         if (404 == e.httpStatus) {
             internalTxService.removeProduct(productDetailInfo.id)
@@ -52,7 +52,7 @@ class ErrorHandlerImpl(val internalTxService: InternalTxService) : ErrorHandler 
         return ERR_PARSING_ERROR_HTTP_TIMEOUT
     }
 
-    private fun saveInvalidHttpStatusError(eshopUuid: EshopUuid, url: String, message: String?, e: HttpErrorPrcoException) {
+    private fun saveInvalidHttpStatusError(eshopUuid: EshopUuid, url: String, message: String?, e: HttpStatusErrorPrcoException) {
         internalTxService.createError(ErrorCreateDto(
                 errorType = if (404 == e.httpStatus) HTTP_STATUS_404_ERR else HTTP_STATUS_ERR,
                 eshopUuid = eshopUuid,

@@ -3,7 +3,7 @@ package sk.hudak.prco.exception
 import java.net.SocketTimeoutException
 
 
-open class HttpErrorPrcoException : PrcoRuntimeException {
+open class HttpStatusErrorPrcoException : PrcoRuntimeException {
 
     val httpStatus: Int
 
@@ -18,7 +18,7 @@ open class HttpErrorPrcoException : PrcoRuntimeException {
 }
 
 class HttpErrorProductNotFoundPrcoException(message: String, cause: Throwable) :
-        HttpErrorPrcoException(404, message, cause)
+        HttpStatusErrorPrcoException(404, message, cause)
 
 class HttpSocketTimeoutPrcoRuntimeException(e: SocketTimeoutException) :
         PrcoRuntimeException("timeout", e)

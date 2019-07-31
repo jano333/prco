@@ -11,9 +11,9 @@ import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.dto.ProductNewData;
 import sk.hudak.prco.dto.ProductUpdateData;
 import sk.hudak.prco.dto.UnitTypeValueCount;
-import sk.hudak.prco.exception.HttpErrorPrcoException;
 import sk.hudak.prco.exception.HttpErrorProductNotFoundPrcoException;
 import sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException;
+import sk.hudak.prco.exception.HttpStatusErrorPrcoException;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.exception.ProductNameNotFoundException;
 import sk.hudak.prco.exception.ProductPriceNotFoundException;
@@ -270,7 +270,7 @@ public abstract class JSoupProductParser implements EshopProductsParser {
                 if (404 == statusCode) {
                     throw new HttpErrorProductNotFoundPrcoException(errMsg + " " + se.toString(), e);
                 } else {
-                    throw new HttpErrorPrcoException(statusCode, errMsg + " " + se.toString(), e);
+                    throw new HttpStatusErrorPrcoException(statusCode, errMsg + " " + se.toString(), e);
                 }
 
 
