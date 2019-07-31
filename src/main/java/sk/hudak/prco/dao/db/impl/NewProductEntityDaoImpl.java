@@ -6,7 +6,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.dao.db.NewProductEntityDbDao;
-import sk.hudak.prco.dto.NewProductFilterUIDto;
+import sk.hudak.prco.dto.product.NewProductFilterUIDto;
 import sk.hudak.prco.model.NewProductEntity;
 import sk.hudak.prco.model.QNewProductEntity;
 

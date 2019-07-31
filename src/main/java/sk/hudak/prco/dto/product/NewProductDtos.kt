@@ -1,7 +1,8 @@
-package sk.hudak.prco.dto
+package sk.hudak.prco.dto.product
 
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.Unit
+import sk.hudak.prco.dto.DtoAble
 import java.math.BigDecimal
 import java.util.*
 
@@ -64,7 +65,16 @@ class NewProductInfoDetail {
     var valid: Boolean? = null
 
     override fun toString(): String {
-        return "NewProductInfoDetail(id=$id, created=$created, updated=$updated, url=$url, name=$name, eshopUuid=$eshopUuid, unit=$unit, unitValue=$unitValue, unitPackageCount=$unitPackageCount, valid=$valid)"
+        return "NewProductInfoDetail(id=$id, " +
+                "created=$created, " +
+                "updated=$updated, " +
+                "url=$url, " +
+                "name=$name, " +
+                "eshopUuid=$eshopUuid, " +
+                "unit=$unit, " +
+                "unitValue=$unitValue, " +
+                "unitPackageCount=$unitPackageCount, " +
+                "valid=$valid)"
     }
 
 

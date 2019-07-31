@@ -1,8 +1,8 @@
 package sk.hudak.prco.service
 
 
-import sk.hudak.prco.dto.*
-import sk.hudak.prco.dto.product.ProductUnitDataDto
+import sk.hudak.prco.dto.UnitData
+import sk.hudak.prco.dto.product.*
 
 /**
  * Service pre db entitu [sk.hudak.prco.model.NewProductEntity]

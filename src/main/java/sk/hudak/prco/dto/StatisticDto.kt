@@ -2,17 +2,9 @@ package sk.hudak.prco.dto
 
 import sk.hudak.prco.api.EshopUuid
 
-class EshopProductInfoDto(
+data class EshopProductInfoDto(
         val countOfAllProduct: Long,
-        val countOfAlreadyUpdated: Long) : DtoAble {
-
-    override fun toString(): String {
-        return "EshopProductInfoDto{" +
-                "countOfAllProduct=" + countOfAllProduct +
-                ", countOfAlreadyUpdated=" + countOfAlreadyUpdated +
-                '}'.toString()
-    }
-}
+        val countOfAlreadyUpdated: Long) : DtoAble
 
 class ProductStatisticInfoDto {
 

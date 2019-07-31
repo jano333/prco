@@ -2,7 +2,7 @@ package sk.hudak.prco.manager.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import sk.hudak.prco.dto.NewProductFullDto;
+import sk.hudak.prco.dto.product.NewProductFullDto;
 import sk.hudak.prco.manager.HtmlExportManager;
 
 import java.io.IOException;

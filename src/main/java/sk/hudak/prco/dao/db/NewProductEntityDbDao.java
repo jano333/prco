@@ -1,7 +1,7 @@
 package sk.hudak.prco.dao.db;
 
 import sk.hudak.prco.dao.BaseDao;
-import sk.hudak.prco.dto.NewProductFilterUIDto;
+import sk.hudak.prco.dto.product.NewProductFilterUIDto;
 import sk.hudak.prco.model.NewProductEntity;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package sk.hudak.prco.dao.db;
 
 import sk.hudak.prco.dao.BaseDao;
-import sk.hudak.prco.dto.NotInterestedProductFindDto;
+import sk.hudak.prco.dto.product.NotInterestedProductFindDto;
 import sk.hudak.prco.model.NotInterestedProductEntity;
 
 import java.util.List;

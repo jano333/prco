@@ -17,19 +17,19 @@ import sk.hudak.prco.dto.GroupListExtendedDto;
 import sk.hudak.prco.dto.GroupProductKeywordsCreateDto;
 import sk.hudak.prco.dto.GroupProductKeywordsFullDto;
 import sk.hudak.prco.dto.GroupUpdateDto;
-import sk.hudak.prco.dto.NewProductCreateDto;
-import sk.hudak.prco.dto.NewProductFilterUIDto;
-import sk.hudak.prco.dto.NewProductFullDto;
-import sk.hudak.prco.dto.NewProductInfoDetail;
-import sk.hudak.prco.dto.NotInterestedProductFindDto;
-import sk.hudak.prco.dto.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.ProductStatisticInfoDto;
 import sk.hudak.prco.dto.ProductUpdateDataDto;
 import sk.hudak.prco.dto.StatisticForUpdateForEshopDto;
 import sk.hudak.prco.dto.UnitData;
-import sk.hudak.prco.dto.WatchDogAddDto;
+import sk.hudak.prco.dto.WatchDogAddCustomDto;
 import sk.hudak.prco.dto.WatchDogDto;
 import sk.hudak.prco.dto.WatchDogNotifyUpdateDto;
+import sk.hudak.prco.dto.product.NewProductCreateDto;
+import sk.hudak.prco.dto.product.NewProductFilterUIDto;
+import sk.hudak.prco.dto.product.NewProductFullDto;
+import sk.hudak.prco.dto.product.NewProductInfoDetail;
+import sk.hudak.prco.dto.product.NotInterestedProductFindDto;
+import sk.hudak.prco.dto.product.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.product.ProductAddingToGroupDto;
 import sk.hudak.prco.dto.product.ProductBestPriceInGroupDto;
 import sk.hudak.prco.dto.product.ProductDetailInfo;
@@ -394,7 +394,7 @@ public class InternalTxServiceImpl implements InternalTxService {
 
     @Override
     @Transactional
-    public Long addNewProductToWatch(WatchDogAddDto addDto) {
+    public Long addNewProductToWatch(WatchDogAddCustomDto addDto) {
         return watchDogService.addNewProductToWatch(addDto);
     }
 

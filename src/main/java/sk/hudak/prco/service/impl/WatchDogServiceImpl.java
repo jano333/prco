@@ -7,7 +7,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dao.db.WatchDogEntityDao;
-import sk.hudak.prco.dto.WatchDogAddDto;
+import sk.hudak.prco.dto.WatchDogAddCustomDto;
 import sk.hudak.prco.dto.WatchDogDto;
 import sk.hudak.prco.dto.WatchDogNotifyUpdateDto;
 import sk.hudak.prco.exception.PrcoRuntimeException;
@@ -39,7 +39,7 @@ public class WatchDogServiceImpl implements WatchDogService {
     private MailSender mailSender;
 
     @Override
-    public Long addNewProductToWatch(WatchDogAddDto addDto) {
+    public Long addNewProductToWatch(WatchDogAddCustomDto addDto) {
         notNull(addDto, "addDto");
         notNullNotEmpty(addDto.getProductUrl(), "productUrl");
         notNull(addDto.getMaxPriceToBeInterestedIn(), "maxPriceToBeInterestedIn");

@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.api.ProductAction;
 import sk.hudak.prco.api.Unit;
-import sk.hudak.prco.dto.NewProductFullDto;
-import sk.hudak.prco.dto.NotInterestedProductFindDto;
-import sk.hudak.prco.dto.NotInterestedProductFullDto;
+import sk.hudak.prco.dto.product.NewProductFullDto;
+import sk.hudak.prco.dto.product.NotInterestedProductFindDto;
+import sk.hudak.prco.dto.product.NotInterestedProductFullDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.manager.DbExportImportManager;
@@ -284,23 +284,21 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
                     .withHeader(PRODUCTS_HEADERS)
                     .withFirstRecordAsHeader().parse(in)
                     .forEach(record -> {
-                        ProductFullDto dto = ProductFullDto.builder()
-                                .created(readDateNullSafe(record.get(CREATED)))
-                                .updated(readDateNullSafe(record.get(UPDATED)))
-                                .url(record.get(URL))
-                                .name(record.get(NAME))
-                                .eshopUuid(readEshopUuidNullSafe(record.get(ESHOP_UUID)))
-                                .unit(readUnitNullSafe(record.get(UNIT)))
-                                .unitValue(readBigDecimalNullSafe(record.get(UNIT_VALUE)))
-                                .unitPackageCount(readIntegerNullSafe(record.get(UNIT_PACKAGE_COUNT)))
-                                .priceForOneItemInPackage(readBigDecimalNullSafe(record.get(PRICE_FOR_ONE_ITEM_IN_PACKAGE)))
-                                .priceForUnit(readBigDecimalNullSafe(record.get(PRICE_FOR_UNIT)))
-                                .lastTimeDataUpdated(readDateNullSafe(record.get(LAST_TIME_DATA_UPDATED)))
-                                .productAction(readProductActionNullSafe(record.get(PRODUCT_ACTION)))
-                                .actionValidTo(readDateNullSafe(record.get(ACTION_VALID_TO)))
-                                .productPictureUrl(record.get(PRODUCT_PICTURE_URL))
-                                .build();
-
+                        ProductFullDto dto = new ProductFullDto();
+                        dto.setCreated(readDateNullSafe(record.get(CREATED)));
+                        dto.setUpdated(readDateNullSafe(record.get(UPDATED)));
+                        dto.setUrl(record.get(URL));
+                        dto.setName(record.get(NAME));
+                        dto.setEshopUuid(readEshopUuidNullSafe(record.get(ESHOP_UUID)));
+                        dto.setUnit(readUnitNullSafe(record.get(UNIT)));
+                        dto.setUnitValue(readBigDecimalNullSafe(record.get(UNIT_VALUE)));
+                        dto.setUnitPackageCount(readIntegerNullSafe(record.get(UNIT_PACKAGE_COUNT)));
+                        dto.setPriceForOneItemInPackage(readBigDecimalNullSafe(record.get(PRICE_FOR_ONE_ITEM_IN_PACKAGE)));
+                        dto.setPriceForUnit(readBigDecimalNullSafe(record.get(PRICE_FOR_UNIT)));
+                        dto.setLastTimeDataUpdated(readDateNullSafe(record.get(LAST_TIME_DATA_UPDATED)));
+                        dto.setProductAction(readProductActionNullSafe(record.get(PRODUCT_ACTION)));
+                        dto.setActionValidTo(readDateNullSafe(record.get(ACTION_VALID_TO)));
+                        dto.setProductPictureUrl(record.get(PRODUCT_PICTURE_URL));
                         result.add(dto);
                     });
 

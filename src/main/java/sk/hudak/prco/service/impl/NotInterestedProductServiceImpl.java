@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dao.db.NotInterestedProductDbDao;
-import sk.hudak.prco.dto.NotInterestedProductFindDto;
+import sk.hudak.prco.dto.product.NotInterestedProductFindDto;
 import sk.hudak.prco.model.NotInterestedProductEntity;
 import sk.hudak.prco.service.NotInterestedProductService;
 

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sk.hudak.prco.api.EshopUuid;
 import sk.hudak.prco.dto.ProductUpdateData;
-import sk.hudak.prco.dto.WatchDogAddDto;
+import sk.hudak.prco.dto.WatchDogAddCustomDto;
 import sk.hudak.prco.dto.WatchDogDto;
 import sk.hudak.prco.dto.WatchDogNotifyUpdateDto;
 import sk.hudak.prco.manager.WatchDogManager;
@@ -37,7 +37,7 @@ public class WatchDogManagerImpl implements WatchDogManager {
 
     @Override
     public void startWatching(String productUrl, BigDecimal maxPriceToBeInterestedIn) {
-        internalTxService.addNewProductToWatch(new WatchDogAddDto(productUrl, maxPriceToBeInterestedIn));
+        internalTxService.addNewProductToWatch(new WatchDogAddCustomDto(productUrl, maxPriceToBeInterestedIn));
     }
 
     @Override

@@ -220,15 +220,14 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
 
 
         //FIXME premapovanie cez sk.hudak.prco mapper nie takto rucne, nech mam na jednom mieste tie preklapacky...
-        internalTxService.updateProduct(ProductUpdateDataDto.builder()
-                .id(productIdToBeUpdated)
-                .name(updateData.getName())
-                .url(updateData.getUrl())
-                .priceForPackage(updateData.getPriceForPackage())
-                .productAction(updateData.getProductAction())
-                .actionValidity(updateData.getActionValidity())
-                .pictureUrl(updateData.getPictureUrl())
-                .build());
+        internalTxService.updateProduct(new ProductUpdateDataDto(
+                productIdToBeUpdated,
+                updateData.getUrl(),
+                updateData.getName(),
+                updateData.getPriceForPackage(),
+                updateData.getProductAction(),
+                updateData.getActionValidity(),
+                updateData.getPictureUrl()));
 
         // remove product with old URL
         if (existSameProductIdOpt.isPresent()) {

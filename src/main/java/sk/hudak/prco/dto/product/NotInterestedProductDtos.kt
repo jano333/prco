@@ -1,7 +1,8 @@
-package sk.hudak.prco.dto
+package sk.hudak.prco.dto.product
 
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.Unit
+import sk.hudak.prco.dto.DtoAble
 import java.math.BigDecimal
 import java.util.*
 

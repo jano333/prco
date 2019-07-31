@@ -101,3 +101,11 @@ class ParsingDataResponse : InternalMarkerDto {
     }
 
 }
+
+data class ProductUpdateDataDto(var id: Long?,
+                                var url: String?,
+                                var name: String?,
+                                var priceForPackage: BigDecimal?,
+                                var productAction: ProductAction?,
+                                var actionValidity: Date?,
+                                var pictureUrl: String?)
