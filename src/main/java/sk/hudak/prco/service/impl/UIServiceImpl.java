@@ -124,16 +124,13 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public void addProductsToGroup(Long groupId, Long... productIds) {
-        //TODO
-//        internalTxService.addProductsToGroup(groupId, productIds);
-
+    public void addProductsToGroup(Long groupId, long... productIds) {
+        internalTxService.addProductsToGroup(groupId, productIds);
     }
 
     @Override
-    public void removeProductsFromGroup(Long groupId, Long... productIds) {
-        //TODO
-//        internalTxService.removeProductsFromGroup(groupId, productIds);
+    public void removeProductsFromGroup(Long groupId, long... productIds) {
+        internalTxService.removeProductsFromGroup(groupId, productIds);
     }
 
     @Override
@@ -157,15 +154,13 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public void deleteProducts(Long... productIds) {
+    public void deleteProducts(long... productIds) {
         if (productIds == null) {
             return;
         }
         for (Long productId : productIds) {
             internalTxService.removeProduct(productId);
         }
-
-
     }
 
     @Override
@@ -179,8 +174,9 @@ public class UIServiceImpl implements UIService {
     }
 
     @Override
-    public void deleteNewProducts(Long... newProductIds) {
-        internalTxService.deleteNewProducts(newProductIds);
+    public void deleteNewProducts(long... newProductIds) {
+        //TODO
+//        internalTxService.deleteNewProducts(newProductIds);
     }
 
     @Override

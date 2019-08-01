@@ -1,26 +1,24 @@
-package sk.hudak.prco.dao.db;
+package sk.hudak.prco.dao.db
 
-import sk.hudak.prco.dao.BaseDao;
-import sk.hudak.prco.dto.product.NewProductFilterUIDto;
-import sk.hudak.prco.model.NewProductEntity;
+import sk.hudak.prco.dao.BaseDao
+import sk.hudak.prco.dto.product.NewProductFilterUIDto
+import sk.hudak.prco.model.NewProductEntity
+import java.util.*
 
-import java.util.List;
-import java.util.Optional;
-
-public interface NewProductEntityDbDao extends BaseDao<NewProductEntity> {
-
-    boolean existWithUrl(String url);
-
-    List<NewProductEntity> findAll();
-
-    List<NewProductEntity> findInvalid(int maxCountOfInvalid);
-
-    long countOfAllInvalidNewProduct();
-
-    Optional<NewProductEntity> findFirstInvalid();
-
-    List<NewProductEntity> findByFilter(NewProductFilterUIDto filter);
+interface NewProductEntityDbDao : BaseDao<NewProductEntity> {
 
     //TODO rename na countOfAllNewProducts
-    long getCountOfAllNewProducts();
+    val countOfAllNewProducts: Long
+
+    fun existWithUrl(url: String): Boolean
+
+    fun findAll(): List<NewProductEntity>
+
+    fun findInvalid(maxCountOfInvalid: Int): List<NewProductEntity>
+
+    fun countOfAllInvalidNewProduct(): Long
+
+    fun findFirstInvalid(): Optional<NewProductEntity>
+
+    fun findByFilter(filter: NewProductFilterUIDto): List<NewProductEntity>
 }

@@ -1,23 +1,16 @@
-package sk.hudak.prco.service;
+package sk.hudak.prco.service
 
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.dto.ProductUpdateDataDto;
-import sk.hudak.prco.dto.StatisticForUpdateForEshopDto;
-import sk.hudak.prco.dto.product.ProductAddingToGroupDto;
-import sk.hudak.prco.dto.product.ProductBestPriceInGroupDto;
-import sk.hudak.prco.dto.product.ProductDetailInfo;
-import sk.hudak.prco.dto.product.ProductFilterUIDto;
-import sk.hudak.prco.dto.product.ProductFullDto;
-import sk.hudak.prco.dto.product.ProductInActionDto;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.dto.ProductUpdateDataDto
+import sk.hudak.prco.dto.StatisticForUpdateForEshopDto
+import sk.hudak.prco.dto.product.*
+import java.math.BigDecimal
+import java.util.*
 
 /**
  *
  */
-public interface ProductService {
+interface ProductService {
 
     //TODO niekde je delete a niekde remove na product ujednotit to ...
 
@@ -25,12 +18,12 @@ public interface ProductService {
      * @param productURL URL of product
      * @return true, if product exist (product table only)
      */
-    boolean existProductWithUrl(String productURL);
+    fun existProductWithUrl(productURL: String): Boolean
 
     /**
      * @param productUpdateDataDto
      */
-    void updateProduct(ProductUpdateDataDto productUpdateDataDto);
+    fun updateProduct(productUpdateDataDto: ProductUpdateDataDto)
 
     /**
      * Update of 'common' price of product.
@@ -38,35 +31,35 @@ public interface ProductService {
      * @param productId      product id
      * @param newCommonPrice common(bezna cena) productu
      */
-    void updateProductCommonPrice(Long productId, BigDecimal newCommonPrice);
+    fun updateProductCommonPrice(productId: Long?, newCommonPrice: BigDecimal)
 
     /**
      * set field 'LastTimeDataUpdated' to null for product in given eshop
      *
      * @param eshopUuid eshop unique identification
      */
-    void resetUpdateDateForAllProductsInEshop(EshopUuid eshopUuid);
+    fun resetUpdateDateForAllProductsInEshop(eshopUuid: EshopUuid)
 
     /**
      * set field 'lastTimeDataUpdated' to null for product with given id
      *
      * @param productId product id
      */
-    void resetUpdateDateProduct(Long productId);
+    fun resetUpdateDateProduct(productId: Long?)
 
     /**
      * Reset of all prices to null, same for action and 'lastTimeDataUpdated'.
      *
      * @param productId product id
      */
-    void markProductAsUnavailable(Long productId);
+    fun markProductAsUnavailable(productId: Long?)
 
     /**
      * Move product to NotInteredted product. Before that it removes it from all group and after moving it delete it.
      *
      * @param productId product id
      */
-    void markProductAsNotInterested(Long productId);
+    fun markProductAsNotInterested(productId: Long?)
 
 
     /**
@@ -74,10 +67,10 @@ public interface ProductService {
      *
      * @param productId product id
      */
-    void removeProduct(Long productId);
+    fun removeProduct(productId: Long?)
 
 
-    void removeProductByUrl(String productUrl);
+    fun removeProductByUrl(productUrl: String)
 
     // ----------- GET -----------
 
@@ -87,7 +80,7 @@ public interface ProductService {
      * @param productId product id
      * @return product data
      */
-    ProductAddingToGroupDto getProduct(Long productId);
+    fun getProduct(productId: Long?): ProductAddingToGroupDto
 
     /**
      * Eshop to which the product with given id belongs to.
@@ -95,27 +88,27 @@ public interface ProductService {
      * @param productId product id
      * @return eshop unique identifier
      */
-    EshopUuid getEshopForProductId(Long productId);
+    fun getEshopForProductId(productId: Long?): EshopUuid
 
     /**
      * @param eshopUuid        eshop unique identifier
      * @param olderThanInHours
      * @return
      */
-    Optional<ProductDetailInfo> getProductForUpdate(EshopUuid eshopUuid, int olderThanInHours);
+    fun getProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): Optional<ProductDetailInfo>
 
     /**
      * @param productId product id
      * @return
      */
-    ProductDetailInfo getProductForUpdate(Long productId);
+    fun getProductForUpdate(productId: Long?): ProductDetailInfo
 
     /**
      * @param eshopUuid        eshop unique identifier
      * @param olderThanInHours
      * @return
      */
-    StatisticForUpdateForEshopDto getStatisticForUpdateForEshop(EshopUuid eshopUuid, int olderThanInHours);
+    fun getStatisticForUpdateForEshop(eshopUuid: EshopUuid, olderThanInHours: Int): StatisticForUpdateForEshopDto
 
     // ----------- FIND -----------
 
@@ -123,7 +116,7 @@ public interface ProductService {
      * @param filter
      * @return
      */
-    List<ProductFullDto> findProducts(ProductFilterUIDto filter);
+    fun findProducts(filter: ProductFilterUIDto): List<ProductFullDto>
 
     /**
      * @param groupId       id of group
@@ -131,40 +124,40 @@ public interface ProductService {
      * @param eshopsToSkip
      * @return
      */
-    List<ProductFullDto> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip);
+    fun findProductsInGroup(groupId: Long?, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto>
 
     /**
      * @return list of products which are not in any group
      */
-    List<ProductFullDto> findProductsNotInAnyGroup();
+    fun findProductsNotInAnyGroup(): List<ProductFullDto>
 
     /**
      * @param eshopUuid eshop unique identifier
      * @return list of product in action for given eshop
      */
-    List<ProductInActionDto> findProductsInAction(EshopUuid eshopUuid);
+    fun findProductsInAction(eshopUuid: EshopUuid): List<ProductInActionDto>
 
     /**
      * @param eshopUuid eshop unique identifier
      * @return
      */
-    List<ProductBestPriceInGroupDto> findProductsBestPriceInGroupDto(EshopUuid eshopUuid);
+    fun findProductsBestPriceInGroupDto(eshopUuid: EshopUuid): List<ProductBestPriceInGroupDto>
 
     /**
      * @return
      */
-    List<ProductFullDto> findProductsForExport();
+    fun findProductsForExport(): List<ProductFullDto>
 
     /**
      * @param eshopUuid eshop unique identifier
      * @return
      */
-    List<ProductFullDto> findDuplicityProductsByNameAndPriceInEshop(EshopUuid eshopUuid);
+    fun findDuplicityProductsByNameAndPriceInEshop(eshopUuid: EshopUuid): List<ProductFullDto>
 
     /**
      * @param productUrl        URL of product
      * @param productIdToIgnore product id which will be ignored during finding
      * @return product id if found, empty if not
      */
-    Optional<Long> getProductWithUrl(String productUrl, Long productIdToIgnore);
+    fun getProductWithUrl(productUrl: String, productIdToIgnore: Long?): Optional<Long>
 }

@@ -1,13 +1,11 @@
-package sk.hudak.prco.dao.db;
+package sk.hudak.prco.dao.db
 
-import sk.hudak.prco.dao.BaseDao;
-import sk.hudak.prco.model.GroupProductKeywordsEntity;
+import sk.hudak.prco.dao.BaseDao
+import sk.hudak.prco.model.GroupProductKeywordsEntity
 
-import java.util.List;
+interface GroupProductKeywordsDao : BaseDao<GroupProductKeywordsEntity> {
 
-public interface GroupProductKeywordsDao extends BaseDao<GroupProductKeywordsEntity> {
+    fun findByGroupId(groupId: Long?): List<GroupProductKeywordsEntity>
 
-    List<GroupProductKeywordsEntity> findByGroupId(Long groupId);
-
-    List<String[]> findKeywordsForGroupId(Long groupId);
+    fun findKeywordsForGroupId(groupId: Long?): List<Array<String>>
 }

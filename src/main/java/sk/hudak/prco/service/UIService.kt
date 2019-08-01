@@ -1,29 +1,20 @@
-package sk.hudak.prco.service;
+package sk.hudak.prco.service
 
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.dto.GroupCreateDto;
-import sk.hudak.prco.dto.GroupFilterDto;
-import sk.hudak.prco.dto.GroupIdNameDto;
-import sk.hudak.prco.dto.GroupListDto;
-import sk.hudak.prco.dto.GroupListExtendedDto;
-import sk.hudak.prco.dto.GroupUpdateDto;
-import sk.hudak.prco.dto.ProductStatisticInfoDto;
-import sk.hudak.prco.dto.product.NewProductFilterUIDto;
-import sk.hudak.prco.dto.product.NewProductFullDto;
-import sk.hudak.prco.dto.product.ProductAddingToGroupDto;
-import sk.hudak.prco.dto.product.ProductBestPriceInGroupDto;
-import sk.hudak.prco.dto.product.ProductFilterUIDto;
-import sk.hudak.prco.dto.product.ProductFullDto;
-import sk.hudak.prco.dto.product.ProductInActionDto;
-import sk.hudak.prco.dto.product.ProductUnitDataDto;
-
-import java.math.BigDecimal;
-import java.util.List;
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.dto.*
+import sk.hudak.prco.dto.product.*
+import java.math.BigDecimal
 
 /**
  * Metody pre UI.
  */
-public interface UIService {
+interface UIService {
+
+    // ------------ Statistiky --------------
+
+    val statisticsOfProducts: ProductStatisticInfoDto
+
+    val countOfAllNewProducts: Long
 
     //-------------- NEW PRODUCTS -------------------
 
@@ -33,7 +24,7 @@ public interface UIService {
      * @param filter data, na zaklade ktorych sa filtruje
      * @return
      */
-    List<NewProductFullDto> findNewProducts(NewProductFilterUIDto filter);
+    fun findNewProducts(filter: NewProductFilterUIDto): List<NewProductFullDto>
 
     /**
      * Nacita informacie o novom produkte na zaklade jeho id.
@@ -41,45 +32,45 @@ public interface UIService {
      * @param newProductId
      * @return
      */
-    NewProductFullDto getNewProduct(Long newProductId);
+    fun getNewProduct(newProductId: Long?): NewProductFullDto
 
     /**
      * Nastavi 'confirm' na 'novom' produkte na true. Co znamena, ze potvrdzujem data pre unit hodnoty su spravne.
      *
      * @param newProductId id new produktu
      */
-    void confirmUnitDataForNewProduct(Long newProductId);
+    fun confirmUnitDataForNewProduct(newProductId: Long?)
 
     /**
      * Spusti znova vyparsovanie 'unit' values na zaklade nazvu 'new' produktu.
      *
      * @param newProductId id new produktu
      */
-    void tryToRepairInvalidUnitForNewProductByReprocessing(Long newProductId);
+    fun tryToRepairInvalidUnitForNewProductByReprocessing(newProductId: Long?)
 
     /**
      * Presunie 'novy' produkt do zoznamu 'interested' produktov. Precondition je ze musi uz mat nastave confirm na true.
      *
      * @param newProductId id new produktu
      */
-    void markNewProductAsInterested(Long newProductId);
+    fun markNewProductAsInterested(newProductId: Long?)
 
     /**
      * Presunie 'novy' produkt do zoznamu 'not interested' produktov.
      *
      * @param newProductId id new produktu
      */
-    void markNewProductAsNotInterested(Long newProductId);
+    fun markNewProductAsNotInterested(newProductId: Long?)
 
     //-------------- PRODUCTS -------------------
 
-    ProductAddingToGroupDto getProduct(Long productId);
+    fun getProduct(productId: Long?): ProductAddingToGroupDto
 
-    void updateProductUnitData(ProductUnitDataDto productUnitDataDto);
+    fun updateProductUnitData(productUnitDataDto: ProductUnitDataDto)
 
-    void updateCommonPrice(Long productId, BigDecimal newcommonPrice);
+    fun updateCommonPrice(productId: Long?, newcommonPrice: BigDecimal)
 
-    void resetUpdateDateForAllProductsInEshop(EshopUuid eshopUuid);
+    fun resetUpdateDateForAllProductsInEshop(eshopUuid: EshopUuid)
 
     /**
      * Zoznam vsetkych produktov na zaklade filtra.
@@ -87,26 +78,26 @@ public interface UIService {
      * @param filter data na zaklade ktorych sa filtruje
      * @return zoznam najdenych produktov
      */
-    List<ProductFullDto> findProducts(ProductFilterUIDto filter);
+    fun findProducts(filter: ProductFilterUIDto): List<ProductFullDto>
 
     /**
      * Finalne odstranenie(odmazanie) produktu na zaklade jeho id.
      *
      * @param productId id produktu
      */
-    void removeProduct(Long productId);
+    fun removeProduct(productId: Long?)
 
     /**
      * Zoznam vsetkych produktov v danej skupine zoradenych podla najlepsej ceny hore...
      */
-    List<ProductFullDto> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip);
+    fun findProductsInGroup(groupId: Long?, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto>
 
     /**
      * Zoznam produktov, ktore nie su v ziadnej skupine
      *
      * @return
      */
-    List<ProductFullDto> findProductsWitchAreNotInAnyGroup();
+    fun findProductsWitchAreNotInAnyGroup(): List<ProductFullDto>
 
     //-------------- GROUPS -------------------
 
@@ -116,14 +107,14 @@ public interface UIService {
      * @param groupCreateDto data pre vytvorenie novej grupy
      * @return id novo vytvorenej groupy
      */
-    Long createGroup(GroupCreateDto groupCreateDto);
+    fun createGroup(groupCreateDto: GroupCreateDto): Long?
 
     /**
      * Editacia(update) existujucej group-y.
      *
      * @param groupUpdateDto data pre update
      */
-    void updateGroup(GroupUpdateDto groupUpdateDto);
+    fun updateGroup(groupUpdateDto: GroupUpdateDto)
 
     /**
      * TODO
@@ -131,7 +122,7 @@ public interface UIService {
      * @param groupId id group entity
      * @return
      */
-    GroupIdNameDto getGroupById(Long groupId);
+    fun getGroupById(groupId: Long?): GroupIdNameDto
 
     /**
      * Zoznam vsetkych grup na zaklade filtra.
@@ -139,7 +130,7 @@ public interface UIService {
      * @param groupFilterDto data na zaklade ktorych sa filtruje
      * @return zoznam najdenych grup
      */
-    List<GroupListDto> findGroups(GroupFilterDto groupFilterDto);
+    fun findGroups(groupFilterDto: GroupFilterDto): List<GroupListDto>
 
     /**
      * Pridanie produktov do skupiny.
@@ -147,7 +138,7 @@ public interface UIService {
      * @param groupId    id grupy, do ktorej maju byt pridane produkty
      * @param productIds idcka produktov, ktore maju byt pridane do danej skupiny
      */
-    void addProductsToGroup(Long groupId, Long... productIds);
+    fun addProductsToGroup(groupId: Long?, vararg productIds: Long)
 
     /**
      * Odstranenie produktov zo skupiny.
@@ -155,7 +146,7 @@ public interface UIService {
      * @param groupId    id grupy, z ktorej maju byt odstranene produkty
      * @param productIds idcka produktov, ktore maju byt odstranene z danej skupiny
      */
-    void removeProductsFromGroup(Long groupId, Long... productIds);
+    fun removeProductsFromGroup(groupId: Long?, vararg productIds: Long)
 
     /**
      * Zoznam skupin, v ktorych dany produkt nie je pridany.
@@ -163,13 +154,9 @@ public interface UIService {
      * @param productId id produktu
      * @return zoznam skupin, ktore neobsahuju dany produkt
      */
-    List<GroupListDto> getGroupsWithoutProduct(Long productId);
+    fun getGroupsWithoutProduct(productId: Long?): List<GroupListDto>
 
-    List<GroupListExtendedDto> findAllGroupExtended();
-
-    // ------------ Statistiky --------------
-
-    ProductStatisticInfoDto getStatisticsOfProducts();
+    fun findAllGroupExtended(): List<GroupListExtendedDto>
 
     // ------------ TODO other prest a pretriedit !!!
 
@@ -179,22 +166,20 @@ public interface UIService {
      * @param productURL
      * @return
      */
-    boolean existProductWithUrl(String productURL);
+    fun existProductWithUrl(productURL: String): Boolean
 
     /**
      * Odsrani/odmaza existujuce produkty
      *
      * @param productIds id-cka produktov, ktore budu odmazane
      */
-    void deleteProducts(Long... productIds);
+    fun deleteProducts(vararg productIds: Long)
 
-    List<ProductInActionDto> findProductsInAction(EshopUuid eshopUuid);
+    fun findProductsInAction(eshopUuid: EshopUuid): List<ProductInActionDto>
 
-    List<ProductBestPriceInGroupDto> findProductsBestPriceInGroupDto(EshopUuid eshopUuid);
+    fun findProductsBestPriceInGroupDto(eshopUuid: EshopUuid): List<ProductBestPriceInGroupDto>
 
-    void deleteNewProducts(Long... newProductIds);
+    fun deleteNewProducts(vararg newProductIds: Long)
 
-    void markProductAsNotInterested(Long productId);
-
-    long getCountOfAllNewProducts();
+    fun markProductAsNotInterested(productId: Long?)
 }

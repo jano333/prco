@@ -1,130 +1,115 @@
-package sk.hudak.prco.dao.db.impl;
+package sk.hudak.prco.dao.db.impl
 
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.jpa.impl.JPAQuery;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.ErrorType;
-import sk.hudak.prco.dao.db.ErrorEntityDao;
-import sk.hudak.prco.dto.ErrorFindFilterDto;
-import sk.hudak.prco.exception.PrcoRuntimeException;
-import sk.hudak.prco.model.ErrorEntity;
-import sk.hudak.prco.model.QErrorEntity;
-
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import com.querydsl.core.types.Order
+import com.querydsl.core.types.OrderSpecifier
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.ErrorType
+import sk.hudak.prco.dao.db.ErrorEntityDao
+import sk.hudak.prco.dto.ErrorFindFilterDto
+import sk.hudak.prco.exception.PrcoRuntimeException
+import sk.hudak.prco.model.ErrorEntity
+import sk.hudak.prco.model.QErrorEntity
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalUnit
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 @Component
-public class ErrorEntityDaoImpl extends BaseDaoImpl<ErrorEntity> implements ErrorEntityDao {
+class ErrorEntityDaoImpl : BaseDaoImpl<ErrorEntity>(), ErrorEntityDao {
 
-    @Override
-    public ErrorEntity findById(long id) {
-        return findById(ErrorEntity.class, id);
+    override fun findById(id: Long): ErrorEntity {
+        return findById(ErrorEntity::class.java, id)
     }
 
-    @Override
-    public ErrorEntity findByUrl(String url) {
-        return getQueryFactory()
+    override fun findByUrl(url: String): ErrorEntity? {
+        return queryFactory
                 .select(QErrorEntity.errorEntity)
                 .from(QErrorEntity.errorEntity)
                 .where(QErrorEntity.errorEntity.url.eq(url))
-                .fetchFirst();
+                .fetchFirst()
     }
 
-    @Override
-    public List<ErrorEntity> findAll() {
-        return getQueryFactory()
+    override fun findAll(): List<ErrorEntity> {
+        return queryFactory
                 .select(QErrorEntity.errorEntity)
                 .from(QErrorEntity.errorEntity)
-                .fetch();
+                .fetch()
     }
 
-    @Override
-    public List<ErrorEntity> findByTypes(ErrorType... errorTypes) {
-        return getQueryFactory()
+    override fun findByTypes(vararg errorTypes: ErrorType): List<ErrorEntity> {
+        return queryFactory
                 .select(QErrorEntity.errorEntity)
                 .from(QErrorEntity.errorEntity)
-                .where(QErrorEntity.errorEntity.errorType.in(errorTypes))
-                .fetch();
+                .where(QErrorEntity.errorEntity.errorType.`in`(*errorTypes))
+                .fetch()
     }
 
-    @Override
-    public Long getCountOfType(ErrorType type) {
-        return getQueryFactory()
+    override fun getCountOfType(type: ErrorType): Long? {
+        return queryFactory
                 .select(QErrorEntity.errorEntity)
                 .from(QErrorEntity.errorEntity)
                 .where(QErrorEntity.errorEntity.errorType.eq(type))
-                .fetchCount();
+                .fetchCount()
     }
 
-    @Override
-    public List<ErrorEntity> findOlderThan(int unitCount, TimeUnit timeUnit) {
-        return getQueryFactory()
+    override fun findOlderThan(unitCount: Int, timeUnit: TimeUnit): List<ErrorEntity> {
+        return queryFactory
                 .select(QErrorEntity.errorEntity)
                 .from(QErrorEntity.errorEntity)
                 .where(QErrorEntity.errorEntity.updated.lt(calculateDate(unitCount, timeUnit)))
-                .fetch();
+                .fetch()
     }
 
-    @Override
-    public List<ErrorEntity> findErrorsByFilter(ErrorFindFilterDto findDto) {
-        JPAQuery<ErrorEntity> query = getQueryFactory()
-                .select(QErrorEntity.errorEntity)
-                .from(QErrorEntity.errorEntity);
-
-        if (findDto.getErrorTypes() != null) {
-            query.where(QErrorEntity.errorEntity.errorType.in(findDto.getErrorTypes()));
-        }
-        if (findDto.getErrorTypesToSkip() != null) {
-            query.where(QErrorEntity.errorEntity.errorType.notIn(findDto.getErrorTypesToSkip()));
-        }
-
-        if (findDto.getStatusCodes() != null) {
-            query.where(QErrorEntity.errorEntity.statusCode.in(findDto.getStatusCodes()));
-        }
-        if (findDto.getStatusCodesToSkip() != null) {
-            query.where(QErrorEntity.errorEntity.statusCode.isNull()
-                    .or(QErrorEntity.errorEntity.statusCode.notIn(findDto.getStatusCodesToSkip())));
-        }
-        query.limit(findDto.getLimit());
-        query.orderBy(new OrderSpecifier<>(Order.DESC, QErrorEntity.errorEntity.updated));
-        return query.fetch();
-    }
-
-    @Override
-    public List<ErrorEntity> findByMaxCount(int limit, ErrorType errorType) {
-        JPAQuery<ErrorEntity> from = getQueryFactory()
-                .select(QErrorEntity.errorEntity)
-                .from(QErrorEntity.errorEntity);
-        if (errorType != null) {
-            from.where(QErrorEntity.errorEntity.errorType.eq(errorType));
-        }
-        from.orderBy(new OrderSpecifier<>(Order.DESC, QErrorEntity.errorEntity.created));
-        return from.limit(limit).fetch();
-    }
-
-    private Date calculateDate(int unitCount, TimeUnit timeUnit) {
-        TemporalUnit unit = null;
-        switch (timeUnit) {
-            case DAYS:
-                unit = ChronoUnit.DAYS;
-                break;
-            //TODO ostatne
-            default:
-                throw new PrcoRuntimeException("Not yet implemented");
-        }
-        return Date.from(new Date().toInstant().minus(unitCount, unit));
-    }
-
-    @Override
-    public List<ErrorEntity> findByUrls(List<String> urls) {
-        return getQueryFactory()
+    override fun findErrorsByFilter(findDto: ErrorFindFilterDto): List<ErrorEntity> {
+        val query = queryFactory
                 .select(QErrorEntity.errorEntity)
                 .from(QErrorEntity.errorEntity)
-                .where(QErrorEntity.errorEntity.url.in(urls.toArray(new String[urls.size()])))
-                .fetch();
+
+        if (findDto.errorTypes != null) {
+            query.where(QErrorEntity.errorEntity.errorType.`in`(*findDto.errorTypes!!))
+        }
+        if (findDto.errorTypesToSkip != null) {
+            query.where(QErrorEntity.errorEntity.errorType.notIn(*findDto.errorTypesToSkip!!))
+        }
+
+        if (findDto.statusCodes != null) {
+            query.where(QErrorEntity.errorEntity.statusCode.`in`(*findDto.statusCodes!!))
+        }
+        if (findDto.statusCodesToSkip != null) {
+            query.where(QErrorEntity.errorEntity.statusCode.isNull
+                    .or(QErrorEntity.errorEntity.statusCode.notIn(*findDto.statusCodesToSkip!!)))
+        }
+        query.limit(findDto.limit.toLong())
+        query.orderBy(OrderSpecifier(Order.DESC, QErrorEntity.errorEntity.updated))
+        return query.fetch()
+    }
+
+    override fun findByMaxCount(limit: Int, errorType: ErrorType?): List<ErrorEntity> {
+        val from = queryFactory
+                .select(QErrorEntity.errorEntity)
+                .from(QErrorEntity.errorEntity)
+        if (errorType != null) {
+            from.where(QErrorEntity.errorEntity.errorType.eq(errorType))
+        }
+        from.orderBy(OrderSpecifier(Order.DESC, QErrorEntity.errorEntity.created))
+        return from.limit(limit.toLong()).fetch()
+    }
+
+    private fun calculateDate(unitCount: Int, timeUnit: TimeUnit): Date {
+        var unit: TemporalUnit?
+        when (timeUnit) {
+            TimeUnit.DAYS -> unit = ChronoUnit.DAYS
+            //TODO ostatne
+            else -> throw PrcoRuntimeException("Not yet implemented")
+        }
+        return Date.from(Date().toInstant().minus(unitCount.toLong(), unit))
+    }
+
+    override fun findByUrls(urls: List<String>): List<ErrorEntity> {
+        return queryFactory
+                .select(QErrorEntity.errorEntity)
+                .from(QErrorEntity.errorEntity)
+                .where(QErrorEntity.errorEntity.url.`in`(*urls.toTypedArray()))
+                .fetch()
     }
 }

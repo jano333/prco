@@ -1,20 +1,18 @@
-package sk.hudak.prco.dao.db;
+package sk.hudak.prco.dao.db
 
-import sk.hudak.prco.api.ErrorType;
-import sk.hudak.prco.dao.BaseDao;
-import sk.hudak.prco.dto.ErrorFindFilterDto;
-import sk.hudak.prco.model.ErrorEntity;
+import sk.hudak.prco.api.ErrorType
+import sk.hudak.prco.dao.BaseDao
+import sk.hudak.prco.dto.ErrorFindFilterDto
+import sk.hudak.prco.model.ErrorEntity
+import java.util.concurrent.TimeUnit
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+interface ErrorEntityDao : BaseDao<ErrorEntity> {
 
-public interface ErrorEntityDao extends BaseDao<ErrorEntity> {
+    fun findByUrl(url: String): ErrorEntity?
 
-    ErrorEntity findByUrl(String url);
+    fun findAll(): List<ErrorEntity>
 
-    List<ErrorEntity> findAll();
-
-    List<ErrorEntity> findByTypes(ErrorType... errorTypes);
+    fun findByTypes(vararg errorTypes: ErrorType): List<ErrorEntity>
 
     /**
      * vrati pocet chyb na zaklade typu
@@ -22,7 +20,7 @@ public interface ErrorEntityDao extends BaseDao<ErrorEntity> {
      * @param type
      * @return
      */
-    Long getCountOfType(ErrorType type);
+    fun getCountOfType(type: ErrorType): Long?
 
     /**
      * vyhlada starsie ako pocet jednotie z vstupu(zatial podpovovane len dni !!)
@@ -31,11 +29,11 @@ public interface ErrorEntityDao extends BaseDao<ErrorEntity> {
      * @param timeUnit
      * @return zoznam entit
      */
-    List<ErrorEntity> findOlderThan(int unitCount, TimeUnit timeUnit);
+    fun findOlderThan(unitCount: Int, timeUnit: TimeUnit): List<ErrorEntity>
 
-    List<ErrorEntity> findByUrls(List<String> urls);
+    fun findByUrls(urls: List<String>): List<ErrorEntity>
 
-    List<ErrorEntity> findByMaxCount(int limit, ErrorType errorType);
+    fun findByMaxCount(limit: Int, errorType: ErrorType?): List<ErrorEntity>
 
-    List<ErrorEntity> findErrorsByFilter(ErrorFindFilterDto findDto);
+    fun findErrorsByFilter(findDto: ErrorFindFilterDto): List<ErrorEntity>
 }

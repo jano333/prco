@@ -33,5 +33,5 @@ interface ErrorService {
      * - vsetky chyby, ktore maju URL rovnaku ako v not interested produkts
      * -
      */
-    fun startErrorCleanUp(): Future<Void>
+    fun startErrorCleanUp(): Future<Void>?
 }

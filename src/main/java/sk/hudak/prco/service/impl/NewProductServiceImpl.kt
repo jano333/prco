@@ -110,7 +110,7 @@ class NewProductServiceImpl(@Autowired private val newProductEntityDao: NewProdu
         //TODO validacie na plusove hodnoty pre unit value a package count...
 
         //toto by malo hodit mandatory exception ak sa nepodari...
-        val entity = newProductEntityDao.findById(newProductId)
+        val entity = newProductEntityDao.findById(newProductId!!)
         entity.unit = correctUnitData.unit
         entity.unitValue = correctUnitData.unitValue
         entity.unitPackageCount = correctUnitData.unitPackageCount
@@ -131,7 +131,7 @@ class NewProductServiceImpl(@Autowired private val newProductEntityDao: NewProdu
     override fun reprocessProductData(newProductId: Long?) {
         notNull(newProductId, NEW_PRODUCT_ID)
 
-        val productEntity = newProductEntityDao.findById(newProductId)
+        val productEntity = newProductEntityDao.findById(newProductId!!)
         // parsujem
         val productNewData = htmlParser.parseProductNewData(productEntity.url!!)
 
@@ -241,7 +241,7 @@ class NewProductServiceImpl(@Autowired private val newProductEntityDao: NewProdu
 
         // name is ignored
 
-        val entity = newProductEntityDao.findById(productUnitDataDto.id)
+        val entity = newProductEntityDao.findById(productUnitDataDto.id!!)
         entity.unit = Unit.valueOf(productUnitDataDto.unit!!)
         entity.unitValue = productUnitDataDto.unitValue
         entity.unitPackageCount = productUnitDataDto.unitPackageCount

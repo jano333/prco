@@ -1,16 +1,14 @@
-package sk.hudak.prco.dao.db;
+package sk.hudak.prco.dao.db
 
-import sk.hudak.prco.dao.BaseDao;
-import sk.hudak.prco.dto.product.NotInterestedProductFindDto;
-import sk.hudak.prco.model.NotInterestedProductEntity;
+import sk.hudak.prco.dao.BaseDao
+import sk.hudak.prco.dto.product.NotInterestedProductFindDto
+import sk.hudak.prco.model.NotInterestedProductEntity
 
-import java.util.List;
+interface NotInterestedProductDbDao : BaseDao<NotInterestedProductEntity> {
 
-public interface NotInterestedProductDbDao extends BaseDao<NotInterestedProductEntity> {
+    fun existWithUrl(url: String): Boolean
 
-    boolean existWithUrl(String url);
+    fun findAll(findDto: NotInterestedProductFindDto): List<NotInterestedProductEntity>
 
-    List<NotInterestedProductEntity> findAll(NotInterestedProductFindDto findDto);
-
-    List<String> findFistTenURL();
+    fun findFistTenURL(): List<String>
 }

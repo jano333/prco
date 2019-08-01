@@ -1,54 +1,51 @@
-package sk.hudak.prco.dao.db.impl;
+package sk.hudak.prco.dao.db.impl
 
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import sk.hudak.prco.dao.BaseDao;
-import sk.hudak.prco.exception.PrcoRuntimeException;
-import sk.hudak.prco.model.core.DbEntity;
+import com.querydsl.core.types.EntityPath
+import com.querydsl.jpa.impl.JPAQuery
+import com.querydsl.jpa.impl.JPAQueryFactory
+import org.springframework.beans.factory.annotation.Autowired
+import sk.hudak.prco.dao.BaseDao
+import sk.hudak.prco.exception.PrcoRuntimeException
+import sk.hudak.prco.model.core.DbEntity
+import java.util.*
+import javax.persistence.EntityManager
 
-import javax.persistence.EntityManager;
-import java.util.Date;
+abstract class BaseDaoImpl<T : DbEntity>(
 
-public abstract class BaseDaoImpl<T extends DbEntity> implements BaseDao<T> {
+) : BaseDao<T> {
 
     @Autowired
-    protected EntityManager em;
+    protected val em: EntityManager? = null
 
-    @Override
-    public Long save(T entity) {
-        entity.setCreated(new Date());
-        entity.setUpdated(entity.getCreated());
-        em.persist(entity);
-        return entity.getId();
+    protected val queryFactory: JPAQueryFactory
+        get() = JPAQueryFactory(em)
+
+    override fun save(entity: T): Long {
+        em!!
+        entity.created = Date()
+        entity.updated = entity.created
+        em.persist(entity)
+        return entity.id!!
     }
 
-    @Override
-    public void update(T entity) {
-        entity.setUpdated(new Date());
-        em.merge(entity);
+    override fun update(entity: T) {
+        em!!
+        entity.updated = Date()
+        em.merge(entity)
     }
 
-    protected T findById(Class<T> clazz, Long id) {
-        T t = em.find(clazz, id);
-        if (t == null) {
-            throw new PrcoRuntimeException("Entity " + clazz.getSimpleName() + " not found by id " + id);
-        }
-        return t;
+    protected fun findById(clazz: Class<T>, id: Long?): T {
+        em!!
+        return em.find(clazz, id) ?: throw PrcoRuntimeException("Entity ${clazz.simpleName} not found by id $id")
     }
 
-    @Override
-    public void delete(T entity) {
-        em.remove(entity);
+    override fun delete(entity: T) {
+        em!!
+        em.remove(entity)
     }
 
-    protected JPAQuery<T> from(EntityPath<T> from) {
+    protected fun from(from: EntityPath<T>): JPAQuery<T> {
         //FIXME skusit s jednou instanciou factory...
-        return new JPAQueryFactory(em).selectFrom(from);
-    }
-
-    protected JPAQueryFactory getQueryFactory() {
-        return new JPAQueryFactory(em);
+        return JPAQueryFactory(em).selectFrom(from)
     }
 }

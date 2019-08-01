@@ -24,7 +24,6 @@ class GroupEntityDaoImpl(
         @Autowired private val groupOfProductFindEntityDao: GroupOfProductFindEntityDao
 ) : BaseDaoImpl<GroupEntity>(), GroupEntityDao {
 
-
     override fun findById(id: Long): GroupEntity {
         return findById(GroupEntity::class.java, id)
     }
