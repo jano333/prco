@@ -1,30 +1,23 @@
-package sk.hudak.prco.dao.db.impl;
+package sk.hudak.prco.dao.db.impl
 
-import com.querydsl.jpa.impl.JPAQuery;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.dao.db.WatchDogEntityDao;
-import sk.hudak.prco.model.QWatchDogEntity;
-import sk.hudak.prco.model.WatchDogEntity;
+import org.springframework.stereotype.Repository
+import sk.hudak.prco.dao.db.WatchDogEntityDao
+import sk.hudak.prco.model.QWatchDogEntity
+import sk.hudak.prco.model.WatchDogEntity
 
-import java.util.List;
+@Repository
+class WatchDogEntityDaoImpl : BaseDaoImpl<WatchDogEntity>(), WatchDogEntityDao {
 
-@Component
-public class WatchDogEntityDaoImpl extends BaseDaoImpl<WatchDogEntity> implements WatchDogEntityDao {
+    override fun findById(id: Long): WatchDogEntity =
+            findById(WatchDogEntity::class.java, id)
 
-    @Override
-    public WatchDogEntity findById(long id) {
-        return findById(WatchDogEntity.class, id);
-    }
 
-    @Override
-    public List<WatchDogEntity> findAll() {
-        return from(QWatchDogEntity.watchDogEntity).fetch();
-    }
+    override fun findAll(): List<WatchDogEntity> =
+            from(QWatchDogEntity.watchDogEntity).fetch()
 
-    @Override
-    public boolean existWithUrl(String productUrl) {
-        JPAQuery<WatchDogEntity> query = from(QWatchDogEntity.watchDogEntity);
-        query.where(QWatchDogEntity.watchDogEntity.productUrl.eq(productUrl));
-        return query.fetchCount() == 1;
+    override fun existWithUrl(productUrl: String): Boolean {
+        val query = from(QWatchDogEntity.watchDogEntity)
+        query.where(QWatchDogEntity.watchDogEntity.productUrl.eq(productUrl))
+        return query.fetchCount() == 1L
     }
 }

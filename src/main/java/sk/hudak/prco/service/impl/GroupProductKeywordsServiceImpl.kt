@@ -1,81 +1,77 @@
-package sk.hudak.prco.service.impl;
+package sk.hudak.prco.service.impl
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-import sk.hudak.prco.dao.db.GroupEntityDao;
-import sk.hudak.prco.dao.db.GroupProductKeywordsDao;
-import sk.hudak.prco.dto.GroupIdNameDto;
-import sk.hudak.prco.dto.GroupProductKeywordsCreateDto;
-import sk.hudak.prco.dto.GroupProductKeywordsFullDto;
-import sk.hudak.prco.mapper.PrcoOrikaMapper;
-import sk.hudak.prco.model.GroupProductKeywordsEntity;
-import sk.hudak.prco.service.GroupProductKeywordsService;
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+import org.springframework.util.CollectionUtils
+import sk.hudak.prco.dao.db.GroupEntityDao
+import sk.hudak.prco.dao.db.GroupProductKeywordsDao
+import sk.hudak.prco.dto.GroupIdNameDto
+import sk.hudak.prco.dto.GroupProductKeywordsCreateDto
+import sk.hudak.prco.dto.GroupProductKeywordsFullDto
+import sk.hudak.prco.mapper.PrcoOrikaMapper
+import sk.hudak.prco.model.GroupProductKeywordsEntity
+import sk.hudak.prco.service.GroupProductKeywordsService
+import sk.hudak.prco.utils.Validate.notNull
+import sk.hudak.prco.utils.Validate.notNullNotEmpty
+import java.util.*
+import java.util.Optional.empty
+import java.util.stream.Collectors
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static java.util.Optional.empty;
-import static sk.hudak.prco.utils.Validate.notNull;
-import static sk.hudak.prco.utils.Validate.notNullNotEmpty;
-
-@Slf4j
 @Service("groupProductKeywordsService")
-public class GroupProductKeywordsServiceImpl implements GroupProductKeywordsService {
+class GroupProductKeywordsServiceImpl : GroupProductKeywordsService {
 
     @Autowired
-    private GroupProductKeywordsDao groupProductKeywordsDao;
+    private val groupProductKeywordsDao: GroupProductKeywordsDao? = null
 
     @Autowired
-    private GroupEntityDao groupEntityDao;
+    private val groupEntityDao: GroupEntityDao? = null
 
     @Autowired
-    private PrcoOrikaMapper mapper;
+    private val mapper: PrcoOrikaMapper? = null
 
-    @Override
-    public Long createGroupProductKeywords(GroupProductKeywordsCreateDto groupProductKeywordsCreateDto) {
-        notNull(groupProductKeywordsCreateDto, "groupProductKeywordsCreateDto");
-        notNull(groupProductKeywordsCreateDto.getGroupId(), "groupId");
-        notNullNotEmpty(groupProductKeywordsCreateDto.getKeyWords(), "keyWords");
-
-        GroupProductKeywordsEntity entity = new GroupProductKeywordsEntity();
-        entity.setGroup(groupEntityDao.findById(groupProductKeywordsCreateDto.getGroupId()));
-        entity.setKeyWords(groupProductKeywordsCreateDto.getKeyWords().stream()
-                .collect(Collectors.joining("|")));
-
-        Long id = groupProductKeywordsDao.save(entity);
-        log.debug("create new entity {} with id {}", entity.getClass().getSimpleName(), entity.getId());
-        return id;
+    companion object {
+        val log = LoggerFactory.getLogger(GroupProductKeywordsServiceImpl::class.java)!!
     }
 
-    @Override
-    public Optional<GroupProductKeywordsFullDto> getGroupProductKeywordsByGroupId(Long groupId) {
-        notNull(groupId, "groupId");
+    override fun createGroupProductKeywords(groupProductKeywordsCreateDto: GroupProductKeywordsCreateDto): Long? {
+        notNull(groupProductKeywordsCreateDto, "groupProductKeywordsCreateDto")
+        notNull(groupProductKeywordsCreateDto.groupId, "groupId")
+        notNullNotEmpty(groupProductKeywordsCreateDto.keyWords, "keyWords")
 
-        List<GroupProductKeywordsEntity> entityList = groupProductKeywordsDao.findByGroupId(groupId);
+        val entity = GroupProductKeywordsEntity()
+        entity.group = groupEntityDao!!.findById(groupProductKeywordsCreateDto.groupId)
+        entity.keyWords = groupProductKeywordsCreateDto.keyWords.stream()
+                .collect(Collectors.joining("|"))
+
+        val id = groupProductKeywordsDao!!.save(entity)
+        log.debug("create new entity {} with id {}", entity.javaClass.simpleName, entity.id)
+        return id
+    }
+
+    override fun getGroupProductKeywordsByGroupId(groupId: Long?): Optional<GroupProductKeywordsFullDto> {
+        notNull(groupId, "groupId")
+
+        val entityList = groupProductKeywordsDao!!.findByGroupId(groupId)
         if (CollectionUtils.isEmpty(entityList)) {
-            return empty();
+            return empty()
         }
 
-        GroupProductKeywordsFullDto dto = new GroupProductKeywordsFullDto();
-        dto.setGroupIdNameDto(mapper.map(groupEntityDao.findById(groupId), GroupIdNameDto.class));
-        dto.setKeyWords(entityList.stream()
-                .map(GroupProductKeywordsEntity::getKeyWords)
-                .map(str -> str.split("\\|"))
-                .collect(Collectors.toList()));
-        return Optional.of(dto);
+        val dto = GroupProductKeywordsFullDto()
+        dto.groupIdNameDto = mapper!!.map(groupEntityDao!!.findById(groupId!!), GroupIdNameDto::class.java)
+        dto.keyWords = entityList.stream()
+                .map { it.keyWords }
+                .map { str -> str!!.split("\\|".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray() }
+                .collect(Collectors.toList())
+        return Optional.of(dto)
     }
 
-    @Override
-    public void removeAllKeywordForGroupId(Long groupId) {
-        notNull(groupId, "groupId");
+    override fun removeAllKeywordForGroupId(groupId: Long?) {
+        notNull(groupId, "groupId")
 
-        groupProductKeywordsDao
-                .findByGroupId(groupId)
-                .forEach(entity -> groupProductKeywordsDao.delete(entity));
+        groupProductKeywordsDao!!.findByGroupId(groupId)
+                .forEach { entity -> groupProductKeywordsDao.delete(entity) }
 
-        log.debug("all keywords for group id {}", groupId);
+        log.debug("all keywords for group id {}", groupId)
     }
 }

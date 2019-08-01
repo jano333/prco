@@ -1,85 +1,70 @@
-package sk.hudak.prco.dao.db.impl;
+package sk.hudak.prco.dao.db.impl
 
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.jpa.impl.JPAQuery;
-import lombok.NonNull;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.dao.db.NewProductEntityDbDao;
-import sk.hudak.prco.dto.product.NewProductFilterUIDto;
-import sk.hudak.prco.model.NewProductEntity;
-import sk.hudak.prco.model.QNewProductEntity;
-
-import java.util.List;
-import java.util.Optional;
-
-import static java.util.Optional.ofNullable;
+import com.querydsl.core.types.Order
+import com.querydsl.core.types.OrderSpecifier
+import lombok.NonNull
+import org.springframework.stereotype.Component
+import sk.hudak.prco.dao.db.NewProductEntityDbDao
+import sk.hudak.prco.dto.product.NewProductFilterUIDto
+import sk.hudak.prco.model.NewProductEntity
+import sk.hudak.prco.model.QNewProductEntity
+import java.util.*
+import java.util.Optional.ofNullable
 
 @Component
-public class NewProductEntityDaoImpl extends BaseDaoImpl<NewProductEntity> implements NewProductEntityDbDao {
+class NewProductEntityDaoImpl : BaseDaoImpl<NewProductEntity>(), NewProductEntityDbDao {
 
-    @Override
-    public Long save(NewProductEntity entity) {
-        entity.setConfirmValidity(false);
-        return super.save(entity);
+    override val countOfAllNewProducts: Long
+        get() = from(QNewProductEntity.newProductEntity).fetchCount()
+
+    override fun save(entity: NewProductEntity): Long {
+        entity.confirmValidity = false
+        return super.save(entity)
     }
 
-    @Override
-    public NewProductEntity findById(long id) {
-        return findById(NewProductEntity.class, id);
+    override fun findById(id: Long): NewProductEntity {
+        return findById(NewProductEntity::class.java, id)
     }
 
-    @Override
-    public Optional<NewProductEntity> findFirstInvalid() {
+    override fun findFirstInvalid(): Optional<NewProductEntity> {
         return ofNullable(from(QNewProductEntity.newProductEntity)
-                .where(QNewProductEntity.newProductEntity.valid.eq(Boolean.FALSE))
+                .where(QNewProductEntity.newProductEntity.valid.eq(java.lang.Boolean.FALSE))
                 .limit(1)
-                .fetchFirst());
+                .fetchFirst())
     }
 
-    @Override
-    public List<NewProductEntity> findByFilter(@NonNull NewProductFilterUIDto filter) {
-        JPAQuery<NewProductEntity> query = from(QNewProductEntity.newProductEntity);
-        if (filter.getEshopUuid() != null) {
-            query.where(QNewProductEntity.newProductEntity.eshopUuid.eq(filter.getEshopUuid()));
+    override fun findByFilter(@NonNull filter: NewProductFilterUIDto): List<NewProductEntity> {
+        val query = from(QNewProductEntity.newProductEntity)
+        if (filter.eshopUuid != null) {
+            query.where(QNewProductEntity.newProductEntity.eshopUuid.eq(filter.eshopUuid!!))
         }
-        query.limit(filter.getMaxCount());
+        query.limit(filter.maxCount!!)
         // najnovsie najskor
-        query.orderBy(new OrderSpecifier<>(Order.DESC, QNewProductEntity.newProductEntity.created));
-        return query.fetch();
+        query.orderBy(OrderSpecifier(Order.DESC, QNewProductEntity.newProductEntity.created))
+        return query.fetch()
     }
 
-    @Override
-    public long getCountOfAllNewProducts() {
-        return from(QNewProductEntity.newProductEntity)
-                .fetchCount();
-    }
-
-    @Override
-    public boolean existWithUrl(String url) {
+    override fun existWithUrl(url: String): Boolean {
         return from(QNewProductEntity.newProductEntity)
                 .where(QNewProductEntity.newProductEntity.url.equalsIgnoreCase(url))
-                .fetchCount() > 0;
+                .fetchCount() > 0
     }
 
-    @Override
-    public List<NewProductEntity> findInvalid(int maxCountOfInvalid) {
+    override fun findInvalid(maxCountOfInvalid: Int): List<NewProductEntity> {
         return from(QNewProductEntity.newProductEntity)
-                .where(QNewProductEntity.newProductEntity.valid.eq(Boolean.FALSE))
-                .limit(maxCountOfInvalid)
-                .fetch();
+                .where(QNewProductEntity.newProductEntity.valid.eq(java.lang.Boolean.FALSE))
+                .limit(maxCountOfInvalid.toLong())
+                .fetch()
     }
 
-    @Override
-    public long countOfAllInvalidNewProduct() {
+    override fun countOfAllInvalidNewProduct(): Long {
         return from(QNewProductEntity.newProductEntity)
-                .where(QNewProductEntity.newProductEntity.valid.eq(Boolean.FALSE))
-                .fetchCount();
+                .where(QNewProductEntity.newProductEntity.valid.eq(java.lang.Boolean.FALSE))
+                .fetchCount()
     }
 
-    @Override
-    public List<NewProductEntity> findAll() {
+    override fun findAll(): List<NewProductEntity> {
         return from(QNewProductEntity.newProductEntity)
-                .fetch();
+                .fetch()
     }
 }

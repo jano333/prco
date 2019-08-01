@@ -1,39 +1,37 @@
-package sk.hudak.prco.dao.db;
+package sk.hudak.prco.dao.db
 
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.dao.BaseDao;
-import sk.hudak.prco.dto.product.ProductFilterUIDto;
-import sk.hudak.prco.model.ProductEntity;
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.dao.BaseDao
+import sk.hudak.prco.dto.product.ProductFilterUIDto
+import sk.hudak.prco.model.ProductEntity
+import java.util.*
 
-import java.util.List;
-import java.util.Optional;
+interface ProductEntityDao : BaseDao<ProductEntity> {
 
-public interface ProductEntityDao extends BaseDao<ProductEntity> {
-
-    boolean existWithUrl(String url);
+    fun existWithUrl(url: String): Boolean
 
     /**
      * @param eshopUuid
      * @param olderThanInHours pocet v hodinach, kolko minimalne sa neupdatoval dany record
      * @return
      */
-    Optional<ProductEntity> findProductForUpdate(EshopUuid eshopUuid, int olderThanInHours);
+    fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): Optional<ProductEntity>
 
-    List<ProductEntity> findAll();
+    fun findAll(): List<ProductEntity>
 
-    List<ProductEntity> findByFilter(ProductFilterUIDto filter);
+    fun findByFilter(filter: ProductFilterUIDto): List<ProductEntity>
 
-    Optional<ProductEntity> findByUrl(String productUrl);
+    fun findByUrl(productUrl: String): Optional<ProductEntity>
 
-    long count();
+    fun count(): Long
 
-    long countOfAllProductInEshop(EshopUuid eshopUuid);
+    fun countOfAllProductInEshop(eshopUuid: EshopUuid): Long
 
-    long countOfAllProductInEshopUpdatedMax24Hours(EshopUuid eshopUuid);
+    fun countOfAllProductInEshopUpdatedMax24Hours(eshopUuid: EshopUuid): Long
 
-    long countOfProductsWaitingToBeUpdated(EshopUuid eshopUuid, int olderThanInHours);
+    fun countOfProductsWaitingToBeUpdated(eshopUuid: EshopUuid, olderThanInHours: Int): Long
 
-    long countOfProductsAlreadyUpdated(EshopUuid eshopUuid, int olderThanInHours);
+    fun countOfProductsAlreadyUpdated(eshopUuid: EshopUuid, olderThanInHours: Int): Long
 
-    Optional<Long> getProductWithUrl(String productUrl, Long productIdToIgnore);
+    fun getProductWithUrl(productUrl: String, productIdToIgnore: Long?): Optional<Long>
 }

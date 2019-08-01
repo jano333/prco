@@ -1,64 +1,52 @@
-package sk.hudak.prco.model;
+package sk.hudak.prco.model
 
-import lombok.Getter;
-import lombok.Setter;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.Unit;
-import sk.hudak.prco.model.core.DbEntity;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import java.math.BigDecimal;
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.Unit
+import sk.hudak.prco.model.core.DbEntity
+import java.math.BigDecimal
+import javax.persistence.*
 
 /**
  * Produkty, o ktore nemam zaujem.
  */
-@Getter
-@Setter
 @Entity(name = "NOT_ITERESTED_PRODUCT")
-public class NotInterestedProductEntity extends DbEntity {
+class NotInterestedProductEntity : DbEntity() {
 
     @Id
     @GeneratedValue(generator = "NOT_ITERESTED_PRODUCT_SEC", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "NOT_ITERESTED_PRODUCT_SEC", sequenceName = "NOT_ITERESTED_PRODUCT_SEC", allocationSize = 1)
-    private Long id;
+    override var id: Long? = null
 
     @Column(nullable = false, unique = true)
-    private String url;
+    var url: String? = null
 
     /**
      * Nazov produktu
      */
     @Column(nullable = false)
-    private String name;
+    var name: String? = null
 
     /**
      * Unikatny identifikator eshopu ku ktoremu patri dany produkt
      */
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private EshopUuid eshopUuid;
+    var eshopUuid: EshopUuid? = null
 
     /**
      * Typ meratelnej jednotky(GRAM, MILILITER, KUS...)
      */
     @Enumerated(EnumType.STRING)
-    private Unit unit;
+    var unit: Unit? = null
 
     /**
      * Hodnota jednotky, napr. 100, 20, ...
      */
     @Column(precision = 11, scale = 5)
-    private BigDecimal unitValue;
+    var unitValue: BigDecimal? = null
 
     /**
      * Pocet kusov v baleni
      */
-    private Integer unitPackageCount;
+    var unitPackageCount: Int? = null
 }

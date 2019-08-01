@@ -1,10 +1,9 @@
-package sk.hudak.prco.manager;
+package sk.hudak.prco.manager
 
-import sk.hudak.prco.api.GroupProductKeywords;
+import sk.hudak.prco.api.GroupProductKeywords
+import java.util.*
 
-import java.util.Optional;
+interface GroupProductResolver {
 
-public interface GroupProductResolver {
-
-    Optional<GroupProductKeywords> resolveGroup(String productName);
+    fun resolveGroup(productName: String): Optional<GroupProductKeywords>
 }

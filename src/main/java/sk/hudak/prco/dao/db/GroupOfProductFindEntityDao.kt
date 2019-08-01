@@ -1,19 +1,17 @@
-package sk.hudak.prco.dao.db;
+package sk.hudak.prco.dao.db
 
-import sk.hudak.prco.model.ProductEntity;
+import sk.hudak.prco.model.ProductEntity
+import java.util.*
 
-import java.util.List;
-import java.util.Optional;
+interface GroupOfProductFindEntityDao {
 
-public interface GroupOfProductFindEntityDao {
+    fun findProductsWitchAreNotInAnyGroup(): List<ProductEntity>
 
-    List<ProductEntity> findProductsWitchAreNotInAnyGroup();
+    fun countOfProductsWitchAreNotInAnyGroup(): Long
 
-    long countOfProductsWitchAreNotInAnyGroup();
+    fun countOfProductInGroup(groupName: String): Long
 
-    long countOfProductInGroup(String groupName);
+    fun findFirstProductGroupId(productId: Long?): Optional<Long>
 
-    Optional<Long> findFirstProductGroupId(Long productId);
-
-    List<Long> findGroupIdsWithProductId(Long productId);
+    fun findGroupIdsWithProductId(productId: Long?): List<Long>
 }

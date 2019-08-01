@@ -1,64 +1,54 @@
-package sk.hudak.prco.model;
+package sk.hudak.prco.model
 
-import lombok.Getter;
-import lombok.Setter;
-import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.api.Unit;
-import sk.hudak.prco.model.core.DbEntity;
+import sk.hudak.prco.api.ProductAction
+import sk.hudak.prco.api.Unit
+import sk.hudak.prco.model.core.DbEntity
+import java.math.BigDecimal
+import java.util.*
+import javax.persistence.*
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import java.math.BigDecimal;
-import java.util.Date;
-
-@Getter
-@Setter
 @Entity(name = "PRODUCT")
-public class ProductDataUpdateEntity extends DbEntity {
+class ProductDataUpdateEntity : DbEntity() {
 
     @Id
-    private Long id;
+    override var id: Long? = null
 
-    private String name;
+    var name: String? = null
 
-    private String url;
+    var url: String? = null
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Unit unit;
+    var unit: Unit? = null
 
     @Column(nullable = false, precision = 11, scale = 5)
-    private BigDecimal unitValue;
+    var unitValue: BigDecimal? = null
 
     @Column(nullable = false)
-    private Integer unitPackageCount;
+    var unitPackageCount: Int? = null
 
     // cena za balenie(z eshopu)
     @Column(precision = 11, scale = 5)
-    private BigDecimal priceForPackage;
+    var priceForPackage: BigDecimal? = null
 
     // cena dopocitavana
     @Column(precision = 11, scale = 5)
-    private BigDecimal priceForOneItemInPackage;
+    var priceForOneItemInPackage: BigDecimal? = null
 
     // cena dopocitavana
     @Column(precision = 11, scale = 5)
-    private BigDecimal priceForUnit;
+    var priceForUnit: BigDecimal? = null
 
     // kedy naposledy bol robeny update informacii(cena, nazov,...) o danom produkte
-    private Date lastTimeDataUpdated;
+    var lastTimeDataUpdated: Date? = null
 
     // typ akcie
     @Enumerated(EnumType.STRING)
-    private ProductAction productAction;
+    var productAction: ProductAction? = null
 
     // platnost akcie
-    private Date actionValidTo;
+    var actionValidTo: Date? = null
 
     // url na obrazok produktu
-    private String productPictureUrl;
-
+    var productPictureUrl: String? = null
 }

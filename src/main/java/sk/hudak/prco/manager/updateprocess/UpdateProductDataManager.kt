@@ -1,18 +1,18 @@
-package sk.hudak.prco.manager.updateprocess;
+package sk.hudak.prco.manager.updateprocess
 
-import sk.hudak.prco.api.EshopUuid;
+import sk.hudak.prco.api.EshopUuid
 
-public interface UpdateProductDataManager {
+interface UpdateProductDataManager {
 
     /**
      * @param productId product id
      */
-    void updateProductData(Long productId);
+    fun updateProductData(productId: Long?)
 
     /**
      * @param groupId group id
      */
-    void updateProductDataForEachProductInGroup(Long groupId, UpdateProductDataListener listener);
+    fun updateProductDataForEachProductInGroup(groupId: Long?, listener: UpdateProductDataListener)
 
     /**
      * Update product data vsetkych produktov pre dany eshop.
@@ -20,12 +20,12 @@ public interface UpdateProductDataManager {
      * @param eshopUuid eshop unique identification
      * @param listener
      */
-    void updateProductDataForEachProductInEshop(EshopUuid eshopUuid, UpdateProductDataListener listener);
+    fun updateProductDataForEachProductInEshop(eshopUuid: EshopUuid, listener: UpdateProductDataListener)
 
     /**
      * @param listener
      */
-    void updateProductDataForEachProductInEachEshop(UpdateProductDataListener listener);
+    fun updateProductDataForEachProductInEachEshop(listener: UpdateProductDataListener)
 
 
     /**
@@ -33,7 +33,7 @@ public interface UpdateProductDataManager {
      *
      * @param listener
      */
-    void updateProductDataForEachProductNotInAnyGroup(UpdateProductDataListener listener);
+    fun updateProductDataForEachProductNotInAnyGroup(listener: UpdateProductDataListener)
 
 
 }

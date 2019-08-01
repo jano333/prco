@@ -10,9 +10,7 @@ import sk.hudak.prco.model.core.DbEntity
 import java.util.*
 import javax.persistence.EntityManager
 
-abstract class BaseDaoImpl<T : DbEntity>(
-
-) : BaseDao<T> {
+abstract class BaseDaoImpl<T : DbEntity> : BaseDao<T> {
 
     @Autowired
     protected val em: EntityManager? = null

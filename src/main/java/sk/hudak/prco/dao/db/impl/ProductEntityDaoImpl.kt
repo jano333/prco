@@ -1,151 +1,136 @@
-package sk.hudak.prco.dao.db.impl;
+package sk.hudak.prco.dao.db.impl
 
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.jpa.impl.JPAQuery;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.dao.db.ProductEntityDao;
-import sk.hudak.prco.dto.product.ProductFilterUIDto;
-import sk.hudak.prco.model.ProductEntity;
-import sk.hudak.prco.model.QProductEntity;
+import com.querydsl.core.types.Order
+import com.querydsl.core.types.OrderSpecifier
+import org.springframework.stereotype.Repository
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.ProductAction
+import sk.hudak.prco.dao.db.ProductEntityDao
+import sk.hudak.prco.dto.product.ProductFilterUIDto
+import sk.hudak.prco.model.ProductEntity
+import sk.hudak.prco.model.QProductEntity
+import java.time.ZoneId
+import java.util.*
+import java.util.Optional.ofNullable
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+@Repository
+class ProductEntityDaoImpl : BaseDaoImpl<ProductEntity>(), ProductEntityDao {
 
-import static java.util.Optional.ofNullable;
-
-@Component
-public class ProductEntityDaoImpl extends BaseDaoImpl<ProductEntity> implements ProductEntityDao {
-
-    public static final int OLDER_THAN_IN_HOURS = 24;
-
-    @Override
-    public ProductEntity findById(long id) {
-        return findById(ProductEntity.class, id);
+    override fun findById(id: Long): ProductEntity {
+        return findById(ProductEntity::class.java, id)
     }
 
-    @Override
-    public boolean existWithUrl(String url) {
+    override fun existWithUrl(url: String): Boolean {
         return from(QProductEntity.productEntity)
                 .where(QProductEntity.productEntity.url.equalsIgnoreCase(url))
-                .fetchCount() > 0;
+                .fetchCount() > 0
     }
 
     /**
-     * Najde take, ktore este neboli nikde updatovane plus take ktore su starsie ako <code>olderThanInHours</code>
+     * Najde take, ktore este neboli nikde updatovane plus take ktore su starsie ako `olderThanInHours`
      *
      * @param eshopUuid
      * @param olderThanInHours pocet v hodinach, kolko minimalne sa neupdatoval dany record
      * @return
      */
-    @Override
-    public Optional<ProductEntity> findProductForUpdate(EshopUuid eshopUuid, int olderThanInHours) {
+    override fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): Optional<ProductEntity> {
         return ofNullable(from(QProductEntity.productEntity)
                 .where(QProductEntity.productEntity.eshopUuid.eq(eshopUuid))
-                .where(QProductEntity.productEntity.lastTimeDataUpdated.isNull()
+                .where(QProductEntity.productEntity.lastTimeDataUpdated.isNull
                         .or(QProductEntity.productEntity.lastTimeDataUpdated.lt(calculateDate(olderThanInHours))))
                 .limit(1)
-                .fetchFirst());
+                .fetchFirst())
     }
 
-    @Override
-    public List<ProductEntity> findAll() {
+    override fun findAll(): List<ProductEntity> {
         //FIXME optimalizovat cez paging !!! max 500 naraz !!!
-        return from(QProductEntity.productEntity).fetch();
+        return from(QProductEntity.productEntity).fetch()
     }
 
-    @Override
-    public List<ProductEntity> findByFilter(ProductFilterUIDto filter) {
-        JPAQuery<ProductEntity> query = from(QProductEntity.productEntity);
+    override fun findByFilter(filter: ProductFilterUIDto): List<ProductEntity> {
+        val query = from(QProductEntity.productEntity)
 
         // EshopUuid
-        if (filter.getEshopUuid() != null) {
-            query.where(QProductEntity.productEntity.eshopUuid.eq(filter.getEshopUuid()));
+        if (filter.eshopUuid != null) {
+            query.where(QProductEntity.productEntity.eshopUuid.eq(filter.eshopUuid!!))
         }
         // OnlyInAction
-        if (Boolean.TRUE.equals(filter.getOnlyInAction())) {
-            query.where(QProductEntity.productEntity.productAction.eq(ProductAction.IN_ACTION));
+        if (java.lang.Boolean.TRUE == filter.onlyInAction) {
+            query.where(QProductEntity.productEntity.productAction.eq(ProductAction.IN_ACTION))
         }
 
-        query.orderBy(new OrderSpecifier<>(Order.ASC, QProductEntity.productEntity.priceForUnit));
-        return query.fetch();
+        query.orderBy(OrderSpecifier(Order.ASC, QProductEntity.productEntity.priceForUnit))
+        return query.fetch()
     }
 
-    @Override
-    public Optional<ProductEntity> findByUrl(String productUrl) {
+    override fun findByUrl(productUrl: String): Optional<ProductEntity> {
         return ofNullable(from(QProductEntity.productEntity)
                 .where(QProductEntity.productEntity.url.eq(productUrl))
-                .fetchFirst());
+                .fetchFirst())
     }
 
-    @Override
-    public long count() {
-        return getQueryFactory()
+    override fun count(): Long {
+        return queryFactory
                 .select(QProductEntity.productEntity.id)
                 .from(QProductEntity.productEntity)
-                .fetchCount();
+                .fetchCount()
     }
 
-    @Override
-    public long countOfAllProductInEshop(EshopUuid eshopUuid) {
-        return getQueryFactory()
+    override fun countOfAllProductInEshop(eshopUuid: EshopUuid): Long {
+        return queryFactory
                 .select(QProductEntity.productEntity.id)
                 .from(QProductEntity.productEntity)
                 .where(QProductEntity.productEntity.eshopUuid.eq(eshopUuid))
-                .fetchCount();
+                .fetchCount()
     }
 
-    @Override
-    public long countOfProductsAlreadyUpdated(EshopUuid eshopUuid, int olderThanInHours) {
-        return getQueryFactory()
+    override fun countOfProductsAlreadyUpdated(eshopUuid: EshopUuid, olderThanInHours: Int): Long {
+        return queryFactory
                 .select(QProductEntity.productEntity.id)
                 .from(QProductEntity.productEntity)
                 .where(QProductEntity.productEntity.eshopUuid.eq(eshopUuid)
-                        .and(QProductEntity.productEntity.lastTimeDataUpdated.isNotNull())
+                        .and(QProductEntity.productEntity.lastTimeDataUpdated.isNotNull)
                         .and(QProductEntity.productEntity.lastTimeDataUpdated.gt(calculateDate(olderThanInHours)))
 
                 )
-                .fetchCount();
+                .fetchCount()
     }
 
-    @Override
-    public long countOfProductsWaitingToBeUpdated(EshopUuid eshopUuid, int olderThanInHours) {
-        return getQueryFactory()
+    override fun countOfProductsWaitingToBeUpdated(eshopUuid: EshopUuid, olderThanInHours: Int): Long {
+        return queryFactory
                 .select(QProductEntity.productEntity.id)
                 .from(QProductEntity.productEntity)
                 .where(QProductEntity.productEntity.eshopUuid.eq(eshopUuid)
-                        .and(QProductEntity.productEntity.lastTimeDataUpdated.isNull()
+                        .and(QProductEntity.productEntity.lastTimeDataUpdated.isNull
                                 .or(QProductEntity.productEntity.lastTimeDataUpdated.gt(calculateDate(olderThanInHours)).not()))
                 )
-                .fetchCount();
+                .fetchCount()
     }
 
-    @Override
-    public long countOfAllProductInEshopUpdatedMax24Hours(EshopUuid eshopUuid) {
-        return countOfProductsAlreadyUpdated(eshopUuid, OLDER_THAN_IN_HOURS);
+    override fun countOfAllProductInEshopUpdatedMax24Hours(eshopUuid: EshopUuid): Long {
+        return countOfProductsAlreadyUpdated(eshopUuid, OLDER_THAN_IN_HOURS)
     }
 
-    @Override
-    public Optional<Long> getProductWithUrl(String productUrl, Long productIdToIgnore) {
-        return ofNullable(getQueryFactory()
+    override fun getProductWithUrl(productUrl: String, productIdToIgnore: Long?): Optional<Long> {
+        return ofNullable(queryFactory
                 .select(QProductEntity.productEntity.id)
                 .from(QProductEntity.productEntity)
                 .where(QProductEntity.productEntity.url.eq(productUrl)
-                        .and(QProductEntity.productEntity.id.ne(productIdToIgnore)))
-                .fetchFirst());
+                        .and(QProductEntity.productEntity.id.ne(productIdToIgnore!!)))
+                .fetchFirst())
     }
 
     //FIXME move to DateUtils
-    private Date calculateDate(int olderThanInHours) {
-        Date currentDate = new Date();
-        LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        LocalDateTime newDateTime = localDateTime.minusHours(olderThanInHours);
-        return Date.from(newDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    private fun calculateDate(olderThanInHours: Int): Date {
+        val currentDate = Date()
+        val localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()
+        val newDateTime = localDateTime.minusHours(olderThanInHours.toLong())
+        return Date.from(newDateTime.atZone(ZoneId.systemDefault()).toInstant())
+    }
+
+    companion object {
+
+        val OLDER_THAN_IN_HOURS = 24
     }
 
 }

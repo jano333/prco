@@ -1,39 +1,34 @@
-package sk.hudak.prco.dao.db.impl;
+package sk.hudak.prco.dao.db.impl
 
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.dao.db.GroupProductKeywordsDao;
-import sk.hudak.prco.model.GroupProductKeywordsEntity;
-import sk.hudak.prco.model.QGroupProductKeywordsEntity;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.stereotype.Component
+import sk.hudak.prco.dao.db.GroupProductKeywordsDao
+import sk.hudak.prco.model.GroupProductKeywordsEntity
+import sk.hudak.prco.model.QGroupProductKeywordsEntity
+import java.util.stream.Collectors
 
 @Component
-public class GroupProductKeywordsDaoImpl extends BaseDaoImpl<GroupProductKeywordsEntity> implements GroupProductKeywordsDao {
+class GroupProductKeywordsDaoImpl : BaseDaoImpl<GroupProductKeywordsEntity>(), GroupProductKeywordsDao {
 
-    @Override
-    public GroupProductKeywordsEntity findById(long id) {
-        return findById(GroupProductKeywordsEntity.class, id);
+    override fun findById(id: Long): GroupProductKeywordsEntity {
+        return findById(GroupProductKeywordsEntity::class.java, id)
     }
 
-    @Override
-    public List<GroupProductKeywordsEntity> findByGroupId(Long groupId) {
-        return getQueryFactory()
+    override fun findByGroupId(groupId: Long?): List<GroupProductKeywordsEntity> {
+        return queryFactory
                 .select(QGroupProductKeywordsEntity.groupProductKeywordsEntity)
                 .from(QGroupProductKeywordsEntity.groupProductKeywordsEntity)
-                .where(QGroupProductKeywordsEntity.groupProductKeywordsEntity.group.id.eq(groupId))
-                .fetch();
+                .where(QGroupProductKeywordsEntity.groupProductKeywordsEntity.group.id.eq(groupId!!))
+                .fetch()
     }
 
-    @Override
-    public List<String[]> findKeywordsForGroupId(Long groupId) {
-        return getQueryFactory()
+    override fun findKeywordsForGroupId(groupId: Long?): List<Array<String>> {
+        return queryFactory
                 .select(QGroupProductKeywordsEntity.groupProductKeywordsEntity.keyWords)
                 .from(QGroupProductKeywordsEntity.groupProductKeywordsEntity)
-                .where(QGroupProductKeywordsEntity.groupProductKeywordsEntity.group.id.eq(groupId))
+                .where(QGroupProductKeywordsEntity.groupProductKeywordsEntity.group.id.eq(groupId!!))
                 .fetch()
                 .stream()
-                .map(value -> value.split("\\|"))
-                .collect(Collectors.toList());
+                .map { value -> value.split("\\|".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray() }
+                .collect(Collectors.toList())
     }
 }

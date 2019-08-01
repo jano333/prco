@@ -1,41 +1,30 @@
-package sk.hudak.prco.model;
+package sk.hudak.prco.model
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.EqualsAndHashCode
+import java.io.Serializable
+import javax.persistence.*
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.io.Serializable;
-
-@Getter
-@Setter
 @Entity
 @Table(name = "GROUP_PRODUCT")
-public class GroupOfProductFindEntity {
+class GroupOfProductFindEntity {
 
     @EmbeddedId
-    private GroupOfProductFindEntityId id;
+    private var id: GroupOfProductFindEntityId? = null
 
     @Column(name = "GROUP_ID", insertable = false, updatable = false)
-    private Long groupId;
+    var groupId: Long? = null
 
     @Column(name = "PRODUCT_ID", insertable = false, updatable = false)
-    private Long productId;
+    var productId: Long? = null
 
-    @Getter
-    @Setter
     @EqualsAndHashCode
     @Embeddable
-    class GroupOfProductFindEntityId implements Serializable {
+    internal inner class GroupOfProductFindEntityId : Serializable {
 
         @Column(name = "GROUP_ID")
-        private Long groupId;
+        var groupId: Long? = null
 
         @Column(name = "PRODUCT_ID")
-        private Long productId;
+        var productId: Long? = null
     }
 }

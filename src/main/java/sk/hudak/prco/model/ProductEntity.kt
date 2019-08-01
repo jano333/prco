@@ -1,39 +1,29 @@
-package sk.hudak.prco.model;
+package sk.hudak.prco.model
 
-import org.jetbrains.annotations.Nullable;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.api.Unit;
-import sk.hudak.prco.model.core.DbEntity;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Objects;
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.ProductAction
+import sk.hudak.prco.api.Unit
+import sk.hudak.prco.model.core.DbEntity
+import java.math.BigDecimal
+import java.util.*
+import javax.persistence.*
 
 /**
  * Produkty, o ktore mam zaujem a aktualizujem ich cenu.
  */
 @Entity(name = "PRODUCT")
-public class ProductEntity extends DbEntity {
+class ProductEntity : DbEntity() {
 
     @Id
     @GeneratedValue(generator = "PRODUCT_SEC", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "PRODUCT_SEC", sequenceName = "PRODUCT_SEC", allocationSize = 1)
-    private Long id;
+    override var id: Long? = null
 
     /**
      * URL produktu
      */
     @Column(nullable = false, unique = true)
-    private String url;
+    var url: String? = null
 
     /**
      * Unikatny identifikator eshopu ku ktoremu patri dany produkt
@@ -41,210 +31,85 @@ public class ProductEntity extends DbEntity {
      */
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private EshopUuid eshopUuid;
+    var eshopUuid: EshopUuid? = null
 
     /**
      * Typ meratelnej jednotky(GRAM, MILILITER, KUS...)
      */
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Unit unit;
+    var unit: Unit? = null
 
     /**
      * Nazov produktu
      * - prvy krat sa nastavuje pri vytvoreni, nasledne aktualizuje cez update job
      */
     @Column(nullable = false)
-    private String name;
+    var name: String? = null
 
     /**
      * Hodnota jednotky, napr. 100, 20, ...
      */
     @Column(nullable = false, precision = 11, scale = 5)
-    private BigDecimal unitValue;
+    var unitValue: BigDecimal? = null
 
     /**
      * Pocet kusov v baleni
      */
     @Column(nullable = false)
-    private Integer unitPackageCount;
+    var unitPackageCount: Int? = null
 
     // cena za balenie(z eshopu)
     @Column(precision = 11, scale = 5)
-    private BigDecimal priceForPackage;
+    var priceForPackage: BigDecimal? = null
 
     // cena dopocitavana
     @Column(precision = 11, scale = 5)
-    private BigDecimal priceForOneItemInPackage;
+    var priceForOneItemInPackage: BigDecimal? = null
 
     // cena dopocitavana
     @Column(precision = 11, scale = 5)
-    private BigDecimal priceForUnit;
+    var priceForUnit: BigDecimal? = null
 
     // nastavujem podla potreby aka je bezna cena daneho vyrobku... aby som vedel realne povedat aka zlava je...
     @Column(precision = 11, scale = 5)
-    private BigDecimal commonPrice;
+    var commonPrice: BigDecimal? = null
 
     // kedy naposledy bol robeny update informacii(cena, nazov,...) o danom produkte
-    private Date lastTimeDataUpdated;
+    var lastTimeDataUpdated: Date? = null
 
     // typ akcie
     @Enumerated(EnumType.STRING)
-    private ProductAction productAction;
+    var productAction: ProductAction? = null
 
     // platnost akcie do
-    private Date actionValidTo;
+    var actionValidTo: Date? = null
 
     // URL na obrazok produktu
-    private String productPictureUrl;
+    var productPictureUrl: String? = null
 
-    @Nullable
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public EshopUuid getEshopUuid() {
-        return eshopUuid;
-    }
-
-    public void setEshopUuid(EshopUuid eshopUuid) {
-        this.eshopUuid = eshopUuid;
-    }
-
-    public Unit getUnit() {
-        return unit;
-    }
-
-    public void setUnit(Unit unit) {
-        this.unit = unit;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public BigDecimal getUnitValue() {
-        return unitValue;
-    }
-
-    public void setUnitValue(BigDecimal unitValue) {
-        this.unitValue = unitValue;
-    }
-
-    public Integer getUnitPackageCount() {
-        return unitPackageCount;
-    }
-
-    public void setUnitPackageCount(Integer unitPackageCount) {
-        this.unitPackageCount = unitPackageCount;
-    }
-
-    public BigDecimal getPriceForPackage() {
-        return priceForPackage;
-    }
-
-    public void setPriceForPackage(BigDecimal priceForPackage) {
-        this.priceForPackage = priceForPackage;
-    }
-
-    public BigDecimal getPriceForOneItemInPackage() {
-        return priceForOneItemInPackage;
-    }
-
-    public void setPriceForOneItemInPackage(BigDecimal priceForOneItemInPackage) {
-        this.priceForOneItemInPackage = priceForOneItemInPackage;
-    }
-
-    public BigDecimal getPriceForUnit() {
-        return priceForUnit;
-    }
-
-    public void setPriceForUnit(BigDecimal priceForUnit) {
-        this.priceForUnit = priceForUnit;
-    }
-
-    public BigDecimal getCommonPrice() {
-        return commonPrice;
-    }
-
-    public void setCommonPrice(BigDecimal commonPrice) {
-        this.commonPrice = commonPrice;
-    }
-
-    public Date getLastTimeDataUpdated() {
-        return lastTimeDataUpdated;
-    }
-
-    public void setLastTimeDataUpdated(Date lastTimeDataUpdated) {
-        this.lastTimeDataUpdated = lastTimeDataUpdated;
-    }
-
-    public ProductAction getProductAction() {
-        return productAction;
-    }
-
-    public void setProductAction(ProductAction productAction) {
-        this.productAction = productAction;
-    }
-
-    public Date getActionValidTo() {
-        return actionValidTo;
-    }
-
-    public void setActionValidTo(Date actionValidTo) {
-        this.actionValidTo = actionValidTo;
-    }
-
-    public String getProductPictureUrl() {
-        return productPictureUrl;
-    }
-
-    public void setProductPictureUrl(String productPictureUrl) {
-        this.productPictureUrl = productPictureUrl;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProductEntity that = (ProductEntity) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(url, that.url) &&
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as ProductEntity?
+        return id == that!!.id &&
+                url == that.url &&
                 eshopUuid == that.eshopUuid &&
-                unit == that.unit &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(unitValue, that.unitValue) &&
-                Objects.equals(unitPackageCount, that.unitPackageCount) &&
-                Objects.equals(priceForPackage, that.priceForPackage) &&
-                Objects.equals(priceForOneItemInPackage, that.priceForOneItemInPackage) &&
-                Objects.equals(priceForUnit, that.priceForUnit) &&
-                Objects.equals(commonPrice, that.commonPrice) &&
-                Objects.equals(lastTimeDataUpdated, that.lastTimeDataUpdated) &&
-                productAction == that.productAction &&
-                Objects.equals(actionValidTo, that.actionValidTo) &&
-                Objects.equals(productPictureUrl, that.productPictureUrl);
+                unit === that.unit &&
+                name == that.name &&
+                unitValue == that.unitValue &&
+                unitPackageCount == that.unitPackageCount &&
+                priceForPackage == that.priceForPackage &&
+                priceForOneItemInPackage == that.priceForOneItemInPackage &&
+                priceForUnit == that.priceForUnit &&
+                commonPrice == that.commonPrice &&
+                lastTimeDataUpdated == that.lastTimeDataUpdated &&
+                productAction === that.productAction &&
+                actionValidTo == that.actionValidTo &&
+                productPictureUrl == that.productPictureUrl
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, url, eshopUuid, unit, name, unitValue, unitPackageCount, priceForPackage, priceForOneItemInPackage, priceForUnit, commonPrice, lastTimeDataUpdated, productAction, actionValidTo, productPictureUrl);
+    override fun hashCode(): Int {
+        return Objects.hash(id, url, eshopUuid, unit, name, unitValue, unitPackageCount, priceForPackage, priceForOneItemInPackage, priceForUnit, commonPrice, lastTimeDataUpdated, productAction, actionValidTo, productPictureUrl)
     }
 }

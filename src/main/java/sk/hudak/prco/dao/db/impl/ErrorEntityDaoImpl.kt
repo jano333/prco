@@ -2,7 +2,7 @@ package sk.hudak.prco.dao.db.impl
 
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Repository
 import sk.hudak.prco.api.ErrorType
 import sk.hudak.prco.dao.db.ErrorEntityDao
 import sk.hudak.prco.dto.ErrorFindFilterDto
@@ -14,7 +14,7 @@ import java.time.temporal.TemporalUnit
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-@Component
+@Repository
 class ErrorEntityDaoImpl : BaseDaoImpl<ErrorEntity>(), ErrorEntityDao {
 
     override fun findById(id: Long): ErrorEntity {
