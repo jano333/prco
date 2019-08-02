@@ -6,7 +6,7 @@ import sk.hudak.prco.builder.SearchUrlBuilderImpl;
 import sk.hudak.prco.dto.ProductNewData;
 import sk.hudak.prco.dto.ProductUpdateData;
 import sk.hudak.prco.eshop.AlzaProductParser;
-import sk.hudak.prco.eshop.PilulkaProductParser;
+import sk.hudak.prco.eshop.pharmacy.PilulkaProductParser;
 import sk.hudak.prco.exception.PrcoRuntimeException;
 import sk.hudak.prco.parser.EshopProductsParser;
 import sk.hudak.prco.parser.EshopUuidParser;

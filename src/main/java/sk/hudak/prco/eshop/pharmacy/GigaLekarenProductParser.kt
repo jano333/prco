@@ -1,10 +1,10 @@
-package sk.hudak.prco.eshop.drugstore
+package sk.hudak.prco.eshop.pharmacy
 
 import org.apache.commons.lang3.StringUtils
 import org.jsoup.nodes.Document
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.api.EshopUuid.DROGERKA
+import sk.hudak.prco.api.EshopUuid.GIGA_LEKAREN
 import sk.hudak.prco.api.ProductAction
 import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.parser.UnitParser
@@ -17,63 +17,60 @@ import java.util.Optional.ofNullable
 import java.util.stream.Collectors
 
 @Component
-class DrogerkaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+class GigaLekarenProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
     override val eshopUuid: EshopUuid
-        get() = DROGERKA
+        get() = GIGA_LEKAREN
 
     override val timeout: Int
         get() = TIMEOUT_10_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
-        val size = documentList.select("ul[class='pagination'] li").size
-        return if (size == 0) {
+        val size = documentList.select("div[class=paging_footer] a").size
+        val i = size / 2 - 2
+        return if (i < 1) {
             1
-        } else size - 2
+        } else i
     }
 
     override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
-        return documentList.select("div[class='col-xs-6 col-sm-4 col-md-3'] div div[class='desc'] a")
-                .stream()
-                .map { it.attr("href") }
+        return documentList.select("div[class=top_left] p[class=product_title] a").stream()
+                .map { element -> element.attr("href") }
                 .filter { StringUtils.isNotBlank(it) }
                 .collect(Collectors.toList())
     }
 
     override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
-        return ofNullable(documentDetailProduct.select("#product > div.text > h1").first())
+        return ofNullable(documentDetailProduct.select("#rw_det1 > table > tbody > tr:nth-child(1) > td:nth-child(2) > strong"))
                 .map { it.text() }
-                .filter { StringUtils.isNotBlank(it) }
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
-        return ofNullable(documentDetailProduct.select("#product > div.img.thumbnails > a > img").first())
+        return ofNullable(documentDetailProduct.select("#thephoto"))
                 .map { it.attr("src") }
-                .filter {
-                    //it.isNotBlank()
-                    StringUtils.isNotBlank(it)
-                }
+                .filter { StringUtils.isNotBlank(it) }
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
-        return documentDetailProduct.select("#button-cart").first() == null
+        return null == documentDetailProduct.select("#detail_block_form_cart").first()
     }
 
     override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
-        return ofNullable(documentDetailProduct.select("#product > div.text > div > div.left_side > span.main").first())
+        return ofNullable(documentDetailProduct.select("td.color > strong"))
                 .map { it.text() }
-                .map { StringUtils.removeStart(it, "Nová cena: ") }
-                .map { StringUtils.removeEnd(it, "€") }
                 .filter { StringUtils.isNotBlank(it) }
+                .map { StringUtils.removeEnd(it, " €") }
                 .map { ConvertUtils.convertToBigDecimal(it) }
     }
 
     override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
+        //TODO impl
         return Optional.empty()
     }
 
     override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
+        //TODO impl
         return Optional.empty()
     }
 }

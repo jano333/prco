@@ -1,4 +1,4 @@
-package sk.hudak.prco.eshop;
+package sk.hudak.prco.eshop.pharmacy;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

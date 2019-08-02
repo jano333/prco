@@ -1,4 +1,4 @@
-package sk.hudak.prco.eshop
+package sk.hudak.prco.eshop.pharmacy
 
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.math.NumberUtils

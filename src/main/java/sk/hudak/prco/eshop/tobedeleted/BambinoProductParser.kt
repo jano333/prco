@@ -1,4 +1,4 @@
-package sk.hudak.prco.eshop
+package sk.hudak.prco.eshop.tobedeleted
 
 import org.jsoup.nodes.Document
 import sk.hudak.prco.api.EshopUuid

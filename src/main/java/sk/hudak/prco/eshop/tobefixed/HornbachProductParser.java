@@ -1,4 +1,4 @@
-package sk.hudak.prco.eshop;
+package sk.hudak.prco.eshop.tobefixed;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
