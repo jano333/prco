@@ -1,120 +1,93 @@
-package sk.hudak.prco.eshop;
+package sk.hudak.prco.eshop
 
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.builder.SearchUrlBuilder;
-import sk.hudak.prco.parser.UnitParser;
-import sk.hudak.prco.parser.impl.JSoupProductParser;
-import sk.hudak.prco.utils.UserAgentDataHolder;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import static sk.hudak.prco.api.EshopUuid.METRO;
-import static sk.hudak.prco.api.ProductAction.IN_ACTION;
-import static sk.hudak.prco.api.ProductAction.NON_ACTION;
-import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
-import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
+import org.jsoup.nodes.Document
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.EshopUuid.METRO
+import sk.hudak.prco.api.ProductAction
+import sk.hudak.prco.api.ProductAction.IN_ACTION
+import sk.hudak.prco.api.ProductAction.NON_ACTION
+import sk.hudak.prco.builder.SearchUrlBuilder
+import sk.hudak.prco.parser.UnitParser
+import sk.hudak.prco.parser.impl.JSoupProductParser
+import sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal
+import sk.hudak.prco.utils.JsoupUtils.notExistElement
+import sk.hudak.prco.utils.UserAgentDataHolder
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.util.*
 
 @Component
-public class MetroProductParser extends JSoupProductParser {
+class MetroProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+    : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    private static final int PAGING = 15;
+    override val eshopUuid: EshopUuid
+        get() = METRO
 
-    @Autowired
-    public MetroProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
-        super(unitParser, userAgentDataHolder, searchUrlBuilder);
-    }
+    override val timeout: Int
+        get() = TIMEOUT_15_SECOND
 
-    @Override
-    public EshopUuid getEshopUuid() {
-        return METRO;
-    }
+    override// 21 su Kosice pobocka
+    val cookie: Map<String, String>
+        get() = Collections.singletonMap("storeId", "21")
 
-    @Override
-    protected int getTimeout() {
-        return TIMEOUT_15_SECOND;
-    }
-
-    @Override
-    protected Map<String, String> getCookie() {
-        // 21 su Kosice pobocka
-        return Collections.singletonMap("storeId", "21");
-    }
-
-    @Override
-    protected int parseCountOfPages(Document documentList) {
-        Elements select = documentList.select("div[class=paging-show pull-left color-gray-dark] strong[class=color-gray-base]");
-        if (select.size() != 2) {
-            return 1;
+    override fun parseCountOfPages(documentList: Document): Int {
+        val select = documentList.select("div[class=paging-show pull-left color-gray-dark] strong[class=color-gray-base]")
+        if (select.size != 2) {
+            return 1
         }
         //2 v poradi
-        Element element = select.get(1);
-        String count = element.text();
-        BigDecimal result = new BigDecimal(count).divide(new BigDecimal(PAGING), RoundingMode.HALF_UP);
-        return result.intValue();
+        val element = select[1]
+        val count = element.text()
+        val result = BigDecimal(count).divide(BigDecimal(PAGING), RoundingMode.HALF_UP)
+        return result.toInt()
     }
 
-    @Override
-    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
-        Elements select = documentList.select("div.product.msg-parent");
-        List<String> result = new ArrayList<>(select.size());
-        for (Element element : select) {
-            Element first = element.children().first().children().first().children().first().children().first();
-            result.add(first.attr("href"));
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+        val select = documentList.select("div.product.msg-parent")
+        val result = ArrayList<String>(select.size)
+        for (element in select) {
+            val first = element.children().first().children().first().children().first().children().first()
+            result.add(first.attr("href"))
         }
-        return result;
+        return result
     }
 
-    @Override
-    protected boolean isProductUnavailable(Document documentDetailProduct) {
-        return notExistElement(documentDetailProduct, "div.x-row.product-stock-detail");
+    override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
+        return notExistElement(documentDetailProduct, "div.x-row.product-stock-detail")
     }
 
-    @Override
-    protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        Element select = documentDetailProduct.select("div.product-detail.clearfix > h1").first();
-        if (select == null) {
-            return Optional.empty();
-        }
-        return Optional.ofNullable(select.text());
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+        val select = documentDetailProduct.select("div.product-detail.clearfix > h1").first() ?: return Optional.empty()
+        return Optional.ofNullable(select.text())
     }
 
-    @Override
-    protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        String text = documentDetailProduct.select("tr.price-package > td:nth-child(4)").text();
-        text = text.substring(0, text.length() - 2);
-        return Optional.of(convertToBigDecimal(text));
+    override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
+        var text = documentDetailProduct.select("tr.price-package > td:nth-child(4)").text()
+        text = text.substring(0, text.length - 2)
+        return Optional.of(convertToBigDecimal(text))
     }
 
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
+    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
         return Optional.ofNullable(documentDetailProduct.select("div[class=img-center] img").first())
-                .map(element -> element.attr("src"));
+                .map { element -> element.attr("src") }
     }
 
-    @Override
-    protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("span[class=mic mic-action-sk is-32]");
-        return Optional.of(select.isEmpty()
-                ? NON_ACTION
-                : IN_ACTION);
+    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
+        val select = documentDetailProduct.select("span[class=mic mic-action-sk is-32]")
+        return Optional.of(if (select.isEmpty())
+            NON_ACTION
+        else
+            IN_ACTION)
     }
 
-    @Override
-    protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
+    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
         //TODO impl action validity
-        return Optional.empty();
+        return Optional.empty()
+    }
+
+    companion object {
+
+        private val PAGING = 15
     }
 }

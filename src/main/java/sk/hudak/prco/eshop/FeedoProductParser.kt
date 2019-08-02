@@ -1,150 +1,123 @@
-package sk.hudak.prco.eshop;
+package sk.hudak.prco.eshop
 
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.builder.SearchUrlBuilder;
-import sk.hudak.prco.exception.PrcoRuntimeException;
-import sk.hudak.prco.parser.UnitParser;
-import sk.hudak.prco.parser.impl.JSoupProductParser;
-import sk.hudak.prco.utils.JsoupUtils;
-import sk.hudak.prco.utils.UserAgentDataHolder;
+import org.apache.commons.lang3.StringUtils
+import org.jsoup.nodes.Document
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.EshopUuid.FEEDO
+import sk.hudak.prco.api.ProductAction
+import sk.hudak.prco.builder.SearchUrlBuilder
+import sk.hudak.prco.exception.PrcoRuntimeException
+import sk.hudak.prco.parser.UnitParser
+import sk.hudak.prco.parser.impl.JSoupProductParser
+import sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal
+import sk.hudak.prco.utils.JsoupUtils.calculateCountOfPages
+import sk.hudak.prco.utils.JsoupUtils.existElement
+import sk.hudak.prco.utils.JsoupUtils.getTextFromFirstElementByClass
+import sk.hudak.prco.utils.JsoupUtils.notExistElement
+import sk.hudak.prco.utils.UserAgentDataHolder
+import java.math.BigDecimal
+import java.util.*
+import kotlin.streams.toList
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static sk.hudak.prco.api.EshopUuid.FEEDO;
-import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
-import static sk.hudak.prco.utils.JsoupUtils.calculateCountOfPages;
-import static sk.hudak.prco.utils.JsoupUtils.existElement;
-import static sk.hudak.prco.utils.JsoupUtils.getTextFromFirstElementByClass;
-import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
-
-@Slf4j
 @Component
-public class FeedoProductParser extends JSoupProductParser {
+class FeedoProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+    : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    @Autowired
-    public FeedoProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
-        super(unitParser, userAgentDataHolder, searchUrlBuilder);
+    override val eshopUuid: EshopUuid
+        get() = FEEDO
+
+    override val timeout: Int
+        get() = TIMEOUT_15_SECOND
+
+    override fun parseCountOfPages(documentList: Document): Int {
+        val countOfProductString = Optional.ofNullable(documentList.select("#content > div.clearfix.mb-2 > h1:nth-child(1) > span").first())
+                .map { it.text() }
+                .filter { it.contains("(") }
+                .filter { it.contains(")") }
+                .map { it.substring(it.indexOf('(') + 1, it.indexOf(')')) }
+                .orElseThrow { PrcoRuntimeException("None product count found for: " + documentList.location()) }
+
+        return calculateCountOfPages(Integer.valueOf(countOfProductString), eshopUuid.maxCountOfProductOnPage)
     }
 
-    @Override
-    public EshopUuid getEshopUuid() {
-        return FEEDO;
-    }
-
-    @Override
-    protected int getTimeout() {
-        return TIMEOUT_15_SECOND;
-    }
-
-    @Override
-    protected int parseCountOfPages(Document documentList) {
-        String countOfProductString = Optional.ofNullable(documentList.select("#content > div.clearfix.mb-2 > h1:nth-child(1) > span").first())
-                .map(Element::text)
-                .filter(text -> text.contains("("))
-                .filter(text -> text.contains(")"))
-                .map(text -> text.substring(text.indexOf('(') + 1, text.indexOf(')')))
-                .orElseThrow(() -> new PrcoRuntimeException("None product count found for: " + documentList.location()));
-
-        return calculateCountOfPages(Integer.valueOf(countOfProductString), getEshopUuid().getMaxCountOfProductOnPage());
-    }
-
-    @Override
-    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
         return documentList.select("div[class=box-product__top]").stream()
-                .map(element -> element.select("h1 a").first())
-                .map(JsoupUtils::hrefAttribute)
-                .filter(StringUtils::isNotBlank)
-                .collect(Collectors.toList());
+                .map { it.select("h1 a").first() }
+                .map { it.attr("href") }
+                .filter { StringUtils.isNotBlank(it) }
+                .toList()
     }
 
-    @Override
-    protected boolean isProductUnavailable(Document documentDetailProduct) {
-        return notExistElement(documentDetailProduct, "button[class=btn btn-danger btn-large cart]");
+    override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
+        return notExistElement(documentDetailProduct, "button[class=btn btn-danger btn-large cart]")
     }
 
-    @Override
-    protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        return getTextFromFirstElementByClass(documentDetailProduct, "product-detail-heading hidden-xs hidden-sm");
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+        return getTextFromFirstElementByClass(documentDetailProduct, "product-detail-heading hidden-xs hidden-sm")
     }
 
-    @Override
-    protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
+    override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
         // premim cena
-        Elements select = documentDetailProduct.select("div[class=price price-premium] span");
+        var select = documentDetailProduct.select("div[class=price price-premium] span")
         if (select.isEmpty()) {
             // akcna cena
-            select = documentDetailProduct.select("div[class=price price-discount] span");
+            select = documentDetailProduct.select("div[class=price price-discount] span")
         }
         if (select.isEmpty()) {
             // normalna cena
-            select = documentDetailProduct.select("div[class=price price-base] span");
+            select = documentDetailProduct.select("div[class=price price-base] span")
         }
         if (select.isEmpty()) {
             // novinka
-            select = documentDetailProduct.select("div[class=price] span[class=price-base]");
+            select = documentDetailProduct.select("div[class=price] span[class=price-base]")
         }
         if (select.isEmpty()) {
             // dlhodobo zlacnená cena
-            select = documentDetailProduct.select("span.price.price-discount");
+            select = documentDetailProduct.select("span.price.price-discount")
         }
 
         if (select.isEmpty()) {
-            return Optional.empty();
+            return Optional.empty()
         }
 
-        String html = select.get(0).html();
+        val html = select[0].html()
         if (StringUtils.isBlank(html)) {
-            return Optional.empty();
+            return Optional.empty()
         }
 
-        int endIndex = html.indexOf("&nbsp;");
+        val endIndex = html.indexOf("&nbsp;")
         if (-1 == endIndex) {
-            return Optional.empty();
+            return Optional.empty()
         }
 
-        String cenaZaBalenie = html.substring(0, endIndex);
-        return Optional.of(convertToBigDecimal(cenaZaBalenie));
+        val cenaZaBalenie = html.substring(0, endIndex)
+        return Optional.of(convertToBigDecimal(cenaZaBalenie))
     }
 
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("div[class=box-image]");
+    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+        val select = documentDetailProduct.select("div[class=box-image]")
         if (select.isEmpty()) {
-            return Optional.empty();
+            return Optional.empty()
         }
-        Element child = select.get(0).child(0);
-        String href = child.attr("href");
-        return Optional.ofNullable(href);
+        val child = select[0].child(0)
+        val href = child.attr("href")
+        return Optional.ofNullable(href)
     }
 
-    @Override
-    protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
+    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
         // premium cena
         if (existElement(documentDetailProduct, "div[class=price price-premium]")) {
-            return Optional.of(ProductAction.IN_ACTION);
+            return Optional.of(ProductAction.IN_ACTION)
         }
         // akcna cena
-        if (existElement(documentDetailProduct, "div[class=price price-discount]")) {
-            return Optional.of(ProductAction.IN_ACTION);
-        }
-        return Optional.of(ProductAction.NON_ACTION);
+        return if (existElement(documentDetailProduct, "div[class=price price-discount]")) {
+            Optional.of(ProductAction.IN_ACTION)
+        } else Optional.of(ProductAction.NON_ACTION)
     }
 
-    @Override
-    protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
+    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
         // feedo nepodporuje
-        return Optional.empty();
+        return Optional.empty()
     }
 }

@@ -1,99 +1,73 @@
-package sk.hudak.prco.eshop;
+package sk.hudak.prco.eshop
 
-import lombok.extern.slf4j.Slf4j;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.TextNode;
-import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.builder.SearchUrlBuilder;
-import sk.hudak.prco.exception.PrcoRuntimeException;
-import sk.hudak.prco.parser.UnitParser;
-import sk.hudak.prco.parser.WatchDogParser;
-import sk.hudak.prco.parser.impl.JSoupProductParser;
-import sk.hudak.prco.utils.UserAgentDataHolder;
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.TextNode
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.EshopUuid.OBI
+import sk.hudak.prco.api.ProductAction
+import sk.hudak.prco.builder.SearchUrlBuilder
+import sk.hudak.prco.exception.PrcoRuntimeException
+import sk.hudak.prco.parser.UnitParser
+import sk.hudak.prco.parser.WatchDogParser
+import sk.hudak.prco.parser.impl.JSoupProductParser
+import sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal
+import sk.hudak.prco.utils.UserAgentDataHolder
+import java.math.BigDecimal
+import java.util.*
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-import static sk.hudak.prco.api.EshopUuid.OBI;
-import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
-
-@Slf4j
+// TODO doriesit aby bralo len kosicku pobocku? pozor su 2...
 //@Component
-public class ObiProductParser extends JSoupProductParser implements WatchDogParser {
-    // TODO doriesit aby bralo len kosicku pobocku? pozor su 2...
+class ObiProductParser (unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+    : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder), WatchDogParser {
 
-    @Autowired
-    public ObiProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
-        super(unitParser, userAgentDataHolder, searchUrlBuilder);
+    override val eshopUuid: EshopUuid
+        get() = OBI
+
+    override// koli pomalym odozvam davam na 15 sekund
+    val timeout: Int
+        get() = TIMEOUT_15_SECOND
+
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+        val select = documentDetailProduct.select("h1[class=h2 overview__heading]")
+        return if (select.isEmpty()) {
+            Optional.empty()
+        } else Optional.of((select[0].childNode(0) as TextNode).wholeText)
     }
 
-    @Override
-    public EshopUuid getEshopUuid() {
-        return OBI;
-    }
-
-    @Override
-    protected int getTimeout() {
-        // koli pomalym odozvam davam na 15 sekund
-        return TIMEOUT_15_SECOND;
-    }
-
-    @Override
-    protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("h1[class=h2 overview__heading]");
-        if (select.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(((TextNode) select.get(0).childNode(0)).getWholeText());
-    }
-
-    @Override
-    protected boolean isProductUnavailable(Document documentDetailProduct) {
+    override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
         //TODO
-        return false;
+        return false
     }
 
-    @Override
-    protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("strong[itemprop=price]");
-        Element first = select.first();
-        String cenaZaBalenie = first.text();
-        return Optional.of(convertToBigDecimal(cenaZaBalenie));
+    override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
+        val select = documentDetailProduct.select("strong[itemprop=price]")
+        val first = select.first()
+        val cenaZaBalenie = first.text()
+        return Optional.of(convertToBigDecimal(cenaZaBalenie))
     }
 
-    @Override
-    protected int parseCountOfPages(Document documentList) {
+    override fun parseCountOfPages(documentList: Document): Int {
         //TODO
-        throw new PrcoRuntimeException("Not yet implemented");
+        throw PrcoRuntimeException("Not yet implemented")
     }
 
-    @Override
-    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
         //TODO
-        throw new PrcoRuntimeException("Not yet implemented");
+        throw PrcoRuntimeException("Not yet implemented")
     }
 
-    @Override
-    protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
+    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
         //TODO impl
-        return Optional.empty();
+        return Optional.empty()
     }
 
-    @Override
-    protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
+    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
         //TODO impl
-        return Optional.empty();
+        return Optional.empty()
     }
 
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
+    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
         //TODO impl
-        return Optional.empty();
+        return Optional.empty()
     }
 }

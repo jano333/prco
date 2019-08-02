@@ -1,108 +1,81 @@
-package sk.hudak.prco.eshop;
+package sk.hudak.prco.eshop
 
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.builder.SearchUrlBuilder;
-import sk.hudak.prco.parser.UnitParser;
-import sk.hudak.prco.parser.impl.JSoupProductParser;
-import sk.hudak.prco.utils.ConvertUtils;
-import sk.hudak.prco.utils.UserAgentDataHolder;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-import static java.util.Optional.ofNullable;
-import static sk.hudak.prco.api.EshopUuid.KID_MARKET;
-import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
+import lombok.extern.slf4j.Slf4j
+import org.apache.commons.lang3.StringUtils
+import org.jsoup.nodes.Document
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.EshopUuid.KID_MARKET
+import sk.hudak.prco.api.ProductAction
+import sk.hudak.prco.builder.SearchUrlBuilder
+import sk.hudak.prco.parser.UnitParser
+import sk.hudak.prco.parser.impl.JSoupProductParser
+import sk.hudak.prco.utils.ConvertUtils
+import sk.hudak.prco.utils.JsoupUtils.notExistElement
+import sk.hudak.prco.utils.UserAgentDataHolder
+import java.math.BigDecimal
+import java.util.*
+import java.util.Optional.ofNullable
 
 @Slf4j
 @Component
-public class KidMarketProductParser extends JSoupProductParser {
+class KidMarketProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder) : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    public KidMarketProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
-        super(unitParser, userAgentDataHolder, searchUrlBuilder);
-    }
-
-    @Override
-    public EshopUuid getEshopUuid() {
-        return KID_MARKET;
-    }
+    override val eshopUuid: EshopUuid
+        get() = KID_MARKET
 
 
-    @Override
-    protected int getTimeout() {
-        return TIMEOUT_15_SECOND;
-    }
+    override val timeout: Int
+        get() = TIMEOUT_15_SECOND
 
-    @Override
-    protected int parseCountOfPages(Document documentList) {
+    override fun parseCountOfPages(documentList: Document): Int {
         return ofNullable(documentList.select("span[class=heading-counter]").first())
-                .map(Element::text)
-                .map(textValue -> Integer.valueOf(StringUtils.removeStart(textValue, "Nájdené výsledky: ")))
-                .orElse(0);
+                .map{ it.text() }
+                .map { textValue -> Integer.valueOf(StringUtils.removeStart(textValue, "Nájdené výsledky: ")) }
+                .orElse(0)
     }
 
-    @Override
-    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
         //FIXME prepisat cez strem
-        Element first = documentList.select("#product_list").first();
-        if (first == null) {
-            return Collections.emptyList();
+        val first = documentList.select("#product_list").first() ?: return emptyList()
+
+        val urls = ArrayList<String>()
+        first.children().forEach { element ->
+            val href = element.select("h5 a").first().attr("href")
+            urls.add(href.substring(0, href.lastIndexOf("?")))
         }
-
-        List<String> urls = new ArrayList<>();
-        first.children().forEach(element -> {
-                    String href = element.select("h5 a").first().attr("href");
-                    urls.add(href.substring(0, href.lastIndexOf("?")));
-                }
-        );
-        return urls;
+        return urls
     }
 
-    @Override
-    protected boolean isProductUnavailable(Document documentDetailProduct) {
-        return notExistElement(documentDetailProduct, "div[class='box-info-product'] p[id=add_to_cart]");
+    override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
+        return notExistElement(documentDetailProduct, "div[class='box-info-product'] p[id=add_to_cart]")
     }
 
-    @Override
-    protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
         return ofNullable(documentDetailProduct.select("h1[class=page-heading]").first())
-                .map(Element::text);
+                .map { it.text() }
     }
 
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
+    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
         return ofNullable(documentDetailProduct.select("#bigpic").first())
-                .map(element -> element.attr("src"));
+                .map { element -> element.attr("src") }
     }
 
-    @Override
-    protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
+    override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
         return ofNullable(documentDetailProduct.select("#our_price_display").first())
-                .map(Element::text)
-                .map(text -> StringUtils.removeEnd(text, "€"))
-                .map(ConvertUtils::convertToBigDecimal);
+                .map { it.text() }
+                .map { text -> StringUtils.removeEnd(text, "€") }
+                .map { ConvertUtils.convertToBigDecimal(it) }
     }
 
-    @Override
-    protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
+    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
         //TODO
-        return Optional.empty();
+        return Optional.empty()
     }
 
-    @Override
-    protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
+    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
         //TODO
-        return Optional.empty();
+        return Optional.empty()
     }
 
 

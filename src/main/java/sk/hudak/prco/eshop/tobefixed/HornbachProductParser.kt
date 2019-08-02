@@ -1,175 +1,153 @@
-package sk.hudak.prco.eshop.tobefixed;
+package sk.hudak.prco.eshop.tobefixed
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.TextNode;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.cookie.BasicClientCookie;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.builder.SearchUrlBuilder;
-import sk.hudak.prco.exception.PrcoRuntimeException;
-import sk.hudak.prco.parser.UnitParser;
-import sk.hudak.prco.parser.WatchDogParser;
-import sk.hudak.prco.parser.impl.JSoupProductParser;
-import sk.hudak.prco.utils.UserAgentDataHolder;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-import static java.util.Collections.emptyList;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
-import static org.apache.http.HttpHeaders.USER_AGENT;
-import static sk.hudak.prco.api.EshopUuid.HORNBACH;
-import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ArrayNode
+import com.fasterxml.jackson.databind.node.TextNode
+import lombok.extern.slf4j.Slf4j
+import org.apache.http.HttpHeaders.USER_AGENT
+import org.apache.http.client.methods.HttpGet
+import org.apache.http.impl.client.BasicCookieStore
+import org.apache.http.impl.client.BasicResponseHandler
+import org.apache.http.impl.client.HttpClientBuilder
+import org.apache.http.impl.cookie.BasicClientCookie
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.EshopUuid.HORNBACH
+import sk.hudak.prco.api.ProductAction
+import sk.hudak.prco.builder.SearchUrlBuilder
+import sk.hudak.prco.exception.PrcoRuntimeException
+import sk.hudak.prco.parser.UnitParser
+import sk.hudak.prco.parser.WatchDogParser
+import sk.hudak.prco.parser.impl.JSoupProductParser
+import sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal
+import sk.hudak.prco.utils.UserAgentDataHolder
+import java.math.BigDecimal
+import java.util.*
+import java.util.Collections.emptyList
+import java.util.Optional.*
 
 @Slf4j
 //@Component
-public class HornbachProductParser extends JSoupProductParser implements WatchDogParser {
+class HornbachProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+    : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder), WatchDogParser {
 
-    public HornbachProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
-        super(unitParser, userAgentDataHolder, searchUrlBuilder);
-    }
+    override val eshopUuid: EshopUuid
+        get() = HORNBACH
 
-    @Override
-    public EshopUuid getEshopUuid() {
-        return HORNBACH;
-    }
+    override val timeout: Int
+        get() = TIMEOUT_10_SECOND
 
-    @Override
-    protected int getTimeout() {
-        return TIMEOUT_10_SECOND;
-    }
-
-    @Override
-    protected Document retrieveDocument(String productUrl) {
-        BasicCookieStore cookieStore = new BasicCookieStore();
+    override fun retrieveDocument(productUrl: String): Document {
+        val cookieStore = BasicCookieStore()
         // 746 -> Kosice predajna
-        BasicClientCookie cookie = new BasicClientCookie("hbMarketCookie", "746");
-        cookie.setDomain("www.hornbach.sk");
-        cookie.setPath("/");
-        cookieStore.addCookie(cookie);
+        val cookie = BasicClientCookie("hbMarketCookie", "746")
+        cookie.domain = "www.hornbach.sk"
+        cookie.path = "/"
+        cookieStore.addCookie(cookie)
 
-        cookieStore.addCookie(new BasicClientCookie(USER_AGENT, getUserAgent()));
+        cookieStore.addCookie(BasicClientCookie(USER_AGENT, userAgent))
 
-        HttpClient httpclient = HttpClientBuilder.create().setDefaultCookieStore(cookieStore).build();
+        val httpclient = HttpClientBuilder.create().setDefaultCookieStore(cookieStore).build()
 
         try {
-            return Jsoup.parse(httpclient.execute(new HttpGet(productUrl), new BasicResponseHandler()));
+            return Jsoup.parse(httpclient.execute(HttpGet(productUrl), BasicResponseHandler()))
 
-        } catch (Exception e) {
-            throw new PrcoRuntimeException("error while downloading/parsing content for url " + productUrl, e);
+        } catch (e: Exception) {
+            throw PrcoRuntimeException("error while downloading/parsing content for url $productUrl", e)
         }
+
     }
 
-    @Override
-    protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("#article-details > h1");
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+        val select = documentDetailProduct.select("#article-details > h1")
         if (select.isEmpty()) {
-            return empty();
+            return empty()
         }
-        Element first = select.first();
-        String text = first.text();
-        return Optional.of(text);
+        val first = select.first()
+        val text = first.text()
+        return Optional.of(text)
     }
 
-    @Override
-    protected boolean isProductUnavailable(Document documentDetailProduct) {
+    override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
         try {
-            String jsonString = parseJson(documentDetailProduct);
+            val jsonString = parseJson(documentDetailProduct)
 
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode actualObj = mapper.readTree(jsonString);
-            ArrayNode jsonNode1 = (ArrayNode) actualObj.get("offers");
-            return jsonNode1.size() == 0;
+            val mapper = ObjectMapper()
+            val actualObj = mapper.readTree(jsonString)
+            val jsonNode1 = actualObj.get("offers") as ArrayNode
+            return jsonNode1.size() == 0
 
-        } catch (Exception e) {
-            throw new PrcoRuntimeException("error while parsing availability for product url: " + documentDetailProduct.location(), e);
+        } catch (e: Exception) {
+            throw PrcoRuntimeException("error while parsing availability for product url: " + documentDetailProduct.location(), e)
         }
+
     }
 
-    @Override
-    protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
+    override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
         try {
-            String jsonString = parseJson(documentDetailProduct);
+            val jsonString = parseJson(documentDetailProduct)
 
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode actualObj = mapper.readTree(jsonString);
-            ArrayNode jsonNode1 = (ArrayNode) actualObj.get("offers");
-            JsonNode offerNode = jsonNode1.get(0);
-            TextNode priceNode = (TextNode) offerNode.get("price");
-            String price = priceNode.textValue();
-            return ofNullable(convertToBigDecimal(price));
+            val mapper = ObjectMapper()
+            val actualObj = mapper.readTree(jsonString)
+            val jsonNode1 = actualObj.get("offers") as ArrayNode
+            val offerNode = jsonNode1.get(0)
+            val priceNode = offerNode.get("price") as TextNode
+            val price = priceNode.textValue()
+            return ofNullable(convertToBigDecimal(price))
 
-        } catch (Exception e) {
-            log.error("error while parsing price", e);
-            return empty();
+        } catch (e: Exception) {
+            log.error("error while parsing price", e)
+            return empty()
         }
+
     }
 
-    private String parseJson(Document document) {
+    private fun parseJson(document: Document): String {
         try {
-            return document.select("script[type=application/ld+json]").get(0).childNode(0).toString();
+            return document.select("script[type=application/ld+json]")[0].childNode(0).toString()
 
-        } catch (Exception e) {
-            throw new PrcoRuntimeException("json element not found for url " + document.location(), e);
+        } catch (e: Exception) {
+            throw PrcoRuntimeException("json element not found for url " + document.location(), e)
         }
+
     }
 
-    @Override
-    protected int parseCountOfPages(Document documentList) {
+    override fun parseCountOfPages(documentList: Document): Int {
         // TODO impl
-        return 0;
+        return 0
     }
 
-    @Override
-    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
         // TODO impl
-        return emptyList();
+        return emptyList()
     }
 
-    @Override
-    protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
+    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
         // TODO impl
-        return empty();
+        return empty()
     }
 
-    @Override
-    protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
+    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
         // TODO impl
-        return empty();
+        return empty()
     }
 
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
+    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
         try {
-            String jsonString = parseJson(documentDetailProduct);
+            val jsonString = parseJson(documentDetailProduct)
 
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode actualObj = mapper.readTree(jsonString);
-            ArrayNode image = (ArrayNode) actualObj.get("image");
-            if (image.size() == 0) {
-                return empty();
-            }
-            return of(image.get(0).get("url").textValue());
+            val mapper = ObjectMapper()
+            val actualObj = mapper.readTree(jsonString)
+            val image = actualObj.get("image") as ArrayNode
+            return if (image.size() == 0) {
+                empty()
+            } else of(image.get(0).get("url").textValue())
 
-        } catch (Exception e) {
-            log.error("error while product picture url", e);
-            return empty();
+        } catch (e: Exception) {
+            log.error("error while product picture url", e)
+            return empty()
         }
+
     }
 }

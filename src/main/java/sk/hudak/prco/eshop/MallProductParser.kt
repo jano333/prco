@@ -1,170 +1,141 @@
-package sk.hudak.prco.eshop;
+package sk.hudak.prco.eshop
 
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.builder.SearchUrlBuilder;
-import sk.hudak.prco.exception.PrcoRuntimeException;
-import sk.hudak.prco.parser.UnitParser;
-import sk.hudak.prco.parser.impl.JSoupProductParser;
-import sk.hudak.prco.utils.JsoupUtils;
-import sk.hudak.prco.utils.UserAgentDataHolder;
+import org.apache.commons.lang3.math.NumberUtils
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.EshopUuid.MALL
+import sk.hudak.prco.api.ProductAction
+import sk.hudak.prco.builder.SearchUrlBuilder
+import sk.hudak.prco.exception.PrcoRuntimeException
+import sk.hudak.prco.parser.UnitParser
+import sk.hudak.prco.parser.impl.JSoupProductParser
+import sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal
+import sk.hudak.prco.utils.JsoupUtils
+import sk.hudak.prco.utils.JsoupUtils.notExistElement
+import sk.hudak.prco.utils.PatternUtils.NUMBER_AT_LEAST_ONE
+import sk.hudak.prco.utils.PatternUtils.createMatcher
+import sk.hudak.prco.utils.UserAgentDataHolder
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.regex.Matcher;
-
-import static sk.hudak.prco.api.EshopUuid.MALL;
-import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
-import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
-import static sk.hudak.prco.utils.PatternUtils.NUMBER_AT_LEAST_ONE;
-import static sk.hudak.prco.utils.PatternUtils.createMatcher;
-
-@Slf4j
 @Component
-public class MallProductParser extends JSoupProductParser {
+class MallProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+    : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    private static final int MAX_COUNT_OF_PRODUCT_PRE_PAGE = 48;
-
-    public MallProductParser(UnitParser unitParser,
-                             UserAgentDataHolder userAgentDataHolder,
-                             SearchUrlBuilder searchUrlBuilder) {
-        super(unitParser, userAgentDataHolder, searchUrlBuilder);
+    companion object {
+        private val MAX_COUNT_OF_PRODUCT_PRE_PAGE = 48
     }
 
-    @Override
-    public EshopUuid getEshopUuid() {
-        return MALL;
-    }
+    override val eshopUuid: EshopUuid
+        get() = MALL
 
-    @Override
-    protected int getTimeout() {
-        return TIMEOUT_15_SECOND;
-    }
+    override val timeout: Int
+        get() = TIMEOUT_15_SECOND
 
-    @Override
-    protected int parseCountOfPages(Document documentList) {
-        Optional<String> scriptContent = documentList.getElementsByTag("script").stream()
-                .map(Element::html)
-                .filter(content -> content.contains("var CONFIGURATION"))
-                .findFirst();
+    override fun parseCountOfPages(documentList: Document): Int {
+        val scriptContent = documentList.getElementsByTag("script").stream()
+                .map { it.html() }
+                .filter { it.contains("var CONFIGURATION") }
+                .findFirst()
 
-        if (!scriptContent.isPresent()) {
-            return 1;
+        if (!scriptContent.isPresent) {
+            return 1
         }
         // "total":107,"products"
-        Matcher matcher = createMatcher(scriptContent.get(), "\"total\":", NUMBER_AT_LEAST_ONE, ",\"products\"");
-        if (matcher.find()) {
-            return new BigDecimal(Optional.ofNullable(matcher.group(2))
-                    .filter(NumberUtils::isParsable)
-                    .map(Integer::valueOf)
+        val matcher = createMatcher(scriptContent.get(), "\"total\":", NUMBER_AT_LEAST_ONE, ",\"products\"")
+        return if (matcher.find()) {
+            BigDecimal(Optional.ofNullable(matcher.group(2))
+                    .filter { NumberUtils.isParsable(it) }
+                    .map { Integer.valueOf(it) }
                     .get())
-                    .divide(new BigDecimal(MAX_COUNT_OF_PRODUCT_PRE_PAGE), RoundingMode.CEILING)
-                    .intValue();
-        }
-        return 1;
+                    .divide(BigDecimal(MAX_COUNT_OF_PRODUCT_PRE_PAGE), RoundingMode.CEILING)
+                    .toInt()
+        } else 1
     }
 
-    @Override
-    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
-        List<String> result = new ArrayList<>(MAX_COUNT_OF_PRODUCT_PRE_PAGE);
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+        val result = ArrayList<String>(MAX_COUNT_OF_PRODUCT_PRE_PAGE)
         documentList.select("h3[class=lst-product-item-title]")
-                .forEach(element -> result.add(getEshopUuid().getProductStartUrl() + element.child(0).attr("href")));
-        return result;
+                .forEach { element -> result.add(eshopUuid.productStartUrl + element.child(0).attr("href")) }
+        return result
     }
 
-    @Override
-    protected boolean isProductUnavailable(Document documentDetailProduct) {
-        boolean b = notExistElement(documentDetailProduct, "button[id=add-to-cart]");
+    override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
+        val b = notExistElement(documentDetailProduct, "button[id=add-to-cart]")
         if (!b) {
-            return b;
+            return b
         }
-        Optional<String> s = Optional.ofNullable(documentDetailProduct.select("span[class='btn-inset lay-block']").first())
-                .map(Element::text);
-        boolean present = s
-                .isPresent();
-        return present;
+        val s = Optional.ofNullable(documentDetailProduct.select("span[class='btn-inset lay-block']").first())
+                .map { it.text() }
+        return s.isPresent
     }
 
-    @Override
-    protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        Element element = documentDetailProduct.select("section[class=pro-column] h1").first();
-        if (element == null) {
-            return Optional.empty();
-        }
-        return Optional.of(element.text());
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+        val element = documentDetailProduct.select("section[class=pro-column] h1").first() ?: return Optional.empty()
+        return Optional.of(element.text())
     }
 
-    @Override
-    protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        Elements elements2 = documentDetailProduct.select("b[class=pro-price con-emphasize font-primary--bold mr-5]");
+    override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
+        val elements2 = documentDetailProduct.select("b[class=pro-price con-emphasize font-primary--bold mr-5]")
         if (elements2.isEmpty()) {
-            return Optional.empty();
+            return Optional.empty()
         }
-        String cenaZaBalenie = elements2.get(0).text().replace("€", "").trim();
-        return Optional.of(convertToBigDecimal(cenaZaBalenie));
+        val cenaZaBalenie = elements2[0].text().replace("€", "").trim { it <= ' ' }
+        return Optional.of(convertToBigDecimal(cenaZaBalenie))
     }
 
-    @Override
-    protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
-        Element select = documentDetailProduct.select("p[class=m-0 pro-stickers]").first();
-        if (select == null) {
-            return Optional.of(ProductAction.NON_ACTION);
-        }
-        Elements children = select.children();
-        for (Element child : children) {
-            String aClass = child.attr("class");
-            if ("label label--action".equals(aClass)) {
-                return Optional.of(ProductAction.IN_ACTION);
+    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
+        val select = documentDetailProduct.select("p[class=m-0 pro-stickers]").first()
+                ?: return Optional.of(ProductAction.NON_ACTION)
+        val children = select.children()
+        for (child in children) {
+            val aClass = child.attr("class")
+            if ("label label--action" == aClass) {
+                return Optional.of(ProductAction.IN_ACTION)
             }
         }
-        return Optional.of(ProductAction.NON_ACTION);
+        return Optional.of(ProductAction.NON_ACTION)
     }
 
 
-    @Override
-    protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("p[class=mb-5]");
+    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
+        val select = documentDetailProduct.select("p[class=mb-5]")
         if (select.isEmpty()) {
-            return Optional.empty();
+            return Optional.empty()
         }
-        Element element = select.get(0);
-        StringBuilder sb = new StringBuilder(element.html());
-        sb.delete(0, sb.indexOf("do") + 3);
-        sb.delete(10, sb.length());
-        return Optional.of(parseDate(sb.toString(), DATE_FORMAT_HH_MM_YYYY));
+        val element = select[0]
+        val sb = StringBuilder(element.html())
+        sb.delete(0, sb.indexOf("do") + 3)
+        sb.delete(10, sb.length)
+        return Optional.of(parseDate(sb.toString(), DATE_FORMAT_HH_MM_YYYY)!!)
     }
 
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        Element img = documentDetailProduct.select("img[class=gall-slide-img]").first();
+    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+        var img: Element? = documentDetailProduct.select("img[class=gall-slide-img]").first()
         if (img == null) {
-            img = documentDetailProduct.select("img.gallery-magnifier__normal").first();
+            img = documentDetailProduct.select("img.gallery-magnifier__normal").first()
         }
         return Optional.ofNullable(img)
-                .map(JsoupUtils::srcAttribute);
+                .map { JsoupUtils.srcAttribute(it) }
     }
 
-    private Date parseDate(String strDate, String format) {
+    private fun parseDate(strDate: String?, format: String): Date? {
         if (strDate == null) {
-            return null;
+            return null
         }
         try {
-            return new SimpleDateFormat(format).parse(strDate);
+            return SimpleDateFormat(format).parse(strDate)
 
-        } catch (ParseException e) {
-            throw new PrcoRuntimeException("error while parsing string to date", e);
+        } catch (e: ParseException) {
+            throw PrcoRuntimeException("error while parsing string to date", e)
         }
+
     }
+
+
 }

@@ -1,116 +1,97 @@
-package sk.hudak.prco.eshop;
+package sk.hudak.prco.eshop
 
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.builder.SearchUrlBuilder;
-import sk.hudak.prco.parser.UnitParser;
-import sk.hudak.prco.parser.impl.JSoupProductParser;
-import sk.hudak.prco.utils.ConvertUtils;
-import sk.hudak.prco.utils.UserAgentDataHolder;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static java.util.Optional.ofNullable;
-import static org.apache.commons.lang3.StringUtils.removeStart;
-import static sk.hudak.prco.api.EshopUuid.MAXIKOVY_HRACKY;
+import org.apache.commons.lang3.StringUtils
+import org.apache.commons.lang3.StringUtils.removeStart
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.EshopUuid.MAXIKOVY_HRACKY
+import sk.hudak.prco.api.ProductAction
+import sk.hudak.prco.builder.SearchUrlBuilder
+import sk.hudak.prco.parser.UnitParser
+import sk.hudak.prco.parser.impl.JSoupProductParser
+import sk.hudak.prco.utils.ConvertUtils
+import sk.hudak.prco.utils.UserAgentDataHolder
+import java.math.BigDecimal
+import java.util.*
+import java.util.Optional.ofNullable
+import kotlin.streams.toList
 
 @Component
-public class MaxikovyHrackyProductParser extends JSoupProductParser {
+class MaxikovyHrackyProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+    : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    public MaxikovyHrackyProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
-        super(unitParser, userAgentDataHolder, searchUrlBuilder);
-    }
+    override val eshopUuid: EshopUuid
+        get() = MAXIKOVY_HRACKY
 
-    @Override
-    public EshopUuid getEshopUuid() {
-        return MAXIKOVY_HRACKY;
-    }
+    override// koli pomalym odozvam davam na 10 sekund
+    val timeout: Int
+        get() = TIMEOUT_10_SECOND
 
-    @Override
-    protected int getTimeout() {
-        // koli pomalym odozvam davam na 10 sekund
-        return TIMEOUT_10_SECOND;
-    }
-
-    @Override
-    protected int parseCountOfPages(Document documentList) {
+    override fun parseCountOfPages(documentList: Document): Int {
         //Optional[Zobrazuji 1-60 z 807 produktů]
-        Optional<Integer> countOfProductsOpt = ofNullable(documentList.select("div.line-sort > div > div.col-sm-4.text-right.top-12.font-12").first())
-                .map(Element::text)
-                .map(text -> StringUtils.removeEnd(text, " produktů"))
-                .map(text -> removeStart(text, text.substring(0, text.indexOf(" z ") + 3)))
-                .map(String::trim)
-                .map(Integer::valueOf);
+        val countOfProductsOpt = ofNullable(documentList.select("div.line-sort > div > div.col-sm-4.text-right.top-12.font-12").first())
+                .map { it.text() }
+                .map { StringUtils.removeEnd(it, " produktů") }
+                .map { removeStart(it, it.substring(0, it.indexOf(" z ") + 3)) }
+                .map { it.trim({ it <= ' ' }) }
+                .map { Integer.valueOf(it) }
 
-        if (!countOfProductsOpt.isPresent()) {
-            return 1;
+        if (!countOfProductsOpt.isPresent) {
+            return 1
         }
         //TODO podla mna to je ZLE pozri Feedo
-        int hh = countOfProductsOpt.get() % getEshopUuid().getMaxCountOfProductOnPage();
+        val hh = countOfProductsOpt.get() % eshopUuid.maxCountOfProductOnPage
 
-        if (hh > 0) {
-            return countOfProductsOpt.get() + 1;
+        return if (hh > 0) {
+            countOfProductsOpt.get() + 1
         } else {
-            return countOfProductsOpt.get();
+            countOfProductsOpt.get()
         }
     }
 
-    @Override
-    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
         return documentList.select("#product-list-box > div[class='col-sm-4 col-lg-2-4']").stream()
-                .map(element -> element.select("div > div > a").first())
-                .map(a -> getEshopUuid().getProductStartUrl() + a.attr("href"))
-                .map(link -> link + "?zmena_meny=EUR")
-                .collect(Collectors.toList());
+                .map { it.select("div > div > a").first() }
+                .map { eshopUuid.productStartUrl + it.attr("href") }
+                .map { "$it?zmena_meny=EUR" }
+                .toList()
     }
 
-    @Override
-    protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
         return ofNullable(documentDetailProduct.select("#product-info > div.col-xs-12.col-md-5 > h1").first())
-                .map(Element::text);
+                .map { it.text() }
     }
 
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
+    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
         return ofNullable(documentDetailProduct.select("#product-info > div.col-xs-12.col-md-7 > div.main-image > a > img").first())
-                .map(element -> element.attr("src"));
+                .map { element -> element.attr("src") }
     }
 
-    @Override
-    protected boolean isProductUnavailable(Document documentDetailProduct) {
+    override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
         return !ofNullable(documentDetailProduct.select("button[class='insert-cart btn btn-default']").first())
-                .isPresent();
+                .isPresent
     }
 
-    @Override
-    protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        Element first = documentDetailProduct.select("div[class='price text-red text-right']").first();
-        if(first == null){
-            first = documentDetailProduct.select("div[class='price text-red text-right simple']").first();
+    override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
+        var first: Element? = documentDetailProduct.select("div[class='price text-red text-right']").first()
+        if (first == null) {
+            first = documentDetailProduct.select("div[class='price text-red text-right simple']").first()
         }
         return ofNullable(first)
-                .map(Element::text)
-                .map(text -> StringUtils.removeEnd(text, " €"))
-                .map(ConvertUtils::convertToBigDecimal);
+                .map { it.text() }
+                .map { StringUtils.removeEnd(it, " €") }
+                .map { ConvertUtils.convertToBigDecimal(it) }
     }
 
-    @Override
-    protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
+    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
         //TODO
-        return Optional.empty();
+        return Optional.empty()
     }
 
-    @Override
-    protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
+    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
         //TODO
-        return Optional.empty();
+        return Optional.empty()
     }
 }
