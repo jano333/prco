@@ -1,38 +1,38 @@
-package sk.hudak.prco.manager.export;
+package sk.hudak.prco.manager.export
 
-import org.springframework.beans.factory.annotation.Value;
-import sk.hudak.prco.service.InternalTxService;
+import org.springframework.beans.factory.annotation.Value
+import sk.hudak.prco.service.InternalTxService
+import java.text.SimpleDateFormat
+import java.util.*
+import javax.inject.Inject
 
-import javax.inject.Inject;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-public abstract class AbstractExportImportManagerImpl {
-
-    protected static final String NEW_LINE_SEPARATOR = System.lineSeparator();
+abstract class AbstractExportImportManagerImpl {
 
     @Inject
-    protected InternalTxService internalTxService;
+    protected var internalTxService: InternalTxService? = null
 
-    @Value("${prco.server.export.import.root.dir}")
-    protected String sourceFolder;
+    @Value("\${prco.server.export.import.root.dir}")
+    protected var sourceFolder: String? = null
 
-    protected SimpleDateFormat sdfForFileName;
-    protected SimpleDateFormat sdf;
+    protected var sdfForFileName: SimpleDateFormat
+    protected var sdf: SimpleDateFormat
 
-
-    public AbstractExportImportManagerImpl() {
-        this.sdfForFileName = new SimpleDateFormat("dd-MM-yyyy_HH_mm_ss");
-        this.sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+    init {
+        this.sdfForFileName = SimpleDateFormat("dd-MM-yyyy_HH_mm_ss")
+        this.sdf = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
     }
 
-    protected String safeToString(Object obj) {
+    protected fun safeToString(obj: Any?): String? {
         if (obj == null) {
-            return null;
+            return null
         }
-        if (obj instanceof Date) {
-            return sdf.format((Date) obj);
-        }
-        return obj.toString();
+        return if (obj is Date) {
+            sdf.format(obj as Date?)
+        } else obj.toString()
+    }
+
+    companion object {
+
+        protected val NEW_LINE_SEPARATOR = System.lineSeparator()
     }
 }

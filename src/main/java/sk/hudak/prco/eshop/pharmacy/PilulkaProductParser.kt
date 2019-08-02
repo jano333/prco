@@ -1,137 +1,110 @@
-package sk.hudak.prco.eshop.pharmacy;
+package sk.hudak.prco.eshop.pharmacy
 
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.builder.SearchUrlBuilder;
-import sk.hudak.prco.parser.UnitParser;
-import sk.hudak.prco.parser.impl.JSoupProductParser;
-import sk.hudak.prco.utils.ConvertUtils;
-import sk.hudak.prco.utils.JsoupUtils;
-import sk.hudak.prco.utils.UserAgentDataHolder;
-
-import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static java.util.Optional.ofNullable;
-import static sk.hudak.prco.api.EshopUuid.PILULKA;
-import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
-import static sk.hudak.prco.utils.JsoupUtils.getFirstElementByClass;
+import org.apache.commons.lang3.StringUtils
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.EshopUuid.PILULKA
+import sk.hudak.prco.api.ProductAction
+import sk.hudak.prco.builder.SearchUrlBuilder
+import sk.hudak.prco.parser.UnitParser
+import sk.hudak.prco.parser.impl.JSoupProductParser
+import sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal
+import sk.hudak.prco.utils.JsoupUtils
+import sk.hudak.prco.utils.JsoupUtils.getFirstElementByClass
+import sk.hudak.prco.utils.UserAgentDataHolder
+import java.math.BigDecimal
+import java.util.*
+import java.util.Optional.ofNullable
+import kotlin.streams.toList
 
 @Component
-public class PilulkaProductParser extends JSoupProductParser {
+class PilulkaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+    : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    @Autowired
-    public PilulkaProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
-        super(unitParser, userAgentDataHolder, searchUrlBuilder);
-    }
+    override val eshopUuid: EshopUuid
+        get() = PILULKA
 
-    @Override
-    public EshopUuid getEshopUuid() {
-        return PILULKA;
-    }
+    override val timeout: Int
+        get() = TIMEOUT_10_SECOND
 
-    @Override
-    protected int getTimeout() {
-        return TIMEOUT_10_SECOND;
-    }
-
-    @Override
-    protected int parseCountOfPages(Document documentList) {
-        Optional<Element> firstElementByClass = getFirstElementByClass(documentList, "pager");
-        if (!firstElementByClass.isPresent()) {
-            return 1;
-        }
+    override fun parseCountOfPages(documentList: Document): Int {
+        val firstElementByClass = getFirstElementByClass(documentList, "pager")
+        return if (!firstElementByClass.isPresent) {
+            1
+        } else Integer.valueOf(firstElementByClass.get().getElementsByTag("a").last().text())
         // hodnotu z posledneho a tagu pod tagom pager
-        return Integer.valueOf(firstElementByClass.get().getElementsByTag("a").last().text());
     }
 
-    @Override
-    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
-        Optional<Elements> allElementsOpt = Optional.ofNullable(documentList.select("div[class=product-list]").first())
-                .map(Element::children)
-                .map(Elements::first)
-                .map(Element::children)
-                .map(elements -> elements.select("div > h3 > a"));
-        if (!allElementsOpt.isPresent()) {
-            return Collections.emptyList();
-        }
-        return allElementsOpt.get().stream()
-                .map(element -> element.select("div > h3 > a").first())
-                .filter(Objects::nonNull)
-                .map(a -> getEshopUuid().getProductStartUrl() + a.attr("href"))
-                .collect(Collectors.toList());
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+        val allElementsOpt = Optional.ofNullable(documentList.select("div[class=product-list]").first())
+                .map { it.children() }
+                .map { it.first() }
+                .map { it.children() }
+                .map { it.select("div > h3 > a") }
+
+        return if (!allElementsOpt.isPresent) {
+            emptyList()
+        } else allElementsOpt.get().stream()
+                .map { it.select("div > h3 > a").first() }
+                .filter { Objects.nonNull(it) }
+                .map { a -> eshopUuid.productStartUrl + a.attr("href") }
+                .toList()
     }
 
-    @Override
-    protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        Element first = documentDetailProduct.select("div[id=product-info] > form > div > h1 > span[itemprop=name]").first();
-        if (first != null) {
-            return Optional.ofNullable(first.text());
-        }
-        return ofNullable(documentDetailProduct.select("span[class='product-detail__header pr-3']").first())
-                .map(Element::text);
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+        val first = documentDetailProduct.select("div[id=product-info] > form > div > h1 > span[itemprop=name]").first()
+        return if (first != null) {
+            ofNullable(first.text())
+        } else ofNullable(documentDetailProduct.select("span[class='product-detail__header pr-3']").first())
+                .map { it.text() }
     }
 
-    @Override
-    protected boolean isProductUnavailable(Document documentDetailProduct) {
-        boolean isProductUnavailable = null == documentDetailProduct.select("input[value=Kúpiť]").first();
+    override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
+        var isProductUnavailable = null == documentDetailProduct.select("input[value=Kúpiť]").first()
         if (isProductUnavailable) {
-            isProductUnavailable = null == documentDetailProduct.select("#js-add-to-cart-first").first();
+            isProductUnavailable = null == documentDetailProduct.select("#js-add-to-cart-first").first()
         }
-        return isProductUnavailable;
+        return isProductUnavailable
     }
 
-    @Override
-    protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        Element first = documentDetailProduct.select("strong[id=priceNew]").first();
+    override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
+        var first: Element? = documentDetailProduct.select("strong[id=priceNew]").first()
         if (first != null) {
-            String substring = first.text().substring(0, first.text().length() - 2);
-            return Optional.of(convertToBigDecimal(substring));
+            val substring = first.text().substring(0, first.text().length - 2)
+            return Optional.of(convertToBigDecimal(substring))
         }
 
-        first = documentDetailProduct.select("span[class='fs-28 mb-3 text-primary fwb']").first();
+        first = documentDetailProduct.select("span[class='fs-28 mb-3 text-primary fwb']").first()
         return Optional.ofNullable(first)
-                .map(Element::text)
-                .map(text -> StringUtils.removeEnd(text, " €"))
-                .map(ConvertUtils::convertToBigDecimal);
+                .map { it.text() }
+                .map { StringUtils.removeEnd(it, " €") }
+                .map { convertToBigDecimal(it) }
     }
 
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        Element first = documentDetailProduct.select("#pr-img-carousel > ul > li > a > img").first();
+    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+        var first: Element? = documentDetailProduct.select("#pr-img-carousel > ul > li > a > img").first()
         if (first != null) {
-            return Optional.of(getEshopUuid().getProductStartUrl() + "/" + first.attr("src"));
+            return Optional.of(eshopUuid.productStartUrl + "/" + first.attr("src"))
         }
-        first = documentDetailProduct.select("div[class='product-detail__images'] > picture > a > img").first();
+        first = documentDetailProduct.select("div[class='product-detail__images'] > picture > a > img").first()
         if (first == null) {
-            first = documentDetailProduct.select("div[class='product-detail__images w-100 js-carousel-item'] > picture > a > img").first();
+            first = documentDetailProduct.select("div[class='product-detail__images w-100 js-carousel-item'] > picture > a > img").first()
         }
         return ofNullable(first)
-                .map(JsoupUtils::dataSrcAttribute)
-                .map(text -> text.substring(1))
-                .map(text -> getEshopUuid().getProductStartUrl() + "/"+ text);
+                .map { JsoupUtils.dataSrcAttribute(it) }
+                .map { it!!.substring(1) }
+                .map {eshopUuid.productStartUrl + "/" + it }
     }
 
-    @Override
-    protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
+    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
         //TODO impl
-        return Optional.empty();
+        return Optional.empty()
     }
 
-    @Override
-    protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
+    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
         //TODO impl
-        return Optional.empty();
+        return Optional.empty()
     }
 }

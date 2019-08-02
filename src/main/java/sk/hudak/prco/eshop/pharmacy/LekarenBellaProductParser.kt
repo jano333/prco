@@ -1,104 +1,83 @@
-package sk.hudak.prco.eshop.pharmacy;
+package sk.hudak.prco.eshop.pharmacy
 
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.builder.SearchUrlBuilder;
-import sk.hudak.prco.parser.UnitParser;
-import sk.hudak.prco.parser.impl.JSoupProductParser;
-import sk.hudak.prco.utils.ConvertUtils;
-import sk.hudak.prco.utils.UserAgentDataHolder;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static java.util.Optional.ofNullable;
-import static sk.hudak.prco.api.EshopUuid.LEKAREN_BELLA;
+import lombok.extern.slf4j.Slf4j
+import org.apache.commons.lang3.StringUtils
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.EshopUuid.LEKAREN_BELLA
+import sk.hudak.prco.api.ProductAction
+import sk.hudak.prco.builder.SearchUrlBuilder
+import sk.hudak.prco.parser.UnitParser
+import sk.hudak.prco.parser.impl.JSoupProductParser
+import sk.hudak.prco.utils.ConvertUtils
+import sk.hudak.prco.utils.UserAgentDataHolder
+import java.math.BigDecimal
+import java.util.*
+import java.util.Optional.ofNullable
+import kotlin.streams.toList
 
 @Slf4j
 @Component
-public class LekarenBellaProductParser extends JSoupProductParser {
+class LekarenBellaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+    : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    public LekarenBellaProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
-        super(unitParser, userAgentDataHolder, searchUrlBuilder);
+    override val eshopUuid: EshopUuid
+        get() = LEKAREN_BELLA
+
+    override val timeout: Int
+        get() = TIMEOUT_15_SECOND
+
+    override fun parseCountOfPages(documentList: Document): Int {
+        val size = documentList.select("ul[class='control-products control-products-sm2'] > li").size
+        return if (size < 1) {
+            0
+        } else size / 2
     }
 
-    @Override
-    public EshopUuid getEshopUuid() {
-        return LEKAREN_BELLA;
-    }
-
-    @Override
-    protected int getTimeout() {
-        return TIMEOUT_15_SECOND;
-    }
-
-    @Override
-    protected int parseCountOfPages(Document documentList) {
-        int size = documentList.select("ul[class='control-products control-products-sm2'] > li").size();
-        if (size < 1) {
-            return 0;
-        }
-        return size / 2;
-    }
-
-    @Override
-    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
         return documentList.select("div[class='product-items '] > div[class='row'] > div > a")
                 .stream()
-                .map(element -> element.attr("href"))
-                .collect(Collectors.toList());
+                .map { it.attr("href") }
+                .toList()
     }
 
-    @Override
-    protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        Element first = documentDetailProduct.select("h1[class='product-detail-title title-sm']").first();
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+        var first: Element? = documentDetailProduct.select("h1[class='product-detail-title title-sm']").first()
         if (first == null) {
-            first = documentDetailProduct.select("h1[class='product-detail-title title-xs']").first();
+            first = documentDetailProduct.select("h1[class='product-detail-title title-xs']").first()
         }
         return ofNullable(first)
-                .map(Element::text)
-                .filter(StringUtils::isNotBlank);
+                .map { it.text() }
+                .filter { StringUtils.isNotBlank(it) }
     }
 
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("img[class='img-responsive']");
+    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+        val select = documentDetailProduct.select("img[class='img-responsive']")
         return ofNullable(select)
-                .map(elements -> elements.attr("src"))
-                .filter(StringUtils::isNotBlank);
+                .map { it.attr("src") }
+                .filter { StringUtils.isNotBlank(it) }
     }
 
-    @Override
-    protected boolean isProductUnavailable(Document documentDetailProduct) {
-        return null == documentDetailProduct.select("button[class='btn btn-primary btn-purchase']").first();
+    override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
+        return null == documentDetailProduct.select("button[class='btn btn-primary btn-purchase']").first()
     }
 
-    @Override
-    protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
+    override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
         return ofNullable(documentDetailProduct.select("span[itemprop='price']"))
-                .map(Elements::text)
-                .filter(StringUtils::isNotBlank)
-                .map(ConvertUtils::convertToBigDecimal);
+                .map { it.text() }
+                .filter { StringUtils.isNotBlank(it) }
+                .map { ConvertUtils.convertToBigDecimal(it) }
     }
 
-    @Override
-    protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
+    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
         //TODO impl
-        return Optional.empty();
+        return Optional.empty()
     }
 
-    @Override
-    protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
+    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
         //TODO impl
-        return Optional.empty();
+        return Optional.empty()
     }
 }

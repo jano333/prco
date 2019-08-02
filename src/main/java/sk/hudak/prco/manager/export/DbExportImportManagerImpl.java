@@ -77,7 +77,7 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
 
     @PostConstruct
     protected void init() {
-        log.debug("export/import root dir: {}", sourceFolder);
+        log.debug("export/import root dir: {}", getSourceFolder());
     }
 
     @Override
@@ -95,7 +95,7 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
 
         try {
             exportPath = createExportPath(NEW_PRODUCT_FILE_NAME_PREFIX);
-            List<NewProductFullDto> newProductsForExport = internalTxService.findNewProductsForExport();
+            List<NewProductFullDto> newProductsForExport = getInternalTxService().findNewProductsForExport();
             printWriter = createPrintWriter(exportPath);
             csvFilePrinter = createCSVPrinter(printWriter);
 
@@ -136,7 +136,7 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
 
         try {
             exportPath = createExportPath(PRODUCT_FILE_NAME_PREFIX);
-            List<ProductFullDto> products = internalTxService.findProductsForExport();
+            List<ProductFullDto> products = getInternalTxService().findProductsForExport();
             printWriter = createPrintWriter(exportPath);
             csvFilePrinter = createCSVPrinter(printWriter);
 
@@ -181,7 +181,7 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
         CSVPrinter csvFilePrinter = null;
         try {
             exportPath = createExportPath(NOT_INTERESTED_PRODUCT_FILE_NAME_PREFIX);
-            List<NotInterestedProductFullDto> notInterestedProductsForExport = internalTxService.findNotInterestedProducts(new NotInterestedProductFindDto());
+            List<NotInterestedProductFullDto> notInterestedProductsForExport = getInternalTxService().findNotInterestedProducts(new NotInterestedProductFindDto());
             printWriter = createPrintWriter(exportPath);
             csvFilePrinter = createCSVPrinter(printWriter);
 
@@ -230,7 +230,7 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
             List<NewProductFullDto> result = new ArrayList<>();
 
             CSVFormat.DEFAULT
-                    .withRecordSeparator(NEW_LINE_SEPARATOR)
+                    .withRecordSeparator(Companion.getNEW_LINE_SEPARATOR())
                     .withDelimiter(DELIMITER)
                     .withHeader(NEW_PRODUCTS_HEADERS)
                     .withFirstRecordAsHeader().parse(in)
@@ -251,7 +251,7 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
 
             if (!result.isEmpty()) {
                 log.debug("count of new products that will be inserted: {}", result.size());
-                long realCount = internalTxService.importNewProducts(result);
+                long realCount = getInternalTxService().importNewProducts(result);
                 log.debug("real count of new products that was inserted: {}", realCount);
 
             } else {
@@ -278,7 +278,7 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
             List<ProductFullDto> result = new ArrayList<>();
 
             CSVFormat.DEFAULT
-                    .withRecordSeparator(NEW_LINE_SEPARATOR)
+                    .withRecordSeparator(Companion.getNEW_LINE_SEPARATOR())
                     .withDelimiter(DELIMITER)
                     .withHeader(PRODUCTS_HEADERS)
                     .withFirstRecordAsHeader().parse(in)
@@ -303,7 +303,7 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
 
             if (!result.isEmpty()) {
                 log.debug("count of products that will be inserted: {}", result.size());
-                long realCount = internalTxService.importProducts(result);
+                long realCount = getInternalTxService().importProducts(result);
                 log.info("real count of products that was inserted: {}", realCount);
 
             } else {
@@ -329,7 +329,7 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
             List<NotInterestedProductFullDto> result = new ArrayList<>();
 
             CSVFormat.DEFAULT
-                    .withRecordSeparator(NEW_LINE_SEPARATOR)
+                    .withRecordSeparator(Companion.getNEW_LINE_SEPARATOR())
                     .withDelimiter(DELIMITER)
                     .withHeader(NOT_ITERESTED_PRODUCTS_HEADERS)
                     .withFirstRecordAsHeader().parse(in)
@@ -348,7 +348,7 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
 
             if (!result.isEmpty()) {
                 log.debug("count of not interested products that will be inserted: {}", result.size());
-                long realCount = internalTxService.importNotInterestedProducts(result);
+                long realCount = getInternalTxService().importNotInterestedProducts(result);
                 log.info("real count of not interested products that was inserted: {}", realCount);
 
             } else {
@@ -386,7 +386,7 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
             return null;
         }
         try {
-            return sdf.parse(value);
+            return getSdf().parse(value);
         } catch (ParseException e) {
             throw new PrcoRuntimeException("error parsing date", e);
         }
@@ -433,7 +433,7 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
 
     private CSVPrinter createCSVPrinter(PrintWriter printWriter) throws IOException {
         return new CSVPrinter(printWriter, CSVFormat.DEFAULT
-                .withRecordSeparator(NEW_LINE_SEPARATOR)
+                .withRecordSeparator(Companion.getNEW_LINE_SEPARATOR())
                 .withDelimiter(DELIMITER));
     }
 
@@ -442,18 +442,18 @@ public class DbExportImportManagerImpl extends AbstractExportImportManagerImpl i
     }
 
     private String createExportPath(String productFileNamePrefix) {
-        return sourceFolder + productFileNamePrefix + "_" +
-                this.sdfForFileName.format(new Date()) +
+        return getSourceFolder() + productFileNamePrefix + "_" +
+                this.getSdfForFileName().format(new Date()) +
                 ".csv";
     }
 
     private String findPathFor(String fileNamePrefix) throws IOException {
         return Files.find(
-                Paths.get(sourceFolder),
+                Paths.get(getSourceFolder()),
                 1,
                 (path, basicFileAttributes) -> basicFileAttributes.isRegularFile() && path.toFile().getName().startsWith(fileNamePrefix)
         ).findFirst().orElseThrow(
-                () -> new PrcoRuntimeException("file with prefix: '" + fileNamePrefix + "' not found in dir: " + sourceFolder)
+                () -> new PrcoRuntimeException("file with prefix: '" + fileNamePrefix + "' not found in dir: " + getSourceFolder())
         ).toFile().getAbsolutePath();
     }
 
