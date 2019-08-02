@@ -16,7 +16,7 @@ class JsoupHtmlParserImpl(
         private val productParsers: List<EshopProductsParser>) : HtmlParser {
 
     companion object {
-        val log = LoggerFactory.getLogger(JsoupHtmlParserImpl::class.java)
+        val log = LoggerFactory.getLogger(JsoupHtmlParserImpl::class.java)!!
     }
 
     override fun searchProductUrls(eshopUuid: EshopUuid, searchKeyWord: String): List<String> {
@@ -46,7 +46,7 @@ class JsoupHtmlParserImpl(
 
     private fun findParserForEshop(eshopUuid: EshopUuid): EshopProductsParser {
         return productParsers.stream()
-                .filter { eshopProductsParser -> eshopProductsParser.eshopUuid == eshopUuid }
+                .filter { it.eshopUuid == eshopUuid }
                 .findFirst()
                 .orElseThrow { EshopParserNotFoundPrcoException(eshopUuid) }
     }

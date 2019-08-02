@@ -22,7 +22,7 @@ import java.util.*
 class UnitParserImpl : UnitParser {
 
     companion object {
-        val log = LoggerFactory.getLogger(UnitParserImpl::class.java)
+        val log = LoggerFactory.getLogger(UnitParserImpl::class.java)!!
     }
 
     // INDEX pre group match je od JEDNA !!!!! nie nula

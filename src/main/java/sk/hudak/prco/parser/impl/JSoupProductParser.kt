@@ -192,7 +192,7 @@ abstract class JSoupProductParser/*(protected var unitParser: UnitParser,
     }
 
 
-    override fun parseProductUpdateData(@NonNull productUrl: String): ProductUpdateData {
+    override fun parseProductUpdateData(productUrl: String): ProductUpdateData {
         val document = retrieveDocument(productUrl)
 
         // because there could be redirect

@@ -13,7 +13,7 @@ class EnumImplEshopUuidParserImpl : EshopUuidParser {
 
     override fun parseEshopUuid(productUrl: String): EshopUuid {
         return Arrays.stream(EshopUuid.values())
-                .filter { eshopUuid -> productUrl.startsWith(eshopUuid.productStartUrl) }
+                .filter { productUrl.startsWith(it.productStartUrl) }
                 .findFirst()
                 .orElseThrow { EshopNotFoundPrcoException(productUrl) }
     }
