@@ -4,13 +4,13 @@ import org.springframework.stereotype.Repository
 import sk.hudak.prco.dao.db.WatchDogEntityDao
 import sk.hudak.prco.model.QWatchDogEntity
 import sk.hudak.prco.model.WatchDogEntity
+import javax.persistence.EntityManager
 
 @Repository
-open class WatchDogEntityDaoImpl : BaseDaoImpl<WatchDogEntity>(), WatchDogEntityDao {
+open class WatchDogEntityDaoImpl(em: EntityManager) : BaseDaoImpl<WatchDogEntity>(em), WatchDogEntityDao {
 
     override fun findById(id: Long): WatchDogEntity =
             findById(WatchDogEntity::class.java, id)
-
 
     override fun findAll(): List<WatchDogEntity> =
             from(QWatchDogEntity.watchDogEntity).fetch()

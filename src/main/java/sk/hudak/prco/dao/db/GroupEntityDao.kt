@@ -12,7 +12,7 @@ interface GroupEntityDao : BaseDao<GroupEntity> {
     fun findGroupByName(groupName: String): GroupEntity?
 
     //TODO zmenit navratovu hodnotu na Optional<GroupEntity>
-    fun existGroupByName(name: String, groupIdToSkip: Long?): Boolean
+    fun existGroupByName(groupName: String, groupIdToSkip: Long?): Boolean
 
     fun findGroupsWithoutProduct(productId: Long?): List<GroupEntity>
 

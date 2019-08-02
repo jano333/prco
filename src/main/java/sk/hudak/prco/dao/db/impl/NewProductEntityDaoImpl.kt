@@ -10,9 +10,11 @@ import sk.hudak.prco.model.NewProductEntity
 import sk.hudak.prco.model.QNewProductEntity
 import java.util.*
 import java.util.Optional.ofNullable
+import javax.persistence.EntityManager
 
 @Component
-open class NewProductEntityDaoImpl : BaseDaoImpl<NewProductEntity>(), NewProductEntityDbDao {
+open class NewProductEntityDaoImpl(em: EntityManager)
+    : BaseDaoImpl<NewProductEntity>(em), NewProductEntityDbDao {
 
     override val countOfAllNewProducts: Long
         get() = from(QNewProductEntity.newProductEntity).fetchCount()

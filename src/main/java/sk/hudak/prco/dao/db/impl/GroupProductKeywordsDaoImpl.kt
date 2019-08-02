@@ -5,9 +5,11 @@ import sk.hudak.prco.dao.db.GroupProductKeywordsDao
 import sk.hudak.prco.model.GroupProductKeywordsEntity
 import sk.hudak.prco.model.QGroupProductKeywordsEntity
 import java.util.stream.Collectors
+import javax.persistence.EntityManager
 
 @Component
-open class GroupProductKeywordsDaoImpl : BaseDaoImpl<GroupProductKeywordsEntity>(), GroupProductKeywordsDao {
+open class GroupProductKeywordsDaoImpl(em: EntityManager)
+    : BaseDaoImpl<GroupProductKeywordsEntity>(em), GroupProductKeywordsDao {
 
     override fun findById(id: Long): GroupProductKeywordsEntity {
         return findById(GroupProductKeywordsEntity::class.java, id)

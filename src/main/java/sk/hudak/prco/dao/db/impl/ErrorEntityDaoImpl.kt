@@ -13,10 +13,11 @@ import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalUnit
 import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.persistence.EntityManager
 
 // musi byt open koli springu, lebo ked nie je tak nespusti spring boot app
 @Repository
-open class ErrorEntityDaoImpl : BaseDaoImpl<ErrorEntity>(), ErrorEntityDao {
+open class ErrorEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ErrorEntity>(em), ErrorEntityDao {
 
     override fun findById(id: Long): ErrorEntity {
         return findById(ErrorEntity::class.java, id)

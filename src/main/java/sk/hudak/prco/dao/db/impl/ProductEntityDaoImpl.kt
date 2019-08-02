@@ -12,19 +12,19 @@ import sk.hudak.prco.model.QProductEntity
 import java.time.ZoneId
 import java.util.*
 import java.util.Optional.ofNullable
+import javax.persistence.EntityManager
 
 @Repository
-open class ProductEntityDaoImpl : BaseDaoImpl<ProductEntity>(), ProductEntityDao {
+open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(em), ProductEntityDao {
 
-    override fun findById(id: Long): ProductEntity {
-        return findById(ProductEntity::class.java, id)
-    }
+    override fun findById(id: Long): ProductEntity =
+            findById(ProductEntity::class.java, id)
 
-    override fun existWithUrl(url: String): Boolean {
-        return from(QProductEntity.productEntity)
-                .where(QProductEntity.productEntity.url.equalsIgnoreCase(url))
-                .fetchCount() > 0
-    }
+
+    override fun existWithUrl(url: String): Boolean =
+            from(QProductEntity.productEntity)
+                    .where(QProductEntity.productEntity.url.equalsIgnoreCase(url))
+                    .fetchCount() > 0
 
     /**
      * Najde take, ktore este neboli nikde updatovane plus take ktore su starsie ako `olderThanInHours`

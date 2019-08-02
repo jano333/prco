@@ -7,9 +7,11 @@ import sk.hudak.prco.dao.db.NotInterestedProductDbDao
 import sk.hudak.prco.dto.product.NotInterestedProductFindDto
 import sk.hudak.prco.model.NotInterestedProductEntity
 import sk.hudak.prco.model.QNotInterestedProductEntity
+import javax.persistence.EntityManager
 
 @Repository
-open class NotInterestedProductDaoImpl : BaseDaoImpl<NotInterestedProductEntity>(), NotInterestedProductDbDao {
+open class NotInterestedProductDaoImpl(em: EntityManager)
+    : BaseDaoImpl<NotInterestedProductEntity>(em), NotInterestedProductDbDao {
 
     override fun findById(id: Long): NotInterestedProductEntity {
         return findById(NotInterestedProductEntity::class.java, id)

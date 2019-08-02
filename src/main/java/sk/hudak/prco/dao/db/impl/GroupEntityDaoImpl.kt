@@ -3,7 +3,6 @@ package sk.hudak.prco.dao.db.impl
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
 import org.apache.commons.lang3.StringUtils
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dao.db.GroupEntityDao
@@ -17,12 +16,15 @@ import sk.hudak.prco.model.QGroupEntity
 import java.math.BigDecimal
 import java.util.*
 import java.util.stream.Collectors
+import javax.persistence.EntityManager
 
 @Repository
 open class GroupEntityDaoImpl(
-        @Autowired private val productEntityDao: ProductEntityDao,
-        @Autowired private val groupOfProductFindEntityDao: GroupOfProductFindEntityDao
-) : BaseDaoImpl<GroupEntity>(), GroupEntityDao {
+        private val productEntityDao: ProductEntityDao,
+        private val groupOfProductFindEntityDao: GroupOfProductFindEntityDao,
+        em: EntityManager
+) : BaseDaoImpl<GroupEntity>(em), GroupEntityDao {
+
 
     override fun findById(id: Long): GroupEntity {
         return findById(GroupEntity::class.java, id)

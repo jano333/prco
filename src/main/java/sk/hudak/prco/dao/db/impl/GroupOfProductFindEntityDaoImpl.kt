@@ -3,7 +3,6 @@ package sk.hudak.prco.dao.db.impl
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
 import com.querydsl.jpa.impl.JPAQueryFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import sk.hudak.prco.dao.db.GroupOfProductFindEntityDao
 import sk.hudak.prco.model.ProductEntity
@@ -14,13 +13,9 @@ import java.util.*
 import javax.persistence.EntityManager
 
 @Repository
-open class GroupOfProductFindEntityDaoImpl : GroupOfProductFindEntityDao {
+open class GroupOfProductFindEntityDaoImpl(em: EntityManager) : GroupOfProductFindEntityDao {
 
-    @Autowired
-    private val em: EntityManager? = null
-
-    private val queryFactory: JPAQueryFactory
-        get() = JPAQueryFactory(em)
+    private val queryFactory: JPAQueryFactory = JPAQueryFactory(em)
 
     override fun findProductsWitchAreNotInAnyGroup(): List<ProductEntity> {
         val queryFactory = queryFactory
