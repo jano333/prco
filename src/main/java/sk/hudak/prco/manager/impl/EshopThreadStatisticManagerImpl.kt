@@ -1,76 +1,70 @@
-package sk.hudak.prco.manager.impl;
+package sk.hudak.prco.manager.impl
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.manager.EshopThreadStatisticManager;
-import sk.hudak.prco.service.InternalTxService;
-import sk.hudak.prco.task.EshopTaskManager;
-import sk.hudak.prco.task.TaskContext;
-import sk.hudak.prco.task.TaskStatus;
+import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.manager.EshopThreadStatisticManager
+import sk.hudak.prco.service.InternalTxService
+import sk.hudak.prco.task.EshopTaskManager
+import sk.hudak.prco.task.TaskStatus
+import java.util.*
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-@Slf4j
 @Component
-public class EshopThreadStatisticManagerImpl implements EshopThreadStatisticManager {
+class EshopThreadStatisticManagerImpl(
+        private val eshopTaskManager: EshopTaskManager,
+        private val internalTxService: InternalTxService) : EshopThreadStatisticManager {
 
-    @Autowired
-    private EshopTaskManager eshopTaskManager;
-
-    @Autowired
-    private InternalTxService internalTxService;
-
-    @Override
-    public void startShowingStatistics() {
-        boolean shoudDownStatistic = false;
-        Thread thread = new Thread(() -> {
-            boolean aha = true;
-            while (aha) {
-                doInOneLoop();
-                try {
-                    Thread.sleep((long) (10 * 1000));
-                } catch (InterruptedException e) {
-                    log.error("thread interrupted " + e.getMessage());
-                    Thread.currentThread().interrupt();
-                }
-                if (shoudDownStatistic) {
-                    log.debug("shunting down statistics");
-                    Thread.currentThread().interrupt();
-                }
-            }
-        });
-        thread.setName("thread-statistic-mng");
-        thread.setDaemon(true);
-        thread.start();
+    companion object {
+        val log = LoggerFactory.getLogger(EshopThreadStatisticManagerImpl::class.java)!!
     }
 
-    private void doInOneLoop() {
-        Map<EshopUuid, TaskContext> tasks = eshopTaskManager.getTasks();
+    override fun startShowingStatistics() {
+        val shoudDownStatistic = false
+        val thread = Thread {
+            val aha = true
+            while (aha) {
+                doInOneLoop()
+                try {
+                    Thread.sleep((10 * 1000).toLong())
+                } catch (e: InterruptedException) {
+                    log.error("thread interrupted " + e.message)
+                    Thread.currentThread().interrupt()
+                }
 
-        List<EshopUuid> running = new ArrayList<>(EshopUuid.values().length);
-        List<EshopUuid> finishedOk = new ArrayList<>(EshopUuid.values().length);
-        List<EshopUuid> finishedNotOk = new ArrayList<>(EshopUuid.values().length);
+                if (shoudDownStatistic) {
+                    log.debug("shunting down statistics")
+                    Thread.currentThread().interrupt()
+                }
+            }
+        }
+        thread.name = "thread-statistic-mng"
+        thread.isDaemon = true
+        thread.start()
+    }
 
-        for (Map.Entry<EshopUuid, TaskContext> eshopUuidTaskStatusEntry : tasks.entrySet()) {
-            TaskStatus value = eshopUuidTaskStatusEntry.getValue().getStatus();
-            if (value.equals(TaskStatus.RUNNING)) {
-                running.add(eshopUuidTaskStatusEntry.getKey());
+    private fun doInOneLoop() {
+        val tasks = eshopTaskManager.tasks
+
+        val running = ArrayList<EshopUuid>(EshopUuid.values().size)
+        val finishedOk = ArrayList<EshopUuid>(EshopUuid.values().size)
+        val finishedNotOk = ArrayList<EshopUuid>(EshopUuid.values().size)
+
+        for ((key, value1) in tasks) {
+            val value = value1.status
+            if (value == TaskStatus.RUNNING) {
+                running.add(key)
             }
-            if (value.equals(TaskStatus.FINISHED_OK)) {
-                finishedOk.add(eshopUuidTaskStatusEntry.getKey());
+            if (value == TaskStatus.FINISHED_OK) {
+                finishedOk.add(key)
             }
-            if (value.equals(TaskStatus.FINISHED_WITH_ERROR)) {
-                finishedNotOk.add(eshopUuidTaskStatusEntry.getKey());
+            if (value == TaskStatus.FINISHED_WITH_ERROR) {
+                finishedNotOk.add(key)
             }
         }
 
-        log.debug("all tasks: {}  running: {}, finished(ok/error): {}/{}{}", tasks.size(), running.size(), finishedOk.size(), finishedNotOk.size(), finishedNotOk);
-//        log.debug("status: {}", tasks.toString());
-        log.debug("error statistic {}", internalTxService.getStatisticForErrors());
+        log.debug("all tasks: {}  running: {}, finished(ok/error): {}/{}{}", tasks.size, running.size, finishedOk.size, finishedNotOk.size, finishedNotOk)
+        //        log.debug("status: {}", tasks.toString());
+        log.debug("error statistic {}", internalTxService.statisticForErrors)
 
         /*if (running.isEmpty()) {
             return true;

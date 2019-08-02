@@ -14,10 +14,10 @@ import sk.hudak.prco.manager.updateprocess.UpdateProcessResult.*
 import sk.hudak.prco.service.InternalTxService
 
 @Component
-class ErrorHandlerImpl(val internalTxService: InternalTxService) : ErrorHandler {
+class ErrorHandlerImpl(private val internalTxService: InternalTxService) : ErrorHandler {
 
     companion object {
-        val log = LoggerFactory.getLogger(ErrorHandlerImpl::class.java)
+        val log = LoggerFactory.getLogger(ErrorHandlerImpl::class.java)!!
     }
 
     override fun processParsingError(error: Exception, productDetailInfo: ProductDetailInfo): UpdateProcessResult {

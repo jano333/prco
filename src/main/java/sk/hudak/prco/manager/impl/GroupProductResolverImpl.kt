@@ -1,39 +1,34 @@
-package sk.hudak.prco.manager.impl;
+package sk.hudak.prco.manager.impl
 
-import lombok.NonNull;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.GroupProductKeywords;
-import sk.hudak.prco.manager.GroupProductResolver;
-
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.GroupProductKeywords
+import sk.hudak.prco.manager.GroupProductResolver
+import java.util.*
+import java.util.stream.Collectors
 
 @Component
-public class GroupProductResolverImpl implements GroupProductResolver {
+class GroupProductResolverImpl : GroupProductResolver {
 
-    @Override
-    public Optional<GroupProductKeywords> resolveGroup(@NonNull String productName) {
+    override fun resolveGroup(productName: String): GroupProductKeywords? {
         // spritnem nazov produktu zo zoznamu slov(lower case)
-        Set<String> productNameWords = Arrays.stream(StringUtils.split(productName, StringUtils.SPACE))
-                .filter(StringUtils::isNotBlank)
-                .map(String::trim)
-                .map(String::toLowerCase)
-                .map(StringUtils::stripAccents)
-                .collect(Collectors.toSet());
+        val productNameWords = Arrays.stream(StringUtils.split(productName, StringUtils.SPACE))
+                .filter { StringUtils.isNotBlank(it) }
+                .map { it.trim { it <= ' ' } }
+                .map { it.toLowerCase() }
+                .map { StringUtils.stripAccents(it) }
+                .collect(Collectors.toSet())
 
 
-        return Arrays.stream(GroupProductKeywords.values())
-                .filter(keyword -> resolve(keyword, productNameWords))
-                .findFirst();
+        return GroupProductKeywords.values()
+                .filter { resolve(it, productNameWords) }
+                .firstOrNull()
     }
 
-    private boolean resolve(GroupProductKeywords keyword, Set<String> productNameWords) {
-        return keyword.getChoices().stream()
-                .filter(choice -> productNameWords.containsAll(choice))
+    private fun resolve(keyword: GroupProductKeywords, productNameWords: Set<String>): Boolean {
+        return keyword.choices.stream()
+                .filter { productNameWords.containsAll(it) }
                 .findFirst()
-                .isPresent();
+                .isPresent
     }
 }

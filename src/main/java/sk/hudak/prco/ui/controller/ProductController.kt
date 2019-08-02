@@ -38,7 +38,7 @@ class ProductController(uiService: UIService, val groupProductResolver: GroupPro
             dto.name = product.name
             dto.url = product.url
             dto.id = product.id
-            dto.keywords = groupProductResolver.resolveGroup(product.name!!).orElse(null)
+            dto.keywords = groupProductResolver.resolveGroup(product.name!!)
             products.add(dto)
         }
         val modelAndView = ModelAndView(VIEW_PRODUCTS_NOT_IN_ANY_GROUP, "productsNotIntAnyGroup", products)

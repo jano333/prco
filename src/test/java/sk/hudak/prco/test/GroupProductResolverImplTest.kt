@@ -1,23 +1,19 @@
-package sk.hudak.prco.test;
+package sk.hudak.prco.test
 
-import sk.hudak.prco.api.GroupProductKeywords;
-import sk.hudak.prco.manager.GroupProductResolver;
-import sk.hudak.prco.manager.impl.GroupProductResolverImpl;
+import sk.hudak.prco.manager.impl.GroupProductResolverImpl
 
-import java.util.Optional;
+object GroupProductResolverImplTest {
 
-public class GroupProductResolverImplTest {
+    @JvmStatic
+    fun main(args: Array<String>) {
 
-    public static void main(String[] args) {
+        val productName = "Pampers Active Baby-dry 4 Maxi 36 ks 7-14 kg"
 
-        String productName = "Pampers Active Baby-dry 4 Maxi 36 ks 7-14 kg";
+        val groupProductKeywords = GroupProductResolverImpl().resolveGroup(productName)
+        groupProductKeywords?.let {
+            println(groupProductKeywords)
+        } ?: println("not found")
 
-        GroupProductResolver resolver = new GroupProductResolverImpl();
-        Optional<GroupProductKeywords> groupProductKeywords = resolver.resolveGroup(productName);
-        if (groupProductKeywords.isPresent()) {
-            System.out.println(groupProductKeywords.get());
-        } else {
-            System.out.println("not found");
-        }
+
     }
 }
