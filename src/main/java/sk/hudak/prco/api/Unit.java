@@ -1,10 +1,6 @@
-package sk.hudak.prco.api
+package sk.hudak.prco.api;
 
-/**
- * Created by jan.hudak on 9/21/2017.
- */
-enum class Unit {
-
+public enum Unit {
     KUS,
     LITER,
     KILOGRAM,

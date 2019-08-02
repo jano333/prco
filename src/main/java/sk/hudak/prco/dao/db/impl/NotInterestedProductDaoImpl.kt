@@ -9,7 +9,7 @@ import sk.hudak.prco.model.NotInterestedProductEntity
 import sk.hudak.prco.model.QNotInterestedProductEntity
 
 @Repository
-class NotInterestedProductDaoImpl : BaseDaoImpl<NotInterestedProductEntity>(), NotInterestedProductDbDao {
+open class NotInterestedProductDaoImpl : BaseDaoImpl<NotInterestedProductEntity>(), NotInterestedProductDbDao {
 
     override fun findById(id: Long): NotInterestedProductEntity {
         return findById(NotInterestedProductEntity::class.java, id)

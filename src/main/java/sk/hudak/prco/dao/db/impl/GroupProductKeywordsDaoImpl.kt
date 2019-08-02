@@ -7,7 +7,7 @@ import sk.hudak.prco.model.QGroupProductKeywordsEntity
 import java.util.stream.Collectors
 
 @Component
-class GroupProductKeywordsDaoImpl : BaseDaoImpl<GroupProductKeywordsEntity>(), GroupProductKeywordsDao {
+open class GroupProductKeywordsDaoImpl : BaseDaoImpl<GroupProductKeywordsEntity>(), GroupProductKeywordsDao {
 
     override fun findById(id: Long): GroupProductKeywordsEntity {
         return findById(GroupProductKeywordsEntity::class.java, id)

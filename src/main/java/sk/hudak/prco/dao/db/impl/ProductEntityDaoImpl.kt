@@ -14,7 +14,7 @@ import java.util.*
 import java.util.Optional.ofNullable
 
 @Repository
-class ProductEntityDaoImpl : BaseDaoImpl<ProductEntity>(), ProductEntityDao {
+open class ProductEntityDaoImpl : BaseDaoImpl<ProductEntity>(), ProductEntityDao {
 
     override fun findById(id: Long): ProductEntity {
         return findById(ProductEntity::class.java, id)

@@ -14,8 +14,9 @@ import java.time.temporal.TemporalUnit
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+// musi byt open koli springu, lebo ked nie je tak nespusti spring boot app
 @Repository
-class ErrorEntityDaoImpl : BaseDaoImpl<ErrorEntity>(), ErrorEntityDao {
+open class ErrorEntityDaoImpl : BaseDaoImpl<ErrorEntity>(), ErrorEntityDao {
 
     override fun findById(id: Long): ErrorEntity {
         return findById(ErrorEntity::class.java, id)

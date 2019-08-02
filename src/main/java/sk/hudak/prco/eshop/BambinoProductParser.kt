@@ -1,142 +1,112 @@
-package sk.hudak.prco.eshop;
+package sk.hudak.prco.eshop
 
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.builder.SearchUrlBuilder;
-import sk.hudak.prco.parser.UnitParser;
-import sk.hudak.prco.parser.impl.JSoupProductParser;
-import sk.hudak.prco.utils.UserAgentDataHolder;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-import static sk.hudak.prco.api.EshopUuid.BAMBINO;
-import static sk.hudak.prco.api.ProductAction.IN_ACTION;
-import static sk.hudak.prco.api.ProductAction.NON_ACTION;
-import static sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal;
-import static sk.hudak.prco.utils.JsoupUtils.existElement;
-import static sk.hudak.prco.utils.JsoupUtils.getTextFromFirstElementByClass;
-import static sk.hudak.prco.utils.JsoupUtils.notExistElement;
+import org.jsoup.nodes.Document
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.EshopUuid.BAMBINO
+import sk.hudak.prco.api.ProductAction
+import sk.hudak.prco.api.ProductAction.IN_ACTION
+import sk.hudak.prco.api.ProductAction.NON_ACTION
+import sk.hudak.prco.builder.SearchUrlBuilder
+import sk.hudak.prco.parser.UnitParser
+import sk.hudak.prco.parser.impl.JSoupProductParser
+import sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal
+import sk.hudak.prco.utils.JsoupUtils.existElement
+import sk.hudak.prco.utils.JsoupUtils.getTextFromFirstElementByClass
+import sk.hudak.prco.utils.JsoupUtils.notExistElement
+import sk.hudak.prco.utils.UserAgentDataHolder
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.util.*
 
 //@Component
 //TODO zrusit presli pod mall eshop
-public class BambinoProductParser extends JSoupProductParser {
+class BambinoProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+    : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    private static final int PAGING = 24;
-
-
-    @Autowired
-    public BambinoProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
-        super(unitParser, userAgentDataHolder, searchUrlBuilder);
+    companion object {
+        private val PAGING = 24
     }
 
-    @Override
-    public EshopUuid getEshopUuid() {
-        return BAMBINO;
-    }
+    override val eshopUuid: EshopUuid
+        get() = BAMBINO
 
-    @Override
-    protected int getTimeout() {
-        // koli pomalym odozvam davam na 15 sekund
-        return TIMEOUT_15_SECOND;
-    }
+    override val timeout: Int
+        get() = TIMEOUT_15_SECOND
 
-    @Override
-    protected int parseCountOfPages(Document documentList) {
-        Optional<String> text = getTextFromFirstElementByClass(documentList, "o-header-section__info");
-        if (!text.isPresent()) {
-            return 1;
+    override fun parseCountOfPages(documentList: Document): Int {
+        val text = getTextFromFirstElementByClass(documentList, "o-header-section__info")
+        if (!text.isPresent) {
+            return 1
         }
-        String tmp = text.get();
-        String count = tmp.replace("Celkom nájdených produktov: ", "").trim();
-        BigDecimal result = new BigDecimal(count).divide(new BigDecimal(PAGING), RoundingMode.HALF_UP);
-        return result.intValue();
+        val tmp = text.get()
+        val count = tmp.replace("Celkom nájdených produktov: ", "").trim { it <= ' ' }
+        val result = BigDecimal(count).divide(BigDecimal(PAGING), RoundingMode.HALF_UP)
+        return result.toInt()
     }
 
-    @Override
-    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
-        Elements allElements = documentList.select("a[class=o-product-box__link]");
-        List<String> result = new ArrayList<>(allElements.size());
-        for (Element element : allElements) {
-            String href = element.attr("href");
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+        val allElements = documentList.select("a[class=o-product-box__link]")
+        val result = ArrayList<String>(allElements.size)
+        for (element in allElements) {
+            val href = element.attr("href")
             // specialny fix, odsranujem vsetko co je za otaznikom lebo tam dava neaky token:
             // https://www.bambino.sk/jednorazove-plienky/premium-care-4-maxi-7-14kg-66-ks?searchToken=75bc6842-eecc-4269-a0fc-1e3af1c36c80
-            int querySeparator = href.indexOf('?');
+            val querySeparator = href.indexOf('?')
             if (querySeparator == -1) {
-                result.add(href);
+                result.add(href)
             } else {
-                result.add(href.substring(0, querySeparator));
+                result.add(href.substring(0, querySeparator))
             }
         }
-        return result;
+        return result
     }
 
-    @Override
-    protected boolean isProductUnavailable(Document documentDetailProduct) {
-        return notExistElement(documentDetailProduct, "span[class=o-add-to-cart__status]");
+    override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
+        return notExistElement(documentDetailProduct, "span[class=o-add-to-cart__status]")
     }
 
 
-    @Override
-    protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        Element first = documentDetailProduct.select("h1[class=o-product__name]").first();
-        if (first == null) {
-            return Optional.empty();
-        }
-        Elements children = first.children();
-        StringBuilder sb = new StringBuilder();
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+        val first = documentDetailProduct.select("h1[class=o-product__name]").first() ?: return Optional.empty()
+        val children = first.children()
+        val sb = StringBuilder()
 
-        for (Element child : children) {
-            String text = child.text();
-            sb.append(text);
-            sb.append(" ");
+        for (child in children) {
+            val text = child.text()
+            sb.append(text)
+            sb.append(" ")
         }
-        String result = sb.toString().trim();
-        return Optional.ofNullable(result);
+        val result = sb.toString().trim { it <= ' ' }
+        return Optional.ofNullable(result)
     }
 
-    @Override
-    protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        Element first = documentDetailProduct.select("b[class=m-quantity-price__price]").first();
-        if (first == null) {
-            return Optional.empty();
-        }
-        StringBuilder sb = new StringBuilder(first.text());
+    override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
+        val first = documentDetailProduct.select("b[class=m-quantity-price__price]").first() ?: return Optional.empty()
+        var sb = StringBuilder(first.text())
         // odmazem posledne 2 znaky
-        sb = sb.deleteCharAt(sb.length() - 1);
-        sb = sb.deleteCharAt(sb.length() - 1);
-        String cenaZaBalenie = sb.toString();
-        return Optional.of(convertToBigDecimal(cenaZaBalenie));
+        sb = sb.deleteCharAt(sb.length - 1)
+        sb = sb.deleteCharAt(sb.length - 1)
+        val cenaZaBalenie = sb.toString()
+        return Optional.of(convertToBigDecimal(cenaZaBalenie))
     }
 
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        Element first = documentDetailProduct.select("img[itemprop=image]").first();
-        if (first == null) {
-            return Optional.empty();
-        }
-        String src = first.attr("src");
-        return Optional.of(src);
+    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+        val first = documentDetailProduct.select("img[itemprop=image]").first() ?: return Optional.empty()
+        val src = first.attr("src")
+        return Optional.of(src)
     }
 
-    @Override
-    protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
-        return existElement(documentDetailProduct, "span[class=m-badge m-badge--large bg-red o-product__labels__item]")
-                ? Optional.of(IN_ACTION)
-                : Optional.of(NON_ACTION);
+    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
+        return if (existElement(documentDetailProduct, "span[class=m-badge m-badge--large bg-red o-product__labels__item]"))
+            Optional.of(IN_ACTION)
+        else
+            Optional.of(NON_ACTION)
     }
 
-    @Override
-    protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
+    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
         // not supported for this eshop
-        return Optional.empty();
+        return Optional.empty()
     }
+
+
 }

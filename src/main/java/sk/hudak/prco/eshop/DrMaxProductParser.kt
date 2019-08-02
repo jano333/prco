@@ -1,139 +1,109 @@
-package sk.hudak.prco.eshop;
+package sk.hudak.prco.eshop
 
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.builder.SearchUrlBuilder;
-import sk.hudak.prco.dto.UnitTypeValueCount;
-import sk.hudak.prco.parser.UnitParser;
-import sk.hudak.prco.parser.impl.JSoupProductParser;
-import sk.hudak.prco.utils.ConvertUtils;
-import sk.hudak.prco.utils.UserAgentDataHolder;
+import org.apache.commons.lang3.StringUtils
+import org.jsoup.nodes.Document
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.EshopUuid.DR_MAX
+import sk.hudak.prco.api.ProductAction
+import sk.hudak.prco.builder.SearchUrlBuilder
+import sk.hudak.prco.dto.UnitTypeValueCount
+import sk.hudak.prco.parser.UnitParser
+import sk.hudak.prco.parser.impl.JSoupProductParser
+import sk.hudak.prco.utils.ConvertUtils
+import sk.hudak.prco.utils.UserAgentDataHolder
+import java.math.BigDecimal
+import java.util.*
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-import static sk.hudak.prco.api.EshopUuid.DR_MAX;
-
-@Slf4j
 @Component
-public class DrMaxProductParser extends JSoupProductParser {
+class DrMaxProductParser
+constructor(unitParser: UnitParser,
+            userAgentDataHolder: UserAgentDataHolder,
+            searchUrlBuilder: SearchUrlBuilder)
+    : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    @Autowired
-    public DrMaxProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
-        super(unitParser, userAgentDataHolder, searchUrlBuilder);
-    }
+    override val eshopUuid: EshopUuid
+        get() = DR_MAX
 
-    @Override
-    public EshopUuid getEshopUuid() {
-        return DR_MAX;
-    }
+    override val timeout: Int
+        get() = TIMEOUT_15_SECOND
 
-    @Override
-    protected int getTimeout() {
-        return TIMEOUT_15_SECOND;
-    }
+    override fun parseCountOfPages(documentList: Document): Int {
+        val select = documentList.select("h2[class=title-subcategory]").first() ?: return 1
+        var text = select.text()
+        text = StringUtils.remove(text, "Vyhľadávanie (")
+        text = StringUtils.remove(text, ")")
+        val allProductsSize = Integer.parseInt(text)
+        val maxCountOfNewPages = eshopUuid.maxCountOfProductOnPage
 
-    @Override
-    protected int parseCountOfPages(Document documentList) {
-        Element select = documentList.select("h2[class=title-subcategory]").first();
-        if (select == null) {
-            return 1;
-        }
-        String text = select.text();
-        text = StringUtils.remove(text, "Vyhľadávanie (");
-        text = StringUtils.remove(text, ")");
-        int allProductsSize = Integer.parseInt(text);
-        int maxCountOfNewPages = getEshopUuid().getMaxCountOfProductOnPage();
+        val cout = allProductsSize / maxCountOfNewPages
+        val hh = allProductsSize % maxCountOfNewPages
 
-        int cout = allProductsSize / maxCountOfNewPages;
-        int hh = allProductsSize % maxCountOfNewPages;
-
-        if (hh > 0) {
-            return cout + 1;
+        return if (hh > 0) {
+            cout + 1
         } else {
-            return cout;
+            cout
         }
     }
 
-    @Override
-    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
-        List<String> urls = new ArrayList<>();
-        for (Element child : documentList.select("#main > div.productList.productListTypeRow.row").first().children()) {
-            String attr = child.children().first().attr("data-href");
-            if (attr == null) {
-                continue;
-            }
-            urls.add(getEshopUuid().getProductStartUrl() + attr);
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+        val urls = ArrayList<String>()
+        for (child in documentList.select("#main > div.productList.productListTypeRow.row").first().children()) {
+            val attr = child.children().first().attr("data-href") ?: continue
+            urls.add(eshopUuid.productStartUrl + attr)
         }
-        return urls;
+        return urls
     }
 
-    @Override
-    protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("#product-detail > div.row > div > div > div.col.data > div.redesign_desktop > div.redesign-product-detail-title.bold");
-        Element first = select.first().children().first();
-        String text = first.text().trim();
-        return Optional.of(text);
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+        val select = documentDetailProduct.select("#product-detail > div.row > div > div > div.col.data > div.redesign_desktop > div.redesign-product-detail-title.bold")
+        val first = select.first().children().first()
+        val text = first.text().trim { it <= ' ' }
+        return Optional.of(text)
     }
 
-    @Override
-    protected Optional<UnitTypeValueCount> parseUnitValueCount(Document document, String productName) {
-        Elements select = document.select("div.redesign-product-detail-slogan");
+    override fun parseUnitValueCount(document: Document, productName: String): Optional<UnitTypeValueCount> {
+        val select = document.select("div.redesign-product-detail-slogan")
         if (!select.isEmpty()) {
-            String text = select.get(0).child(0).text();
+            val text = select[0].child(0).text()
             if (StringUtils.isNotBlank(text)) {
-                return unitParser.parseUnitTypeValueCount(text);
+                return unitParser.parseUnitTypeValueCount(text)
             }
         }
         // ak nie je tak skusit z product name
-        return super.parseUnitValueCount(document, productName);
+        return super.parseUnitValueCount(document, productName)
     }
 
-    @Override
-    protected boolean isProductUnavailable(Document documentDetailProduct) {
-        return documentDetailProduct.select("button[class=redesign-button addToCartBtn btn btn-big btn-pink ucase]").isEmpty();
+    override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
+        return documentDetailProduct.select("button[class=redesign-button addToCartBtn btn btn-big btn-pink ucase]").isEmpty()
     }
 
-    @Override
-    protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("strong[itemprop=price]");
+    override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
+        val select = documentDetailProduct.select("strong[itemprop=price]")
         if (select.isEmpty()) {
-            return Optional.empty();
+            return Optional.empty()
         }
-        String text = select.get(0).text();
-        BigDecimal value = ConvertUtils.convertToBigDecimal(text);
-        return Optional.ofNullable(value);
+        val text = select[0].text()
+        val value = ConvertUtils.convertToBigDecimal(text)
+        return Optional.ofNullable(value)
     }
 
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
-        Elements select = documentDetailProduct.select("#productImg > img.image");
-        Element element = select.get(0);
-        String src = element.attr("src");
-        String s = getEshopUuid().getProductStartUrl() + src;
-        return Optional.of(s);
+    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+        val select = documentDetailProduct.select("#productImg > img.image")
+        val element = select[0]
+        val src = element.attr("src")
+        val s = eshopUuid.productStartUrl + src
+        return Optional.of(s)
     }
 
-    @Override
-    protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
+    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
         //TODO impl
-        return Optional.empty();
+        return Optional.empty()
     }
 
-    @Override
-    protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
+    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
         //TODO impl
-        return Optional.empty();
+        return Optional.empty()
     }
 
 

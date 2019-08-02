@@ -12,7 +12,7 @@ import java.util.*
 import java.util.Optional.ofNullable
 
 @Component
-class NewProductEntityDaoImpl : BaseDaoImpl<NewProductEntity>(), NewProductEntityDbDao {
+open class NewProductEntityDaoImpl : BaseDaoImpl<NewProductEntity>(), NewProductEntityDbDao {
 
     override val countOfAllNewProducts: Long
         get() = from(QNewProductEntity.newProductEntity).fetchCount()

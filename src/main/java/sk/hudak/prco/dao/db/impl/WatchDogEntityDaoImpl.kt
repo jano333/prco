@@ -6,7 +6,7 @@ import sk.hudak.prco.model.QWatchDogEntity
 import sk.hudak.prco.model.WatchDogEntity
 
 @Repository
-class WatchDogEntityDaoImpl : BaseDaoImpl<WatchDogEntity>(), WatchDogEntityDao {
+open class WatchDogEntityDaoImpl : BaseDaoImpl<WatchDogEntity>(), WatchDogEntityDao {
 
     override fun findById(id: Long): WatchDogEntity =
             findById(WatchDogEntity::class.java, id)

@@ -19,7 +19,7 @@ import java.util.*
 import java.util.stream.Collectors
 
 @Repository
-class GroupEntityDaoImpl(
+open class GroupEntityDaoImpl(
         @Autowired private val productEntityDao: ProductEntityDao,
         @Autowired private val groupOfProductFindEntityDao: GroupOfProductFindEntityDao
 ) : BaseDaoImpl<GroupEntity>(), GroupEntityDao {

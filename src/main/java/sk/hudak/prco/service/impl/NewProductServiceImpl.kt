@@ -23,7 +23,6 @@ import sk.hudak.prco.utils.Validate.notNegativeAndNotZeroValue
 import sk.hudak.prco.utils.Validate.notNull
 import sk.hudak.prco.utils.Validate.notNullNotEmpty
 import java.util.*
-import java.util.stream.Stream
 
 //TODO KT overit si @Autovired anotacia je potrebna
 
@@ -166,12 +165,11 @@ class NewProductServiceImpl(@Autowired private val newProductEntityDao: NewProdu
         newProductEntityDao.update(productEntity)
     }
 
-    override fun confirmUnitDataForNewProducts(newProductIds: Array<Long>) {
+    override fun confirmUnitDataForNewProducts(newProductIds: LongArray) {
         //TODO validacia
 //        atLeastOneIsNotNull(newProductIds, "newProductIds")
-
-        Stream.of(newProductIds)
-                .map { (newProductId: Long) -> newProductEntityDao.findById(newProductId) }
+        newProductIds
+                .map { newProductId -> newProductEntityDao.findById(newProductId) }
                 .forEach { entity ->
                     entity.confirmValidity = java.lang.Boolean.TRUE
                     newProductEntityDao.update(entity)

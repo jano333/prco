@@ -1,6 +1,6 @@
-package sk.hudak.prco.api
+package sk.hudak.prco.api;
 
-enum class ErrorType {
+public enum ErrorType {
     HTTP_STATUS_ERR,
     HTTP_STATUS_404_ERR,
 

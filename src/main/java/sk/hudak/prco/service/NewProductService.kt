@@ -61,7 +61,7 @@ interface NewProductService {
      *
      * @param newProductIds
      */
-    fun confirmUnitDataForNewProducts(newProductIds: Array<Long>)
+    fun confirmUnitDataForNewProducts(newProductIds: LongArray)
 
     /**
      * vyklada zoznam max `maxCountOfInvalid` produktov NewProductEntity.

@@ -1,109 +1,83 @@
-package sk.hudak.prco.eshop;
+package sk.hudak.prco.eshop
 
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.api.ProductAction;
-import sk.hudak.prco.builder.SearchUrlBuilder;
-import sk.hudak.prco.parser.UnitParser;
-import sk.hudak.prco.parser.impl.JSoupProductParser;
-import sk.hudak.prco.utils.ConvertUtils;
-import sk.hudak.prco.utils.UserAgentDataHolder;
+import org.apache.commons.lang3.StringUtils
+import org.jsoup.nodes.Document
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.EshopUuid.AMD_DROGERIA
+import sk.hudak.prco.api.ProductAction
+import sk.hudak.prco.builder.SearchUrlBuilder
+import sk.hudak.prco.parser.UnitParser
+import sk.hudak.prco.parser.impl.JSoupProductParser
+import sk.hudak.prco.utils.ConvertUtils
+import sk.hudak.prco.utils.UserAgentDataHolder
+import java.math.BigDecimal
+import java.util.*
+import java.util.stream.Collectors
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static sk.hudak.prco.api.EshopUuid.AMD_DROGERIA;
-
-@Slf4j
 @Component
-public class AmdDrogeriaProductParser extends JSoupProductParser {
+class AmdDrogeriaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+    : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    @Autowired
-    public AmdDrogeriaProductParser(UnitParser unitParser, UserAgentDataHolder userAgentDataHolder, SearchUrlBuilder searchUrlBuilder) {
-        super(unitParser, userAgentDataHolder, searchUrlBuilder);
-    }
+    override val eshopUuid: EshopUuid
+        get() = AMD_DROGERIA
 
-    @Override
-    public EshopUuid getEshopUuid() {
-        return AMD_DROGERIA;
-    }
+    override val timeout: Int
+        get() = TIMEOUT_10_SECOND
 
-    @Override
-    protected int getTimeout() {
-        return TIMEOUT_10_SECOND;
-    }
-
-
-    @Override
-    protected int parseCountOfPages(Document documentList) {
-        Optional<Element> first = Optional.ofNullable(documentList.select("div.searching__toolbar-bottom > div > ul").first());
-        if (!first.isPresent()) {
-            return 1;
+    override fun parseCountOfPages(documentList: Document): Int {
+        val first = Optional.ofNullable(documentList.select("div.searching__toolbar-bottom > div > ul").first())
+        if (!first.isPresent) {
+            return 1
         }
         // li elements
-        Elements children = first.get().children();
-        if (children.size() < 3) {
-            return 1;
+        val children = first.get().children()
+        if (children.size < 3) {
+            return 1
         }
-        Element element = children.get(children.size() - 3);
-        String text = element.text();
-        return Integer.valueOf(text);
+        val element = children[children.size - 3]
+        val text = element.text()
+        return Integer.valueOf(text)
     }
 
-    @Override
-    protected List<String> parsePageForProductUrls(Document documentList, int pageNumber) {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
         return documentList.select("div.product-sm__name > h2 > a").stream()
-                .map(element -> element.attr("href"))
-                .filter(StringUtils::isNotBlank)
-                .map(href -> getEshopUuid().getProductStartUrl() + href)
-                .collect(Collectors.toList());
+                .map { element -> element.attr("href") }
+                .filter { StringUtils.isNotBlank(it) }
+                .map { href -> eshopUuid.productStartUrl + href }
+                .collect(Collectors.toList())
     }
 
-    @Override
-    protected boolean isProductUnavailable(Document documentDetailProduct) {
-        return documentDetailProduct.select("div.product__buy div.product__add-to-cart > a").isEmpty();
+    override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
+        return documentDetailProduct.select("div.product__buy div.product__add-to-cart > a").isEmpty()
     }
 
-    @Override
-    protected Optional<String> parseProductNameFromDetail(Document documentDetailProduct) {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
         return Optional.ofNullable(documentDetailProduct.select("div.product__title > h1").first())
-                .map(Element::text);
+                .map { it.text() }
     }
 
-    @Override
-    protected Optional<String> parseProductPictureURL(Document documentDetailProduct) {
+    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
         return Optional.ofNullable(documentDetailProduct.select("body > section.product > div > div > div.product__left-column.col-lg-6 > div > a > img").first())
-                .map(element -> element.attr("src"))
-                .filter(StringUtils::isNotBlank)
-                .map(src -> getEshopUuid().getProductStartUrl() + src);
+                .map { element -> element.attr("src") }
+                .filter { StringUtils.isNotBlank(it) }
+                .map { src -> eshopUuid.productStartUrl + src }
     }
 
-    @Override
-    protected Optional<BigDecimal> parseProductPriceForPackage(Document documentDetailProduct) {
+    override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
         return Optional.ofNullable(documentDetailProduct.select("div.product__price > span").first())
-                .map(Element::text)
-                .map(ConvertUtils::convertToBigDecimal);
+                .map { it.text() }
+                .map { ConvertUtils.convertToBigDecimal(it) }
     }
 
-    @Override
-    protected Optional<ProductAction> parseProductAction(Document documentDetailProduct) {
+    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
         //TODO impl
-        return Optional.empty();
+        return Optional.empty()
     }
 
-    @Override
-    protected Optional<Date> parseProductActionValidity(Document documentDetailProduct) {
+    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
         //TODO impl
-        return Optional.empty();
+        return Optional.empty()
     }
 
 

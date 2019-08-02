@@ -14,7 +14,7 @@ import java.util.*
 import javax.persistence.EntityManager
 
 @Repository
-class GroupOfProductFindEntityDaoImpl : GroupOfProductFindEntityDao {
+open class GroupOfProductFindEntityDaoImpl : GroupOfProductFindEntityDao {
 
     @Autowired
     private val em: EntityManager? = null
