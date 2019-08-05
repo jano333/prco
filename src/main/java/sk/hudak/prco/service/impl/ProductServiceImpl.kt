@@ -1,466 +1,411 @@
-package sk.hudak.prco.service.impl;
+package sk.hudak.prco.service.impl
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import sk.hudak.prco.api.BestPriceInGroup;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.dao.db.GroupEntityDao;
-import sk.hudak.prco.dao.db.GroupOfProductFindEntityDao;
-import sk.hudak.prco.dao.db.NotInterestedProductDbDao;
-import sk.hudak.prco.dao.db.ProductDataUpdateEntityDao;
-import sk.hudak.prco.dao.db.ProductEntityDao;
-import sk.hudak.prco.dto.GroupIdNameDto;
-import sk.hudak.prco.dto.ProductUpdateDataDto;
-import sk.hudak.prco.dto.StatisticForUpdateForEshopDto;
-import sk.hudak.prco.dto.product.ProductAddingToGroupDto;
-import sk.hudak.prco.dto.product.ProductBestPriceInGroupDto;
-import sk.hudak.prco.dto.product.ProductDetailInfo;
-import sk.hudak.prco.dto.product.ProductFilterUIDto;
-import sk.hudak.prco.dto.product.ProductFullDto;
-import sk.hudak.prco.dto.product.ProductInActionDto;
-import sk.hudak.prco.mapper.PrcoOrikaMapper;
-import sk.hudak.prco.model.GroupEntity;
-import sk.hudak.prco.model.NotInterestedProductEntity;
-import sk.hudak.prco.model.ProductDataUpdateEntity;
-import sk.hudak.prco.model.ProductEntity;
-import sk.hudak.prco.service.ProductService;
-import sk.hudak.prco.utils.CalculationUtils;
-import sk.hudak.prco.utils.PriceCalculator;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static sk.hudak.prco.utils.Validate.notNegativeAndNotZeroValue;
-import static sk.hudak.prco.utils.Validate.notNull;
-import static sk.hudak.prco.utils.Validate.notNullNotEmpty;
+import lombok.extern.slf4j.Slf4j
+import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Service
+import sk.hudak.prco.api.BestPriceInGroup
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.dao.db.*
+import sk.hudak.prco.dto.GroupIdNameDto
+import sk.hudak.prco.dto.ProductUpdateDataDto
+import sk.hudak.prco.dto.StatisticForUpdateForEshopDto
+import sk.hudak.prco.dto.product.*
+import sk.hudak.prco.mapper.PrcoOrikaMapper
+import sk.hudak.prco.model.NotInterestedProductEntity
+import sk.hudak.prco.model.ProductEntity
+import sk.hudak.prco.service.ProductService
+import sk.hudak.prco.utils.CalculationUtils
+import sk.hudak.prco.utils.PriceCalculator
+import sk.hudak.prco.utils.Validate.notNegativeAndNotZeroValue
+import sk.hudak.prco.utils.Validate.notNull
+import sk.hudak.prco.utils.Validate.notNullNotEmpty
+import java.math.BigDecimal
+import java.util.*
+import java.util.Optional.empty
+import java.util.Optional.of
+import java.util.function.Predicate
+import kotlin.Comparator
+import kotlin.streams.toList
 
 @Slf4j
 @Service("productService")
-public class ProductServiceImpl implements ProductService {
+class ProductServiceImpl(
+        private val productEntityDao: ProductEntityDao,
+        private val groupEntityDao: GroupEntityDao,
+        private val groupOfProductFindEntityDao: GroupOfProductFindEntityDao,
+        private val productDataUpdateEntityDao: ProductDataUpdateEntityDao,
+        private val notInterestedProductDbDao: NotInterestedProductDbDao,
+        private val mapper: PrcoOrikaMapper,
+        private val priceCalculator: PriceCalculator
 
-    private static final String PRODUCT_ID = "productId";
-    private static final String ESHOP_UUID = "eshopUuid";
-    private static final String PRODUCT_URL = "productURL";
+) : ProductService {
 
-    @Autowired
-    private ProductEntityDao productEntityDao;
+    companion object {
+        val log = LoggerFactory.getLogger(ProductServiceImpl::class.java)!!
 
-    @Autowired
-    private GroupEntityDao groupEntityDao;
-
-    @Autowired
-    private GroupOfProductFindEntityDao groupOfProductFindEntityDao;
-
-    @Autowired
-    private ProductDataUpdateEntityDao productDataUpdateEntityDao;
-
-    @Autowired
-    private NotInterestedProductDbDao notInterestedProductDbDao;
-
-    @Autowired
-    private PrcoOrikaMapper mapper;
-
-    @Autowired
-    private PriceCalculator priceCalculator;
-
-    @Override
-    public List<ProductFullDto> findProductsForExport() {
-        return mapper.mapAsList(
-                productEntityDao.findAll().toArray(),
-                ProductFullDto.class);
+        private val PRODUCT_ID = "productId"
+        private val ESHOP_UUID = "eshopUuid"
+        private val PRODUCT_URL = "productURL"
     }
 
-    @Override
-    public Optional<ProductDetailInfo> getProductForUpdate(EshopUuid eshopUuid, int olderThanInHours) {
-        notNull(eshopUuid, ESHOP_UUID);
-        notNegativeAndNotZeroValue(olderThanInHours, "olderThanInHours");
+    override fun findProductsForExport(): List<ProductFullDto> {
+        return mapper.mapAsList<Any, ProductFullDto>(productEntityDao.findAll().toTypedArray(),
+                ProductFullDto::class.java)
+    }
 
-        Optional<ProductEntity> productEntityOpt = productEntityDao.findProductForUpdate(eshopUuid, olderThanInHours);
+    override fun getProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): Optional<ProductDetailInfo> {
+        notNegativeAndNotZeroValue(olderThanInHours, "olderThanInHours")
+
+        val productEntityOpt = productEntityDao.findProductForUpdate(eshopUuid, olderThanInHours)
+
         // ak sa nenaslo
-        if (!productEntityOpt.isPresent()) {
-            return empty();
-        }
-        return of(mapper.map(
-                productEntityOpt.get(),
-                ProductDetailInfo.class)
-        );
+        return if (!productEntityOpt.isPresent) {
+            empty()
+        } else of(mapper.map(productEntityOpt.get(), ProductDetailInfo::class.java))
     }
 
-    @Override
-    public List<ProductFullDto> findProducts(ProductFilterUIDto filter) {
-        notNull(filter, "filter");
+    override fun findProducts(filter: ProductFilterUIDto): List<ProductFullDto> {
+        notNull(filter, "filter")
         //FIXME skusit optimalizovat databazovo
 
-        List<ProductFullDto> productFullDtos = mapper.mapAsList(
-                productEntityDao.findByFilter(filter).toArray(),
-                ProductFullDto.class);
+        val productFullDtos = mapper.mapAsList<Any, ProductFullDto>(
+                productEntityDao.findByFilter(filter).toTypedArray(),
+                ProductFullDto::class.java)
 
-        productFullDtos.forEach(p ->
-                p.setGroupList(mapper.mapAsList(
-                        groupEntityDao.findGroupsForProduct(p.getId()),
-                        GroupIdNameDto.class))
-        );
-        return productFullDtos;
+        productFullDtos.forEach {
+            it.groupList = mapper.mapAsList(groupEntityDao.findGroupsForProduct(it.id), GroupIdNameDto::class.java)
+        }
+        return productFullDtos
     }
 
-    @Override
-    public List<ProductInActionDto> findProductsInAction(EshopUuid eshopUuid) {
-        List<ProductEntity> productsInAction = productEntityDao.findByFilter(new ProductFilterUIDto(eshopUuid, Boolean.TRUE));
+    override fun findProductsInAction(eshopUuid: EshopUuid): List<ProductInActionDto> {
+        val productsInAction = productEntityDao.findByFilter(ProductFilterUIDto(eshopUuid, java.lang.Boolean.TRUE))
 
-        List<ProductInActionDto> result = new ArrayList<>(productsInAction.size());
-        for (ProductEntity entity : productsInAction) {
+        val result = ArrayList<ProductInActionDto>(productsInAction.size)
+        for (entity in productsInAction) {
             // TODO urobit cast cez orika mapping a tu len doplnenie dopocitavaneho atributu
-            ProductInActionDto dto = new ProductInActionDto();
-            dto.setId(entity.getId());
-            dto.setUrl(entity.getUrl());
-            dto.setName(entity.getName());
-            dto.setEshopUuid(entity.getEshopUuid());
-            dto.setPriceForPackage(entity.getPriceForPackage());
-            dto.setPriceForOneItemInPackage(entity.getPriceForOneItemInPackage());
-            dto.setCommonPrice(entity.getCommonPrice());
-            dto.setProductAction(entity.getProductAction());
-            dto.setActionValidTo(entity.getActionValidTo());
+            val dto = ProductInActionDto()
+            dto.id = entity.id
+            dto.url = entity.url
+            dto.name = entity.name
+            dto.eshopUuid = entity.eshopUuid
+            dto.priceForPackage = entity.priceForPackage
+            dto.priceForOneItemInPackage = entity.priceForOneItemInPackage
+            dto.commonPrice = entity.commonPrice
+            dto.productAction = entity.productAction
+            dto.actionValidTo = entity.actionValidTo
             // vypocitam percenta
             // FIXME presunut nech sa to perzistuje aby som vedel vyhladavat podla najvecsej zlavy...
-            if (entity.getPriceForPackage() != null && entity.getCommonPrice() != null) {
-                int actionInPercentage = CalculationUtils.calculatePercetage(entity.getPriceForPackage(),
-                        entity.getCommonPrice());
-                dto.setActionInPercentage(actionInPercentage);
+            if (entity.priceForPackage != null && entity.commonPrice != null) {
+                val actionInPercentage = CalculationUtils.calculatePercetage(entity.priceForPackage, entity.commonPrice)
+                dto.actionInPercentage = actionInPercentage
             } else {
-                dto.setActionInPercentage(-1);
+                dto.actionInPercentage = -1
             }
 
-            calculateBestPriceInGroup(dto);
+            calculateBestPriceInGroup(dto)
 
-            result.add(dto);
+            result.add(dto)
         }
-        return result;
+        return result
     }
 
-    private void calculateBestPriceInGroup(ProductInActionDto dto) {
-        Optional<Long> groupIdOptional = groupOfProductFindEntityDao.findFirstProductGroupId(dto.getId());
-        if (!groupIdOptional.isPresent()) {
-            dto.setBestPriceInGroup(BestPriceInGroup.NO_GROUP);
-            return;
+    private fun calculateBestPriceInGroup(dto: ProductInActionDto) {
+        val groupIdOptional = groupOfProductFindEntityDao.findFirstProductGroupId(dto.id)
+        if (!groupIdOptional.isPresent) {
+            dto.bestPriceInGroup = BestPriceInGroup.NO_GROUP
+            return
         }
+
         //TODO ak je vo viacerych grupach
-        List<ProductEntity> products = groupEntityDao.findById(groupIdOptional.get()).getProducts();
+        val products = groupEntityDao.findById(groupIdOptional.get()).products
 
-        List<ProductEntity> withValidPriceForPackage = products.stream()
-                .filter(p -> p.getPriceForUnit() != null)
-                .collect(Collectors.toList());
+        val withValidPriceForPackage = products.filter {
+            it.priceForUnit != null
+        }.toList()
 
-        // FIXME cez db query
-        Collections.sort(withValidPriceForPackage, Comparator.comparing(ProductEntity::getPriceForUnit));
+        Collections.sort(withValidPriceForPackage, Comparator.comparing { productEntity: ProductEntity ->
+            productEntity.priceForUnit
+        })
 
-        if (withValidPriceForPackage.get(0).getId().equals(dto.getId())) {
-            dto.setBestPriceInGroup(BestPriceInGroup.YES);
+        if (withValidPriceForPackage[0].id == dto.id) {
+            dto.bestPriceInGroup = BestPriceInGroup.YES
         } else {
-            dto.setBestPriceInGroup(BestPriceInGroup.NO);
+            dto.bestPriceInGroup = BestPriceInGroup.NO
         }
     }
 
-    @Override
-    public List<ProductBestPriceInGroupDto> findProductsBestPriceInGroupDto(EshopUuid eshopUuid) {
-        notNull(eshopUuid, ESHOP_UUID);
+    override fun findProductsBestPriceInGroupDto(eshopUuid: EshopUuid): List<ProductBestPriceInGroupDto> {
+        notNull(eshopUuid, ESHOP_UUID)
 
-        List<ProductEntity> productsInAction = productEntityDao.findByFilter(new ProductFilterUIDto(eshopUuid, Boolean.TRUE));
+        val productsInAction = productEntityDao.findByFilter(ProductFilterUIDto(eshopUuid, java.lang.Boolean.TRUE))
 
         return productsInAction.stream()
                 .filter(bestPricePredicate())
-                .map(entity -> {
-                    ProductBestPriceInGroupDto dto = new ProductBestPriceInGroupDto();
-                    dto.setId(entity.getId());
-                    dto.setUrl(entity.getUrl());
-                    dto.setName(entity.getName());
-                    dto.setEshopUuid(entity.getEshopUuid());
-                    dto.setPriceForPackage(entity.getPriceForPackage());
-                    dto.setPriceForOneItemInPackage(entity.getPriceForOneItemInPackage());
-                    dto.setCommonPrice(entity.getCommonPrice());
-                    dto.setPriceForUnit(entity.getPriceForUnit());
-                    dto.setProductAction(entity.getProductAction());
-                    dto.setActionValidTo(entity.getActionValidTo());
+                .map { entity ->
+                    val dto = ProductBestPriceInGroupDto()
+                    dto.id = entity.id
+                    dto.url = entity.url
+                    dto.name = entity.name
+                    dto.eshopUuid = entity.eshopUuid
+                    dto.priceForPackage = entity.priceForPackage
+                    dto.priceForOneItemInPackage = entity.priceForOneItemInPackage
+                    dto.commonPrice = entity.commonPrice
+                    dto.priceForUnit = entity.priceForUnit
+                    dto.productAction = entity.productAction
+                    dto.actionValidTo = entity.actionValidTo
                     // vypocitam percenta
                     // FIXME presunut nech sa to perzistuje aby som vedel vyhladavat podla najvecsej zlavy...
-                    if (entity.getPriceForPackage() != null && entity.getCommonPrice() != null) {
-                        int actionInPercentage = CalculationUtils.calculatePercetage(entity.getPriceForPackage(),
-                                entity.getCommonPrice());
-                        dto.setActionInPercentage(actionInPercentage);
+                    if (entity.priceForPackage != null && entity.commonPrice != null) {
+                        val actionInPercentage = CalculationUtils.calculatePercetage(entity.priceForPackage,
+                                entity.commonPrice)
+                        dto.actionInPercentage = actionInPercentage
                     } else {
-                        dto.setActionInPercentage(-1);
+                        dto.actionInPercentage = -1
                     }
-                    return dto;
-                })
-                .collect(Collectors.toList());
+                    dto
+                }
+                .toList()
     }
 
-    private Predicate<ProductEntity> bestPricePredicate() {
-        return productEntity -> {
-            Long productEntityId = productEntity.getId();
-            Optional<Long> groupIdOptional = groupOfProductFindEntityDao.findFirstProductGroupId(productEntityId);
-            if (!groupIdOptional.isPresent()) {
-                return false;
+    private fun bestPricePredicate(): Predicate<ProductEntity> {
+        return Predicate {
+
+            val groupIdOptional = groupOfProductFindEntityDao.findFirstProductGroupId(it.id)
+            if (!groupIdOptional.isPresent) {
+                return@Predicate false
             }
 
             //TODO ak je vo viacerych grupach
-            List<ProductEntity> products = groupEntityDao.findById(groupIdOptional.get()).getProducts();
-            List<ProductEntity> withValidPriceForPackage = products.stream()
-                    .filter(p -> p.getPriceForUnit() != null)
-                    .collect(Collectors.toList());
+            val products = groupEntityDao.findById(groupIdOptional.get()).products
+            var withValidPriceForPackage = products.filter { it.priceForUnit != null }.toList()
+
             // FIXME cez db query
-            Collections.sort(withValidPriceForPackage, Comparator.comparing(ProductEntity::getPriceForUnit));
-            return withValidPriceForPackage.get(0).getId().equals(productEntityId);
-        };
+            Collections.sort(withValidPriceForPackage, Comparator.comparing { productEntity: ProductEntity ->
+                productEntity.priceForUnit
+            })
+
+            withValidPriceForPackage[0].id.equals(it.id)
+        }
     }
 
-    @Override
-    public StatisticForUpdateForEshopDto getStatisticForUpdateForEshop(EshopUuid eshopUuid, int olderThanInHours) {
-        notNull(eshopUuid, ESHOP_UUID);
-        notNegativeAndNotZeroValue(olderThanInHours, "olderThanInHours");
+    override fun getStatisticForUpdateForEshop(eshopUuid: EshopUuid, olderThanInHours: Int): StatisticForUpdateForEshopDto {
+        notNull(eshopUuid, ESHOP_UUID)
+        notNegativeAndNotZeroValue(olderThanInHours, "olderThanInHours")
 
-        return new StatisticForUpdateForEshopDto(
+        return StatisticForUpdateForEshopDto(
                 eshopUuid,
                 productEntityDao.countOfProductsWaitingToBeUpdated(eshopUuid, olderThanInHours),
-                productEntityDao.countOfProductsAlreadyUpdated(eshopUuid, olderThanInHours));
+                productEntityDao.countOfProductsAlreadyUpdated(eshopUuid, olderThanInHours))
     }
 
-    @Override
-    public void removeProduct(Long productId) {
-        notNull(productId, PRODUCT_ID);
+    override fun removeProduct(productId: Long?) {
+        notNull(productId, PRODUCT_ID)
 
-        ProductEntity productEntity = productEntityDao.findById(productId);
+        val productEntity = productEntityDao.findById(productId!!)
 
-        removeProductFromGroup(productEntity);
+        removeProductFromGroup(productEntity)
 
-        productEntityDao.delete(productEntity);
-        log.debug("product with id {} was deleted", productId);
+        productEntityDao.delete(productEntity)
+        log.debug("product with id {} was deleted", productId)
     }
 
-    @Override
-    public void removeProductByUrl(String productUrl) {
-        notNullNotEmpty(productUrl, "productUrl");
+    override fun removeProductByUrl(productUrl: String) {
+        notNullNotEmpty(productUrl, "productUrl")
 
         productEntityDao.findByUrl(productUrl)
-                .ifPresent(entity -> {
+                .ifPresent { entity ->
 
-                            // remove from group
-                            removeProductFromGroup(entity);
+                    // remove from group
+                    removeProductFromGroup(entity)
 
-                            productEntityDao.delete(entity);
-                            log.debug("product with url {} has been removed", productUrl);
-                        }
-                );
+                    productEntityDao.delete(entity)
+                    log.debug("product with url {} has been removed", productUrl)
+                }
     }
 
-    private void removeProductFromGroup(ProductEntity productEntity) {
-        for (GroupEntity groupEntity : groupEntityDao.findGroupsForProduct(productEntity.getId())) {
-            groupEntity.getProducts().remove(productEntity);
-            groupEntityDao.update(groupEntity);
-            log.debug("removed product '{}' from group '{}'", productEntity.getName(), groupEntity.getName());
+    private fun removeProductFromGroup(productEntity: ProductEntity) {
+        for (groupEntity in groupEntityDao.findGroupsForProduct(productEntity.id)) {
+            groupEntity.products.remove(productEntity)
+            groupEntityDao.update(groupEntity)
+            log.debug("removed product '{}' from group '{}'", productEntity.name, groupEntity.name)
         }
     }
 
-    @Override
-    public List<ProductFullDto> findProductsInGroup(Long groupId, boolean withPriceOnly, EshopUuid... eshopsToSkip) {
-        notNull(groupId, "groupId");
+    override fun findProductsInGroup(groupId: Long?, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto> {
+        notNull(groupId, "groupId")
 
-        return mapper.mapAsList(
-                groupEntityDao.findProductsInGroup(groupId, withPriceOnly, eshopsToSkip).toArray(),
-                ProductFullDto.class);
+        return mapper.mapAsList<Any, ProductFullDto>(
+                groupEntityDao.findProductsInGroup(groupId, withPriceOnly, *eshopsToSkip).toTypedArray(),
+                ProductFullDto::class.java)
     }
 
-    @Override
-    public List<ProductFullDto> findProductsNotInAnyGroup() {
-        return mapper.mapAsList(
-                groupOfProductFindEntityDao.findProductsWitchAreNotInAnyGroup().toArray(),
-                ProductFullDto.class);
+    override fun findProductsNotInAnyGroup(): List<ProductFullDto> {
+        return mapper.mapAsList<Any, ProductFullDto>(
+                groupOfProductFindEntityDao.findProductsWitchAreNotInAnyGroup().toTypedArray(),
+                ProductFullDto::class.java)
     }
 
-    @Override
-    public ProductAddingToGroupDto getProduct(Long productId) {
-        return mapper.map(productEntityDao.findById(productId), ProductAddingToGroupDto.class);
+    override fun getProduct(productId: Long?): ProductAddingToGroupDto {
+        return mapper.map(productEntityDao.findById(productId!!), ProductAddingToGroupDto::class.java)
     }
 
-    @Override
-    public boolean existProductWithUrl(String productURL) {
-        notNullNotEmpty(productURL, PRODUCT_URL);
+    override fun existProductWithUrl(productURL: String): Boolean {
+        notNullNotEmpty(productURL, PRODUCT_URL)
 
-        return productEntityDao.existWithUrl(productURL);
+        return productEntityDao.existWithUrl(productURL)
     }
 
-    @Override
-    public void resetUpdateDateForAllProductsInEshop(EshopUuid eshopUuid) {
-        notNull(eshopUuid, ESHOP_UUID);
+    override fun resetUpdateDateForAllProductsInEshop(eshopUuid: EshopUuid) {
+        notNull(eshopUuid, ESHOP_UUID)
 
         //FIXME robit bulkovo po 25 ks, nie vsetky natiahnut naraz
-        productEntityDao.findByFilter(new ProductFilterUIDto(eshopUuid))
-                .forEach(productEntity -> {
-                    productEntity.setLastTimeDataUpdated(null);
-                    productEntityDao.update(productEntity);
-                });
-        log.debug("all products for eshop {} marked as not updated yet", eshopUuid);
+        productEntityDao.findByFilter(ProductFilterUIDto(eshopUuid))
+                .forEach { productEntity ->
+                    productEntity.lastTimeDataUpdated = null
+                    productEntityDao.update(productEntity)
+                }
+        log.debug("all products for eshop {} marked as not updated yet", eshopUuid)
     }
 
-    @Override
-    public void updateProductCommonPrice(Long productId, BigDecimal newCommonPrice) {
-        notNull(productId, PRODUCT_ID);
-        notNull(newCommonPrice, "newCommonPrice");
+    override fun updateProductCommonPrice(productId: Long?, newCommonPrice: BigDecimal) {
+        notNull(productId, PRODUCT_ID)
+        notNull(newCommonPrice, "newCommonPrice")
         // TODO validacia na vecsie ako nula...
 
-        ProductEntity product = productEntityDao.findById(productId);
-        product.setCommonPrice(newCommonPrice);
-        productEntityDao.update(product);
+        val product = productEntityDao.findById(productId!!)
+        product.commonPrice = newCommonPrice
+        productEntityDao.update(product)
 
-        log.debug("product with id {} was updated with common price {}", productId, newCommonPrice);
+        log.debug("product with id {} was updated with common price {}", productId, newCommonPrice)
     }
 
-    @Override
-    public EshopUuid getEshopForProductId(Long productId) {
-        notNull(productId, PRODUCT_ID);
+    override fun getEshopForProductId(productId: Long?): EshopUuid {
+        notNull(productId, PRODUCT_ID)
 
-        return productEntityDao.findById(productId).getEshopUuid();
+        return productEntityDao.findById(productId!!).eshopUuid
     }
 
-    @Override
-    public ProductDetailInfo getProductForUpdate(Long productId) {
-        notNull(productId, PRODUCT_ID);
+    override fun getProductForUpdate(productId: Long?): ProductDetailInfo {
+        notNull(productId, PRODUCT_ID)
 
-        return mapper.map(productEntityDao.findById(productId), ProductDetailInfo.class);
+        return mapper.map(productEntityDao.findById(productId!!), ProductDetailInfo::class.java)
     }
 
-    @Override
-    public void updateProduct(ProductUpdateDataDto updateData) {
-        notNull(updateData, "updateData");
-        notNull(updateData.getId(), "id");
-        notNullNotEmpty(updateData.getName(), "name");
-        notNullNotEmpty(updateData.getUrl(), "url");
-        notNull(updateData.getPriceForPackage(), "priceForPackage");
+    override fun updateProduct(updateData: ProductUpdateDataDto) {
+        notNull(updateData, "updateData")
+        notNull(updateData.id, "id")
+        notNullNotEmpty(updateData.name, "name")
+        notNullNotEmpty(updateData.url, "url")
+        notNull(updateData.priceForPackage, "priceForPackage")
 
-        ProductDataUpdateEntity productEntity = productDataUpdateEntityDao.findById(updateData.getId());
-        productEntity.setName(updateData.getName());
+        val productEntity = productDataUpdateEntityDao.findById(updateData.id!!)
+        productEntity.name = updateData.name
         // can change because of redirect URL, that why update of url
-        productEntity.setUrl(updateData.getUrl());
+        productEntity.url = updateData.url
 
         // prices
-        productEntity.setPriceForPackage(updateData.getPriceForPackage());
-        BigDecimal priceForOneItemInPackage = priceCalculator.calculatePriceForOneItemInPackage(
-                updateData.getPriceForPackage(),
-                productEntity.getUnitPackageCount()
-        );
-        BigDecimal priceForUnit = priceCalculator.calculatePriceForUnit(
-                productEntity.getUnit(),
-                productEntity.getUnitValue(),
+        productEntity.priceForPackage = updateData.priceForPackage
+        val priceForOneItemInPackage = priceCalculator.calculatePriceForOneItemInPackage(
+                updateData.priceForPackage!!,
+                productEntity.unitPackageCount!!
+        )
+        val priceForUnit = priceCalculator.calculatePriceForUnit(
+                productEntity.unit,
+                productEntity.unitValue,
                 priceForOneItemInPackage
-        );
-        productEntity.setPriceForOneItemInPackage(priceForOneItemInPackage);
-        productEntity.setPriceForUnit(priceForUnit);
+        )
+        productEntity.priceForOneItemInPackage = priceForOneItemInPackage
+        productEntity.priceForUnit = priceForUnit
         // action info
-        productEntity.setProductAction(updateData.getProductAction());
-        productEntity.setActionValidTo(updateData.getActionValidity());
+        productEntity.productAction = updateData.productAction
+        productEntity.actionValidTo = updateData.actionValidity
 
-        productEntity.setProductPictureUrl(updateData.getPictureUrl());
+        productEntity.productPictureUrl = updateData.pictureUrl
 
-        productEntity.setLastTimeDataUpdated(new Date());
-        productDataUpdateEntityDao.update(productEntity);
+        productEntity.lastTimeDataUpdated = Date()
+        productDataUpdateEntityDao.update(productEntity)
 
         log.info("product with id {} has been updated with price for package {}",
-                productEntity.getId(), updateData.getPriceForPackage());
+                productEntity.id, updateData.priceForPackage)
     }
 
 
-    @Override
-    public void markProductAsUnavailable(Long productId) {
-        ProductDataUpdateEntity updateEntity = productDataUpdateEntityDao.findById(productId);
-        updateEntity.setLastTimeDataUpdated(new Date());
+    override fun markProductAsUnavailable(productId: Long?) {
+        val updateEntity = productDataUpdateEntityDao.findById(productId!!)
+        updateEntity.lastTimeDataUpdated = Date()
         // prices
-        updateEntity.setPriceForOneItemInPackage(null);
-        updateEntity.setPriceForPackage(null);
-        updateEntity.setPriceForUnit(null);
+        updateEntity.priceForOneItemInPackage = null
+        updateEntity.priceForPackage = null
+        updateEntity.priceForUnit = null
         // action
-        updateEntity.setProductAction(null);
-        updateEntity.setActionValidTo(null);
+        updateEntity.productAction = null
+        updateEntity.actionValidTo = null
 
-        productDataUpdateEntityDao.update(updateEntity);
-        log.info("product with id {} was reset/mark as unavailable", productId);
+        productDataUpdateEntityDao.update(updateEntity)
+        log.info("product with id {} was reset/mark as unavailable", productId)
     }
 
-    @Override
-    public void resetUpdateDateProduct(Long productId) {
-        internalLastTimeDataUpdated(productId, null);
+    override fun resetUpdateDateProduct(productId: Long?) {
+        internalLastTimeDataUpdated(productId, null)
     }
 
 
-    @Override
-    public void markProductAsNotInterested(Long productId) {
+    override fun markProductAsNotInterested(productId: Long?) {
         // vyhladam povodny produkt
-        ProductEntity productEntity = productEntityDao.findById(productId);
+        val productEntity = productEntityDao.findById(productId!!)
 
         // premapujem do noveho
-        NotInterestedProductEntity notInterestedProductEntity = mapper.map(productEntity, NotInterestedProductEntity.class);
+        val notInterestedProductEntity = mapper.map(productEntity, NotInterestedProductEntity::class.java)
 
         // ulozim ho
-        notInterestedProductDbDao.save(notInterestedProductEntity);
-        log.debug("created new {} with id {}", notInterestedProductEntity.getClass().getSimpleName(), notInterestedProductEntity.getId());
+        notInterestedProductDbDao.save(notInterestedProductEntity)
+        log.debug("created new {} with id {}", notInterestedProductEntity.javaClass.simpleName, notInterestedProductEntity.id)
 
         // odmazem stary
-        for (GroupEntity groupEntity : groupEntityDao.findGroupsForProduct(productId)) {
-            groupEntity.getProducts().remove(productEntity);
-            groupEntityDao.update(groupEntity);
-            log.debug("removed product '{}' from group '{}'", productEntity.getName(), groupEntity.getName());
+        for (groupEntity in groupEntityDao.findGroupsForProduct(productId)) {
+            groupEntity.products.remove(productEntity)
+            groupEntityDao.update(groupEntity)
+            log.debug("removed product '{}' from group '{}'", productEntity.name, groupEntity.name)
         }
-        productEntityDao.delete(productEntity);
-        log.info("deleted {} with id {}", productEntity.getClass().getSimpleName(), productId);
+        productEntityDao.delete(productEntity)
+        log.info("deleted {} with id {}", productEntity.javaClass.simpleName, productId)
     }
 
-    @Override
-    public List<ProductFullDto> findDuplicityProductsByNameAndPriceInEshop(EshopUuid eshopUuid) {
-        notNull(eshopUuid, "eshopUuid");
+    override fun findDuplicityProductsByNameAndPriceInEshop(eshopUuid: EshopUuid): List<ProductFullDto> {
+        notNull(eshopUuid, "eshopUuid")
 
-        Map<String, List<ProductEntity>> tmp = new HashMap<>();
-        for (ProductEntity productEntity : productEntityDao.findByFilter(new ProductFilterUIDto(eshopUuid))) {
-            List<ProductEntity> values = tmp.get(productEntity.getName());
+        val tmp = HashMap<String, MutableList<ProductEntity>>()
+        for (productEntity in productEntityDao.findByFilter(ProductFilterUIDto(eshopUuid))) {
+            var values: MutableList<ProductEntity>? = tmp[productEntity.name]
             if (values == null) {
-                values = new ArrayList<>();
+                values = ArrayList()
             }
-            values.add(productEntity);
-            tmp.put(productEntity.getName(), values);
+            values.add(productEntity)
+            tmp[productEntity.name] = values
         }
 
-        List<ProductEntity> result = new ArrayList<>();
-        for (String name : tmp.keySet()) {
-            List<ProductEntity> productEntities = tmp.get(name);
-            if (productEntities.size() > 1) {
-
-
-                result.addAll(productEntities);
+        val result = ArrayList<ProductEntity>()
+        for (name in tmp.keys) {
+            val productEntities = tmp[name]!!
+            if (productEntities.size > 1) {
+                result.addAll(productEntities)
             }
         }
-        return mapper.mapAsList(result, ProductFullDto.class);
+        return mapper.mapAsList(result, ProductFullDto::class.java)
     }
 
-    @Override
-    public Optional<Long> getProductWithUrl(String productUrl, Long productIdToIgnore) {
-        notNullNotEmpty(productUrl, "productUrl");
-        notNull(productIdToIgnore, "productIdToIgnore");
+    override fun getProductWithUrl(productUrl: String, productIdToIgnore: Long?): Optional<Long> {
+        notNullNotEmpty(productUrl, "productUrl")
+        notNull(productIdToIgnore, "productIdToIgnore")
 
-        return productEntityDao.getProductWithUrl(productUrl, productIdToIgnore);
+        return productEntityDao.getProductWithUrl(productUrl, productIdToIgnore)
     }
 
-    private void internalLastTimeDataUpdated(Long productId, Date lastTimeDataUpdated) {
-        ProductDataUpdateEntity updateEntity = productDataUpdateEntityDao.findById(productId);
-        updateEntity.setLastTimeDataUpdated(lastTimeDataUpdated);
-        productDataUpdateEntityDao.update(updateEntity);
+    private fun internalLastTimeDataUpdated(productId: Long?, lastTimeDataUpdated: Date?) {
+        val updateEntity = productDataUpdateEntityDao.findById(productId!!)
+        updateEntity.lastTimeDataUpdated = lastTimeDataUpdated
+        productDataUpdateEntityDao.update(updateEntity)
     }
+
 }
