@@ -14,6 +14,7 @@ import javax.net.ssl.*
 
 object PrcoSslManager {
 
+    @JvmStatic
     fun init(): SSLContext {
         try {
             val sslContext = SSLContext.getInstance("SSL")

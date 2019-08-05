@@ -1,20 +1,26 @@
 package sk.hudak.prco.service.impl
 
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dao.db.NotInterestedProductDbDao
 import sk.hudak.prco.dto.product.NotInterestedProductFindDto
+import sk.hudak.prco.dto.product.NotInterestedProductFullDto
+import sk.hudak.prco.mapper.PrcoOrikaMapper
 import sk.hudak.prco.service.NotInterestedProductService
 
 @Service("notInterestedProductService")
 class NotInterestedProductServiceImpl(
-        @Autowired private val notInterestedProductDbDao: NotInterestedProductDbDao
+        private val notInterestedProductDbDao: NotInterestedProductDbDao,
+        private val mapper: PrcoOrikaMapper
 ) : NotInterestedProductService {
 
     companion object {
         val log = LoggerFactory.getLogger(NotInterestedProductServiceImpl::class.java)!!
+    }
+
+    override fun findNotInterestedProducts(findDto: NotInterestedProductFindDto): List<NotInterestedProductFullDto> {
+        return mapper.mapAsList(notInterestedProductDbDao.findAll(findDto), NotInterestedProductFullDto::class.java)
     }
 
     override fun deleteNotInterestedProducts(vararg notInterestedProductIds: Long) {

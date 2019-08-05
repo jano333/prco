@@ -2,12 +2,14 @@ package sk.hudak.prco.service
 
 import sk.hudak.prco.dto.ProductStatisticInfoDto
 import sk.hudak.prco.dto.product.NewProductFullDto
-import sk.hudak.prco.dto.product.NotInterestedProductFindDto
 import sk.hudak.prco.dto.product.NotInterestedProductFullDto
 import sk.hudak.prco.dto.product.ProductFullDto
 
 interface ProductCommonService {
 
+    /**
+     * Return statistic for all eshops.
+     */
     val statisticsOfProducts: ProductStatisticInfoDto
 
     /**
@@ -37,8 +39,6 @@ interface ProductCommonService {
      * @param newProductIds zoznam idcok z [sk.hudak.prco.model.NewProductEntity]
      */
     fun markNewProductAsNotInterested(vararg newProductIds: Long)
-
-    fun findNotInterestedProducts(findDto: NotInterestedProductFindDto): List<NotInterestedProductFullDto>
 
     /**
      * Importne pokial tam taky este nie je...,

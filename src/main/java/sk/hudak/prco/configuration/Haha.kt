@@ -1,53 +1,50 @@
-package sk.hudak.prco.configuration;
+package sk.hudak.prco.configuration
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-
-import java.util.Properties;
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer
+import org.springframework.mail.MailSender
+import org.springframework.mail.javamail.JavaMailSenderImpl
+import java.util.*
 
 @Configuration
-public class Haha {
+open class Haha {
 
     @Bean
-    public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
+    open fun propertyPlaceholderConfigurer(): PropertySourcesPlaceholderConfigurer {
+        return PropertySourcesPlaceholderConfigurer()
     }
 
     @Bean
-    public static MailSender mailSender(){
-        JavaMailSenderImpl sender = new JavaMailSenderImpl();
-//        sender.setHost("smtp.gmail.com");
-//        sender.setUsername("hudakjan83@gmail.com");
-//        sender.setPassword("???");
-//        sender.setProtocol("smtp");
-//        sender.setPort(465);
+    open fun mailSender(): MailSender {
+        val sender = JavaMailSenderImpl()
+        //        sender.setHost("smtp.gmail.com");
+        //        sender.setUsername("hudakjan83@gmail.com");
+        //        sender.setPassword("???");
+        //        sender.setProtocol("smtp");
+        //        sender.setPort(465);
 
 
+        val properties = Properties()
+        properties["mail.smtp.starttls.enable"] = "true"
+        properties["mail.smtp.host"] = "smtp.gmail.com"
+        properties["mail.smtp.user"] = "hudakjan83@gmail.com" // User name
+        properties["mail.smtp.password"] = "???" // password
+        properties["mail.smtp.port"] = "587"
+        properties["mail.smtp.auth"] = "true"
 
-        Properties properties = new Properties();
-        properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.user", "hudakjan83@gmail.com"); // User name
-        properties.put("mail.smtp.password", "???"); // password
-        properties.put("mail.smtp.port", "587");
-        properties.put("mail.smtp.auth", "true");
 
+        sender.javaMailProperties = properties
 
-        sender.setJavaMailProperties(properties);
-
-        return sender;
+        return sender
     }
 
 
-
-//    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-//        <property name="host" value="${batch.mail.host}"/>
-//        <property name="username" value="${batch.mail.username}"/>
-//        <property name="password" value="${batch.mail.password}"/>
-//        <property name="protocol" value="${batch.mail.protocol}"/>
-//        <property name="port" value="${batch.mail.port}"/>
-//    </bean>
+    //    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+    //        <property name="host" value="${batch.mail.host}"/>
+    //        <property name="username" value="${batch.mail.username}"/>
+    //        <property name="password" value="${batch.mail.password}"/>
+    //        <property name="protocol" value="${batch.mail.protocol}"/>
+    //        <property name="port" value="${batch.mail.port}"/>
+    //    </bean>
 }

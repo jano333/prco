@@ -89,7 +89,7 @@ public class Starter {
     public void run() {
 
         //init ssl
-        PrcoSslManager.INSTANCE.init();
+        PrcoSslManager.init();
 
         // start thred for showing statistics
         theadStatisticManager.startShowingStatistics();

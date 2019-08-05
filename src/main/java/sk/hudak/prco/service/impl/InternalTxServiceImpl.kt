@@ -219,7 +219,7 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
 
     @Transactional(readOnly = true)
     override fun findNotInterestedProducts(findDto: NotInterestedProductFindDto): List<NotInterestedProductFullDto> {
-        return productCommonService.findNotInterestedProducts(findDto)
+        return notInterestedProductService.findNotInterestedProducts(findDto)
     }
 
     @Transactional

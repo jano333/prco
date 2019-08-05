@@ -34,16 +34,16 @@ public class PrcoOrikaMapper extends ConfigurableMapper {
         config_NewProductEntity_To_NotInterestedProductEntity(factory);
         config_NewProductEntity_To_NewProductFullDto(factory);
 
-        config_ProductEntity_to_NotInterestedProductEntity(factory);
+        config_ProductEntity_To_NotInterestedProductEntity(factory);
         config_ProductEntity_To_ProductFullDto(factory);
         config_ProductEntity_To_ProductAddingToGroupDto(factory);
 
+        config_ErrorEntity_To_ErrorListDto(factory);
 
         config_GroupEntity_To_GroupIdNameDto(factory);
 
         config_StatisticForUpdateForEshopDto_To_UpdateStatusInfo(factory);
 
-        config_ErrorEntity_To_ErrorListDto(factory);
 
         config_ProductNewData_To_NewProductCreateDto(factory);
     }
@@ -67,7 +67,7 @@ public class PrcoOrikaMapper extends ConfigurableMapper {
                 .register();
     }
 
-    private void config_ProductEntity_to_NotInterestedProductEntity(MapperFactory mapperFactory) {
+    private void config_ProductEntity_To_NotInterestedProductEntity(MapperFactory mapperFactory) {
         mapperFactory.classMap(ProductEntity.class, NotInterestedProductEntity.class)
                 .fieldMap("id").exclude().add()
                 .byDefault()
