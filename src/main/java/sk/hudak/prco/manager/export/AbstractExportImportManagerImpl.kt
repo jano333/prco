@@ -14,12 +14,12 @@ abstract class AbstractExportImportManagerImpl {
     @Value("\${prco.server.export.import.root.dir}")
     protected var sourceFolder: String? = null
 
-    protected var sdfForFileName: SimpleDateFormat
-    protected var sdf: SimpleDateFormat
+    protected val sdfForFileName: SimpleDateFormat = SimpleDateFormat("dd-MM-yyyy_HH_mm_ss")
+    protected val sdf: SimpleDateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
 
-    init {
-        this.sdfForFileName = SimpleDateFormat("dd-MM-yyyy_HH_mm_ss")
-        this.sdf = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
+    companion object {
+        @JvmStatic
+        protected val NEW_LINE_SEPARATOR: String = System.lineSeparator()
     }
 
     protected fun safeToString(obj: Any?): String? {
@@ -29,10 +29,5 @@ abstract class AbstractExportImportManagerImpl {
         return if (obj is Date) {
             sdf.format(obj as Date?)
         } else obj.toString()
-    }
-
-    companion object {
-
-        protected val NEW_LINE_SEPARATOR = System.lineSeparator()
     }
 }
