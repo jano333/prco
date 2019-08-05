@@ -1,198 +1,179 @@
-package sk.hudak.prco.manager.updateprocess;
+package sk.hudak.prco.manager.updateprocess
 
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.dto.ParsingDataResponse;
-import sk.hudak.prco.dto.ProductUpdateData;
-import sk.hudak.prco.dto.ProductUpdateDataDto;
-import sk.hudak.prco.dto.product.ProductDetailInfo;
-import sk.hudak.prco.dto.product.ProductFullDto;
-import sk.hudak.prco.manager.error.ErrorHandler;
-import sk.hudak.prco.mapper.PrcoOrikaMapper;
-import sk.hudak.prco.parser.HtmlParser;
-import sk.hudak.prco.service.InternalTxService;
-import sk.hudak.prco.task.EshopTaskManager;
+import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.dto.ParsingDataResponse
+import sk.hudak.prco.dto.ProductUpdateData
+import sk.hudak.prco.dto.ProductUpdateDataDto
+import sk.hudak.prco.dto.product.ProductDetailInfo
+import sk.hudak.prco.dto.product.ProductFullDto
+import sk.hudak.prco.manager.error.ErrorHandler
+import sk.hudak.prco.manager.updateprocess.UpdateProcessResult.*
+import sk.hudak.prco.mapper.PrcoOrikaMapper
+import sk.hudak.prco.parser.HtmlParser
+import sk.hudak.prco.service.InternalTxService
+import sk.hudak.prco.task.EshopTaskManager
+import sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe
+import sk.hudak.prco.utils.ThreadUtils.sleepSafe
+import java.util.*
+import kotlin.collections.ArrayList
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import static sk.hudak.prco.manager.updateprocess.UpdateProcessResult.ERR_PARSING_ERROR_HTTP_STATUS_404;
-import static sk.hudak.prco.manager.updateprocess.UpdateProcessResult.ERR_UPDATE_ERROR_PRODUCT_IS_UNAVAILABLE;
-import static sk.hudak.prco.manager.updateprocess.UpdateProcessResult.OK;
-import static sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe;
-import static sk.hudak.prco.utils.ThreadUtils.sleepSafe;
-
-@Slf4j
 @Component
-public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
+class UpdateProductDataManagerImpl(
+        private val htmlParser: HtmlParser,
+        private val internalTxService: InternalTxService,
+        private val eshopTaskManager: EshopTaskManager,
+        private val mapper: PrcoOrikaMapper,
+        private val errorHandler: ErrorHandler
 
-    @Autowired
-    private HtmlParser htmlParser;
+) : UpdateProductDataManager {
 
-    @Autowired
-    private InternalTxService internalTxService;
+    companion object {
+        val log = LoggerFactory.getLogger(UpdateProductDataManagerImpl::class.java)!!
+    }
 
-    @Autowired
-    private EshopTaskManager eshopTaskManager;
-
-    @Autowired
-    private PrcoOrikaMapper mapper;
-
-    @Autowired
-    private ErrorHandler errorHandler;
-
-    @Override
-    public void updateProductData(Long productId) {
+    override fun updateProductData(productId: Long) {
         // vyhladam product na update v DB na zaklade id
-        Optional<ProductDetailInfo> productForUpdate = getProductForUpdate(productId);
-        if (!productForUpdate.isPresent()) {
-            // nedavat tu ziadel log !! pozri getProductForUpdate
-            return;
-        }
-        final EshopUuid eshopUuid = productForUpdate.get().getEshopUuid();
+        val productForUpdate = getProductForUpdate(productId) ?:
+        // nedavat tu ziadel log !! pozri getProductForUpdate
+        return
 
-        eshopTaskManager.submitTask(eshopUuid, () -> {
+        val eshopUuid = productForUpdate.eshopUuid!!
+
+        eshopTaskManager.submitTask(eshopUuid, Runnable {
 
             //FIXME spojit tie dve volania do jedneho
             // ak je to volane hned po sebe tak sleepnem
-            eshopTaskManager.sleepIfNeeded(eshopUuid);
-            eshopTaskManager.markTaskAsRunning(eshopUuid);
+            eshopTaskManager.sleepIfNeeded(eshopUuid)
+            eshopTaskManager.markTaskAsRunning(eshopUuid)
 
-            UpdateProcessResult updateProcessResult = internalParseAndUpdate(productForUpdate.get(), UpdateProductDataListenerAdapter.LOG_INSTANCE);
+            val updateProcessResult = internalParseAndUpdate(productForUpdate, UpdateProductDataListenerAdapter.LOG_INSTANCE)
 
-            eshopTaskManager.markTaskAsFinished(eshopUuid, OK.equals(updateProcessResult));
-        });
+            eshopTaskManager.markTaskAsFinished(eshopUuid, OK == updateProcessResult)
+
+        })
     }
 
-    @Override
-    public void updateProductDataForEachProductInEachEshop(@NonNull UpdateProductDataListener listener) {
-        Arrays.stream(EshopUuid.values()).forEach(eshopUuid -> {
-            updateProductDataForEachProductInEshop(eshopUuid, listener);
+    override fun updateProductDataForEachProductInEachEshop(listener: UpdateProductDataListener) {
+        EshopUuid.values().forEach {
+            updateProductDataForEachProductInEshop(it, listener)
             // kazdy dalsi spusti s 1 sekundovym oneskorenim
-            sleepSafe(1);
-        });
+            sleepSafe(1)
+        }
     }
 
-    @Override
-    public void updateProductDataForEachProductInEshop(@NonNull EshopUuid eshopUuid, @NonNull UpdateProductDataListener listener) {
+    override fun updateProductDataForEachProductInEshop(eshopUuid: EshopUuid, listener: UpdateProductDataListener) {
 
-        eshopTaskManager.submitTask(eshopUuid, () -> {
+        eshopTaskManager.submitTask(eshopUuid, Runnable {
             // ak je to volane hned po sebe tak sleepnem
-            eshopTaskManager.sleepIfNeeded(eshopUuid);
-            eshopTaskManager.markTaskAsRunning(eshopUuid);
+            eshopTaskManager.sleepIfNeeded(eshopUuid)
+            eshopTaskManager.markTaskAsRunning(eshopUuid)
 
-            Optional<ProductDetailInfo> productForUpdateOpt = getProductForUpdate(eshopUuid);
-            while (productForUpdateOpt.isPresent()) {
+            var productForUpdateOpt = getProductForUpdate(eshopUuid)
+            while (productForUpdateOpt!=null) {
 
-                notifyUpdateListener(eshopUuid, listener);
+                notifyUpdateListener(eshopUuid, listener)
 
-                UpdateProcessResult updateProcessResult = internalParseAndUpdate(productForUpdateOpt.get(), UpdateProductDataListenerAdapter.EMPTY_INSTANCE);
+                val updateProcessResult = internalParseAndUpdate(productForUpdateOpt, UpdateProductDataListenerAdapter.EMPTY_INSTANCE)
 
                 if (shouldContinueWithNexProduct(updateProcessResult)) {
-                    sleepRandomSafe();
+                    sleepRandomSafe()
 
-                    productForUpdateOpt = getProductForUpdate(eshopUuid);
+                    productForUpdateOpt = getProductForUpdate(eshopUuid)
 
                 } else {
-                    eshopTaskManager.markTaskAsFinished(eshopUuid, true);
-                    return;
+                    eshopTaskManager.markTaskAsFinished(eshopUuid, true)
+                    return@Runnable
                 }
 
                 if (eshopTaskManager.isTaskShouldStopped(eshopUuid)) {
-                    eshopTaskManager.markTaskAsStopped(eshopUuid);
-                    break;
+                    eshopTaskManager.markTaskAsStopped(eshopUuid)
+                    break
                 }
             }
 
-            eshopTaskManager.markTaskAsFinished(eshopUuid, false);
-            log.debug("none product found for update for eshop {}", eshopUuid);
-        });
+            eshopTaskManager.markTaskAsFinished(eshopUuid, false)
+            log.debug("none product found for update for eshop {}", eshopUuid)
+        })
     }
 
-    @Override
-    public void updateProductDataForEachProductInGroup(Long groupId, @NonNull UpdateProductDataListener listener) {
+    override fun updateProductDataForEachProductInGroup(groupId: Long?, listener: UpdateProductDataListener) {
         //TODO bug !!!!!! nech nevracia len tie,  ktore uz boli updatnute
-        Map<EshopUuid, List<ProductDetailInfo>> productsInGroup = convert(internalTxService.findProductsInGroup(groupId, true));
+        val productsInGroup = convert(internalTxService.findProductsInGroup(groupId, true))
         if (productsInGroup.isEmpty()) {
-            log.debug("none product found for update in group with id {} ", groupId);
-            return;
+            log.debug("none product found for update in group with id {} ", groupId)
+            return
         }
-        updateProductData(productsInGroup, listener);
+        updateProductData(productsInGroup, listener)
     }
 
-    private Map<EshopUuid, List<ProductDetailInfo>> convert(List<ProductFullDto> productsForUpdate) {
-        Map<EshopUuid, List<ProductDetailInfo>> productsInEshop = new EnumMap<>(EshopUuid.class);
-        productsForUpdate.forEach(productFullDto -> productsInEshop.put(productFullDto.getEshopUuid(), new ArrayList<>()));
-        productsForUpdate.forEach(productFullDto -> productsInEshop.get(productFullDto.getEshopUuid()).add(
-                new ProductDetailInfo(productFullDto.getId(), productFullDto.getUrl(), productFullDto.getEshopUuid())));
-        return productsInEshop;
+    private fun convert(productsForUpdate: List<ProductFullDto>): Map<EshopUuid, MutableList<ProductDetailInfo>> {
+
+        val productsInEshop = EnumMap<EshopUuid, MutableList<ProductDetailInfo>>(EshopUuid::class.java)
+        productsForUpdate.forEach { productFullDto -> productsInEshop[productFullDto.eshopUuid] = ArrayList() }
+        productsForUpdate.forEach { productFullDto ->
+            productsInEshop[productFullDto.eshopUuid]!!.add(
+                    ProductDetailInfo(productFullDto.id, productFullDto.url, productFullDto.eshopUuid))
+        }
+        return productsInEshop
     }
 
-    @Override
-    public void updateProductDataForEachProductNotInAnyGroup(@NonNull UpdateProductDataListener listener) {
+    override fun updateProductDataForEachProductNotInAnyGroup(listener: UpdateProductDataListener) {
 
-        Map<EshopUuid, List<ProductDetailInfo>> productsNotInAnyGroup = convert(internalTxService.findProductsNotInAnyGroup());
+        val productsNotInAnyGroup = convert(internalTxService.findProductsNotInAnyGroup())
 
         if (productsNotInAnyGroup.isEmpty()) {
-            log.debug("none product found for update which is not in any group");
-            return;
+            log.debug("none product found for update which is not in any group")
+            return
         }
-        updateProductData(productsNotInAnyGroup, listener);
+        updateProductData(productsNotInAnyGroup, listener)
     }
 
-    private boolean shouldContinueWithNexProduct(UpdateProcessResult updateProcessResult) {
-        if (OK.equals(updateProcessResult)) {
-            return true;
+    private fun shouldContinueWithNexProduct(updateProcessResult: UpdateProcessResult): Boolean {
+        if (OK == updateProcessResult) {
+            return true
         }
 
-        if (ERR_UPDATE_ERROR_PRODUCT_IS_UNAVAILABLE.equals(updateProcessResult)) {
-            return true;
+        if (ERR_UPDATE_ERROR_PRODUCT_IS_UNAVAILABLE == updateProcessResult) {
+            return true
         }
 
-        if (ERR_PARSING_ERROR_HTTP_STATUS_404.equals(updateProcessResult)) {
-            return true;
-        }
+        return ERR_PARSING_ERROR_HTTP_STATUS_404 == updateProcessResult
 
         //TODO impl pre ktore typy chyb sa ma process zastavit(teda dalsi product z daneho ehopu uz nebude spracovany)
-        return false;
     }
 
-    private UpdateProcessResult internalParseAndUpdate(ProductDetailInfo productDetailInfo, UpdateProductDataListener listener) {
+    private fun internalParseAndUpdate(productDetailInfo: ProductDetailInfo, listener: UpdateProductDataListener): UpdateProcessResult {
         // parsing
-        ParsingDataResponse parsingDataResponse = parseOneProductUpdateData(productDetailInfo);
+        val parsingDataResponse = parseOneProductUpdateData(productDetailInfo)
 
         // response processing and updating if ok
-        return processParsingDataResponse(parsingDataResponse, productDetailInfo, listener);
+        return processParsingDataResponse(parsingDataResponse, productDetailInfo, listener)
     }
 
-    private ParsingDataResponse parseOneProductUpdateData(ProductDetailInfo productDetailInfo) {
+    private fun parseOneProductUpdateData(productDetailInfo: ProductDetailInfo): ParsingDataResponse {
         try {
-            return new ParsingDataResponse(htmlParser.parseProductUpdateData(productDetailInfo.getUrl()));
+            return ParsingDataResponse(htmlParser.parseProductUpdateData(productDetailInfo.url!!))
 
-        } catch (Exception e) {
-            return new ParsingDataResponse(e);
+        } catch (e: Exception) {
+            return ParsingDataResponse(e)
         }
+
     }
 
     // FIXME lepsie nazvy zvolit pre vstupne parametre
 
-    private UpdateProcessResult processParsingDataResponse(ParsingDataResponse parsingDataResponse,
-                                                           ProductDetailInfo parsingDataRequest,
-                                                           UpdateProductDataListener listener) {
-        if (parsingDataResponse.isError()) {
+    private fun processParsingDataResponse(parsingDataResponse: ParsingDataResponse,
+                                           parsingDataRequest: ProductDetailInfo,
+                                           listener: UpdateProductDataListener): UpdateProcessResult {
+        return if (parsingDataResponse.isError) {
             // spracovanie parsing chyby
-            return errorHandler.processParsingError(parsingDataResponse.getError(), parsingDataRequest);
+            errorHandler.processParsingError(parsingDataResponse.error!!, parsingDataRequest)
 
-        }
-        // spracovanie vyparsovanych dat
-        return processParsedData(parsingDataResponse.getProductUpdateData(), parsingDataRequest, listener);
+            // spracovanie vyparsovanych dat
+        } else processParsedData(parsingDataResponse.productUpdateData!!, parsingDataRequest, listener)
+
     }
 
     /**
@@ -200,116 +181,120 @@ public class UpdateProductDataManagerImpl implements UpdateProductDataManager {
      * @param parsingDataRequest
      * @param listener
      */
-    private UpdateProcessResult processParsedData(ProductUpdateData updateData, ProductDetailInfo parsingDataRequest, UpdateProductDataListener listener) {
+    private fun processParsedData(updateData: ProductUpdateData, parsingDataRequest: ProductDetailInfo, listener: UpdateProductDataListener): UpdateProcessResult {
         // if not available log error and finish
-        if (!updateData.isProductAvailable()) {
-            internalTxService.markProductAsUnavailable(parsingDataRequest.getId());
-            return ERR_UPDATE_ERROR_PRODUCT_IS_UNAVAILABLE;
+        if (!updateData.isProductAvailable) {
+            internalTxService.markProductAsUnavailable(parsingDataRequest.id)
+            return ERR_UPDATE_ERROR_PRODUCT_IS_UNAVAILABLE
         }
 
-        Optional<Long> existSameProductIdOpt = internalTxService.getProductWithUrl(updateData.getUrl(), parsingDataRequest.getId());
-        if (existSameProductIdOpt.isPresent()) {
-            log.debug("exist another product {} with url {}", existSameProductIdOpt.get(), updateData.getUrl());
-            log.debug("product {} will be removed, url {} ", parsingDataRequest.getId(), parsingDataRequest.getUrl());
+        val existSameProductIdOpt = internalTxService.getProductWithUrl(updateData.url, parsingDataRequest.id)
+        if (existSameProductIdOpt.isPresent) {
+            log.debug("exist another product {} with url {}", existSameProductIdOpt.get(), updateData.url)
+            log.debug("product {} will be removed, url {} ", parsingDataRequest.id, parsingDataRequest.url)
         }
 
-        Long productIdToBeUpdated = existSameProductIdOpt.isPresent() ? existSameProductIdOpt.get() : parsingDataRequest.getId();
+        val productIdToBeUpdated = if (existSameProductIdOpt.isPresent) existSameProductIdOpt.get() else parsingDataRequest.id
 
 
         //FIXME premapovanie cez sk.hudak.prco mapper nie takto rucne, nech mam na jednom mieste tie preklapacky...
-        internalTxService.updateProduct(new ProductUpdateDataDto(
+        internalTxService.updateProduct(ProductUpdateDataDto(
                 productIdToBeUpdated,
-                updateData.getUrl(),
-                updateData.getName(),
-                updateData.getPriceForPackage(),
-                updateData.getProductAction(),
-                updateData.getActionValidity(),
-                updateData.getPictureUrl()));
+                updateData.url,
+                updateData.name,
+                updateData.priceForPackage,
+                updateData.productAction,
+                updateData.actionValidity,
+                updateData.pictureUrl))
 
         // remove product with old URL
-        if (existSameProductIdOpt.isPresent()) {
-            internalTxService.removeProduct(parsingDataRequest.getId());
+        if (existSameProductIdOpt.isPresent) {
+            internalTxService.removeProduct(parsingDataRequest.id)
         }
 
         // po dokonceni nech vola:
-        notifyUpdateListener(updateData.getEshopUuid(), listener);
+        notifyUpdateListener(updateData.eshopUuid, listener)
 
-        return OK;
+        return OK
     }
 
 
-    private Optional<ProductDetailInfo> getProductForUpdate(Long productId) {
+    private fun getProductForUpdate(productId: Long): ProductDetailInfo? {
         try {
-            return Optional.of(internalTxService.getProductForUpdate(productId));
+            return internalTxService.getProductForUpdate(productId)
 
-        } catch (Exception e) {
-            log.error("error while getting information for product with id " + productId);
-            return Optional.empty();
+        } catch (e: Exception) {
+            log.error("error while getting information for product with id $productId")
+            return null
+        }
+
+    }
+
+    private fun getProductForUpdate(eshopUuid: EshopUuid): ProductDetailInfo? {
+        //TODO toto je zla metoda lebo ked je vinimka alebo sa nenajde dany product tak vystup je stale null co je zle !!!!
+        val olderThanInHours = eshopUuid.olderThanInHours
+        try {
+            val productForUpdate = internalTxService.getProductForUpdate(eshopUuid, olderThanInHours)
+            return if (productForUpdate.isPresent) {
+                productForUpdate.get()
+            } else {
+                null;
+            }
+
+        } catch (e: Exception) {
+            log.error("error while getting first product for update for eshop $eshopUuid older than $olderThanInHours hours")
+            return null
         }
     }
 
-    private Optional<ProductDetailInfo> getProductForUpdate(EshopUuid eshopUuid) {
-        int olderThanInHours = eshopUuid.getOlderThanInHours();
-        try {
-            return internalTxService.getProductForUpdate(eshopUuid, olderThanInHours);
-
-        } catch (Exception e) {
-            log.error("error while getting first product for update for eshop " + eshopUuid + " older than " + olderThanInHours + " hours");
-            return Optional.empty();
-        }
-    }
-
-    private void updateProductData(Map<EshopUuid, List<ProductDetailInfo>> productsForUpdate, UpdateProductDataListener listener) {
+    private fun updateProductData(productsForUpdate: Map<EshopUuid, List<ProductDetailInfo>>, listener: UpdateProductDataListener) {
 
 
-        for (Map.Entry<EshopUuid, List<ProductDetailInfo>> eshopUuidListEntry : productsForUpdate.entrySet()) {
+        for ((eshopUuid, productForUpdateList) in productsForUpdate) {
 
-            final EshopUuid eshopUuid = eshopUuidListEntry.getKey();
-            List<ProductDetailInfo> productForUpdateList = eshopUuidListEntry.getValue();
-
-            eshopTaskManager.submitTask(eshopUuid, () -> {
+            eshopTaskManager.submitTask(eshopUuid, Runnable {
                 // ak je to volane hned po sebe tak sleepnem
-                eshopTaskManager.sleepIfNeeded(eshopUuid);
-                eshopTaskManager.markTaskAsRunning(eshopUuid);
+                eshopTaskManager.sleepIfNeeded(eshopUuid)
+                eshopTaskManager.markTaskAsRunning(eshopUuid)
 
-                long countOfProductsAlreadyUpdated = 0;
-                long countOfProductsWaitingToBeUpdated = productForUpdateList.size();
+                var countOfProductsAlreadyUpdated: Long = 0
+                var countOfProductsWaitingToBeUpdated = productForUpdateList.size.toLong()
 
-                for (ProductDetailInfo productForUpdate : productForUpdateList) {
+                for (productForUpdate in productForUpdateList) {
 
-                    listener.onUpdateStatus(new UpdateStatusInfo(eshopUuid, countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated));
+                    listener.onUpdateStatus(UpdateStatusInfo(eshopUuid, countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated))
 
-                    UpdateProcessResult updateProcessResult = internalParseAndUpdate(productForUpdate, UpdateProductDataListenerAdapter.EMPTY_INSTANCE);
+                    val updateProcessResult = internalParseAndUpdate(productForUpdate, UpdateProductDataListenerAdapter.EMPTY_INSTANCE)
 
-                    countOfProductsAlreadyUpdated++;
-                    countOfProductsWaitingToBeUpdated--;
+                    countOfProductsAlreadyUpdated++
+                    countOfProductsWaitingToBeUpdated--
 
                     if (shouldContinueWithNexProduct(updateProcessResult)) {
                         if (eshopTaskManager.isTaskShouldStopped(eshopUuid)) {
-                            eshopTaskManager.markTaskAsStopped(eshopUuid);
-                            break;
+                            eshopTaskManager.markTaskAsStopped(eshopUuid)
+                            break
                         }
 
-                        sleepRandomSafe();
-                        continue;
+                        sleepRandomSafe()
+                        continue
                     }
-                    eshopTaskManager.markTaskAsFinished(eshopUuid, true);
-                    break;
+                    eshopTaskManager.markTaskAsFinished(eshopUuid, true)
+                    break
                 }
 
-                eshopTaskManager.markTaskAsFinished(eshopUuid, false);
+                eshopTaskManager.markTaskAsFinished(eshopUuid, false)
 
-            });
+            })
 
             // kazdy dalsi task pre eshop spusti s 2 sekundovym oneskorenim
-            sleepSafe(2);
+            sleepSafe(2)
         }
     }
 
-    private void notifyUpdateListener(EshopUuid eshopUuid, UpdateProductDataListener listener) {
+    private fun notifyUpdateListener(eshopUuid: EshopUuid, listener: UpdateProductDataListener) {
         listener.onUpdateStatus(
-                mapper.map(internalTxService.getStatisticForUpdateForEshop(eshopUuid, eshopUuid.getOlderThanInHours()),
-                        UpdateStatusInfo.class)
-        );
+                mapper.map(internalTxService.getStatisticForUpdateForEshop(eshopUuid, eshopUuid.olderThanInHours),
+                        UpdateStatusInfo::class.java)
+        )
     }
 }

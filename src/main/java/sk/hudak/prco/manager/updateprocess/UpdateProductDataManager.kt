@@ -7,7 +7,7 @@ interface UpdateProductDataManager {
     /**
      * @param productId product id
      */
-    fun updateProductData(productId: Long?)
+    fun updateProductData(productId: Long)
 
     /**
      * @param groupId group id
