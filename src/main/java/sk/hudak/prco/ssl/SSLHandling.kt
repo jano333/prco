@@ -1,6 +1,5 @@
 package sk.hudak.prco.ssl
 
-import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
 import sk.hudak.prco.exception.PrcoRuntimeException
 import java.net.Socket
@@ -124,7 +123,7 @@ object PrcoSslManager {
     private class MockKeyManager : X509KeyManager {
 
         companion object {
-            val log = LoggerFactory.getLogger(MockKeyManager::class.java)
+            val log = LoggerFactory.getLogger(MockKeyManager::class.java)!!
         }
 
         init {
@@ -241,7 +240,7 @@ class PrcoCustomTrustManager @Throws(Exception::class)
 constructor() : X509TrustManager {
 
     companion object {
-        val log = LoggerFactory.getLogger(PrcoCustomTrustManager::class.java)
+        val log = LoggerFactory.getLogger(PrcoCustomTrustManager::class.java)!!
     }
 
     private val javaDefaultTrustManager: X509TrustManager
@@ -341,11 +340,10 @@ constructor() : X509KeyManager {
     }
 }
 
-@Slf4j
 class PrcoCustomHostnameVerifier : HostnameVerifier {
 
     companion object {
-        val log = LoggerFactory.getLogger(PrcoCustomHostnameVerifier::class.java)
+        val log = LoggerFactory.getLogger(PrcoCustomHostnameVerifier::class.java)!!
     }
 
     private val javaDefaultHostnameVerifier: HostnameVerifier
