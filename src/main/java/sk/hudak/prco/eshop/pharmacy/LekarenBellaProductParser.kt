@@ -1,6 +1,5 @@
 package sk.hudak.prco.eshop.pharmacy
 
-import lombok.extern.slf4j.Slf4j
 import org.apache.commons.lang3.StringUtils
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -18,7 +17,6 @@ import java.util.*
 import java.util.Optional.ofNullable
 import kotlin.streams.toList
 
-@Slf4j
 @Component
 class LekarenBellaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {

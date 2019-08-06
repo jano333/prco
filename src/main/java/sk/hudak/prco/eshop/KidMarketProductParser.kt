@@ -1,6 +1,5 @@
 package sk.hudak.prco.eshop
 
-import lombok.extern.slf4j.Slf4j
 import org.apache.commons.lang3.StringUtils
 import org.jsoup.nodes.Document
 import org.springframework.stereotype.Component
@@ -17,7 +16,6 @@ import java.math.BigDecimal
 import java.util.*
 import java.util.Optional.ofNullable
 
-@Slf4j
 @Component
 class KidMarketProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder) : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
@@ -30,7 +28,7 @@ class KidMarketProductParser(unitParser: UnitParser, userAgentDataHolder: UserAg
 
     override fun parseCountOfPages(documentList: Document): Int {
         return ofNullable(documentList.select("span[class=heading-counter]").first())
-                .map{ it.text() }
+                .map { it.text() }
                 .map { textValue -> Integer.valueOf(StringUtils.removeStart(textValue, "Nájdené výsledky: ")) }
                 .orElse(0)
     }

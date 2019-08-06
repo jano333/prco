@@ -1,6 +1,5 @@
 package sk.hudak.prco.eshop.drugstore
 
-import lombok.extern.slf4j.Slf4j
 import org.apache.commons.lang3.StringUtils
 import org.jsoup.nodes.Document
 import org.springframework.stereotype.Component
@@ -17,9 +16,10 @@ import java.util.*
 import java.util.Optional.ofNullable
 import java.util.stream.Collectors
 
-@Slf4j
 @Component
-class DrogeriaVmdProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+class DrogeriaVmdProductParser(unitParser: UnitParser,
+                               userAgentDataHolder: UserAgentDataHolder,
+                               searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
     override val eshopUuid: EshopUuid

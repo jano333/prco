@@ -3,7 +3,6 @@ package sk.hudak.prco.eshop.tobefixed
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.TextNode
-import lombok.extern.slf4j.Slf4j
 import org.apache.http.HttpHeaders.USER_AGENT
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.BasicCookieStore
@@ -27,7 +26,6 @@ import java.util.*
 import java.util.Collections.emptyList
 import java.util.Optional.*
 
-@Slf4j
 //@Component
 class HornbachProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder), WatchDogParser {

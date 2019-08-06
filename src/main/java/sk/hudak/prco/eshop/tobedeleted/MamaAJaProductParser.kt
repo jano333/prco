@@ -1,6 +1,5 @@
 package sk.hudak.prco.eshop.tobedeleted
 
-import lombok.extern.slf4j.Slf4j
 import org.apache.commons.lang3.StringUtils
 import org.jsoup.nodes.Document
 import sk.hudak.prco.api.EshopUuid
@@ -17,7 +16,6 @@ import java.util.*
 import java.util.Optional.empty
 import java.util.Optional.ofNullable
 
-@Slf4j
 //@Component
 class MamaAJaProductParser(unitParser: UnitParser,
                            userAgentDataHolder: UserAgentDataHolder,
