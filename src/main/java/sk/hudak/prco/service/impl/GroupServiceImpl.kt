@@ -1,6 +1,5 @@
 package sk.hudak.prco.service.impl
 
-import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -18,7 +17,6 @@ import sk.hudak.prco.utils.Validate.notNullNotEmpty
 import java.util.*
 import java.util.stream.Collectors
 
-@Slf4j
 @Service("groupService")
 class GroupServiceImpl(
         @Autowired private val productEntityDao: ProductEntityDao,
