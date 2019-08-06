@@ -1,6 +1,5 @@
 package sk.hudak.prco.parser.impl
 
-import lombok.NonNull
 import org.jsoup.HttpStatusException
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -122,7 +121,7 @@ abstract class JSoupProductParser/*(protected var unitParser: UnitParser,
 
     protected abstract fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date>
 
-    override fun parseUrlsOfProduct(@NonNull searchKeyWord: String): List<String> {
+    override fun parseUrlsOfProduct(searchKeyWord: String): List<String> {
         val searchUrl = searchUrlBuilder.buildSearchUrl(eshopUuid, searchKeyWord)
         val firstPageDocument = retrieveDocument(searchUrl)
 
@@ -155,7 +154,7 @@ abstract class JSoupProductParser/*(protected var unitParser: UnitParser,
         return resultUrls
     }
 
-    override fun parseProductNewData(@NonNull productUrl: String): ProductNewData {
+    override fun parseProductNewData(productUrl: String): ProductNewData {
         //FIXME prepisat tak ako je parseProductUpdateData myslim tym tie optional(overit ci uz to tak nie je)
 
         val document = retrieveDocument(productUrl)
@@ -243,7 +242,7 @@ abstract class JSoupProductParser/*(protected var unitParser: UnitParser,
                 if (pictureUrl.isPresent) pictureUrl.get() else null)
     }
 
-    protected open fun retrieveDocument(@NonNull productUrl: String): Document {
+    protected open fun retrieveDocument(productUrl: String): Document {
         try {
             log.debug("request URL: {}", productUrl)
 
