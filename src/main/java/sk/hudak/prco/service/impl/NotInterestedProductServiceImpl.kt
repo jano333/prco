@@ -35,4 +35,12 @@ class NotInterestedProductServiceImpl(
             notInterestedProductDbDao.delete(entity)
         }
     }
+
+    override fun removeNotInterestedProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int {
+        val findByCount = notInterestedProductDbDao.findByCount(eshopUuid, maxCountToDelete)
+        findByCount.forEach {
+            notInterestedProductDbDao.delete(it)
+        }
+        return findByCount.size
+    }
 }

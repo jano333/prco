@@ -1,6 +1,7 @@
 package sk.hudak.prco.service
 
 
+import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.UnitData
 import sk.hudak.prco.dto.product.*
 
@@ -85,4 +86,6 @@ interface NewProductService {
     fun updateProductUnitData(productUnitDataDto: ProductUnitDataDto)
 
     fun deleteNewProducts(newProductIds: Array<Long>)
+
+    fun removeNewProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int
 }

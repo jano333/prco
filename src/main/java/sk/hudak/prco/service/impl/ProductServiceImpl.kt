@@ -1,6 +1,5 @@
 package sk.hudak.prco.service.impl
 
-import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import sk.hudak.prco.api.BestPriceInGroup
@@ -16,6 +15,7 @@ import sk.hudak.prco.model.ProductEntity
 import sk.hudak.prco.service.ProductService
 import sk.hudak.prco.utils.CalculationUtils
 import sk.hudak.prco.utils.PriceCalculator
+import sk.hudak.prco.utils.Validate.notEmpty
 import sk.hudak.prco.utils.Validate.notNegativeAndNotZeroValue
 import sk.hudak.prco.utils.Validate.notNull
 import sk.hudak.prco.utils.Validate.notNullNotEmpty
@@ -27,18 +27,15 @@ import java.util.function.Predicate
 import kotlin.Comparator
 import kotlin.streams.toList
 
-@Slf4j
 @Service("productService")
-class ProductServiceImpl(
-        private val productEntityDao: ProductEntityDao,
-        private val groupEntityDao: GroupEntityDao,
-        private val groupOfProductFindEntityDao: GroupOfProductFindEntityDao,
-        private val productDataUpdateEntityDao: ProductDataUpdateEntityDao,
-        private val notInterestedProductDbDao: NotInterestedProductDbDao,
-        private val mapper: PrcoOrikaMapper,
-        private val priceCalculator: PriceCalculator
-
-) : ProductService {
+class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
+                         private val groupEntityDao: GroupEntityDao,
+                         private val groupOfProductFindEntityDao: GroupOfProductFindEntityDao,
+                         private val productDataUpdateEntityDao: ProductDataUpdateEntityDao,
+                         private val notInterestedProductDbDao: NotInterestedProductDbDao,
+                         private val mapper: PrcoOrikaMapper,
+                         private val priceCalculator: PriceCalculator)
+    : ProductService {
 
     companion object {
         val log = LoggerFactory.getLogger(ProductServiceImpl::class.java)!!
@@ -202,33 +199,37 @@ class ProductServiceImpl(
     override fun removeProduct(productId: Long?) {
         notNull(productId, PRODUCT_ID)
 
-        val productEntity = productEntityDao.findById(productId!!)
-
-        removeProductFromGroup(productEntity)
-
-        productEntityDao.delete(productEntity)
-        log.debug("product with id {} was deleted", productId)
+        removeProduct(productEntityDao.findById(productId!!));
     }
 
     override fun removeProductByUrl(productUrl: String) {
-        notNullNotEmpty(productUrl, "productUrl")
+        notEmpty(productUrl, "productUrl")
 
-        productEntityDao.findByUrl(productUrl)
-                .ifPresent { entity ->
+        productEntityDao.findByUrl(productUrl)?.let {
+            removeProduct(it)
+        }
+    }
 
-                    // remove from group
-                    removeProductFromGroup(entity)
+    override fun removeProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int {
+        val findByCount = productEntityDao.findByCount(eshopUuid, maxCountToDelete)
+        findByCount.forEach {
+            removeProduct(it)
+        }
+        return findByCount.size
+    }
 
-                    productEntityDao.delete(entity)
-                    log.debug("product with url {} has been removed", productUrl)
-                }
+    private fun removeProduct(productEntity: ProductEntity) {
+        removeProductFromGroup(productEntity)
+
+        productEntityDao.delete(productEntity)
+        log.debug("product was removed, id ${productEntity.id} url ${productEntity.url}")
     }
 
     private fun removeProductFromGroup(productEntity: ProductEntity) {
         for (groupEntity in groupEntityDao.findGroupsForProduct(productEntity.id)) {
             groupEntity.products.remove(productEntity)
             groupEntityDao.update(groupEntity)
-            log.debug("removed product '{}' from group '{}'", productEntity.name, groupEntity.name)
+            log.debug("product '${productEntity.name}' was removed from group '${groupEntity.name}'")
         }
     }
 

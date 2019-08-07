@@ -2,9 +2,9 @@ package sk.hudak.prco.service.impl
 
 import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sk.hudak.prco.api.ErrorType
+import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.Unit
 import sk.hudak.prco.dao.db.NewProductEntityDbDao
 import sk.hudak.prco.dto.ErrorCreateDto
@@ -24,14 +24,13 @@ import sk.hudak.prco.utils.Validate.notNull
 import sk.hudak.prco.utils.Validate.notNullNotEmpty
 import java.util.*
 
-//TODO KT overit si @Autovired anotacia je potrebna
-
 @Service("newProductService")
-class NewProductServiceImpl(@Autowired private val newProductEntityDao: NewProductEntityDbDao,
-                            @Autowired private val mapper: PrcoOrikaMapper,
-                            @Autowired private val unitParser: UnitParser,
-                            @Autowired private val errorService: ErrorService,
-                            @Autowired private val htmlParser: HtmlParser) : NewProductService {
+class NewProductServiceImpl(private val newProductEntityDao: NewProductEntityDbDao,
+                            private val mapper: PrcoOrikaMapper,
+                            private val unitParser: UnitParser,
+                            private val errorService: ErrorService,
+                            private val htmlParser: HtmlParser)
+    : NewProductService {
 
     companion object {
         val log = LoggerFactory.getLogger(NewProductServiceImpl::class.java)!!
@@ -252,9 +251,19 @@ class NewProductServiceImpl(@Autowired private val newProductEntityDao: NewProdu
 
     override fun deleteNewProducts(newProductIds: Array<Long>) {
         newProductIds.forEach {
-            newProductEntityDao.delete(newProductEntityDao.findById(it))
+            removeNewProduct(newProductEntityDao.findById(it))
         }
     }
 
+    override fun removeNewProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int {
+        val findByCount = newProductEntityDao.findByCount(eshopUuid, maxCountToDelete)
+        findByCount.forEach {
+            removeNewProduct(it)
+        }
+        return findByCount.size
+    }
 
+    private fun removeNewProduct(newProductEntity: NewProductEntity) {
+        newProductEntityDao.delete(newProductEntity)
+    }
 }

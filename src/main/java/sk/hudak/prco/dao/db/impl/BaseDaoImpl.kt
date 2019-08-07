@@ -9,7 +9,9 @@ import sk.hudak.prco.model.core.DbEntity
 import java.util.*
 import javax.persistence.EntityManager
 
-abstract class BaseDaoImpl<T : DbEntity>(protected val em: EntityManager) : BaseDao<T> {
+abstract class BaseDaoImpl<T : DbEntity>(
+        protected val em: EntityManager)
+    : BaseDao<T> {
 
     protected val queryFactory: JPAQueryFactory = JPAQueryFactory(em)
 

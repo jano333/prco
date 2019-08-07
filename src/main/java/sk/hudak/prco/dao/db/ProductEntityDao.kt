@@ -21,7 +21,7 @@ interface ProductEntityDao : BaseDao<ProductEntity> {
 
     fun findByFilter(filter: ProductFilterUIDto): List<ProductEntity>
 
-    fun findByUrl(productUrl: String): Optional<ProductEntity>
+    fun findByUrl(productUrl: String): ProductEntity?
 
     fun count(): Long
 
@@ -34,4 +34,6 @@ interface ProductEntityDao : BaseDao<ProductEntity> {
     fun countOfProductsAlreadyUpdated(eshopUuid: EshopUuid, olderThanInHours: Int): Long
 
     fun getProductWithUrl(productUrl: String, productIdToIgnore: Long?): Optional<Long>
+
+    fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<ProductEntity>
 }

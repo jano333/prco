@@ -25,6 +25,21 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
                                  @param:Qualifier("errorService") private val errorService: ErrorService,
                                  @param:Qualifier("groupProductKeywordsService") private val groupProductKeywordsService: GroupProductKeywordsService) : InternalTxService {
 
+    @Transactional
+    override fun removeProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int {
+        return productService.removeProductsByCount(eshopUuid, maxCountToDelete)
+    }
+
+    @Transactional
+    override fun removeNewProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int {
+        return newProductService.removeNewProductsByCount(eshopUuid, maxCountToDelete)
+    }
+
+    @Transactional
+    override fun removeNotInterestedProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int {
+        return notInterestedProductService.removeNotInterestedProductsByCount(eshopUuid, maxCountToDelete)
+    }
+
     override val countOfInvalidNewProduct: Long
         @Transactional(readOnly = true)
         get() = newProductService.countOfInvalidNewProduct

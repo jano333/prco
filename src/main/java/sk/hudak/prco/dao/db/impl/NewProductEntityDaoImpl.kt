@@ -2,8 +2,8 @@ package sk.hudak.prco.dao.db.impl
 
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
-import lombok.NonNull
 import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dao.db.NewProductEntityDbDao
 import sk.hudak.prco.dto.product.NewProductFilterUIDto
 import sk.hudak.prco.model.NewProductEntity
@@ -35,7 +35,7 @@ open class NewProductEntityDaoImpl(em: EntityManager)
                 .fetchFirst())
     }
 
-    override fun findByFilter(@NonNull filter: NewProductFilterUIDto): List<NewProductEntity> {
+    override fun findByFilter(filter: NewProductFilterUIDto): List<NewProductEntity> {
         val query = from(QNewProductEntity.newProductEntity)
         if (filter.eshopUuid != null) {
             query.where(QNewProductEntity.newProductEntity.eshopUuid.eq(filter.eshopUuid!!))
@@ -67,6 +67,13 @@ open class NewProductEntityDaoImpl(em: EntityManager)
 
     override fun findAll(): List<NewProductEntity> {
         return from(QNewProductEntity.newProductEntity)
+                .fetch()
+    }
+
+    override fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<NewProductEntity> {
+        return from(QNewProductEntity.newProductEntity)
+                .where(QNewProductEntity.newProductEntity.eshopUuid.eq(eshopUuid))
+                .limit(maxCountToDelete)
                 .fetch()
     }
 }

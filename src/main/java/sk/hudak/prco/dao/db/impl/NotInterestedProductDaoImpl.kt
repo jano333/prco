@@ -3,6 +3,7 @@ package sk.hudak.prco.dao.db.impl
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
 import org.springframework.stereotype.Repository
+import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dao.db.NotInterestedProductDbDao
 import sk.hudak.prco.dto.product.NotInterestedProductFindDto
 import sk.hudak.prco.model.NotInterestedProductEntity
@@ -37,6 +38,13 @@ open class NotInterestedProductDaoImpl(em: EntityManager)
                 .from(QNotInterestedProductEntity.notInterestedProductEntity)
                 .limit(10)
                 .orderBy(OrderSpecifier(Order.DESC, QNotInterestedProductEntity.notInterestedProductEntity.created))
-                .fetch();
+                .fetch()
+    }
+
+    override fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<NotInterestedProductEntity> {
+        return from(QNotInterestedProductEntity.notInterestedProductEntity)
+                .where(QNotInterestedProductEntity.notInterestedProductEntity.eshopUuid.eq(eshopUuid))
+                .limit(maxCountToDelete)
+                .fetch()
     }
 }

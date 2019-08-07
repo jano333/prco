@@ -72,6 +72,11 @@ interface ProductService {
 
     fun removeProductByUrl(productUrl: String)
 
+    /**
+     * Remove/delete randomly count of product. Return count of really deleted products.
+     */
+    fun removeProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int
+
     // ----------- GET -----------
 
     /**

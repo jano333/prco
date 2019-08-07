@@ -17,6 +17,11 @@ import javax.persistence.EntityManager
 @Repository
 open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(em), ProductEntityDao {
 
+
+    companion object {
+        val OLDER_THAN_IN_HOURS = 24
+    }
+
     override fun findById(id: Long): ProductEntity =
             findById(ProductEntity::class.java, id)
 
@@ -63,11 +68,19 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
         return query.fetch()
     }
 
-    override fun findByUrl(productUrl: String): Optional<ProductEntity> {
-        return ofNullable(from(QProductEntity.productEntity)
+    override fun findByUrl(productUrl: String): ProductEntity? {
+        return from(QProductEntity.productEntity)
                 .where(QProductEntity.productEntity.url.eq(productUrl))
-                .fetchFirst())
+                .fetchFirst()
     }
+
+    override fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<ProductEntity> {
+        return from(QProductEntity.productEntity)
+                .where(QProductEntity.productEntity.eshopUuid.eq(eshopUuid))
+                .limit(maxCountToDelete)
+                .fetch()
+    }
+
 
     override fun count(): Long {
         return queryFactory
@@ -120,6 +133,7 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
                 .fetchFirst())
     }
 
+
     //FIXME move to DateUtils
     private fun calculateDate(olderThanInHours: Int): Date {
         val currentDate = Date()
@@ -128,9 +142,6 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
         return Date.from(newDateTime.atZone(ZoneId.systemDefault()).toInstant())
     }
 
-    companion object {
 
-        val OLDER_THAN_IN_HOURS = 24
-    }
 
 }

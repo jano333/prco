@@ -12,4 +12,5 @@ interface NotInterestedProductService {
 
     fun findNotInterestedProducts(findDto: NotInterestedProductFindDto): List<NotInterestedProductFullDto>
 
+    fun removeNotInterestedProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int
 }

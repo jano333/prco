@@ -26,6 +26,7 @@ import sk.hudak.prco.manager.WatchDogManager;
 import sk.hudak.prco.manager.addprocess.AddingNewProductManager;
 import sk.hudak.prco.manager.export.DbExportImportManager;
 import sk.hudak.prco.manager.export.HtmlExportManager;
+import sk.hudak.prco.manager.remove.RemoveEshopManager;
 import sk.hudak.prco.manager.updateprocess.UpdateProductDataListener;
 import sk.hudak.prco.manager.updateprocess.UpdateProductDataManager;
 import sk.hudak.prco.parser.HtmlParser;
@@ -86,6 +87,9 @@ public class Starter {
     @Autowired
     private GroupProductResolver groupProductResolver;
 
+    @Autowired
+    private RemoveEshopManager removeEshopManager;
+
     public void run() {
 
         //init ssl
@@ -96,6 +100,9 @@ public class Starter {
 
         //TODO
         internalTxService.startErrorCleanUp();
+
+
+//        removeEshopManager.removeAllProductsForEshop(EshopUuid.BAMBINO);
 
 //        System.out.println(">> --------");
 
@@ -231,7 +238,7 @@ public class Starter {
                 log.debug(">> eshop: {}, updated/waiting: {}/{}",
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
-        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
+//        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
 //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
 //        updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.LEKAREN_BELLA, listener);
@@ -244,7 +251,7 @@ public class Starter {
 //        uiService.updateProductCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-//        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
+        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PILULKA_24, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "nutrilon");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "lovela");
