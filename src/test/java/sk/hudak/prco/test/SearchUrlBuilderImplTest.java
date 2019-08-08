@@ -15,7 +15,6 @@ import java.util.Map;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static sk.hudak.prco.api.EshopUuid.ALZA;
-import static sk.hudak.prco.api.EshopUuid.BAMBINO;
 import static sk.hudak.prco.api.EshopUuid.DR_MAX;
 
 @Slf4j
@@ -37,10 +36,6 @@ public class SearchUrlBuilderImplTest {
                 "https://www.alza.sk/search.htm?exps=pampers%205",
                 "https://www.alza.sk/search-p1.htm?exps=pampers%205",
                 "https://www.alza.sk/search-p2.htm?exps=pampers%205"));
-        data.put(BAMBINO, new Structure(
-                "https://www.bambino.sk/vyhladavanie?search=pampers%205",
-                "https://www.bambino.sk/vyhladavanie/1?search=pampers%205",
-                "https://www.bambino.sk/vyhladavanie/2?search=pampers%205"));
         data.put(DR_MAX, new Structure(
                 "https://www.drmax.sk/catalog/search/?q=pampers%205",
                 "https://www.drmax.sk/catalog/search/?q=pampers%205&offset=0&limit=24",

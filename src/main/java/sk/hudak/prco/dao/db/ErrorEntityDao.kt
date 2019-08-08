@@ -1,6 +1,7 @@
 package sk.hudak.prco.dao.db
 
 import sk.hudak.prco.api.ErrorType
+import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dao.BaseDao
 import sk.hudak.prco.dto.ErrorFindFilterDto
 import sk.hudak.prco.model.ErrorEntity
@@ -36,4 +37,6 @@ interface ErrorEntityDao : BaseDao<ErrorEntity> {
     fun findByMaxCount(limit: Int, errorType: ErrorType?): List<ErrorEntity>
 
     fun findErrorsByFilter(findDto: ErrorFindFilterDto): List<ErrorEntity>
+
+    fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<ErrorEntity>
 }

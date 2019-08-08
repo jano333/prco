@@ -1,6 +1,7 @@
 package sk.hudak.prco.dao.db.impl
 
 import org.springframework.stereotype.Repository
+import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dao.db.WatchDogEntityDao
 import sk.hudak.prco.model.QWatchDogEntity
 import sk.hudak.prco.model.WatchDogEntity
@@ -8,6 +9,12 @@ import javax.persistence.EntityManager
 
 @Repository
 open class WatchDogEntityDaoImpl(em: EntityManager) : BaseDaoImpl<WatchDogEntity>(em), WatchDogEntityDao {
+
+    override fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<WatchDogEntity> =
+            from(QWatchDogEntity.watchDogEntity)
+                    .where(QWatchDogEntity.watchDogEntity.eshopUuid.eq(eshopUuid))
+                    .limit(maxCountToDelete)
+                    .fetch()
 
     override fun findById(id: Long): WatchDogEntity =
             findById(WatchDogEntity::class.java, id)

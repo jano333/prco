@@ -2,8 +2,7 @@ package sk.hudak.prco.manager.remove
 
 import sk.hudak.prco.api.EshopUuid
 
+@FunctionalInterface
 interface RemoveEshopManager {
-
-    fun removeAllProductsForEshop(eshopUuid: EshopUuid)
-
+    fun removeAllForEshop(eshopUuid: EshopUuid)
 }

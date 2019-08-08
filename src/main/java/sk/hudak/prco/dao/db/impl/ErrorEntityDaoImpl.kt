@@ -4,6 +4,7 @@ import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
 import org.springframework.stereotype.Repository
 import sk.hudak.prco.api.ErrorType
+import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dao.db.ErrorEntityDao
 import sk.hudak.prco.dto.ErrorFindFilterDto
 import sk.hudak.prco.exception.PrcoRuntimeException
@@ -86,6 +87,12 @@ open class ErrorEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ErrorEntity>(em),
         return query.fetch()
     }
 
+    override fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<ErrorEntity> =
+            from(QErrorEntity.errorEntity)
+                    .where(QErrorEntity.errorEntity.eshopUuid.eq(eshopUuid))
+                    .limit(maxCountToDelete)
+                    .fetch()
+
     override fun findByMaxCount(limit: Int, errorType: ErrorType?): List<ErrorEntity> {
         val from = queryFactory
                 .select(QErrorEntity.errorEntity)
@@ -97,6 +104,7 @@ open class ErrorEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ErrorEntity>(em),
         return from.limit(limit.toLong()).fetch()
     }
 
+    //TODO move to utils
     private fun calculateDate(unitCount: Int, timeUnit: TimeUnit): Date {
         var unit: TemporalUnit?
         when (timeUnit) {

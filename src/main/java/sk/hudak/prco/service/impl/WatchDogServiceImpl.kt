@@ -1,7 +1,6 @@
 package sk.hudak.prco.service.impl
 
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.stereotype.Service
@@ -20,33 +19,34 @@ import java.util.*
 import java.util.stream.Collectors
 
 @Service("watchDogService")
-class WatchDogServiceImpl : WatchDogService {
-
-    @Autowired
-    private val eshopUuidParser: EshopUuidParser? = null
-
-    @Autowired
-    private val watchDogEntityDao: WatchDogEntityDao? = null
-
-    @Autowired
-    private val mailSender: MailSender? = null
+class WatchDogServiceImpl(private val eshopUuidParser: EshopUuidParser,
+                          private val watchDogEntityDao: WatchDogEntityDao,
+                          private val mailSender: MailSender)
+    : WatchDogService {
 
     companion object {
         val log = LoggerFactory.getLogger(WatchDogServiceImpl::class.java)!!
     }
 
+    override fun removeWatchDog(eshopUuid: EshopUuid, maxCountToDelete: Long): Int {
+        val findByCount = watchDogEntityDao.findByCount(eshopUuid, maxCountToDelete)
+        findByCount.forEach {
+            watchDogEntityDao.delete(it)
+        }
+        return findByCount.size
+    }
+
     override fun addNewProductToWatch(addDto: WatchDogAddCustomDto): Long? {
-        notNull(addDto, "addDto")
         notNullNotEmpty(addDto.productUrl, "productUrl")
         notNull(addDto.maxPriceToBeInterestedIn, "maxPriceToBeInterestedIn")
 
         // check if already exist with this URL
-        if (watchDogEntityDao!!.existWithUrl(addDto.productUrl!!)) {
+        if (watchDogEntityDao.existWithUrl(addDto.productUrl!!)) {
             throw PrcoRuntimeException("Product with URL " + addDto.productUrl + " already exist")
         }
 
         val entity = WatchDogEntity()
-        entity.eshopUuid = eshopUuidParser!!.parseEshopUuid(addDto.productUrl!!)
+        entity.eshopUuid = eshopUuidParser.parseEshopUuid(addDto.productUrl!!)
         entity.productUrl = addDto.productUrl
         entity.maxPriceToBeInterestedIn = addDto.maxPriceToBeInterestedIn
 

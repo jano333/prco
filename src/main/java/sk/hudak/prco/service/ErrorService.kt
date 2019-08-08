@@ -1,6 +1,7 @@
 package sk.hudak.prco.service
 
 import sk.hudak.prco.api.ErrorType
+import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ErrorCreateDto
 import sk.hudak.prco.dto.ErrorFindFilterDto
 import sk.hudak.prco.dto.ErrorListDto
@@ -34,4 +35,6 @@ interface ErrorService {
      * -
      */
     fun startErrorCleanUp(): Future<Void>?
+
+    fun removeErrorsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int
 }

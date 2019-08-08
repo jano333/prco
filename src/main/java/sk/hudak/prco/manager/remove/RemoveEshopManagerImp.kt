@@ -19,48 +19,68 @@ class RemoveEshopManagerImp(private val internalTxService: InternalTxService) : 
     private lateinit var executor: ThreadPoolExecutor
 
     private fun start() {
-        Executors.defaultThreadFactory()
-
-        executor = ThreadPoolExecutor(3, 3, 0L,
+        executor = ThreadPoolExecutor(5, 5, 0L,
                 TimeUnit.MILLISECONDS, LinkedBlockingQueue(1), CustomThreadFactory())
 
         log.debug("Started thread pool")
     }
 
-
-    override fun removeAllProductsForEshop(eshopUuid: EshopUuid) {
+    override fun removeAllForEshop(eshopUuid: EshopUuid) {
         start()
 
-        val countOfProdutFuture: Future<Long> = executor.submit(Callable {
-            var finalCount = 0L;
-            var countOfProducts = internalTxService.removeProductsByCount(eshopUuid, MAX_COUNT_TO_DELETE)
-            finalCount += countOfProducts
-
-            while (countOfProducts > 0) {
-                log.debug("current count of 'product': $countOfProducts")
-                countOfProducts = internalTxService.removeProductsByCount(eshopUuid, MAX_COUNT_TO_DELETE)
-                finalCount += countOfProducts
-            }
-            finalCount
-        })
+        val countOfProductFuture: Future<Long> = executor.submit(removeFromProduct(eshopUuid))
         log.debug("submit product deleting")
 
-        val countOfNewProdutFuture: Future<Long> = executor.submit(Callable {
-            var finalCount = 0L;
-            var countOfProducts = internalTxService.removeNewProductsByCount(eshopUuid, MAX_COUNT_TO_DELETE)
+        val countOfNewProductFuture: Future<Long> = executor.submit(removeFromNewProduct(eshopUuid))
+        log.debug("submit new product deleting")
+
+        val countOfNotInterestedProductFuture: Future<Long> = executor.submit(removeFromNotInterestedProduct(eshopUuid))
+        log.debug("submit not interested product deleting")
+
+        val countOfErrorFuture: Future<Long> = executor.submit(removeFromError(eshopUuid))
+        log.debug("submit error deleting")
+
+        val countOfWatchDogFuture: Future<Long> = executor.submit(removeWatchDog(eshopUuid))
+        log.debug("submit error deleting")
+
+        log.debug("start waiting for all")
+        // cakam na ukoncenie komplet odmazania
+        val resultProduct = countOfProductFuture.get()
+        val resultNewProduct = countOfNewProductFuture.get()
+        val resultNotInterested = countOfNotInterestedProductFuture.get()
+        val resultError = countOfErrorFuture.get()
+        val resultWatchDog = countOfWatchDogFuture.get()
+
+        log.info("delete products: $resultProduct, " +
+                "deleted new products: $resultNewProduct, " +
+                "deleted not interested products: $resultNotInterested, " +
+                "errors: $resultError, " +
+                "watch dog: $resultWatchDog")
+        log.info("all data for eshop $eshopUuid have been deleted")
+
+        shutdown(1_000)
+    }
+
+    private fun removeWatchDog(eshopUuid: EshopUuid): Callable<Long> {
+        return Callable {
+            var finalCount = 0L
+
+            var countOfProducts = internalTxService.removeWatchDog(eshopUuid, MAX_COUNT_TO_DELETE)
             finalCount += countOfProducts
 
             while (countOfProducts > 0) {
-                log.debug("current count of 'new product': $countOfProducts")
-                countOfProducts = internalTxService.removeNewProductsByCount(eshopUuid, MAX_COUNT_TO_DELETE)
+                log.debug("current count of 'not interested product': $countOfProducts")
+                countOfProducts = internalTxService.removeWatchDog(eshopUuid, MAX_COUNT_TO_DELETE)
                 finalCount += countOfProducts
             }
             finalCount
-        })
-        log.debug("submit new product deleting")
+        }
 
-        val countOfNotInteredtedProductFuture: Future<Long> = executor.submit(Callable {
-            var finalCount = 0L;
+    }
+
+    private fun removeFromNotInterestedProduct(eshopUuid: EshopUuid): Callable<Long> {
+        return Callable {
+            var finalCount = 0L
 
             var countOfProducts = internalTxService.removeNotInterestedProductsByCount(eshopUuid, MAX_COUNT_TO_DELETE)
             finalCount += countOfProducts
@@ -71,19 +91,52 @@ class RemoveEshopManagerImp(private val internalTxService: InternalTxService) : 
                 finalCount += countOfProducts
             }
             finalCount
-        })
-        log.debug("submit not interested product deleting")
+        }
+    }
 
-        log.debug("start waiting for all")
-        // cakam na ukoncenie komplet odmazania
-        val resultProduct = countOfProdutFuture.get()
-        val resultNewProduct = countOfNewProdutFuture.get()
-        val resultNotInterested = countOfNotInteredtedProductFuture.get()
+    private fun removeFromNewProduct(eshopUuid: EshopUuid): Callable<Long> {
+        return Callable {
+            var finalCount = 0L
+            var countOfProducts = internalTxService.removeNewProductsByCount(eshopUuid, MAX_COUNT_TO_DELETE)
+            finalCount += countOfProducts
 
-        log.info("delete products: $resultProduct, deleted new products: $resultNewProduct, deleted not interested products: $resultNotInterested")
-        log.info("all data for eshop $eshopUuid have been deleted")
+            while (countOfProducts > 0) {
+                log.debug("current count of 'new product': $countOfProducts")
+                countOfProducts = internalTxService.removeNewProductsByCount(eshopUuid, MAX_COUNT_TO_DELETE)
+                finalCount += countOfProducts
+            }
+            finalCount
+        }
+    }
 
-        shutdown(1_000)
+    private fun removeFromError(eshopUuid: EshopUuid): Callable<Long> {
+        return Callable {
+            var finalCount = 0L
+            var countOfProducts = internalTxService.removeErrorsByCount(eshopUuid, MAX_COUNT_TO_DELETE)
+            finalCount += countOfProducts
+
+            while (countOfProducts > 0) {
+                log.debug("current count of 'error': $countOfProducts")
+                countOfProducts = internalTxService.removeErrorsByCount(eshopUuid, MAX_COUNT_TO_DELETE)
+                finalCount += countOfProducts
+            }
+            finalCount
+        }
+    }
+
+    private fun removeFromProduct(eshopUuid: EshopUuid): Callable<Long> {
+        return Callable {
+            var finalCount = 0L
+            var countOfProducts = internalTxService.removeProductsByCount(eshopUuid, MAX_COUNT_TO_DELETE)
+            finalCount += countOfProducts
+
+            while (countOfProducts > 0) {
+                log.debug("current count of 'product': $countOfProducts")
+                countOfProducts = internalTxService.removeProductsByCount(eshopUuid, MAX_COUNT_TO_DELETE)
+                finalCount += countOfProducts
+            }
+            finalCount
+        }
     }
 
     private fun shutdown(waitInMiliseconds: Long) {

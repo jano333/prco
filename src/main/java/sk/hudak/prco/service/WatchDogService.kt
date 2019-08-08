@@ -12,4 +12,6 @@ interface WatchDogService {
     fun findProductsForWatchDog(): Map<EshopUuid, List<WatchDogDto>>
 
     fun notifyByEmail(toBeNotified: List<WatchDogNotifyUpdateDto>)
+
+    fun removeWatchDog(eshopUuid: EshopUuid, maxCountToDelete: Long): Int
 }

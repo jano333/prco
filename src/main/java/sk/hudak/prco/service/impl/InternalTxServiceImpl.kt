@@ -24,16 +24,24 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
                                  @param:Qualifier("watchDogService") private val watchDogService: WatchDogService,
                                  @param:Qualifier("errorService") private val errorService: ErrorService,
                                  @param:Qualifier("groupProductKeywordsService") private val groupProductKeywordsService: GroupProductKeywordsService) : InternalTxService {
+    @Transactional
+    override fun removeWatchDog(eshopUuid: EshopUuid, maxCountToDelete: Long): Int =
+            watchDogService.removeWatchDog(eshopUuid, maxCountToDelete)
 
     @Transactional
-    override fun removeProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int {
-        return productService.removeProductsByCount(eshopUuid, maxCountToDelete)
-    }
+    override fun removeErrorsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int =
+            errorService.removeErrorsByCount(eshopUuid, maxCountToDelete)
+
 
     @Transactional
-    override fun removeNewProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int {
-        return newProductService.removeNewProductsByCount(eshopUuid, maxCountToDelete)
-    }
+    override fun removeProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int =
+            productService.removeProductsByCount(eshopUuid, maxCountToDelete)
+
+
+    @Transactional
+    override fun removeNewProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int =
+            newProductService.removeNewProductsByCount(eshopUuid, maxCountToDelete)
+
 
     @Transactional
     override fun removeNotInterestedProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int {

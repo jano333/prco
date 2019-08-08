@@ -102,7 +102,7 @@ public class Starter {
         internalTxService.startErrorCleanUp();
 
 
-//        removeEshopManager.removeAllProductsForEshop(EshopUuid.BAMBINO);
+//        removeEshopManager.removeAllForEshop(EshopUuid.BAMBINO);
 
 //        System.out.println(">> --------");
 

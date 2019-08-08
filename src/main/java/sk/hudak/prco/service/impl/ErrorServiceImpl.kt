@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sk.hudak.prco.api.ErrorType
+import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dao.db.ErrorEntityDao
 import sk.hudak.prco.dao.db.NotInterestedProductDbDao
 import sk.hudak.prco.dto.ErrorCreateDto
@@ -131,6 +132,14 @@ class ErrorServiceImpl(
         return errorEntityDao.findErrorsByFilter(findDto).stream()
                 .map { entity -> prcoMapper.map(entity, ErrorListDto::class.java) }
                 .collect(Collectors.toList())
+    }
+
+    override fun removeErrorsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int {
+        var findByCount = errorEntityDao.findByCount(eshopUuid, maxCountToDelete)
+        findByCount.forEach {
+            errorEntityDao.delete(it)
+        }
+        return findByCount.size
     }
 
     override fun startErrorCleanUp(): Future<Void>? {
