@@ -56,7 +56,9 @@ class RemoveEshopManagerImp(private val internalTxService: InternalTxService) : 
                 "deleted not interested products: $resultNotInterested, " +
                 "errors: $resultError, " +
                 "watch dog: $resultWatchDog")
-        log.info("all data for eshop $eshopUuid have been deleted")
+
+        log.info("all data(${resultProduct + resultNewProduct + resultNotInterested + resultError + resultWatchDog} )" +
+                " for eshop $eshopUuid have been deleted")
 
         shutdown(1_000)
     }

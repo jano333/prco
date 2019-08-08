@@ -175,13 +175,6 @@ public enum EshopUuid {
             "https://www.mall.sk/hladaj?page={pageNumber}&s=" + KEYWORD_TEMP,
             3, 12, -1),
 
-    //TODO tento skoncil
-    @Deprecated
-    MAMA_A_JA("https://eshop.mamaaja.sk",
-            "https://eshop.mamaaja.sk/catalog/search/?q=" + KEYWORD_TEMP,
-            "https://eshop.mamaaja.sk/catalog/search/?q={keyword}&offset={offset}",
-            5, 12, 24),
-
     MAXIKOVY_HRACKY(
             "https://www.maxikovy-hracky.cz",
             "https://www.maxikovy-hracky.cz/vyhledavani?search=" + KEYWORD_TEMP,
