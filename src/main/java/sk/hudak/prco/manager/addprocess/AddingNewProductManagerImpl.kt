@@ -23,16 +23,16 @@ import kotlin.collections.ArrayList
 
 @Primary
 @Component
-class NgAddingNewProductManagerImpl(private val internalTxService: InternalTxService,
-                                    private val mapper: PrcoOrikaMapper,
-                                    private val htmlParser: HtmlParser,
-                                    private val eshopTaskManager: EshopTaskManager,
-                                    private val eshopUuidParser: EshopUuidParser,
-                                    private val productsParsers: List<EshopProductsParser>
+class AddingNewProductManagerImpl(private val internalTxService: InternalTxService,
+                                  private val mapper: PrcoOrikaMapper,
+                                  private val htmlParser: HtmlParser,
+                                  private val eshopTaskManager: EshopTaskManager,
+                                  private val eshopUuidParser: EshopUuidParser,
+                                  private val productsParsers: List<EshopProductsParser>
 ) : AddingNewProductManager {
 
     companion object {
-        val log = LoggerFactory.getLogger(NgAddingNewProductManagerImpl::class.java)!!
+        val log = LoggerFactory.getLogger(AddingNewProductManagerImpl::class.java)!!
     }
 
     override fun addNewProductsByKeywordsForAllEshops(vararg searchKeyWords: String) {
