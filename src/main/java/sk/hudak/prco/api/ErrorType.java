@@ -8,6 +8,7 @@ public enum ErrorType {
     //FIXME overit ako je mozne ze tato konstanta nie je pouzivata pri update!!!
     PARSING_PRODUCT_UNIT_ERR,
     PARSING_PRODUCT_URLS,
+    PARSING_PRODUCT_NEW_DATA,
 
     TIME_OUT_ERR,
 
