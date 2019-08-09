@@ -1,39 +1,3 @@
-*************
-2019-07-30 09:13:09,039 DEBUG [GIGA_LEKAREN] [] s.h.p.t.i.EshopTaskManagerImpl [EshopTaskManagerImpl.kt:113] task status TaskContext(status=STOPPED, lastChanged=Tue Jul 30 09:12:55 CEST 2019)
-2019-07-30 09:13:09,039 DEBUG [GIGA_LEKAREN] [] s.h.p.t.i.EshopTaskManagerImpl [EshopTaskManagerImpl.kt:94] marking task for eshop GIGA_LEKAREN as RUNNING
-2019-07-30 09:13:09,039 DEBUG [GIGA_LEKAREN] [] s.h.p.s.Starter [Starter.java:232] >> eshop: GIGA_LEKAREN, updated/waiting: 0/45
-2019-07-30 09:13:09,039 DEBUG [GIGA_LEKAREN] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:248] request URL: https://www.gigalekaren.sk/produkt/nutrilon-1-6x800g/
-2019-07-30 09:13:09,039 DEBUG [GIGA_LEKAREN] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:251] userAgent: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko
-2019-07-30 09:13:09,155 DEBUG [GIGA_LEKAREN] [] s.h.p.s.PrcoCustomTrustManager [PrcoCustomTrustManager.kt:47] server cert subject name CN=dave.onebit.cz,OU=dave,O=ONEsolution s.r.o.,ST=Czech Republic,C=CZ
-2019-07-30 09:13:09,186 DEBUG [GIGA_LEKAREN] [] s.h.p.s.PrcoCustomHostnameVerifier [PrcoCustomHostnameVerifier.kt:28] verify www.gigalekaren.sk
-2019-07-30 09:13:19,188 ERROR [GIGA_LEKAREN] [] s.h.p.m.i.ErrorHandlerImpl [ErrorHandlerImpl.kt:24] error while parsing product data for product sk.hudak.prco.dto.product.ProductDetailInfo@7c08950e.url
-sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException: timeout
-	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:278)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:196)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParserImpl.parseProductUpdateData(JsoupHtmlParserImpl.kt:36)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.parseOneProductUpdateData(UpdateProductDataManagerImpl.java:180)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.internalParseAndUpdate(UpdateProductDataManagerImpl.java:172)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateProductDataForEachProductInEshop$2(UpdateProductDataManagerImpl.java:99)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.net.SocketTimeoutException: Read timed out
-	at java.net.SocketInputStream.socketRead0(Native Method)
-*************
-2019-07-30 09:13:19,188 ERROR [GIGA_LEKAREN] [] s.h.p.m.i.ErrorHandlerImpl [ErrorHandlerImpl.kt:24] error while parsing product data for product sk.hudak.prco.dto.product.ProductDetailInfo@7c08950e.url
-sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException: timeout
-*************
-toto tiz nie je pravda
- product is unavailable: https://www.mall.sk/plienky-pampers-2/pampers-pleny-active-baby-4-maxi-mesicni-baleni-152-ks
-*******************
-2019-07-29 10:10:05,610 ERROR [LEKAREN_BELLA] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:108] error while creating new product
-sk.hudak.prco.exception.RequiredParameterException: parameter name is null/empty
-	at sk.hudak.prco.utils.Validate.notNullNotEmpty(Validate.kt:20)
-	at sk.hudak.prco.service.impl.NewProductServiceImpl.createNewProduct(NewProductServiceImpl.kt:62)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl.createNewProduct(InternalTxServiceImpl.java:100)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$FastClassBySpringCGLIB$$6a8a885c.invoke(<generated>)
 ********************
 For KOTLIN remove Optional keyword, use ? instead
 *****************************************************************************************
@@ -46,8 +10,6 @@ TODO: urobit group keywordy aj pre pants vsetky velkosti a prest zoznam notinter
 Pampers New Baby-Dry 3-6kg veľ.2 43ks
 pampers 2 zelene
 *********************************
-2019-07-24 11:49:39,869 DEBUG [BAMBINO] [] s.h.p.s.Starter [Starter.java:232] >> eshop: BAMBINO, updated/waitingJSoupProductParser: 77/3
-******************
 Pampers New Baby-Dry 2-5kg veľ.1 43ks
 pampes 1 zelene
 *********************************
@@ -60,43 +22,6 @@ pridat ako grupa pampes 5 zelene
 Pampers Active Baby plienky Extra Large veľ.6 13-18kg 56ks
 pridat ako grupa pampers 4 zelene
 *********************************
-2019-06-07 14:02:06,452 ERROR [LEKAREN_EXPRES] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:247] error creating document for url 'https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-active-baby-vpp-4-maxi-plus-53ks-17305.html':  org.jsoup.HttpStatusException: HTTP error fetching URL. Status=500, URL=https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-active-baby-vpp-4-maxi-plus-53ks-17305.html
-org.jsoup.HttpStatusException: HTTP error fetching URL
-	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:682)
-	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:629)
-	at org.jsoup.helper.HttpConnection.execute(HttpConnection.java:261)
-	at org.jsoup.helper.HttpConnection.get(HttpConnection.java:250)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:238)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:174)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.parseOneProductUpdateData(UpdateProductDataManagerImpl.java:171)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.internalParseAndUpdate(UpdateProductDataManagerImpl.java:163)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateProductDataForEachProductInEshop$9(UpdateProductDataManagerImpl.java:98)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-2019-06-07 14:02:06,453 ERROR [LEKAREN_EXPRES] [] s.h.p.m.i.ErrorHandlerImpl [ErrorHandlerImpl.java:31] error while parsing product data for product https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-active-baby-vpp-4-maxi-plus-53ks-17305.html
-sk.hudak.prco.exception.HttpErrorPrcoException: error creating document for url 'https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-active-baby-vpp-4-maxi-plus-53ks-17305.html':  org.jsoup.HttpStatusException: HTTP error fetching URL. Status=500, URL=https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-active-baby-vpp-4-maxi-plus-53ks-17305.html
-	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:248)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:174)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.parseOneProductUpdateData(UpdateProductDataManagerImpl.java:171)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.internalParseAndUpdate(UpdateProductDataManagerImpl.java:163)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateProductDataForEachProductInEshop$9(UpdateProductDataManagerImpl.java:98)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: org.jsoup.HttpStatusException: HTTP error fetching URL
-	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:682)
-	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:629)
-	at org.jsoup.helper.HttpConnection.execute(HttpConnection.java:261)
-	at org.jsoup.helper.HttpConnection.get(HttpConnection.java:250)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:238)
-	... 10 common frames omitted
 ----------------------------
 TODO overit ci sa dana chyba ulozi do DB
 2019-06-07 13:55:40,211 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.t.i.EshopTaskManagerImpl [EshopTaskManagerImpl.java:126] task status TaskContext(status=STOPPED, lastChanged=Fri Jun 07 13:55:18 CEST 2019)
@@ -176,14 +101,6 @@ ProductNewData(url=https://www.pilulka.sk/pampers-s4-active-baby-monthly-box-174
 28 BUG BRENDON
 Tu je asi neaky problem s tym eshopom
 sk.hudak.prco.exception.PrcoRuntimeException: Parser implementation for eshop BRENDON not found.
------------------------------------------------------------------------------------------------------------------------
-27 BUG MAMA A JA
-odstranit vsetky produkty mama-A_ja a potom aj vsetky
-https://eshop.mamaaja.sk/pampers-vpm-maxi-plus-40/
------------------------------------------------------------------------------------------------------------------------
-16
-odpalit maja eshop produkty aj parser full
-https://eshop.mamaaja.sk/pampers-cp-maxi-36/
 -----------------------------------------------------------------------------------------------------------------------
 15
 2019-03-04 13:24:06,970 ERROR [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:244] error creating document for url 'https://www.brendon.sk/search?q=pampers':

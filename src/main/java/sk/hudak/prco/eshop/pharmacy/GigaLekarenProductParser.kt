@@ -24,7 +24,7 @@ class GigaLekarenProductParser(unitParser: UnitParser, userAgentDataHolder: User
         get() = GIGA_LEKAREN
 
     override val timeout: Int
-        get() = TIMEOUT_10_SECOND
+        get() = TIMEOUT_15_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         val size = documentList.select("div[class=paging_footer] a").size

@@ -1,70 +1,74 @@
-package sk.hudak.prco.test.ng;
+package sk.hudak.prco.test.ng
 
-import sk.hudak.prco.api.EshopUuid;
-import sk.hudak.prco.builder.SearchUrlBuilder;
-import sk.hudak.prco.builder.SearchUrlBuilderImpl;
-import sk.hudak.prco.dto.ProductNewData;
-import sk.hudak.prco.dto.ProductUpdateData;
-import sk.hudak.prco.eshop.AlzaProductParser;
-import sk.hudak.prco.eshop.pharmacy.PilulkaProductParser;
-import sk.hudak.prco.exception.PrcoRuntimeException;
-import sk.hudak.prco.parser.EshopProductsParser;
-import sk.hudak.prco.parser.EshopUuidParser;
-import sk.hudak.prco.parser.UnitParser;
-import sk.hudak.prco.parser.impl.EnumImplEshopUuidParserImpl;
-import sk.hudak.prco.parser.impl.UnitParserImpl;
-import sk.hudak.prco.ssl.PrcoSslManager;
-import sk.hudak.prco.utils.UserAgentDataHolder;
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.builder.SearchUrlBuilder
+import sk.hudak.prco.builder.SearchUrlBuilderImpl
+import sk.hudak.prco.dto.ProductNewData
+import sk.hudak.prco.dto.ProductUpdateData
+import sk.hudak.prco.eshop.AlzaProductParser
+import sk.hudak.prco.eshop.MallProductParser
+import sk.hudak.prco.eshop.pharmacy.LekarenBellaProductParser
+import sk.hudak.prco.eshop.pharmacy.LekarenExpresProductParser
+import sk.hudak.prco.eshop.pharmacy.PilulkaProductParser
+import sk.hudak.prco.exception.PrcoRuntimeException
+import sk.hudak.prco.parser.EshopProductsParser
+import sk.hudak.prco.parser.EshopUuidParser
+import sk.hudak.prco.parser.UnitParser
+import sk.hudak.prco.parser.impl.EnumImplEshopUuidParserImpl
+import sk.hudak.prco.parser.impl.UnitParserImpl
+import sk.hudak.prco.ssl.PrcoSslManager
+import sk.hudak.prco.utils.UserAgentDataHolder
 
-import java.util.List;
+fun main() {
 
-public class ProductParserTest {
+    val test = ProductParserTest()
 
-    private final UserAgentDataHolder userAgentDataHolder;
-    private final UnitParser unitParser;
-    private final SearchUrlBuilder searchUrlBuilder;
-    private final EshopUuidParser eshopUuidParser;
+    //       println(test.parseUrlsOfProduct(EshopUuid.MALL, "pampers"));
+//
+//    println(test.parseProductNewData("https://www.alza.sk/maxi/pampers-premium-care-vel-4-maxi-168-ks-mesacne-balenie-d4842712.htm"))
 
-    public ProductParserTest() {
-        PrcoSslManager.INSTANCE.init();
-        userAgentDataHolder = new UserAgentDataHolder();
-        userAgentDataHolder.init();
-        unitParser = new UnitParserImpl();
-        searchUrlBuilder = new SearchUrlBuilderImpl();
-        eshopUuidParser = new EnumImplEshopUuidParserImpl();
+    println(test.parseProductUpdateData(             "https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-active-baby-vpp-4-maxi-plus-53ks-17305.html"))
+}
+
+class ProductParserTest {
+
+    private val userAgentDataHolder: UserAgentDataHolder
+    private val unitParser: UnitParser
+    private val searchUrlBuilder: SearchUrlBuilder
+    private val eshopUuidParser: EshopUuidParser
+
+    init {
+        PrcoSslManager.init()
+        userAgentDataHolder = UserAgentDataHolder()
+        userAgentDataHolder.init()
+        unitParser = UnitParserImpl()
+        searchUrlBuilder = SearchUrlBuilderImpl()
+        eshopUuidParser = EnumImplEshopUuidParserImpl()
     }
 
-    public static void main(String[] args) {
-        ProductParserTest test = new ProductParserTest();
-
-//        System.out.println(test.parseUrlsOfProduct(EshopUuid.MALL, "pampers"));
-        System.out.println(test.parseProductNewData("https://www.alza.sk/maxi/pampers-premium-care-vel-4-maxi-168-ks-mesacne-balenie-d4842712.htm"));
-//        System.out.println(test.parseProductUpdateData("https://www.pilulka.sk/pampers-active-baby-mqp-5-junior-124ks-utierky-zadarmo"));
-    }
-
-    private EshopProductsParser getParserForEshop(EshopUuid eshopUuid) {
-        switch (eshopUuid) {
-            case ALZA:
-                return new AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder);
-            case PILULKA:
-                return new PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder);
-
-
-            default:
-                throw new PrcoRuntimeException("Pridaj implementaciu do testu pre eshop " + eshopUuid);
+    private fun getParserForEshop(eshopUuid: EshopUuid): EshopProductsParser {
+        return when (eshopUuid) {
+            EshopUuid.ALZA -> AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            EshopUuid.PILULKA -> PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            EshopUuid.LEKAREN_BELLA -> LekarenBellaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            EshopUuid.LEKAREN_EXPRES -> LekarenExpresProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            EshopUuid.MALL -> MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            //TODO others
+            else -> throw PrcoRuntimeException("Pridaj implementaciu do testu pre eshop $eshopUuid")
         }
     }
 
-    private List<String> parseUrlsOfProduct(EshopUuid eshopUuid, String keyword) {
-        return getParserForEshop(eshopUuid).parseUrlsOfProduct(keyword);
+    public fun parseUrlsOfProduct(eshopUuid: EshopUuid, keyword: String): List<String> {
+        return getParserForEshop(eshopUuid).parseUrlsOfProduct(keyword)
     }
 
-    private ProductNewData parseProductNewData(String productUrl) {
-        return getParserForEshop(eshopUuidParser.parseEshopUuid(productUrl)).parseProductNewData(productUrl);
+    public fun parseProductNewData(productUrl: String): ProductNewData {
+        return getParserForEshop(eshopUuidParser.parseEshopUuid(productUrl)).parseProductNewData(productUrl)
     }
 
-    private ProductUpdateData parseProductUpdateData(String productUrl) {
-        return getParserForEshop(eshopUuidParser.parseEshopUuid(productUrl)).parseProductUpdateData(productUrl);
+    public fun parseProductUpdateData(productUrl: String): ProductUpdateData {
+        return getParserForEshop(eshopUuidParser.parseEshopUuid(productUrl)).parseProductUpdateData(productUrl)
     }
+
 
 }
