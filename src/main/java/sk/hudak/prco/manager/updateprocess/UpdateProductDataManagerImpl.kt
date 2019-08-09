@@ -11,7 +11,7 @@ import sk.hudak.prco.dto.product.ProductFullDto
 import sk.hudak.prco.manager.error.ErrorHandler
 import sk.hudak.prco.manager.updateprocess.UpdateProcessResult.*
 import sk.hudak.prco.mapper.PrcoOrikaMapper
-import sk.hudak.prco.parser.HtmlParser
+import sk.hudak.prco.parser.html.HtmlParser
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.EshopTaskManager
 import sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe

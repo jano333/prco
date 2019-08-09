@@ -3,7 +3,7 @@ package sk.hudak.prco.test;
 import sk.hudak.prco.builder.SearchUrlBuilder;
 import sk.hudak.prco.builder.SearchUrlBuilderImpl;
 import sk.hudak.prco.eshop.MallProductParser;
-import sk.hudak.prco.parser.impl.UnitParserImpl;
+import sk.hudak.prco.parser.unit.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
 

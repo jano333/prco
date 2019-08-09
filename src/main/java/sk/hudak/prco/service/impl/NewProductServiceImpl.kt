@@ -15,8 +15,8 @@ import sk.hudak.prco.dto.product.*
 import sk.hudak.prco.exception.PrcoRuntimeException
 import sk.hudak.prco.mapper.PrcoOrikaMapper
 import sk.hudak.prco.model.NewProductEntity
-import sk.hudak.prco.parser.HtmlParser
-import sk.hudak.prco.parser.UnitParser
+import sk.hudak.prco.parser.html.HtmlParser
+import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.service.ErrorService
 import sk.hudak.prco.service.NewProductService
 import sk.hudak.prco.utils.Validate.notNegativeAndNotZeroValue

@@ -7,9 +7,9 @@ import sk.hudak.prco.api.EshopUuid.OBI
 import sk.hudak.prco.api.ProductAction
 import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.exception.PrcoRuntimeException
-import sk.hudak.prco.parser.UnitParser
 import sk.hudak.prco.parser.WatchDogParser
-import sk.hudak.prco.parser.impl.JSoupProductParser
+import sk.hudak.prco.parser.eshop.JSoupProductParser
+import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal
 import sk.hudak.prco.utils.UserAgentDataHolder
 import java.math.BigDecimal

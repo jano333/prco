@@ -11,11 +11,11 @@ import sk.hudak.prco.eshop.pharmacy.LekarenBellaProductParser
 import sk.hudak.prco.eshop.pharmacy.LekarenExpresProductParser
 import sk.hudak.prco.eshop.pharmacy.PilulkaProductParser
 import sk.hudak.prco.exception.PrcoRuntimeException
-import sk.hudak.prco.parser.EshopProductsParser
-import sk.hudak.prco.parser.EshopUuidParser
-import sk.hudak.prco.parser.UnitParser
-import sk.hudak.prco.parser.impl.EnumImplEshopUuidParserImpl
-import sk.hudak.prco.parser.impl.UnitParserImpl
+import sk.hudak.prco.parser.eshop.EshopProductsParser
+import sk.hudak.prco.parser.eshopuid.EnumImplEshopUuidParserImpl
+import sk.hudak.prco.parser.eshopuid.EshopUuidParser
+import sk.hudak.prco.parser.unit.UnitParser
+import sk.hudak.prco.parser.unit.UnitParserImpl
 import sk.hudak.prco.ssl.PrcoSslManager
 import sk.hudak.prco.utils.UserAgentDataHolder
 

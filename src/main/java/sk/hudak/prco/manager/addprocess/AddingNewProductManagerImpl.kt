@@ -8,12 +8,13 @@ import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ErrorCreateDto
 import sk.hudak.prco.dto.product.NewProductCreateDto
 import sk.hudak.prco.mapper.PrcoOrikaMapper
-import sk.hudak.prco.parser.EshopProductsParser
-import sk.hudak.prco.parser.EshopUuidParser
-import sk.hudak.prco.parser.HtmlParser
+import sk.hudak.prco.parser.eshop.EshopProductsParser
+import sk.hudak.prco.parser.eshopuid.EshopUuidParser
+import sk.hudak.prco.parser.html.HtmlParser
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.EshopTaskManager
 import sk.hudak.prco.utils.ThreadUtils
+import sk.hudak.prco.utils.Validate.notEmpty
 import sk.hudak.prco.utils.Validate.notNullNotEmpty
 import java.util.*
 import kotlin.collections.ArrayList
@@ -34,14 +35,18 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
     }
 
     override fun addNewProductsByKeywordsForAllEshops(vararg searchKeyWords: String) {
-        searchKeyWords.forEach { addNewProductsByKeywordForAllEshops(it) }
+        searchKeyWords.forEach {
+            addNewProductsByKeywordForAllEshops(it)
+        }
     }
 
     override fun addNewProductsByKeywordForAllEshops(searchKeyWord: String) {
-        notNullNotEmpty(searchKeyWord, "searchKeyWord")
+        notEmpty(searchKeyWord, "searchKeyWord")
 
         EshopUuid.values()
-                .filter { existParserFor(it) }
+                .filter {
+                    existParserFor(it)
+                }
                 .forEach {
                     // spusti stahovanie pre dalsi
                     addNewProductsByKeywordForEshop(it, searchKeyWord)
@@ -51,7 +56,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
     }
 
     override fun addNewProductsByKeywordForEshop(eshopUuid: EshopUuid, searchKeyWord: String) {
-        notNullNotEmpty(searchKeyWord, "searchKeyWord")
+        notEmpty(searchKeyWord, "searchKeyWord")
 
         log.debug(">> addNewProductsByKeywordForEshop eshop: {}, searchKeyWord: {}", eshopUuid, searchKeyWord)
         eshopTaskManager.submitTask(eshopUuid, Runnable {
@@ -73,13 +78,12 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
             }
 
             // if none url found -> end
-            if(urlList.isEmpty()){
-                log.debug("no url found for eshop $eshopUuid and searchKeyWord $searchKeyWord")
+            if (urlList.isEmpty()) {
+                log.info("no url found for eshop $eshopUuid and searchKeyWord $searchKeyWord")
                 eshopTaskManager.markTaskAsFinished(eshopUuid, false)
                 log.debug("<< addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWord $searchKeyWord")
                 return@Runnable
             }
-
 
             var finishedWithError = false
             try {

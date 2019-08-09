@@ -1,9 +1,8 @@
-package sk.hudak.prco.parser.impl
+package sk.hudak.prco.parser.eshopuid
 
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.exception.EshopNotFoundPrcoException
-import sk.hudak.prco.parser.EshopUuidParser
 import java.util.*
 
 @Component

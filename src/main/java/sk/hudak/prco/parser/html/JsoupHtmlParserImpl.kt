@@ -1,4 +1,4 @@
-package sk.hudak.prco.parser.impl
+package sk.hudak.prco.parser.html
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -6,9 +6,8 @@ import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.dto.ProductUpdateData
 import sk.hudak.prco.exception.EshopParserNotFoundPrcoException
-import sk.hudak.prco.parser.EshopProductsParser
-import sk.hudak.prco.parser.EshopUuidParser
-import sk.hudak.prco.parser.HtmlParser
+import sk.hudak.prco.parser.eshop.EshopProductsParser
+import sk.hudak.prco.parser.eshopuid.EshopUuidParser
 
 @Component
 class JsoupHtmlParserImpl(

@@ -11,7 +11,7 @@ import sk.hudak.prco.dto.WatchDogDto
 import sk.hudak.prco.dto.WatchDogNotifyUpdateDto
 import sk.hudak.prco.exception.PrcoRuntimeException
 import sk.hudak.prco.model.WatchDogEntity
-import sk.hudak.prco.parser.EshopUuidParser
+import sk.hudak.prco.parser.eshopuid.EshopUuidParser
 import sk.hudak.prco.service.WatchDogService
 import sk.hudak.prco.utils.Validate.notNull
 import sk.hudak.prco.utils.Validate.notNullNotEmpty

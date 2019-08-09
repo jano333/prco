@@ -30,7 +30,7 @@ import sk.hudak.prco.manager.export.HtmlExportManager;
 import sk.hudak.prco.manager.remove.RemoveEshopManager;
 import sk.hudak.prco.manager.updateprocess.UpdateProductDataListener;
 import sk.hudak.prco.manager.updateprocess.UpdateProductDataManager;
-import sk.hudak.prco.parser.HtmlParser;
+import sk.hudak.prco.parser.html.HtmlParser;
 import sk.hudak.prco.service.InternalTxService;
 import sk.hudak.prco.service.UIService;
 import sk.hudak.prco.service.WatchDogService;
@@ -242,7 +242,7 @@ public class Starter {
                 log.debug(">> eshop: {}, updated/waiting: {}/{}",
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
-//        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
+        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
 //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
 //        updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.LEKAREN_BELLA, listener);

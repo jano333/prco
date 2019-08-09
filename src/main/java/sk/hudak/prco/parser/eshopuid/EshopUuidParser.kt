@@ -1,4 +1,4 @@
-package sk.hudak.prco.parser
+package sk.hudak.prco.parser.eshopuid
 
 import sk.hudak.prco.api.EshopUuid
 

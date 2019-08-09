@@ -1,4 +1,4 @@
-package sk.hudak.prco.parser.impl
+package sk.hudak.prco.parser.eshop
 
 import org.jsoup.HttpStatusException
 import org.jsoup.Jsoup
@@ -10,8 +10,7 @@ import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.dto.ProductUpdateData
 import sk.hudak.prco.dto.UnitTypeValueCount
 import sk.hudak.prco.exception.*
-import sk.hudak.prco.parser.EshopProductsParser
-import sk.hudak.prco.parser.UnitParser
+import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ThreadUtils.sleepRandomSafeBetween
 import sk.hudak.prco.utils.UserAgentDataHolder
 import java.math.BigDecimal

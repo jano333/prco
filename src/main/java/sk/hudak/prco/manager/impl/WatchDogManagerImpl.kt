@@ -8,7 +8,7 @@ import sk.hudak.prco.dto.WatchDogAddCustomDto
 import sk.hudak.prco.dto.WatchDogDto
 import sk.hudak.prco.dto.WatchDogNotifyUpdateDto
 import sk.hudak.prco.manager.WatchDogManager
-import sk.hudak.prco.parser.HtmlParser
+import sk.hudak.prco.parser.html.HtmlParser
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.EshopTaskManager
 import sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe

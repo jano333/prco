@@ -5,7 +5,7 @@ import org.junit.Test;
 import sk.hudak.prco.api.Unit;
 import sk.hudak.prco.dto.UnitData;
 import sk.hudak.prco.dto.UnitTypeValueCount;
-import sk.hudak.prco.parser.impl.UnitParserImpl;
+import sk.hudak.prco.parser.unit.UnitParserImpl;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

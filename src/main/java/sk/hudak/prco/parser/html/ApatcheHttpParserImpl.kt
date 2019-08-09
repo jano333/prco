@@ -1,4 +1,4 @@
-package sk.hudak.prco.parser.impl
+package sk.hudak.prco.parser.html
 
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.BasicCookieStore

@@ -1,10 +1,9 @@
-package sk.hudak.prco.parser.impl
+package sk.hudak.prco.parser.unit
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.Unit
 import sk.hudak.prco.dto.UnitTypeValueCount
-import sk.hudak.prco.parser.UnitParser
 import sk.hudak.prco.utils.CalculationUtils.recalculateToKilograms
 import sk.hudak.prco.utils.CalculationUtils.recalculateToLites
 import sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal

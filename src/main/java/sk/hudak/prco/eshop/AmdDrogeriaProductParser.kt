@@ -7,8 +7,8 @@ import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.EshopUuid.AMD_DROGERIA
 import sk.hudak.prco.api.ProductAction
 import sk.hudak.prco.builder.SearchUrlBuilder
-import sk.hudak.prco.parser.UnitParser
-import sk.hudak.prco.parser.impl.JSoupProductParser
+import sk.hudak.prco.parser.eshop.JSoupProductParser
+import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ConvertUtils
 import sk.hudak.prco.utils.UserAgentDataHolder
 import java.math.BigDecimal

@@ -35,7 +35,7 @@ sk.hudak.prco.exception.PrcoRuntimeException: error while converting value 999 K
 	at sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal(ConvertUtils.java:23)
 	at java.util.Optional.map(Optional.java:215)
 	at sk.hudak.prco.eshop.MaxikovyHrackyProductParser.parseProductPriceForPackage(MaxikovyHrackyProductParser.java:102)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:197)
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:197)
 	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
 	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.parseOneProductUpdateData(UpdateProductDataManagerImpl.java:171)
 	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.internalParseAndUpdate(UpdateProductDataManagerImpl.java:163)
@@ -120,8 +120,8 @@ java.net.SocketException: Connection reset
 	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:629)
 	at org.jsoup.helper.HttpConnection.execute(HttpConnection.java:261)
 	at org.jsoup.helper.HttpConnection.get(HttpConnection.java:250)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:228)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:100)
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.retrieveDocument(JSoupProductParser.java:228)
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:100)
 	at sk.hudak.prco.parser.impl.JsoupHtmlParser.searchProductUrls(JsoupHtmlParser.java:41)
 	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$5(AddingNewProductManagerImpl.java:90)
 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
@@ -166,7 +166,7 @@ produktu
 2018-08-08 15:10:57,680 ERROR [HORNBACH] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:82] error while creating new product
 sk.hudak.prco.exception.PrcoRuntimeException: error while downloading/parsing content for url https://www.hornbach.sk/shop/vyhladavanie/sortiment/nutrilon%205
 	at sk.hudak.prco.eshop.HornbachProductParser.retrieveDocument(HornbachProductParser.java:70)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:51)
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:51)
 	at sk.hudak.prco.parser.impl.JsoupHtmlParser.searchProductUrls(JsoupHtmlParser.java:41)
 	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$6(AddingNewProductManagerImpl.java:77)
 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
@@ -218,8 +218,8 @@ javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: 
 	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:629)
 	at org.jsoup.helper.HttpConnection.execute(HttpConnection.java:261)
 	at org.jsoup.helper.HttpConnection.get(HttpConnection.java:250)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.retrieveDocument(JSoupProductParser.java:165)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:51)
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.retrieveDocument(JSoupProductParser.java:165)
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:51)
 	at sk.hudak.prco.parser.impl.JsoupHtmlParser.searchProductUrls(JsoupHtmlParser.java:41)
 	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$7(AddingNewProductManagerImpl.java:77)
 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
@@ -261,7 +261,7 @@ BUG:
 2018-09-05 10:05:29,929 ERROR [HORNBACH] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:85] error while creating new product
 sk.hudak.prco.exception.PrcoRuntimeException: error while downloading/parsing content for url https://www.hornbach.sk/shop/vyhladavanie/sortiment/pampers%205
 	at sk.hudak.prco.eshop.HornbachProductParser.retrieveDocument(HornbachProductParser.java:70)
-	at sk.hudak.prco.parser.impl.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:53)
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:53)
 	at sk.hudak.prco.parser.impl.JsoupHtmlParser.searchProductUrls(JsoupHtmlParser.java:41)
 	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$8(AddingNewProductManagerImpl.java:80)
 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
