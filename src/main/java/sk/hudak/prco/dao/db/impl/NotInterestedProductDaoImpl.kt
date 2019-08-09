@@ -14,6 +14,10 @@ import javax.persistence.EntityManager
 open class NotInterestedProductDaoImpl(em: EntityManager)
     : BaseDaoImpl<NotInterestedProductEntity>(em), NotInterestedProductDbDao {
 
+    override val countOfAll: Long
+        get() = from(QNotInterestedProductEntity.notInterestedProductEntity).fetchCount()
+
+
     override fun findById(id: Long): NotInterestedProductEntity {
         return findById(NotInterestedProductEntity::class.java, id)
     }

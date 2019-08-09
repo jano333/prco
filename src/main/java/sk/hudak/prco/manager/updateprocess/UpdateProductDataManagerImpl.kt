@@ -70,17 +70,17 @@ class UpdateProductDataManagerImpl(
             eshopTaskManager.sleepIfNeeded(eshopUuid)
             eshopTaskManager.markTaskAsRunning(eshopUuid)
 
-            var productForUpdateOpt = getProductForUpdate(eshopUuid)
-            while (productForUpdateOpt!=null) {
+            var productForUpdate = getProductForUpdate(eshopUuid)
+            while (productForUpdate!=null) {
 
                 notifyUpdateListener(eshopUuid, listener)
 
-                val updateProcessResult = internalParseAndUpdate(productForUpdateOpt, UpdateProductDataListenerAdapter.EMPTY_INSTANCE)
+                val updateProcessResult = internalParseAndUpdate(productForUpdate, UpdateProductDataListenerAdapter.EMPTY_INSTANCE)
 
                 if (shouldContinueWithNexProduct(updateProcessResult)) {
                     sleepRandomSafe()
 
-                    productForUpdateOpt = getProductForUpdate(eshopUuid)
+                    productForUpdate = getProductForUpdate(eshopUuid)
 
                 } else {
                     eshopTaskManager.markTaskAsFinished(eshopUuid, true)
@@ -233,17 +233,12 @@ class UpdateProductDataManagerImpl(
     private fun getProductForUpdate(eshopUuid: EshopUuid): ProductDetailInfo? {
         //TODO toto je zla metoda lebo ked je vinimka alebo sa nenajde dany product tak vystup je stale null co je zle !!!!
         val olderThanInHours = eshopUuid.olderThanInHours
-        try {
-            val productForUpdate = internalTxService.getProductForUpdate(eshopUuid, olderThanInHours)
-            return if (productForUpdate.isPresent) {
-                productForUpdate.get()
-            } else {
-                null;
-            }
+        return try {
+            internalTxService.getProductForUpdate(eshopUuid, olderThanInHours)
 
         } catch (e: Exception) {
             log.error("error while getting first product for update for eshop $eshopUuid older than $olderThanInHours hours")
-            return null
+            null
         }
     }
 

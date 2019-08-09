@@ -45,7 +45,7 @@ class NewProductServiceImpl(private val newProductEntityDao: NewProductEntityDbD
 
     override val countOfAllNewProducts: Long
         get() {
-            return newProductEntityDao.countOfAllNewProducts
+            return newProductEntityDao.countOfAll
         }
 
     override fun createNewProduct(newProductCreateDto: NewProductCreateDto): Long {

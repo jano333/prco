@@ -1,10 +1,4 @@
 *************
-Bambino je Mall -> drusit bambino eshop
-0 WARN [main] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:67] for eshop BAMBINO none parser found
-*************
-2019-07-30 09:13:17,058 ERROR [MALL] [] s.h.p.m.i.ErrorHandlerImpl [ErrorHandlerImpl.kt:24] error while parsing product data for product sk.hudak.prco.dto.product.ProductDetailInfo@191f3fad.url
-sk.hudak.prco.exception.EshopNotFoundPrcoException: EshopUuid for http://mall.sk/plienky-pampers-3-6-kg/pampers-plienky-premium-value-pack-s2-68ks not found
-*************
 2019-07-30 09:13:09,039 DEBUG [GIGA_LEKAREN] [] s.h.p.t.i.EshopTaskManagerImpl [EshopTaskManagerImpl.kt:113] task status TaskContext(status=STOPPED, lastChanged=Tue Jul 30 09:12:55 CEST 2019)
 2019-07-30 09:13:09,039 DEBUG [GIGA_LEKAREN] [] s.h.p.t.i.EshopTaskManagerImpl [EshopTaskManagerImpl.kt:94] marking task for eshop GIGA_LEKAREN as RUNNING
 2019-07-30 09:13:09,039 DEBUG [GIGA_LEKAREN] [] s.h.p.s.Starter [Starter.java:232] >> eshop: GIGA_LEKAREN, updated/waiting: 0/45

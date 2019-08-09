@@ -15,7 +15,7 @@ interface ProductEntityDao : BaseDao<ProductEntity> {
      * @param olderThanInHours pocet v hodinach, kolko minimalne sa neupdatoval dany record
      * @return
      */
-    fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): Optional<ProductEntity>
+    fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductEntity?
 
     fun findAll(): List<ProductEntity>
 
@@ -23,7 +23,7 @@ interface ProductEntityDao : BaseDao<ProductEntity> {
 
     fun findByUrl(productUrl: String): ProductEntity?
 
-    fun count(): Long
+    val countOfAll: Long
 
     fun countOfAllProductInEshop(eshopUuid: EshopUuid): Long
 

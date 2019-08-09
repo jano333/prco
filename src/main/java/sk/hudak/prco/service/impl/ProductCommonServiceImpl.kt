@@ -42,7 +42,10 @@ open class ProductCommonServiceImpl(
         @Transactional
         get() {
             val result = ProductStatisticInfoDto()
-            result.countOfAllProducts = productEntityDao.count()
+            result.countOfNewProducts = newProductEntityDao.countOfAll
+            result.countOfInterestedProducts = productEntityDao.countOfAll
+            result.countOfNotInterestedProducts = notInterestedProductDbDao.countOfAll
+
             result.countOfProductsNotInAnyGroup = groupOfProductFindEntityDao.countOfProductsWitchAreNotInAnyGroup()
 
             val groupNames = groupEntityDao.findAllGroupNames()
@@ -53,10 +56,10 @@ open class ProductCommonServiceImpl(
             result.countProductInGroup = countProductInGroup
 
             val eshopProductInfo = EnumMap<EshopUuid, EshopProductInfoDto>(EshopUuid::class.java)
-            EshopUuid.values().forEach { eshopUuid ->
-                val countOfAllProduct = productEntityDao.countOfAllProductInEshop(eshopUuid)
-                val countOfAlreadyUpdated = productEntityDao.countOfAllProductInEshopUpdatedMax24Hours(eshopUuid)
-                eshopProductInfo[eshopUuid] = EshopProductInfoDto(countOfAllProduct, countOfAlreadyUpdated)
+            EshopUuid.values().forEach {
+                eshopProductInfo[it] = EshopProductInfoDto(
+                        productEntityDao.countOfAllProductInEshop(it),
+                        productEntityDao.countOfAllProductInEshopUpdatedMax24Hours(it))
             }
             result.eshopProductInfo = eshopProductInfo
 

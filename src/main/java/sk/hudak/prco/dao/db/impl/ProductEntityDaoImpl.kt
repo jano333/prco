@@ -38,13 +38,13 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
      * @param olderThanInHours pocet v hodinach, kolko minimalne sa neupdatoval dany record
      * @return
      */
-    override fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): Optional<ProductEntity> {
-        return ofNullable(from(QProductEntity.productEntity)
+    override fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductEntity? {
+        return from(QProductEntity.productEntity)
                 .where(QProductEntity.productEntity.eshopUuid.eq(eshopUuid))
                 .where(QProductEntity.productEntity.lastTimeDataUpdated.isNull
                         .or(QProductEntity.productEntity.lastTimeDataUpdated.lt(calculateDate(olderThanInHours))))
                 .limit(1)
-                .fetchFirst())
+                .fetchFirst()
     }
 
     override fun findAll(): List<ProductEntity> {
@@ -81,13 +81,8 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
                 .fetch()
     }
 
-
-    override fun count(): Long {
-        return queryFactory
-                .select(QProductEntity.productEntity.id)
-                .from(QProductEntity.productEntity)
-                .fetchCount()
-    }
+    override val countOfAll: Long
+        get() = from(QProductEntity.productEntity).fetchCount()
 
     override fun countOfAllProductInEshop(eshopUuid: EshopUuid): Long {
         return queryFactory
@@ -141,7 +136,6 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
         val newDateTime = localDateTime.minusHours(olderThanInHours.toLong())
         return Date.from(newDateTime.atZone(ZoneId.systemDefault()).toInstant())
     }
-
 
 
 }

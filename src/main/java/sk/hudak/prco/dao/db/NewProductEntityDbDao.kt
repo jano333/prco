@@ -8,8 +8,7 @@ import java.util.*
 
 interface NewProductEntityDbDao : BaseDao<NewProductEntity> {
 
-    //TODO rename na countOfAllNewProducts
-    val countOfAllNewProducts: Long
+    val countOfAll: Long
 
     fun existWithUrl(url: String): Boolean
 

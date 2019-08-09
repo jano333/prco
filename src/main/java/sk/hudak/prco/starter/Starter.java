@@ -12,6 +12,7 @@ import sk.hudak.prco.dto.GroupIdNameDto;
 import sk.hudak.prco.dto.GroupListExtendedDto;
 import sk.hudak.prco.dto.GroupProductKeywordsFullDto;
 import sk.hudak.prco.dto.GroupUpdateDto;
+import sk.hudak.prco.dto.ProductStatisticInfoDto;
 import sk.hudak.prco.dto.UnitData;
 import sk.hudak.prco.dto.product.NewProductInfoDetail;
 import sk.hudak.prco.dto.product.NotInterestedProductFindDto;
@@ -101,8 +102,12 @@ public class Starter {
         //TODO
         internalTxService.startErrorCleanUp();
 
+        ProductStatisticInfoDto statisticsOfProducts = uiService.getStatisticsOfProducts();
+        System.out.println(statisticsOfProducts.toString());
 
-//        removeEshopManager.removeAllForEshop(EshopUuid.BAMBINO);
+
+
+//        removeEshopManager.removeAllForEshop(EshopUuid.MAMA_A_JA);
 
 //        System.out.println(">> --------");
 
@@ -141,7 +146,6 @@ public class Starter {
 //            System.out.println(sb.toString());
 //        }
 
-//        System.out.println(ToStringBuilder.reflectionToString(uiService.getStatisticsOfProducts(), ToStringStyle.MULTI_LINE_STYLE));
 
         // --- WATCH DOG SERVICE ---
 //        watchDogManager.startWatching("https://www.obi.sk/zahradne-hadice/cmi-zahradna-hadica-12-5-mm-1-2-20-m-zelena/p/2235422",
@@ -251,7 +255,7 @@ public class Starter {
 //        uiService.updateProductCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
+//        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PILULKA_24, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "nutrilon");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "lovela");

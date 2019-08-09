@@ -100,7 +100,7 @@ interface ProductService {
      * @param olderThanInHours
      * @return
      */
-    fun getProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): Optional<ProductDetailInfo>
+    fun getProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductDetailInfo?
 
     /**
      * @param productId product id

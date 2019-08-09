@@ -16,7 +16,7 @@ import javax.persistence.EntityManager
 open class NewProductEntityDaoImpl(em: EntityManager)
     : BaseDaoImpl<NewProductEntity>(em), NewProductEntityDbDao {
 
-    override val countOfAllNewProducts: Long
+    override val countOfAll: Long
         get() = from(QNewProductEntity.newProductEntity).fetchCount()
 
     override fun save(entity: NewProductEntity): Long {

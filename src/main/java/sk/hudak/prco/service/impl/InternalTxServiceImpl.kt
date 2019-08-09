@@ -121,7 +121,7 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional(readOnly = true)
-    override fun getProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): Optional<ProductDetailInfo> {
+    override fun getProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductDetailInfo? {
         return productService.getProductForUpdate(eshopUuid, olderThanInHours)
     }
 

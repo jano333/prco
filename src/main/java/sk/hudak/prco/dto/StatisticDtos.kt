@@ -7,9 +7,13 @@ data class EshopProductInfoDto(
         val countOfAlreadyUpdated: Long) : DtoAble
 
 class ProductStatisticInfoDto {
-
-    // only interested in
-    var countOfAllProducts: Long = -1
+    var countOfNewProducts: Long = 0
+    var countOfInterestedProducts: Long = 0
+    var countOfNotInterestedProducts: Long = 0
+    val countOfAllProducts: Long
+        get() {
+            return countOfNewProducts.plus(countOfInterestedProducts).plus(countOfNotInterestedProducts)
+        }
 
     var countOfProductsNotInAnyGroup: Long = -1
 
@@ -19,11 +23,13 @@ class ProductStatisticInfoDto {
     var eshopProductInfo: Map<EshopUuid, EshopProductInfoDto>? = null
 
     override fun toString(): String {
-        return "ProductStatisticInfoDto{" +
-                "countOfAllProducts=" + countOfAllProducts +
-                ", countOfProductsNotInAnyGroup=" + countOfProductsNotInAnyGroup +
-                ", countProductInGroup=" + countProductInGroup +
-                ", eshopProductInfo=" + eshopProductInfo +
-                '}'.toString()
+        return "ProductStatisticInfoDto{\n" +
+                "countOfNewProducts=$countOfNewProducts\n" +
+                "countOfInterestedProducts=$countOfInterestedProducts\n" +
+                "countOfNotInterestedProducts=$countOfNotInterestedProducts\n" +
+                "countOfAllProducts=$countOfAllProducts\n" +
+                "countOfProductsNotInAnyGroup=$countOfProductsNotInAnyGroup\n" +
+                "countProductInGroup=$countProductInGroup\n" +
+                "eshopProductInfo=$eshopProductInfo\n}"
     }
 }

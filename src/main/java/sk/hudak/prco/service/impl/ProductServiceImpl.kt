@@ -21,8 +21,6 @@ import sk.hudak.prco.utils.Validate.notNull
 import sk.hudak.prco.utils.Validate.notNullNotEmpty
 import java.math.BigDecimal
 import java.util.*
-import java.util.Optional.empty
-import java.util.Optional.of
 import java.util.function.Predicate
 import kotlin.Comparator
 import kotlin.streams.toList
@@ -50,15 +48,15 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
                 ProductFullDto::class.java)
     }
 
-    override fun getProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): Optional<ProductDetailInfo> {
+    override fun getProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductDetailInfo? {
         notNegativeAndNotZeroValue(olderThanInHours, "olderThanInHours")
 
-        val productEntityOpt = productEntityDao.findProductForUpdate(eshopUuid, olderThanInHours)
+        val productEntity = productEntityDao.findProductForUpdate(eshopUuid, olderThanInHours)
 
-        // ak sa nenaslo
-        return if (!productEntityOpt.isPresent) {
-            empty()
-        } else of(mapper.map(productEntityOpt.get(), ProductDetailInfo::class.java))
+        if (productEntity != null) {
+            return mapper.map(productEntity, ProductDetailInfo::class.java)
+        }
+        return null
     }
 
     override fun findProducts(filter: ProductFilterUIDto): List<ProductFullDto> {
