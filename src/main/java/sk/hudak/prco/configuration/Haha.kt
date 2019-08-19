@@ -10,9 +10,13 @@ import java.util.*
 @Configuration
 open class Haha {
 
-    @Bean
-    open fun propertyPlaceholderConfigurer(): PropertySourcesPlaceholderConfigurer {
-        return PropertySourcesPlaceholderConfigurer()
+    companion object {
+
+        @Bean
+        open fun propertyPlaceholderConfigurer(): PropertySourcesPlaceholderConfigurer {
+            return PropertySourcesPlaceholderConfigurer()
+        }
+
     }
 
     @Bean
