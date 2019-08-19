@@ -255,12 +255,12 @@ public class Starter {
 //        uiService.updateProductCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-//        newProductManager.addNewProductsByKeywordsForAllEshops("pampers"/*, "nutrilon", "lovela"*/);
-        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BRENDON, "pampers");
+//        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
+        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.MALL, "nutrilon");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PERINBABA, "pampers 5");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "pampers 5");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "nutrilon 4");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "nutrilon 5");
 //        newProductManager.addNewProductsByUrl(
 //                  "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120575818",

@@ -309,8 +309,8 @@ class SearchProductUrlsException(val eshopUuid: EshopUuid, val searchKeyWord: St
 class NoProductUrlsFoundFondForKeyword(val eshopUuid: EshopUuid, searchKeyWord: String) :
         PrcoRuntimeException("no url found for eshop $eshopUuid and searchKeyWord $searchKeyWord")
 
-class NoneNonExistingProductUrlsFoundForKeyword(val eshopUuid: EshopUuid, searchKeyWord: String) :
-        PrcoRuntimeException("none non existing url found for eshop $eshopUuid and searchKeyWord $searchKeyWord")
+class AllProductsWithGivenUrlsAlreadyExisting(val eshopUuid: EshopUuid) :
+        PrcoRuntimeException("none non existing url found for eshop $eshopUuid")
 
 class CreateNewProductsForUrls(val eshopUuid: EshopUuid, e: Exception) :
         PrcoRuntimeException("error while creating new product from URL for eshop $eshopUuid", e)

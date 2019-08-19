@@ -159,8 +159,8 @@ abstract class JSoupProductParser/*(protected var unitParser: UnitParser,
         val document = retrieveDocument(productUrl)
 
         val result = ProductNewData()
-        result.url = productUrl
         result.eshopUuid = eshopUuid
+        result.url = productUrl
 
         val productNameOpt = parseProductNameFromDetail(document)
         logWarningIfNull(productNameOpt, "productName", document.location())

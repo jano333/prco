@@ -20,6 +20,12 @@ object Validate {
         }
     }
 
+    fun notEmpty(values: Collection<*>, parameterName: String) {
+        if (values.isEmpty()) {
+            throw RequiredParameterException(parameterName)
+        }
+    }
+
 
     @JvmStatic
     fun notNullNotEmpty(value: String?, parameterName: String) {
