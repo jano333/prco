@@ -74,7 +74,7 @@ class ProductBestPriceInGroupDto : DtoAble {
 data class ProductDetailInfo(
         val id: Long? = null,
         val url: String? = null,
-        val eshopUuid: EshopUuid? = null)
+        val eshopUuid: EshopUuid)
 
 //TODO data class
 class ProductFilterUIDto : DtoAble {

@@ -14,7 +14,6 @@ object Validate {
         }
     }
 
-    @JvmStatic
     fun notEmpty(value: String, parameterName: String) {
         if (value.isBlank()) {
             throw RequiredParameterException(parameterName)

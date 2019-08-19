@@ -5,9 +5,8 @@ import sk.hudak.prco.api.EshopUuid
 import java.text.SimpleDateFormat
 import java.util.*
 
-//TODO prest atributy ktore su povinne
-data class ErrorCreateDto(val eshopUuid: EshopUuid? = null,
-                          val errorType: ErrorType? = null,
+data class ErrorCreateDto(val eshopUuid: EshopUuid,
+                          val errorType: ErrorType,
                           val statusCode: String? = null,
                           var message: String? = null,
                           var fullMsg: String? = null,

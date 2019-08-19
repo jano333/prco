@@ -255,12 +255,10 @@ public class Starter {
 //        uiService.updateProductCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PILULKA_24, "pampers");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "nutrilon");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BAMBINO, "lovela");
+//        newProductManager.addNewProductsByKeywordsForAllEshops("pampers"/*, "nutrilon", "lovela"*/);
+        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.BRENDON, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PERINBABA, "pampers 5");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "pampers 4");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "pampers 5");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "nutrilon 4");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "nutrilon 5");

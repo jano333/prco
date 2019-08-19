@@ -7,7 +7,7 @@ interface AddingNewProductManager {
     /**
      * @param productsUrl list of new product URL's
      */
-    fun addNewProductsByUrl(vararg productsUrl: String)
+    fun addNewProductsByUrl(productsUrl: List<String>)
 
     /**
      * Vyhlada produkty s danym klucovym slovom pre konkretny eshop a ulozi ich do tabulky NEW_PRODUCT.

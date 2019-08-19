@@ -243,6 +243,8 @@ public enum EshopUuid {
 
     private int maxCountOfProductOnPage;
 
+    private int countToWaitInSecond;
+
     private EshopCategory category;
 
     EshopUuid(EshopCategory category, String productStartUrl, String searchTemplateUrl, String searchTemplateUrlWithPageNumber,
@@ -254,17 +256,13 @@ public enum EshopUuid {
         this.maxCountOfNewPages = maxCountOfNewPages;
         this.olderThanInHours = olderThanInHours;
         this.maxCountOfProductOnPage = maxCountOfProductOnPage;
+        this.countToWaitInSecond = 3;
     }
 
     EshopUuid(String productStartUrl, String searchTemplateUrl, String searchTemplateUrlWithPageNumber,
               int maxCountOfNewPages, int olderThanInHours, int maxCountOfProductOnPage) {
-
-        this.productStartUrl = productStartUrl;
-        this.searchTemplateUrl = searchTemplateUrl;
-        this.searchTemplateUrlWithPageNumber = searchTemplateUrlWithPageNumber;
-        this.maxCountOfNewPages = maxCountOfNewPages;
-        this.olderThanInHours = olderThanInHours;
-        this.maxCountOfProductOnPage = maxCountOfProductOnPage;
+        this(null, productStartUrl, searchTemplateUrl, searchTemplateUrlWithPageNumber, maxCountOfNewPages,
+                olderThanInHours, maxCountOfProductOnPage);
     }
 
     /**
@@ -323,5 +321,9 @@ public enum EshopUuid {
      */
     public int getMaxCountOfProductOnPage() {
         return maxCountOfProductOnPage;
+    }
+
+    public int getCountToWaitInSecond() {
+        return countToWaitInSecond;
     }
 }

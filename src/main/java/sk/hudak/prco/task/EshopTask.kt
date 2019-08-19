@@ -24,37 +24,17 @@ data class TaskContext @JvmOverloads constructor(
         val status: TaskStatus,
         val lastChanged: Date = Date())
 
-//TODO zbavit sa exception
-abstract class VoidTask : Callable<Unit> {
-
-//    override fun call() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//    }
-
-    @Throws(Exception::class)
-    override fun call() {
-        doInTask()
-    }
-
-    @Throws(Exception::class)
-    protected abstract fun doInTask()
-}
-
-@FunctionalInterface
-interface SubmitTask<T, K> {
-
-    @Throws(Exception::class)
-    fun doInTask(eshopUuid: EshopUuid, param1: T, param2: K)
-}
-
-
 interface EshopTaskManager {
+
+    fun  dajmiho(eshopUuid: EshopUuid): Executor
 
     val tasks: Map<EshopUuid, TaskContext>
 
     val isAnyTaskRunning: Boolean
 
     fun submitTask(eshopUuid: EshopUuid, task: Runnable): Future<*>
+
+    fun <T> submitTask(eshopUuid: EshopUuid, task: Callable<T>): Future<T>
 
     fun isTaskRunning(eshopUuid: EshopUuid): Boolean
 
@@ -79,7 +59,7 @@ interface EshopTaskManager {
 class EshopTaskManagerImpl : EshopTaskManager {
 
     companion object {
-        val log = LoggerFactory.getLogger(EshopTaskManagerImpl::class.java)
+        val log = LoggerFactory.getLogger(EshopTaskManagerImpl::class.java)!!
     }
 
     private val executors = EnumMap<EshopUuid, ExecutorService>(EshopUuid::class.java)
@@ -104,9 +84,9 @@ class EshopTaskManagerImpl : EshopTaskManager {
 
     @PostConstruct
     fun init() {
-        Arrays.stream(EshopUuid.values()).forEach { eshopUuid ->
-            executors[eshopUuid] = createExecutorServiceForEshop(eshopUuid)
-            internalTask[eshopUuid] = TaskContext(TaskStatus.STOPPED)
+        EshopUuid.values().forEach {
+            executors[it] = createExecutorServiceForEshop(it)
+            internalTask[it] = TaskContext(TaskStatus.STOPPED)
         }
     }
 
@@ -118,13 +98,25 @@ class EshopTaskManagerImpl : EshopTaskManager {
     }
 
     private fun createExecutorServiceForEshop(value: EshopUuid): ExecutorService {
-        return Executors.newSingleThreadExecutor { r -> Thread(r, value.name) }
+        return Executors.newSingleThreadExecutor {
+            Thread(it, "${value.name}-thread")
+        }
     }
+
+    override fun dajmiho(eshopUuid: EshopUuid): Executor {
+        return executors[eshopUuid]!!
+    }
+
 
     override fun submitTask(eshopUuid: EshopUuid, task: Runnable): Future<*> {
         log.debug("submitting new task for eshop $eshopUuid")
         return executors[eshopUuid]!!.submit(task)
     }
+
+    override fun <T> submitTask(eshopUuid: EshopUuid, task: Callable<T>): Future<T>{
+         return executors[eshopUuid]!!.submit(task)
+     }
+
 
     override fun isTaskRunning(eshopUuid: EshopUuid): Boolean {
         return TaskStatus.RUNNING == internalTask[eshopUuid]?.status
@@ -185,6 +177,29 @@ class EshopTaskManagerImpl : EshopTaskManager {
                 ThreadUtils.sleepSafe(secondInInterval)
             }
         }
+    }
+}
+
+abstract class ExceptionHandlingRunnable : Runnable {
+
+    final override fun run() {
+        try {
+            doInRunnable()
+
+        } catch (e: Exception) {
+            handleException(e)
+
+        } finally {
+            doInFinally()
+        }
+    }
+
+    abstract fun doInRunnable()
+
+    abstract fun handleException(e: Exception)
+
+    open fun doInFinally() {
+        // nothing, can be use for custom logic
     }
 }
 

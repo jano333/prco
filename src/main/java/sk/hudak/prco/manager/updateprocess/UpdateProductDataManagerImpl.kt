@@ -20,13 +20,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 @Component
-class UpdateProductDataManagerImpl(
-        private val htmlParser: HtmlParser,
-        private val internalTxService: InternalTxService,
-        private val eshopTaskManager: EshopTaskManager,
-        private val mapper: PrcoOrikaMapper,
-        private val errorHandler: ErrorHandler
-
+class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
+                                   private val internalTxService: InternalTxService,
+                                   private val eshopTaskManager: EshopTaskManager,
+                                   private val mapper: PrcoOrikaMapper,
+                                   private val errorHandler: ErrorHandler
 ) : UpdateProductDataManager {
 
     companion object {
@@ -39,7 +37,7 @@ class UpdateProductDataManagerImpl(
         // nedavat tu ziadel log !! pozri getProductForUpdate
         return
 
-        val eshopUuid = productForUpdate.eshopUuid!!
+        val eshopUuid = productForUpdate.eshopUuid
 
         eshopTaskManager.submitTask(eshopUuid, Runnable {
 
@@ -71,7 +69,7 @@ class UpdateProductDataManagerImpl(
             eshopTaskManager.markTaskAsRunning(eshopUuid)
 
             var productForUpdate = getProductForUpdate(eshopUuid)
-            while (productForUpdate!=null) {
+            while (productForUpdate != null) {
 
                 notifyUpdateListener(eshopUuid, listener)
 
@@ -114,7 +112,7 @@ class UpdateProductDataManagerImpl(
         productsForUpdate.forEach { productFullDto -> productsInEshop[productFullDto.eshopUuid] = ArrayList() }
         productsForUpdate.forEach { productFullDto ->
             productsInEshop[productFullDto.eshopUuid]!!.add(
-                    ProductDetailInfo(productFullDto.id, productFullDto.url, productFullDto.eshopUuid))
+                    ProductDetailInfo(productFullDto.id, productFullDto.url, productFullDto.eshopUuid!!))
         }
         return productsInEshop
     }

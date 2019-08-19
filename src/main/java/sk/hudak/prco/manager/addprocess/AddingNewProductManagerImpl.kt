@@ -2,7 +2,6 @@ package sk.hudak.prco.manager.addprocess
 
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.slf4j.LoggerFactory
-import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.ErrorType
 import sk.hudak.prco.api.EshopUuid
@@ -15,13 +14,16 @@ import sk.hudak.prco.parser.eshopuid.EshopUuidParser
 import sk.hudak.prco.parser.html.HtmlParser
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.EshopTaskManager
+import sk.hudak.prco.task.ExceptionHandlingRunnable
 import sk.hudak.prco.utils.ThreadUtils
 import sk.hudak.prco.utils.Validate.notEmpty
 import sk.hudak.prco.utils.Validate.notNullNotEmpty
 import java.util.*
+import java.util.concurrent.CompletableFuture
+import java.util.function.Supplier
 import kotlin.collections.ArrayList
 
-@Primary
+
 @Component
 class AddingNewProductManagerImpl(private val internalTxService: InternalTxService,
                                   private val mapper: PrcoOrikaMapper,
@@ -49,108 +51,98 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                     existParserFor(it)
                 }
                 .forEach {
-                    // spusti stahovanie pre dalsi
+                    // spusti parsovanie 'eshop -> searchKeyWord'
                     addNewProductsByKeywordForEshop(it, searchKeyWord)
-                    // kazdy dalsi spusti s 3 sekundovym oneskorenim
-                    ThreadUtils.sleepSafe(3)
+                    // kazdy dalsi spusti s 1 sekundovym oneskorenim
+                    // TODO z konfigu
+                    ThreadUtils.sleepSafe(1)
                 }
+    }
+
+    override fun addNewProductsByUrl(productsUrl: List<String>) {
+        notNullNotEmpty(productsUrl as Array<String>, "productsUrl")
+
+        log.debug(">> addNewProductsByUrl count of URLs: ${productsUrl.size}")
+
+        // filtrujem len tie ktore este neexistuju
+        val notExistingProducts = filterOnlyNotExisting(productsUrl)
+
+        if (notExistingProducts.isNotEmpty()) {
+            // roztriedim URL podla typu eshopu
+            val eshopUrls: EnumMap<EshopUuid, MutableList<String>> = convertToUrlsByEshop(notExistingProducts)
+
+            // spustim parsovanie pre kazdy eshop
+            eshopUrls.keys.forEach {
+                createNewProductsForEshop(it, eshopUrls[it]!!.toList())
+            }
+        }
+        log.debug("<< addNewProductsByUrl count of URLs: ${productsUrl.size}")
     }
 
     override fun addNewProductsByKeywordForEshop(eshopUuid: EshopUuid, searchKeyWord: String) {
         notEmpty(searchKeyWord, "searchKeyWord")
 
-        eshopTaskManager.submitTask(eshopUuid, Runnable {
-            log.debug(">> addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWord $searchKeyWord")
+        eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
 
-            eshopTaskManager.markTaskAsRunning(eshopUuid)
+            override fun doInRunnable() {
+                log.debug(">> addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWord $searchKeyWord")
+                eshopTaskManager.markTaskAsRunning(eshopUuid)
 
-            try {
                 // vyparsujem vsetky url-cky produktov, ktore sa najdu na strankach(prechadza aj pageovane stranky)
                 val urlList: List<String> = searchProductUrlsWrapper(eshopUuid, searchKeyWord)
-
+                log.debug("count of products URL ${urlList.size}")
                 // if none url found -> end
                 if (urlList.isEmpty()) {
                     throw NoProductUrlsFoundFondForKeyword(eshopUuid, searchKeyWord)
                 }
+                // filter only non existing
+                val notExistingProducts = filterOnlyNotExisting(urlList)
+                log.debug("filter only to non existing count ${notExistingProducts.size}")
+                if (notExistingProducts.isEmpty()) {
+                    eshopTaskManager.markTaskAsFinished(eshopUuid, false)
+                    return
+                }
 
-                createNewProductsWrapper(eshopUuid, urlList as MutableList<String>)
+                createNewProductsErrorWrapper(eshopUuid, notExistingProducts)
 
-            } catch (e: Exception) {
-                handleAddNewProductsByKeywordForEshopException(e)
+                eshopTaskManager.markTaskAsFinished(eshopUuid, false)
+            }
 
-            } finally {
+            override fun handleException(e: Exception) {
+                handleAddNewProductsByKeywordForEshopException(e, eshopUuid)
+            }
+
+            override fun doInFinally() {
                 log.debug("<< addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWord $searchKeyWord")
             }
         })
-
     }
 
-    override fun addNewProductsByUrl(vararg productsUrl: String) {
-        notNullNotEmpty(productsUrl as Array<String>, "productsUrl")
+    private fun createNewProductsForEshop(eshopUuid: EshopUuid, urlList: List<String>) {
 
-        val countOfUrls = productsUrl.size
-        log.debug(">> addNewProductsByUrl count of URLs: $countOfUrls")
+        eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
 
-        // roztriedim URL podla typu eshopu
-        val eshopUrls: EnumMap<EshopUuid, MutableList<String>> = EnumMap(EshopUuid::class.java)
+            override fun doInRunnable() {
+                log.debug(">> addNewProductsByKeywordForEshop eshop $eshopUuid")
+                eshopTaskManager.markTaskAsRunning(eshopUuid)
 
-        productsUrl.forEach {
-            eshopUrls.computeIfAbsent(eshopUuidParser.parseEshopUuid(it)) {
-                ArrayList()
-            }.add(it)
-        }
+                createNewProductsErrorWrapper(eshopUuid, urlList)
 
-        eshopUrls.keys.forEach { eshopUuid ->
-            run {
-                eshopTaskManager.submitTask(eshopUuid,
-                        Runnable {
-                            log.debug(">> addNewProductsByKeywordForEshop eshop $eshopUuid")
+                eshopTaskManager.markTaskAsFinished(eshopUuid, false)
+            }
 
-                            eshopTaskManager.markTaskAsRunning(eshopUuid)
+            override fun handleException(e: Exception) {
+                handleAddNewProductsByKeywordForEshopException(e, eshopUuid)
+            }
 
-                            try {
-                                createNewProductsWrapper(eshopUuid, eshopUrls[eshopUuid]!!)
-
-                            } catch (e: Exception) {
-                                handleAddNewProductsByKeywordForEshopException(e)
-
-                            } finally {
-                                log.debug("<< addNewProductsByKeywordForEshop eshop $eshopUuid")
-                            }
-                        }
-                )
+            override fun doInFinally() {
+                log.debug("<< addNewProductsByKeywordForEshop eshop $eshopUuid")
             }
         }
-        log.debug("<< addNewProductsByUrl count of URLs: {}", countOfUrls)
+        )
     }
 
-    private fun handleAddNewProductsByKeywordForEshopException(e: Exception) {
-        when (e) {
-            is SearchProductUrlsException -> {
-                log.error(e.message, e)
-                logErrorParsingProductUrls(e.eshopUuid, e.searchKeyWord, e)
-                eshopTaskManager.markTaskAsFinished(e.eshopUuid, true)
-            }
-
-            is NoProductUrlsFoundFondForKeyword -> {
-                log.info(e.message)
-                eshopTaskManager.markTaskAsFinished(e.eshopUuid, false)
-            }
-
-            is CreateNewProductsForUrls -> {
-                log.error(e.message, e)
-                logErrorParsingProductNewData(e.eshopUuid, e)
-                eshopTaskManager.markTaskAsFinished(e.eshopUuid, true)
-            }
-
-            else -> {
-                //TODO
-                log.error(e.message, e);
-            }
-        }
-    }
-
-    private fun createNewProductsWrapper(eshopUuid: EshopUuid, urlList: MutableList<String>) {
+    private fun createNewProductsErrorWrapper(eshopUuid: EshopUuid, urlList: List<String>) {
         try {
             createNewProducts(eshopUuid, urlList)
 
@@ -159,8 +151,9 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         }
     }
 
-    private fun createNewProducts(eshopUuid: EshopUuid, urlList: MutableList<String>) {
+    private fun createNewProducts(eshopUuid: EshopUuid, urlList: List<String>) {
         val allUrlCount = urlList.size
+
 
         for (currentUrlIndex in 0 until allUrlCount) {
 
@@ -171,13 +164,6 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
             log.debug("starting {} of {}", currentUrlIndex + 1, allUrlCount)
             val productUrl = urlList[currentUrlIndex]
-
-            // ak uz exituje, tak vynechavam
-            log.debug("checking existence of product URL {}", productUrl)
-            if (internalTxService.existProductWithURL(productUrl)) {
-                log.debug("already added -> skipping")
-                continue
-            }
 
             // parsujem
             val productNewData = htmlParser.parseProductNewData(productUrl)
@@ -200,6 +186,61 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
             // sleep pre dalsou iteraciou
             //TODO fix na zaklade nastavenia daneho eshopu.... dave od to delay
             ThreadUtils.sleepRandomSafe()
+        }
+    }
+
+    private fun convertToUrlsByEshop(productsUrl: List<String>): EnumMap<EshopUuid, MutableList<String>> {
+        val eshopUrls: EnumMap<EshopUuid, MutableList<String>> = EnumMap(EshopUuid::class.java)
+
+        productsUrl.forEach {
+            eshopUrls.computeIfAbsent(eshopUuidParser.parseEshopUuid(it)) {
+                ArrayList()
+            }.add(it)
+        }
+        return eshopUrls
+    }
+
+    private fun handleAddNewProductsByKeywordForEshopException(e: Exception, eshopUuid: EshopUuid) {
+        when (e) {
+            is SearchProductUrlsException -> {
+                log.error(e.message, e)
+                eshopTaskManager.markTaskAsFinished(e.eshopUuid, true)
+                logErrorParsingProductUrls(e.eshopUuid, e.searchKeyWord, e)
+            }
+
+            is NoProductUrlsFoundFondForKeyword -> {
+                log.info(e.message)
+                eshopTaskManager.markTaskAsFinished(e.eshopUuid, false)
+            }
+
+            is CreateNewProductsForUrls -> {
+                log.error(e.message, e)
+                eshopTaskManager.markTaskAsFinished(e.eshopUuid, true)
+                logErrorParsingProductNewData(e.eshopUuid, e)
+            }
+
+            else -> {
+                log.error(e.message, e)
+                eshopTaskManager.markTaskAsFinished(eshopUuid, true)
+            }
+        }
+    }
+
+    fun addNewProductsByKeywordForEshopNG(eshopUuid: EshopUuid, searchKeyWord: String) {
+        val task: Supplier<List<String>> = Supplier {
+            val searchProductUrlsWrapper = searchProductUrlsWrapper(eshopUuid, searchKeyWord)
+            searchProductUrlsWrapper
+        }
+        val completableFuture: CompletableFuture<List<String>> = CompletableFuture
+                .supplyAsync(task, eshopTaskManager.dajmiho(eshopUuid))
+
+//        completableFuture.handle(a -> {
+//
+//        })
+
+
+        val future = completableFuture.thenApply {
+
         }
     }
 
@@ -247,10 +288,19 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
             htmlParser.searchProductUrls(eshopUuid, searchKeyWord)
 
         } catch (e: Exception) {
-            throw SearchProductUrlsException(eshopUuid, searchKeyWord, e);
+            throw SearchProductUrlsException(eshopUuid, searchKeyWord, e)
         }
     }
 
+    private fun filterOnlyNotExisting(productsUrl: List<String>): List<String> {
+        return productsUrl.filter {
+            val exist = internalTxService.existProductWithURL(it)
+            if (exist) {
+                log.debug("product $it already existing")
+            }
+            !exist
+        }
+    }
 }
 
 class SearchProductUrlsException(val eshopUuid: EshopUuid, val searchKeyWord: String, e: Exception) :
@@ -258,6 +308,9 @@ class SearchProductUrlsException(val eshopUuid: EshopUuid, val searchKeyWord: St
 
 class NoProductUrlsFoundFondForKeyword(val eshopUuid: EshopUuid, searchKeyWord: String) :
         PrcoRuntimeException("no url found for eshop $eshopUuid and searchKeyWord $searchKeyWord")
+
+class NoneNonExistingProductUrlsFoundForKeyword(val eshopUuid: EshopUuid, searchKeyWord: String) :
+        PrcoRuntimeException("none non existing url found for eshop $eshopUuid and searchKeyWord $searchKeyWord")
 
 class CreateNewProductsForUrls(val eshopUuid: EshopUuid, e: Exception) :
         PrcoRuntimeException("error while creating new product from URL for eshop $eshopUuid", e)
