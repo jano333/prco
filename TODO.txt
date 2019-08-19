@@ -86,9 +86,6 @@ insert into new_product (created, updated, confirm_validity, eshop_uuid, name, p
 2019-08-19 14:59:30,027 DEBUG [main] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:112] submitting new task for eshop MALL
 2019-08-19 14:59:30,027 DEBUG [MALL-thread] [] s.h.p.m.a.NgAddingNewProductManagerImpl [NgAddingNewProductManagerImpl.kt:62] >> addNewProductsByKeywordForEshop eshop MALL, searchKeyWord lovela
 ----------------------------
-2019-08-19 14:57:08,493 WARN [background-preinit] [] o.s.h.c.j.Jackson2ObjectMapperBuilder [Jackson2ObjectMapperBuilder.java:771]
-For Jackson Kotlin classes support please add "com.fasterxml.jackson.module:jackson-module-kotlin" to the classpath
-----------------------------
 Ked skonci na timeout pri pridavani novych produktov tak nech pokracuje...
 2019-08-13 13:06:05,823 DEBUG [PILULKA_24] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:171] starting 100 of 143
 2019-08-13 13:06:05,823 DEBUG [PILULKA_24] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:175] checking existence of product URL https://www.pilulka24.sk/pampers-activebaby-giant-pack-4-maxiplus-70ks
