@@ -42,9 +42,12 @@ class LekarenBellaProductParser(unitParser: UnitParser, userAgentDataHolder: Use
     }
 
     override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
-        var first: Element? = documentDetailProduct.select("h1[class='product-detail-title title-sm']").first()
+        var first: Element? = documentDetailProduct.select("h1[class='product-detail-title']").first()
         if (first == null) {
             first = documentDetailProduct.select("h1[class='product-detail-title title-xs']").first()
+        }
+        if (first == null) {
+            first = documentDetailProduct.select("h1[class='product-detail-title title-sm']").first()
         }
         return ofNullable(first)
                 .map { it.text() }
