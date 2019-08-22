@@ -64,6 +64,7 @@ class DrogerkaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAge
         return ofNullable(documentDetailProduct.select("#product > div.text > div > div.left_side > span.main").first())
                 .map { it.text() }
                 .map { StringUtils.removeStart(it, "Nová cena: ") }
+                .map { StringUtils.removeStart(it, "Aktuálna cena: ") }
                 .map { StringUtils.removeEnd(it, "€") }
                 .filter { StringUtils.isNotBlank(it) }
                 .map { ConvertUtils.convertToBigDecimal(it) }
