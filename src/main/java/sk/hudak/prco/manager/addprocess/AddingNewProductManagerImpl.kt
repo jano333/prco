@@ -15,14 +15,10 @@ import sk.hudak.prco.parser.html.HtmlParser
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.EshopTaskManager
 import sk.hudak.prco.task.ExceptionHandlingRunnable
-import sk.hudak.prco.utils.ThreadUtils
+import sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe
+import sk.hudak.prco.utils.ThreadUtils.sleepSafe
 import sk.hudak.prco.utils.Validate.notEmpty
-import sk.hudak.prco.utils.Validate.notNullNotEmpty
 import java.util.*
-import java.util.concurrent.CompletableFuture
-import java.util.function.Supplier
-import kotlin.collections.ArrayList
-
 
 @Component
 class AddingNewProductManagerImpl(private val internalTxService: InternalTxService,
@@ -48,40 +44,17 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
         EshopUuid.values()
                 .filter {
-                    existParserFor(it)
+                    existParserForEshop(it)
                 }
                 .forEach {
                     // spusti parsovanie 'eshop -> searchKeyWord'
                     addNewProductsByKeywordForEshop(it, searchKeyWord)
-                    // kazdy dalsi spusti s 1 sekundovym oneskorenim
-                    // TODO z konfigu
-                    ThreadUtils.sleepSafe(1)
+                    // pre kazdy dalsi eshop pockaj so spustenim 2 sekundy
+                    sleepSafe(2)
                 }
     }
 
-    override fun addNewProductsByUrl(productsUrl: List<String>) {
-        notNullNotEmpty(productsUrl as Array<String>, "productsUrl")
-
-        log.debug(">> addNewProductsByUrl count of URLs: ${productsUrl.size}")
-
-        // filtrujem len tie ktore este neexistuju
-        val notExistingProducts = filterOnlyNotExisting(productsUrl)
-
-        if (notExistingProducts.isNotEmpty()) {
-            // roztriedim URL podla typu eshopu
-            val eshopUrls: EnumMap<EshopUuid, MutableList<String>> = convertToUrlsByEshop(notExistingProducts)
-
-            // spustim parsovanie pre kazdy eshop
-            eshopUrls.keys.forEach {
-                createNewProductsForEshop(it, eshopUrls[it]!!.toList())
-            }
-        }
-        log.debug("<< addNewProductsByUrl count of URLs: ${productsUrl.size}")
-    }
-
     override fun addNewProductsByKeywordForEshop(eshopUuid: EshopUuid, searchKeyWord: String) {
-        notEmpty(searchKeyWord, "searchKeyWord")
-
         eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
 
             override fun doInRunnable() {
@@ -89,19 +62,12 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                 eshopTaskManager.markTaskAsRunning(eshopUuid)
 
                 // vyparsujem vsetky url-cky produktov, ktore sa najdu na strankach(prechadza aj pageovane stranky)
-                val urlList: List<String> = searchProductUrlsWrapper(eshopUuid, searchKeyWord)
+                val urlList: List<String> = searchProductUrls(eshopUuid, searchKeyWord)
                 log.debug("count of products URL ${urlList.size}")
-                // if none url found -> end
-                if (urlList.isEmpty()) {
-                    throw NoProductUrlsFoundFondForKeyword(eshopUuid, searchKeyWord)
-                }
+
                 // filter only non existing
-                val notExistingProducts = filterOnlyNotExisting(urlList)
-                log.debug("filter only to non existing count ${notExistingProducts.size}")
-                if (notExistingProducts.isEmpty()) {
-                    eshopTaskManager.markTaskAsFinished(eshopUuid, false)
-                    return
-                }
+                val notExistingProducts = filterOnlyNotExistingWithException(urlList, eshopUuid)
+                log.debug("count of non existing products URL  ${notExistingProducts.size}")
 
                 createNewProductsErrorWrapper(eshopUuid, notExistingProducts)
 
@@ -109,7 +75,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
             }
 
             override fun handleException(e: Exception) {
-                handleAddNewProductsByKeywordForEshopException(e, eshopUuid)
+                handleExceptionAddNewProducts(e, eshopUuid)
             }
 
             override fun doInFinally() {
@@ -118,28 +84,47 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         })
     }
 
-    private fun createNewProductsForEshop(eshopUuid: EshopUuid, urlList: List<String>) {
+    override fun addNewProductsByUrl(productsUrl: List<String>) {
+        notEmpty(productsUrl, "productsUrl")
+        log.debug(">> addNewProductsByUrl count of URLs: ${productsUrl.size}")
 
-        eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
-
-            override fun doInRunnable() {
-                log.debug(">> addNewProductsByKeywordForEshop eshop $eshopUuid")
-                eshopTaskManager.markTaskAsRunning(eshopUuid)
-
-                createNewProductsErrorWrapper(eshopUuid, urlList)
-
-                eshopTaskManager.markTaskAsFinished(eshopUuid, false)
-            }
-
-            override fun handleException(e: Exception) {
-                handleAddNewProductsByKeywordForEshopException(e, eshopUuid)
-            }
-
-            override fun doInFinally() {
-                log.debug("<< addNewProductsByKeywordForEshop eshop $eshopUuid")
-            }
+        // filtrujem len tie ktore este neexistuju
+        val notExistingProducts = filterOnlyNotExisting(productsUrl)
+        log.debug("count of non existing URLs ${notExistingProducts.size}")
+        if (notExistingProducts.isNullOrEmpty()) {
+            log.debug("<< addNewProductsByUrl count of URLs: ${productsUrl.size}")
+            return
         }
-        )
+
+        // roztriedim URL podla typu eshopu
+        val eshopUrls: EnumMap<EshopUuid, MutableList<String>> = convertToUrlsByEshop(notExistingProducts)
+
+        // spustim parsovanie pre kazdy eshop
+        eshopUrls.keys.forEach {
+
+            eshopTaskManager.submitTask(it, object : ExceptionHandlingRunnable() {
+
+                override fun doInRunnable() {
+                    log.debug(">> addNewProductsByUrlsForEshop eshop $it")
+                    eshopTaskManager.markTaskAsRunning(it)
+
+                    createNewProductsErrorWrapper(it, eshopUrls[it]!!)
+
+                    eshopTaskManager.markTaskAsFinished(it, false)
+                }
+
+                override fun handleException(e: Exception) {
+                    handleExceptionAddNewProducts(e, it)
+                }
+
+                override fun doInFinally() {
+                    log.debug("<< addNewProductsByUrlsForEshop eshop $it")
+                }
+            })
+            // kazdy dalsi spusti s 2 sekundovym oneskorenim
+            sleepSafe(2)
+        }
+        log.debug("<< addNewProductsByUrl count of URLs: ${productsUrl.size}")
     }
 
     private fun createNewProductsErrorWrapper(eshopUuid: EshopUuid, urlList: List<String>) {
@@ -151,45 +136,78 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         }
     }
 
+    private enum class ContinueStatus {
+        CONTINUE_TO_NEXT_ONE,
+        STOP_PROCESSING_NEXT_ONE
+    }
+
     private fun createNewProducts(eshopUuid: EshopUuid, urlList: List<String>) {
-        val allUrlCount = urlList.size
+        loop@
+        for (currentUrlIndex in 0 until urlList.size) {
+            log.debug("starting {} of {}", currentUrlIndex + 1, urlList.size)
 
+            val processNewProductUrl = processNewProductUrl(eshopUuid, urlList[currentUrlIndex])
 
-        for (currentUrlIndex in 0 until allUrlCount) {
-
-            if (eshopTaskManager.isTaskShouldStopped(eshopUuid)) {
-                eshopTaskManager.markTaskAsStopped(eshopUuid)
-                break
+            when (processNewProductUrl) {
+                ContinueStatus.STOP_PROCESSING_NEXT_ONE -> {
+                    break@loop
+                }
+                ContinueStatus.CONTINUE_TO_NEXT_ONE -> {
+                    // sleep pre dalsou iteraciou, iba ak aktualne nie je zaroven posledny
+                    if (currentUrlIndex + 1 != urlList.size) {
+                        sleepRandomSafe()
+                    }
+                }
             }
-
-            log.debug("starting {} of {}", currentUrlIndex + 1, allUrlCount)
-            val productUrl = urlList[currentUrlIndex]
-
-            // parsujem
-            val productNewData = htmlParser.parseProductNewData(productUrl)
-            //TODO pridat kontrolu na dostupnost proudku, alza nebol dostupny preto nevrati mene.... a padne toto
-
-            // je len tmp fix
-            if (null == productNewData.name) {
-                //TODO log do error logu? asi ano
-                log.warn("new product not contains name, skipping to next product")
-                continue
-            }
-            // rusim logovanie unit, lebo to moze byt produkt ktory to ani nema, teda ani ma nezaujima...
-            //            if (productNewData.getUnit() == null) {
-            //                logErrorParsingUnit(eshopUuid, productUrl, productNewData.getName().get());
-            //            }
-
-            // preklopim a pridavam do DB
-            internalTxService.createNewProduct(mapper.map(productNewData, NewProductCreateDto::class.java))
-
-            // sleep pre dalsou iteraciou
-            //TODO fix na zaklade nastavenia daneho eshopu.... dave od to delay
-            ThreadUtils.sleepRandomSafe()
         }
     }
 
+    private fun processNewProductUrl(eshopUuid: EshopUuid, productUrl: String): ContinueStatus {
+        if (eshopTaskManager.isTaskShouldStopped(eshopUuid)) {
+            eshopTaskManager.markTaskAsStopped(eshopUuid)
+            return ContinueStatus.STOP_PROCESSING_NEXT_ONE
+        }
+
+        // parsujem
+        val productNewData = try {
+            htmlParser.parseProductNewData(productUrl)
+
+        } catch (e: Exception) {
+            log.error(e.message, e)
+            logErrorParsingProductNewData(eshopUuid, e)
+            return ContinueStatus.CONTINUE_TO_NEXT_ONE
+        }
+
+        if (null == productNewData.name) {
+            logErrorParsingProductNameForNewProduct(eshopUuid, productUrl)
+            log.warn("new product not contains name, skipping to next product")
+            return ContinueStatus.CONTINUE_TO_NEXT_ONE
+        }
+
+        // preklopim a pridavam do DB
+        internalTxService.createNewProduct(mapper.map(productNewData, NewProductCreateDto::class.java))
+        return ContinueStatus.CONTINUE_TO_NEXT_ONE
+    }
+
+    private fun searchProductUrls(eshopUuid: EshopUuid, searchKeyWord: String): List<String> {
+        val urlList = try {
+            // vyparsujem vsetky url-cky produktov, ktore sa najdu na strankach(prechadza aj pageovane stranky)
+            htmlParser.searchProductUrls(eshopUuid, searchKeyWord)
+
+        } catch (e: Exception) {
+            throw SearchProductUrlsException(eshopUuid, searchKeyWord, e)
+        }
+
+        if (urlList.isEmpty()) {
+            log.debug("none url found for eshop $eshopUuid and keyword $searchKeyWord")
+            throw NoProductUrlsFoundFondForKeyword(eshopUuid, searchKeyWord)
+        }
+        return urlList
+    }
+
+
     private fun convertToUrlsByEshop(productsUrl: List<String>): EnumMap<EshopUuid, MutableList<String>> {
+        //FIXME zmenit MutableList na List navratovu hodnotu
         val eshopUrls: EnumMap<EshopUuid, MutableList<String>> = EnumMap(EshopUuid::class.java)
 
         productsUrl.forEach {
@@ -200,8 +218,56 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         return eshopUrls
     }
 
-    private fun handleAddNewProductsByKeywordForEshopException(e: Exception, eshopUuid: EshopUuid) {
+    private fun filterOnlyNotExisting(productsUrl: List<String>): List<String> {
+        return internalFilterOnlyNonExistingUrls(productsUrl)
+    }
+
+    /**
+     * @param productsUrl list of product URL for given eshop
+     * @param eshopUuid eshop to which this URLs belongs to
+     */
+    private fun filterOnlyNotExistingWithException(productsUrl: List<String>, eshopUuid: EshopUuid): List<String> {
+        val notExistingProducts = internalFilterOnlyNonExistingUrls(productsUrl)
+
+        if (notExistingProducts.isEmpty()) {
+            throw AllProductsWithGivenUrlsAlreadyExisting(eshopUuid)
+        }
+        return notExistingProducts
+    }
+
+    private fun internalFilterOnlyNonExistingUrls(productsUrl: List<String>): List<String> {
+        val notExistingProducts = productsUrl.filter {
+            val exist = internalTxService.existProductWithURL(it)
+            if (exist) {
+                log.debug("product $it already existing")
+            }
+            !exist
+        }
+
+        if (notExistingProducts.isEmpty()) {
+            log.warn("count of non existing products URL is zero")
+        }
+        return notExistingProducts
+    }
+
+    private fun existParserForEshop(eshopUuid: EshopUuid): Boolean {
+        val parser = productsParsers.find {
+            eshopUuid == it.eshopUuid
+        }
+        if (parser == null) {
+            log.warn("for eshop $eshopUuid none parser found")
+            return false
+        }
+        return true
+    }
+
+    private fun handleExceptionAddNewProducts(e: Exception, eshopUuid: EshopUuid) {
         when (e) {
+//            is ExecutionException -> {
+//                log.error("it is ExecutionException ${e.message} type ${e.cause?.javaClass?.simpleName}")
+//                handleAddNewProductsByKeywordForEshopException(e.cause as Exception, eshopUuid, searchKeyWord)
+//            }
+
             is SearchProductUrlsException -> {
                 log.error(e.message, e)
                 eshopTaskManager.markTaskAsFinished(e.eshopUuid, true)
@@ -209,6 +275,11 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
             }
 
             is NoProductUrlsFoundFondForKeyword -> {
+                log.info(e.message)
+                eshopTaskManager.markTaskAsFinished(e.eshopUuid, false)
+            }
+
+            is AllProductsWithGivenUrlsAlreadyExisting -> {
                 log.info(e.message)
                 eshopTaskManager.markTaskAsFinished(e.eshopUuid, false)
             }
@@ -226,24 +297,6 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         }
     }
 
-    fun addNewProductsByKeywordForEshopNG(eshopUuid: EshopUuid, searchKeyWord: String) {
-        val task: Supplier<List<String>> = Supplier {
-            val searchProductUrlsWrapper = searchProductUrlsWrapper(eshopUuid, searchKeyWord)
-            searchProductUrlsWrapper
-        }
-        val completableFuture: CompletableFuture<List<String>> = CompletableFuture
-                .supplyAsync(task, eshopTaskManager.dajmiho(eshopUuid))
-
-//        completableFuture.handle(a -> {
-//
-//        })
-
-
-        val future = completableFuture.thenApply {
-
-        }
-    }
-
     private fun logErrorParsingProductUrls(eshopUuid: EshopUuid, searchKeyWord: String, e: Exception) {
         internalTxService.createError(ErrorCreateDto(
                 eshopUuid,
@@ -251,6 +304,13 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                 e.message,
                 ExceptionUtils.getStackTrace(e), null,
                 searchKeyWord))
+    }
+
+    private fun logErrorParsingProductNameForNewProduct(eshopUuid: EshopUuid, productUrl: String) {
+        internalTxService.createError(ErrorCreateDto(
+                eshopUuid,
+                ErrorType.PARSING_PRODUCT_NAME_FOR_NEW_PRODUCT, null, null, null,
+                productUrl, null))
     }
 
     private fun logErrorParsingProductNewData(eshopUuid: EshopUuid, e: Exception) {
@@ -261,47 +321,8 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                 ExceptionUtils.getStackTrace(e), null,
                 null))
     }
-
-    private fun logErrorParsingUnit(eshopUuid: EshopUuid, productUrl: String, productName: String) {
-        internalTxService.createError(ErrorCreateDto(
-                eshopUuid,
-                ErrorType.PARSING_PRODUCT_UNIT_ERR, null, null, null,
-                productUrl,
-                productName))
-    }
-
-    //TODO premenovat metodu na existParserForEshop
-    private fun existParserFor(eshopUuid: EshopUuid): Boolean {
-        //FIXME cez lamba a findFirst
-        for (productsParser in productsParsers) {
-            if (eshopUuid == productsParser.eshopUuid) {
-                return true
-            }
-        }
-        log.warn("for eshop $eshopUuid none parser found")
-        return false
-    }
-
-    private fun searchProductUrlsWrapper(eshopUuid: EshopUuid, searchKeyWord: String): List<String> {
-        return try {
-            // vyparsujem vsetky url-cky produktov, ktore sa najdu na strankach(prechadza aj pageovane stranky)
-            htmlParser.searchProductUrls(eshopUuid, searchKeyWord)
-
-        } catch (e: Exception) {
-            throw SearchProductUrlsException(eshopUuid, searchKeyWord, e)
-        }
-    }
-
-    private fun filterOnlyNotExisting(productsUrl: List<String>): List<String> {
-        return productsUrl.filter {
-            val exist = internalTxService.existProductWithURL(it)
-            if (exist) {
-                log.debug("product $it already existing")
-            }
-            !exist
-        }
-    }
 }
+
 
 class SearchProductUrlsException(val eshopUuid: EshopUuid, val searchKeyWord: String, e: Exception) :
         PrcoRuntimeException("error while parsing eshop $eshopUuid products URLs for keyword $searchKeyWord", e)

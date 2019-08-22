@@ -7,6 +7,7 @@ import sk.hudak.prco.parser.unit.UnitParserImpl;
 import sk.hudak.prco.ssl.PrcoSslManager;
 import sk.hudak.prco.utils.UserAgentDataHolder;
 
+@Deprecated
 public class ProductParserTest {
 
     public static void main(String[] args) {

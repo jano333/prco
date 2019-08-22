@@ -25,26 +25,12 @@ fun main() {
 
     //       println(test.parseUrlsOfProduct(EshopUuid.MALL, "pampers"));
 //
-//    println(test.parseProductNewData("https://www.alza.sk/maxi/pampers-premium-care-vel-4-maxi-168-ks-mesacne-balenie-d4842712.htm"))
+    println(test.parseProductNewData("https://www.lekaren-bella.sk/zbozi/3636199/nutrilon-5-800g"))
 
-    println(test.parseProductUpdateData(             "https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-active-baby-vpp-4-maxi-plus-53ks-17305.html"))
+//    println(test.parseProductUpdateData(             "https://www.lekarenexpres.sk/kozmetika-hygiena-domacnost/hygienicke-prostriedky-a-prostriedky-pre-domacnos/plienky-a-plenove-nohavicky-pre-deti/pampers-active-baby-vpp-4-maxi-plus-53ks-17305.html"))
 }
 
 class ProductParserTest {
-
-    private val userAgentDataHolder: UserAgentDataHolder
-    private val unitParser: UnitParser
-    private val searchUrlBuilder: SearchUrlBuilder
-    private val eshopUuidParser: EshopUuidParser
-
-    init {
-        PrcoSslManager.init()
-        userAgentDataHolder = UserAgentDataHolder()
-        userAgentDataHolder.init()
-        unitParser = UnitParserImpl()
-        searchUrlBuilder = SearchUrlBuilderImpl()
-        eshopUuidParser = EnumImplEshopUuidParserImpl()
-    }
 
     private fun getParserForEshop(eshopUuid: EshopUuid): EshopProductsParser {
         return when (eshopUuid) {
@@ -56,6 +42,22 @@ class ProductParserTest {
             //TODO others
             else -> throw PrcoRuntimeException("Pridaj implementaciu do testu pre eshop $eshopUuid")
         }
+    }
+
+
+    private val userAgentDataHolder: UserAgentDataHolder
+    private val unitParser: UnitParser
+    private val searchUrlBuilder: SearchUrlBuilder
+
+    private val eshopUuidParser: EshopUuidParser
+
+    init {
+        PrcoSslManager.init()
+        userAgentDataHolder = UserAgentDataHolder()
+        userAgentDataHolder.init()
+        unitParser = UnitParserImpl()
+        searchUrlBuilder = SearchUrlBuilderImpl()
+        eshopUuidParser = EnumImplEshopUuidParserImpl()
     }
 
     public fun parseUrlsOfProduct(eshopUuid: EshopUuid, keyword: String): List<String> {

@@ -1,3 +1,24 @@
+-------------
+2019-08-22 12:46:24,125 ERROR [FEEDO-thread] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
+2019-08-22 12:46:24,125 ERROR [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:288] error while creating new product from URL for eshop FEEDO
+sk.hudak.prco.manager.addprocess.CreateNewProductsForUrls: error while creating new product from URL for eshop FEEDO
+	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:135)
+	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:24)
+	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:72)
+	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:187)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.springframework.dao.DataIntegrityViolationException: could not execute statement; SQL [n/a]; constraint ["UK_Q38OW0XNE3DVN4HQ7G29YV9R0_INDEX_D ON PUBLIC.NEW_PRODUCT(URL) VALUES ('https://www.feedo.sk/nutrilon-2-350g-dojcenske-mlieko/', 892)"; SQL statement:
+insert into new_product (created, updated, confirm_validity, eshop_uuid, name, picture_url, unit, unit_package_count, unit_value, url, valid, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) [23505-196]]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:259)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:225)
+	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:540)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:746)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:714)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:532)
 ------------
 dalo:
 2019-08-19 15:52:40,016 DEBUG [PILULKA_24-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:246] request URL: https://www.pilulka24.sk/lovela
