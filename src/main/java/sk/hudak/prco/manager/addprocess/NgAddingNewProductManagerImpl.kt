@@ -146,10 +146,10 @@ class NgAddingNewProductManagerImpl(private val internalTxService: InternalTxSer
         loop@
         for (currentUrlIndex in 0 until urlList.size) {
             log.debug("starting {} of {}", currentUrlIndex + 1, urlList.size)
-            val productUrl = urlList[currentUrlIndex]
 
-            when (processNewProductUrl(eshopUuid, productUrl)) {
+            val processNewProductUrl = processNewProductUrl(eshopUuid, urlList[currentUrlIndex])
 
+            when (processNewProductUrl) {
                 ContinueStatus.STOP_PROCESSING_NEXT_ONE -> {
                     break@loop
                 }
