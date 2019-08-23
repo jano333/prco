@@ -132,7 +132,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
             createNewProducts(eshopUuid, urlList)
 
         } catch (e: Exception) {
-            throw CreateNewProductsForUrls(eshopUuid, e)
+            throw CreateNewProductsForUrlsException(eshopUuid, e)
         }
     }
 
@@ -200,7 +200,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
         if (urlList.isEmpty()) {
             log.debug("none url found for eshop $eshopUuid and keyword $searchKeyWord")
-            throw NoProductUrlsFoundFondForKeyword(eshopUuid, searchKeyWord)
+            throw NoProductUrlsFoundFondForKeywordException(eshopUuid, searchKeyWord)
         }
         return urlList
     }
@@ -230,7 +230,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         val notExistingProducts = internalFilterOnlyNonExistingUrls(productsUrl)
 
         if (notExistingProducts.isEmpty()) {
-            throw AllProductsWithGivenUrlsAlreadyExisting(eshopUuid)
+            throw AllProductsWithGivenUrlsAlreadyExistingException(eshopUuid)
         }
         return notExistingProducts
     }
@@ -274,17 +274,17 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                 logErrorParsingProductUrls(e.eshopUuid, e.searchKeyWord, e)
             }
 
-            is NoProductUrlsFoundFondForKeyword -> {
+            is NoProductUrlsFoundFondForKeywordException -> {
                 log.info(e.message)
                 eshopTaskManager.markTaskAsFinished(e.eshopUuid, false)
             }
 
-            is AllProductsWithGivenUrlsAlreadyExisting -> {
+            is AllProductsWithGivenUrlsAlreadyExistingException -> {
                 log.info(e.message)
                 eshopTaskManager.markTaskAsFinished(e.eshopUuid, false)
             }
 
-            is CreateNewProductsForUrls -> {
+            is CreateNewProductsForUrlsException -> {
                 log.error(e.message, e)
                 eshopTaskManager.markTaskAsFinished(e.eshopUuid, true)
                 logErrorParsingProductNewData(e.eshopUuid, e)
@@ -327,11 +327,11 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 class SearchProductUrlsException(val eshopUuid: EshopUuid, val searchKeyWord: String, e: Exception) :
         PrcoRuntimeException("error while parsing eshop $eshopUuid products URLs for keyword $searchKeyWord", e)
 
-class NoProductUrlsFoundFondForKeyword(val eshopUuid: EshopUuid, searchKeyWord: String) :
+class NoProductUrlsFoundFondForKeywordException(val eshopUuid: EshopUuid, searchKeyWord: String) :
         PrcoRuntimeException("no url found for eshop $eshopUuid and searchKeyWord $searchKeyWord")
 
-class AllProductsWithGivenUrlsAlreadyExisting(val eshopUuid: EshopUuid) :
+class AllProductsWithGivenUrlsAlreadyExistingException(val eshopUuid: EshopUuid) :
         PrcoRuntimeException("none non existing url found for eshop $eshopUuid")
 
-class CreateNewProductsForUrls(val eshopUuid: EshopUuid, e: Exception) :
+class CreateNewProductsForUrlsException(val eshopUuid: EshopUuid, e: Exception) :
         PrcoRuntimeException("error while creating new product from URL for eshop $eshopUuid", e)
