@@ -231,12 +231,12 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional(readOnly = true)
-    override fun getEshopForProductId(productId: Long?): EshopUuid {
+    override fun getEshopForProductId(productId: Long): EshopUuid {
         return productService.getEshopForProductId(productId)
     }
 
     @Transactional(readOnly = true)
-    override fun getProductForUpdate(productId: Long?): ProductDetailInfo {
+    override fun getProductForUpdate(productId: Long): ProductDetailInfo {
         return productService.getProductForUpdate(productId)
     }
 

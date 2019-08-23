@@ -93,7 +93,7 @@ interface ProductService {
      * @param productId product id
      * @return eshop unique identifier
      */
-    fun getEshopForProductId(productId: Long?): EshopUuid
+    fun getEshopForProductId(productId: Long): EshopUuid
 
     /**
      * @param eshopUuid        eshop unique identifier
@@ -106,7 +106,7 @@ interface ProductService {
      * @param productId product id
      * @return
      */
-    fun getProductForUpdate(productId: Long?): ProductDetailInfo
+    fun getProductForUpdate(productId: Long): ProductDetailInfo
 
     /**
      * @param eshopUuid        eshop unique identifier

@@ -279,16 +279,14 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
         log.debug("product with id {} was updated with common price {}", productId, newCommonPrice)
     }
 
-    override fun getEshopForProductId(productId: Long?): EshopUuid {
+    override fun getEshopForProductId(productId: Long): EshopUuid {
         notNull(productId, PRODUCT_ID)
 
-        return productEntityDao.findById(productId!!).eshopUuid
+        return productEntityDao.findById(productId).eshopUuid
     }
 
-    override fun getProductForUpdate(productId: Long?): ProductDetailInfo {
-        notNull(productId, PRODUCT_ID)
-
-        return mapper.map(productEntityDao.findById(productId!!), ProductDetailInfo::class.java)
+    override fun getProductForUpdate(productId: Long): ProductDetailInfo {
+        return mapper.map(productEntityDao.findById(productId), ProductDetailInfo::class.java)
     }
 
     override fun updateProduct(updateData: ProductUpdateDataDto) {
