@@ -7,10 +7,8 @@ class UpdateProductDataListenerAdapter : UpdateProductDataListener {
     companion object {
         val log = LoggerFactory.getLogger(UpdateProductDataListenerAdapter::class.java)!!
 
-        @JvmField
         val EMPTY_INSTANCE: UpdateProductDataListener = UpdateProductDataListenerAdapter()
 
-        @JvmField
         val LOG_INSTANCE: UpdateProductDataListener = object : UpdateProductDataListener {
             override fun onUpdateStatus(updateStatusInfo: UpdateStatusInfo) {
                 log.debug(updateStatusInfo.toString())

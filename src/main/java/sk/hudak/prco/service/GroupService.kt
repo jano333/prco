@@ -19,4 +19,6 @@ interface GroupService {
     fun findAllGroupExtended(): List<GroupListExtendedDto>
 
     fun getGroupById(groupId: Long?): GroupIdNameDto
+
+
 }

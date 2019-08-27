@@ -1,5 +1,6 @@
 package sk.hudak.prco.manager.updateprocess
 
+@Deprecated("remove")
 enum class UpdateProcessResult {
 
     // parsing errors

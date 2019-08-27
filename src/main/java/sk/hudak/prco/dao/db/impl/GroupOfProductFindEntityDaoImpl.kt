@@ -9,34 +9,51 @@ import sk.hudak.prco.model.ProductEntity
 import sk.hudak.prco.model.QGroupEntity
 import sk.hudak.prco.model.QGroupOfProductFindEntity
 import sk.hudak.prco.model.QProductEntity
+import sk.hudak.prco.utils.DateUtils
 import java.util.*
 import javax.persistence.EntityManager
 
 @Repository
-open class GroupOfProductFindEntityDaoImpl(em: EntityManager) : GroupOfProductFindEntityDao {
+open class GroupOfProductFindEntityDaoImpl(private val em: EntityManager) : GroupOfProductFindEntityDao {
 
-    private val queryFactory: JPAQueryFactory = JPAQueryFactory(em)
+    private fun getQueryFactory() = JPAQueryFactory(em)
 
-    override fun findProductsWitchAreNotInAnyGroup(): List<ProductEntity> {
-        val queryFactory = queryFactory
+    override fun findProductsWitchAreNotInAnyGroup(applyExpiration: Boolean): List<ProductEntity> {
+        val queryFactory = getQueryFactory()
         return queryFactory
                 .select(QProductEntity.productEntity)
                 .from(QProductEntity.productEntity)
-                .where(QProductEntity.productEntity.id.notIn(getCountOfProductWhichAreInAtLeastOneGroup(queryFactory)))
+                .where(QProductEntity.productEntity.id.notIn(queryFactory
+                        .select(QGroupOfProductFindEntity.groupOfProductFindEntity.productId)
+                        .from(QGroupOfProductFindEntity.groupOfProductFindEntity)
+                        .distinct()
+                ).and(QProductEntity.productEntity.lastTimeDataUpdated.isNull
+                        .or(QProductEntity.productEntity.lastTimeDataUpdated.lt(DateUtils.calculateDate(12))))
+                )
+                .orderBy(OrderSpecifier(Order.DESC, QProductEntity.productEntity.created))
+                .fetch()
+    }
+
+    override fun findProductsWitchAreNotInAnyGroup(): List<ProductEntity> {
+        val queryFactory = getQueryFactory()
+        return queryFactory
+                .select(QProductEntity.productEntity)
+                .from(QProductEntity.productEntity)
+                .where(QProductEntity.productEntity.id.notIn(findIdsOfProductWhichAreInAtLeastOneGroup(queryFactory)))
                 .orderBy(OrderSpecifier(Order.DESC, QProductEntity.productEntity.created))
                 .fetch()
     }
 
     override fun countOfProductsWitchAreNotInAnyGroup(): Long {
-        val queryFactory = queryFactory
+        val queryFactory = getQueryFactory()
         return queryFactory
                 .select(QProductEntity.productEntity)
                 .from(QProductEntity.productEntity)
-                .where(QProductEntity.productEntity.id.notIn(getCountOfProductWhichAreInAtLeastOneGroup(queryFactory)))
+                .where(QProductEntity.productEntity.id.notIn(findIdsOfProductWhichAreInAtLeastOneGroup(queryFactory)))
                 .fetchCount()
     }
 
-    private fun getCountOfProductWhichAreInAtLeastOneGroup(queryFactory: JPAQueryFactory): List<Long> {
+    private fun findIdsOfProductWhichAreInAtLeastOneGroup(queryFactory: JPAQueryFactory): List<Long> {
         return queryFactory
                 .select(QGroupOfProductFindEntity.groupOfProductFindEntity.productId)
                 .from(QGroupOfProductFindEntity.groupOfProductFindEntity)
@@ -45,7 +62,7 @@ open class GroupOfProductFindEntityDaoImpl(em: EntityManager) : GroupOfProductFi
     }
 
     override fun countOfProductInGroup(groupName: String): Long {
-        return queryFactory
+        return getQueryFactory()
                 .select(QGroupEntity.groupEntity)
                 .from(QGroupEntity.groupEntity)
                 .where(QGroupEntity.groupEntity.name.eq(groupName))
@@ -53,18 +70,18 @@ open class GroupOfProductFindEntityDaoImpl(em: EntityManager) : GroupOfProductFi
     }
 
     override fun findFirstProductGroupId(productId: Long?): Optional<Long> {
-        return Optional.ofNullable(queryFactory
+        return Optional.ofNullable(getQueryFactory()
                 .select(QGroupOfProductFindEntity.groupOfProductFindEntity.groupId)
                 .from(QGroupOfProductFindEntity.groupOfProductFindEntity)
                 .where(QGroupOfProductFindEntity.groupOfProductFindEntity.productId.eq(productId!!))
                 .fetchFirst())
     }
 
-    override fun findGroupIdsWithProductId(productId: Long?): List<Long> {
-        return queryFactory
+    override fun findGroupIdsWithProductId(productId: Long): List<Long> {
+        return getQueryFactory()
                 .select(QGroupOfProductFindEntity.groupOfProductFindEntity.groupId)
                 .from(QGroupOfProductFindEntity.groupOfProductFindEntity)
-                .where(QGroupOfProductFindEntity.groupOfProductFindEntity.productId.eq(productId!!))
+                .where(QGroupOfProductFindEntity.groupOfProductFindEntity.productId.eq(productId))
                 .fetch()
     }
 

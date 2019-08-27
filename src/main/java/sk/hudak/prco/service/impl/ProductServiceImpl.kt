@@ -23,8 +23,9 @@ import java.math.BigDecimal
 import java.util.*
 import java.util.function.Predicate
 import kotlin.Comparator
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.streams.toList
-
 @Service("productService")
 class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
                          private val groupEntityDao: GroupEntityDao,
@@ -43,12 +44,41 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
         private val PRODUCT_URL = "productURL"
     }
 
+
+    override fun findProductForUpdateInGroup(groupId: Long): Map<EshopUuid, List<Long>> {
+        val productEntityList = groupEntityDao.findProductForUpdateInGroup(groupId)
+
+        var result = HashMap<EshopUuid, MutableList<Long>>()
+        EshopUuid.values().forEach {
+            result.put(it, ArrayList())
+        }
+        productEntityList.forEach {
+            result.get(it.eshopUuid)?.add(it.id)
+        }
+        return result
+    }
+
+    override fun findProductsForUpdateWhichAreNotInAnyGroup(): Map<EshopUuid, List<Long>> {
+        val productEntityList = groupOfProductFindEntityDao.findProductsWitchAreNotInAnyGroup(true)
+        //FIXME tato preklapacka je aj hore
+        var result = HashMap<EshopUuid, MutableList<Long>>()
+        EshopUuid.values().forEach {
+            result.put(it, ArrayList())
+        }
+        productEntityList.forEach {
+            result.get(it.eshopUuid)?.add(it.id)
+        }
+        return result
+
+    }
+
+
     override fun findProductsForExport(): List<ProductFullDto> {
         return mapper.mapAsList<Any, ProductFullDto>(productEntityDao.findAll().toTypedArray(),
                 ProductFullDto::class.java)
     }
 
-    override fun getProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductDetailInfo? {
+    override fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductDetailInfo? {
         notNegativeAndNotZeroValue(olderThanInHours, "olderThanInHours")
 
         val productEntity = productEntityDao.findProductForUpdate(eshopUuid, olderThanInHours)
@@ -68,7 +98,7 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
                 ProductFullDto::class.java)
 
         productFullDtos.forEach {
-            it.groupList = mapper.mapAsList(groupEntityDao.findGroupsForProduct(it.id), GroupIdNameDto::class.java)
+            it.groupList = mapper.mapAsList(groupEntityDao.findGroupsForProduct(it.id!!), GroupIdNameDto::class.java)
         }
         return productFullDtos
     }
@@ -231,7 +261,7 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
         }
     }
 
-    override fun findProductsInGroup(groupId: Long?, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto> {
+    override fun findProductsInGroup(groupId: Long, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto> {
         notNull(groupId, "groupId")
 
         return mapper.mapAsList<Any, ProductFullDto>(
@@ -285,7 +315,7 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
         return productEntityDao.findById(productId).eshopUuid
     }
 
-    override fun getProductForUpdate(productId: Long): ProductDetailInfo {
+    override fun findProductForUpdate(productId: Long): ProductDetailInfo {
         return mapper.map(productEntityDao.findById(productId), ProductDetailInfo::class.java)
     }
 

@@ -84,7 +84,7 @@ class ProductController(uiService: UIService, val groupProductResolver: GroupPro
     }
 
     @RequestMapping("/products/groups/{groupId}")
-    fun productInGroupView(@PathVariable groupId: Long?): ModelAndView {
+    fun productInGroupView(@PathVariable groupId: Long): ModelAndView {
         val productsInGroup = uiService.findProductsInGroup(groupId, true)
         val modelAndView = ModelAndView(VIEW_PRODUCTS_IN_GROUP, "productsInGroup", productsInGroup)
         modelAndView.addObject("groupListDtos", uiService.findGroups(GroupFilterDto()))

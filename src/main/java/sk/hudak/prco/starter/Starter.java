@@ -242,10 +242,10 @@ public class Starter {
                 log.debug(">> eshop: {}, updated/waiting: {}/{}",
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
-//        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
+        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
 //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
-//        updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.LEKAREN_BELLA, listener);
+//        updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.ALZA, listener);
         // updatne vsetky produkty v danej skupine
 //        updateProductDataManager.updateProductDataForEachProductInGroup(33L);
 

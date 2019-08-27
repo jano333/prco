@@ -8,6 +8,8 @@ import sk.hudak.prco.model.ProductEntity
 
 interface GroupEntityDao : BaseDao<GroupEntity> {
 
+    fun findProductForUpdateInGroup(groupId: Long) : List<ProductEntity>
+
     //FIXME navratova hodnata nech je boolen ci existuje!!
     fun findGroupByName(groupName: String): GroupEntity?
 
@@ -19,7 +21,7 @@ interface GroupEntityDao : BaseDao<GroupEntity> {
     fun findGroups(groupFilterDto: GroupFilterDto): List<GroupEntity>
 
     //TODO move to ProductService...
-    fun findProductsInGroup(groupId: Long?, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductEntity>
+    fun findProductsInGroup(groupId: Long, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductEntity>
 
     fun findAllGroupNames(): List<String>
 
@@ -29,5 +31,5 @@ interface GroupEntityDao : BaseDao<GroupEntity> {
      * @param productId
      * @return
      */
-    fun findGroupsForProduct(productId: Long?): List<GroupEntity>
+    fun findGroupsForProduct(productId: Long): List<GroupEntity>
 }

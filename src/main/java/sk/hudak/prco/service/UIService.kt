@@ -90,7 +90,7 @@ interface UIService {
     /**
      * Zoznam vsetkych produktov v danej skupine zoradenych podla najlepsej ceny hore...
      */
-    fun findProductsInGroup(groupId: Long?, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto>
+    fun findProductsInGroup(groupId: Long, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto>
 
     /**
      * Zoznam produktov, ktore nie su v ziadnej skupine

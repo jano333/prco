@@ -10,9 +10,9 @@ interface UpdateProductDataManager {
     fun updateProductData(productId: Long)
 
     /**
-     * @param groupId group id
+     * @param listener
      */
-    fun updateProductDataForEachProductInGroup(groupId: Long?, listener: UpdateProductDataListener)
+    fun updateProductDataForEachProductInEachEshop(listener: UpdateProductDataListener)
 
     /**
      * Update product data vsetkych produktov pre dany eshop.
@@ -23,9 +23,9 @@ interface UpdateProductDataManager {
     fun updateProductDataForEachProductInEshop(eshopUuid: EshopUuid, listener: UpdateProductDataListener)
 
     /**
-     * @param listener
+     * @param groupId group id
      */
-    fun updateProductDataForEachProductInEachEshop(listener: UpdateProductDataListener)
+    fun updateProductDataForEachProductInGroup(groupId: Long, listener: UpdateProductDataListener)
 
 
     /**

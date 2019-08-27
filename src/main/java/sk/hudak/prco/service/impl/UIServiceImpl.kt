@@ -69,7 +69,7 @@ class UIServiceImpl(
         internalTxService.removeProduct(productId)
     }
 
-    override fun findProductsInGroup(groupId: Long?, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto> {
+    override fun findProductsInGroup(groupId: Long, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto> {
         return internalTxService.findProductsInGroup(groupId, withPriceOnly, *eshopsToSkip)
     }
 

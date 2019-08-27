@@ -3,11 +3,10 @@ package sk.hudak.prco.manager.updateprocess
 import sk.hudak.prco.api.EshopUuid
 
 class UpdateStatusInfo {
+
     var eshopUuid: EshopUuid? = null
     var countOfProductsWaitingToBeUpdated: Long = 0
     var countOfProductsAlreadyUpdated: Long = 0
-
-    constructor() {}
 
     constructor(eshopUuid: EshopUuid, countOfProductsWaitingToBeUpdated: Long, countOfProductsAlreadyUpdated: Long) {
         this.eshopUuid = eshopUuid
@@ -16,10 +15,11 @@ class UpdateStatusInfo {
     }
 
     override fun toString(): String {
-        return "UpdateStatusInfo{" +
-                "eshopUuid=" + eshopUuid +
-                ", countOfProductsWaitingToBeUpdated=" + countOfProductsWaitingToBeUpdated +
-                ", countOfProductsAlreadyUpdated=" + countOfProductsAlreadyUpdated +
-                '}'.toString()
+        return "UpdateStatusInfo(" +
+                "eshopUuid=$eshopUuid, " +
+                "countOfProductsWaitingToBeUpdated=$countOfProductsWaitingToBeUpdated, " +
+                "countOfProductsAlreadyUpdated=$countOfProductsAlreadyUpdated)"
     }
+
+
 }

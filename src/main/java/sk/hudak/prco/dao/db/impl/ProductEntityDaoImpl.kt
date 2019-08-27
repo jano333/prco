@@ -9,7 +9,7 @@ import sk.hudak.prco.dao.db.ProductEntityDao
 import sk.hudak.prco.dto.product.ProductFilterUIDto
 import sk.hudak.prco.model.ProductEntity
 import sk.hudak.prco.model.QProductEntity
-import java.time.ZoneId
+import sk.hudak.prco.utils.DateUtils.calculateDate
 import java.util.*
 import java.util.Optional.ofNullable
 import javax.persistence.EntityManager
@@ -130,12 +130,7 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
 
 
     //FIXME move to DateUtils
-    private fun calculateDate(olderThanInHours: Int): Date {
-        val currentDate = Date()
-        val localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()
-        val newDateTime = localDateTime.minusHours(olderThanInHours.toLong())
-        return Date.from(newDateTime.atZone(ZoneId.systemDefault()).toInstant())
-    }
+
 
 
 }

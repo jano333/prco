@@ -1,7 +1,12 @@
+----------
+zle vypisy, preco 0/0 a na konci je << updateProductData eshop KID_MARKET, productForUpdateIds count 1
+2019-08-27 12:37:20,119 DEBUG [KID_MARKET-thread] [] s.h.p.s.Starter [Starter.java:242] >> eshop: KID_MARKET, updated/waiting: 0/0
+2019-08-27 12:37:20,119 DEBUG [KID_MARKET-thread] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:149] marking task for eshop KID_MARKET as FINISHED_OK
+2019-08-27 12:37:20,119 DEBUG [KID_MARKET-thread] [] s.h.p.m.u.NgUpdateProductDataManagerImpl [NgUpdateProductDataManagerImpl.kt:187] << updateProductData eshop KID_MARKET, productForUpdateIds count 1
 -------------
 2019-08-22 12:46:24,125 ERROR [FEEDO-thread] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
 2019-08-22 12:46:24,125 ERROR [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:288] error while creating new product from URL for eshop FEEDO
-sk.hudak.prco.manager.addprocess.CreateNewProductsForUrls: error while creating new product from URL for eshop FEEDO
+sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop FEEDO
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:135)
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:24)
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:72)
@@ -67,7 +72,7 @@ takze vsetko urobit po novom
 insert into new_product (created, updated, confirm_validity, eshop_uuid, name, picture_url, unit, unit_package_count, unit_value, url, valid, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) [23505-196]
 2019-08-19 14:59:29,855 ERROR [MALL-thread] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
 2019-08-19 14:59:29,871 ERROR [MALL-thread] [] s.h.p.m.a.NgAddingNewProductManagerImpl [NgAddingNewProductManagerImpl.kt:289] error while creating new product from URL for eshop MALL
-sk.hudak.prco.manager.addprocess.CreateNewProductsForUrls: error while creating new product from URL for eshop MALL
+sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop MALL
 	at sk.hudak.prco.manager.addprocess.NgAddingNewProductManagerImpl.createNewProductsErrorWrapper(NgAddingNewProductManagerImpl.kt:136)
 	at sk.hudak.prco.manager.addprocess.NgAddingNewProductManagerImpl.access$createNewProductsErrorWrapper(NgAddingNewProductManagerImpl.kt:25)
 	at sk.hudak.prco.manager.addprocess.NgAddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(NgAddingNewProductManagerImpl.kt:73)
@@ -149,7 +154,7 @@ Ked skonci na timeout pri pridavani novych produktov tak nech pokracuje...
 2019-08-13 13:06:05,823 DEBUG [PILULKA_24] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:246] request URL: https://www.pilulka24.sk/pampers-activebaby-giant-pack-4-maxiplus-70ks
 2019-08-13 13:06:05,823 DEBUG [PILULKA_24] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:249] userAgent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1
 2019-08-13 13:06:08,839 ERROR [PILULKA_24] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:230] error while creating new product from URL for eshop PILULKA_24
-sk.hudak.prco.manager.addprocess.CreateNewProductsForUrls: error while creating new product from URL for eshop PILULKA_24
+sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop PILULKA_24
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:157)
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:31)
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:94)

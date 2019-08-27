@@ -7,11 +7,13 @@ interface GroupOfProductFindEntityDao {
 
     fun findProductsWitchAreNotInAnyGroup(): List<ProductEntity>
 
+    fun findProductsWitchAreNotInAnyGroup(applyExpiration: Boolean): List<ProductEntity>
+
     fun countOfProductsWitchAreNotInAnyGroup(): Long
 
     fun countOfProductInGroup(groupName: String): Long
 
     fun findFirstProductGroupId(productId: Long?): Optional<Long>
 
-    fun findGroupIdsWithProductId(productId: Long?): List<Long>
+    fun findGroupIdsWithProductId(productId: Long): List<Long>
 }

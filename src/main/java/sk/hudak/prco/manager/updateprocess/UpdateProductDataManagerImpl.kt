@@ -8,7 +8,6 @@ import sk.hudak.prco.dto.ProductUpdateData
 import sk.hudak.prco.dto.ProductUpdateDataDto
 import sk.hudak.prco.dto.product.ProductDetailInfo
 import sk.hudak.prco.dto.product.ProductFullDto
-import sk.hudak.prco.manager.error.ErrorHandler
 import sk.hudak.prco.manager.updateprocess.UpdateProcessResult.*
 import sk.hudak.prco.mapper.PrcoOrikaMapper
 import sk.hudak.prco.parser.html.HtmlParser
@@ -24,8 +23,8 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
                                    private val internalTxService: InternalTxService,
                                    private val eshopTaskManager: EshopTaskManager,
                                    private val mapper: PrcoOrikaMapper,
-                                   private val errorHandler: ErrorHandler
-) : UpdateProductDataManager {
+                                   private val updateProductErrorHandler: UpdateProductErrorHandler)
+    : UpdateProductDataManager {
 
     companion object {
         val log = LoggerFactory.getLogger(UpdateProductDataManagerImpl::class.java)!!
@@ -96,7 +95,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
         })
     }
 
-    override fun updateProductDataForEachProductInGroup(groupId: Long?, listener: UpdateProductDataListener) {
+    override fun updateProductDataForEachProductInGroup(groupId: Long, listener: UpdateProductDataListener) {
         //TODO bug !!!!!! nech nevracia len tie,  ktore uz boli updatnute
         val productsInGroup = convert(internalTxService.findProductsInGroup(groupId, true))
         if (productsInGroup.isEmpty()) {
@@ -112,7 +111,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
         productsForUpdate.forEach { productFullDto -> productsInEshop[productFullDto.eshopUuid] = ArrayList() }
         productsForUpdate.forEach { productFullDto ->
             productsInEshop[productFullDto.eshopUuid]!!.add(
-                    ProductDetailInfo(productFullDto.id, productFullDto.url, productFullDto.eshopUuid!!))
+                    ProductDetailInfo(productFullDto.id!!, productFullDto.url!!, productFullDto.eshopUuid!!))
         }
         return productsInEshop
     }
@@ -151,13 +150,12 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
     }
 
     private fun parseOneProductUpdateData(productDetailInfo: ProductDetailInfo): ParsingDataResponse {
-        try {
-            return ParsingDataResponse(htmlParser.parseProductUpdateData(productDetailInfo.url!!))
+        return try {
+            ParsingDataResponse(htmlParser.parseProductUpdateData(productDetailInfo.url))
 
         } catch (e: Exception) {
-            return ParsingDataResponse(e)
+            ParsingDataResponse(e)
         }
-
     }
 
     // FIXME lepsie nazvy zvolit pre vstupne parametre
@@ -165,13 +163,17 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
     private fun processParsingDataResponse(parsingDataResponse: ParsingDataResponse,
                                            parsingDataRequest: ProductDetailInfo,
                                            listener: UpdateProductDataListener): UpdateProcessResult {
-        return if (parsingDataResponse.isError) {
+        if (parsingDataResponse.isError) {
             // spracovanie parsing chyby
-            errorHandler.processParsingError(parsingDataResponse.error!!, parsingDataRequest)
+            updateProductErrorHandler.processParsingError(parsingDataResponse.error!!, parsingDataRequest)
 
             // spracovanie vyparsovanych dat
-        } else processParsedData(parsingDataResponse.productUpdateData!!, parsingDataRequest, listener)
+        } else {
+            processParsedData(parsingDataResponse.productUpdateData!!, parsingDataRequest, listener)
+        }
 
+        //TODO
+        return UpdateProcessResult.ERR_PARSING_ERROR_GENERIC
     }
 
     /**
@@ -219,7 +221,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
 
     private fun getProductForUpdate(productId: Long): ProductDetailInfo? {
         try {
-            return internalTxService.getProductForUpdate(productId)
+            return internalTxService.findProductForUpdate(productId)
 
         } catch (e: Exception) {
             log.error("error while getting information for product with id $productId")
@@ -232,7 +234,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
         //TODO toto je zla metoda lebo ked je vinimka alebo sa nenajde dany product tak vystup je stale null co je zle !!!!
         val olderThanInHours = eshopUuid.olderThanInHours
         return try {
-            internalTxService.getProductForUpdate(eshopUuid, olderThanInHours)
+            internalTxService.findProductForUpdate(eshopUuid, olderThanInHours)
 
         } catch (e: Exception) {
             log.error("error while getting first product for update for eshop $eshopUuid older than $olderThanInHours hours")

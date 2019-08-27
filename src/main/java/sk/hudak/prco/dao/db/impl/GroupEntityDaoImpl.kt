@@ -2,6 +2,7 @@ package sk.hudak.prco.dao.db.impl
 
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
+import com.querydsl.jpa.impl.JPAQueryFactory
 import org.apache.commons.lang3.StringUtils
 import org.springframework.stereotype.Repository
 import sk.hudak.prco.api.EshopUuid
@@ -10,21 +11,32 @@ import sk.hudak.prco.dao.db.GroupOfProductFindEntityDao
 import sk.hudak.prco.dao.db.ProductEntityDao
 import sk.hudak.prco.dto.GroupFilterDto
 import sk.hudak.prco.exception.PrcoRuntimeException
-import sk.hudak.prco.model.GroupEntity
-import sk.hudak.prco.model.ProductEntity
-import sk.hudak.prco.model.QGroupEntity
+import sk.hudak.prco.model.*
+import sk.hudak.prco.utils.DateUtils.calculateDate
 import java.math.BigDecimal
 import java.util.*
 import java.util.stream.Collectors
 import javax.persistence.EntityManager
 
 @Repository
-open class GroupEntityDaoImpl(
-        private val productEntityDao: ProductEntityDao,
-        private val groupOfProductFindEntityDao: GroupOfProductFindEntityDao,
-        em: EntityManager
-) : BaseDaoImpl<GroupEntity>(em), GroupEntityDao {
+open class GroupEntityDaoImpl(private val productEntityDao: ProductEntityDao,
+                              private val groupOfProductFindEntityDao: GroupOfProductFindEntityDao,
+                              em: EntityManager) : BaseDaoImpl<GroupEntity>(em), GroupEntityDao {
 
+    override fun findProductForUpdateInGroup(groupId: Long): List<ProductEntity> {
+        val jpaQueryFactory = JPAQueryFactory(em)
+        return jpaQueryFactory
+                .select(QProductEntity.productEntity)
+                .from(QProductEntity.productEntity)
+                .where(QProductEntity.productEntity.id.`in`(
+                        jpaQueryFactory.select(QGroupOfProductFindEntity.groupOfProductFindEntity.productId)
+                                .from(QGroupOfProductFindEntity.groupOfProductFindEntity)
+                                .where(QGroupOfProductFindEntity.groupOfProductFindEntity.groupId.eq(groupId))
+                ).and(QProductEntity.productEntity.lastTimeDataUpdated.isNull
+                        .or(QProductEntity.productEntity.lastTimeDataUpdated.lt(calculateDate(12))))
+                )
+                .fetch()
+    }
 
     override fun findById(id: Long): GroupEntity {
         return findById(GroupEntity::class.java, id)
@@ -85,9 +97,9 @@ open class GroupEntityDaoImpl(
         return query.fetchFirst() != null
     }
 
-    override fun findProductsInGroup(groupId: Long?, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductEntity> {
+    override fun findProductsInGroup(groupId: Long, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductEntity> {
         val query = from(QGroupEntity.groupEntity)
-        query.where(QGroupEntity.groupEntity.id.eq(groupId!!))
+        query.where(QGroupEntity.groupEntity.id.eq(groupId))
         val groupEntity = query.fetchFirst()
                 ?: throw PrcoRuntimeException(GroupEntity::class.java.simpleName + " not found by id " + groupId)
 
@@ -123,11 +135,11 @@ open class GroupEntityDaoImpl(
                 .fetch()
     }
 
-    override fun findGroupsForProduct(productId: Long?): List<GroupEntity> {
+    override fun findGroupsForProduct(productId: Long): List<GroupEntity> {
         return queryFactory
                 .select(QGroupEntity.groupEntity)
                 .from(QGroupEntity.groupEntity)
-                .where(QGroupEntity.groupEntity.id.`in`(groupOfProductFindEntityDao!!.findGroupIdsWithProductId(productId)))
+                .where(QGroupEntity.groupEntity.id.`in`(groupOfProductFindEntityDao.findGroupIdsWithProductId(productId)))
                 .fetch()
     }
 

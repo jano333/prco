@@ -100,13 +100,13 @@ interface ProductService {
      * @param olderThanInHours
      * @return
      */
-    fun getProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductDetailInfo?
+    fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductDetailInfo?
 
     /**
      * @param productId product id
      * @return
      */
-    fun getProductForUpdate(productId: Long): ProductDetailInfo
+    fun findProductForUpdate(productId: Long): ProductDetailInfo
 
     /**
      * @param eshopUuid        eshop unique identifier
@@ -129,7 +129,7 @@ interface ProductService {
      * @param eshopsToSkip
      * @return
      */
-    fun findProductsInGroup(groupId: Long?, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto>
+    fun findProductsInGroup(groupId: Long, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto>
 
     /**
      * @return list of products which are not in any group
@@ -165,4 +165,8 @@ interface ProductService {
      * @return product id if found, empty if not
      */
     fun getProductWithUrl(productUrl: String, productIdToIgnore: Long?): Optional<Long>
+
+    fun findProductForUpdateInGroup(groupId: Long): Map<EshopUuid, List<Long>>
+
+    fun findProductsForUpdateWhichAreNotInAnyGroup(): Map<EshopUuid, List<Long>>
 }

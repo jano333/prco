@@ -24,6 +24,15 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
                                  @param:Qualifier("watchDogService") private val watchDogService: WatchDogService,
                                  @param:Qualifier("errorService") private val errorService: ErrorService,
                                  @param:Qualifier("groupProductKeywordsService") private val groupProductKeywordsService: GroupProductKeywordsService) : InternalTxService {
+
+    @Transactional(readOnly = true)
+    override fun findProductForUpdateInGroup(groupId: Long): Map<EshopUuid, List<Long>> =
+            productService.findProductForUpdateInGroup(groupId)
+
+    @Transactional(readOnly = true)
+    override fun findProductsForUpdateWhichAreNotInAnyGroup(): Map<EshopUuid, List<Long>> =
+            productService.findProductsForUpdateWhichAreNotInAnyGroup()
+
     @Transactional
     override fun removeWatchDog(eshopUuid: EshopUuid, maxCountToDelete: Long): Int =
             watchDogService.removeWatchDog(eshopUuid, maxCountToDelete)
@@ -121,8 +130,8 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional(readOnly = true)
-    override fun getProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductDetailInfo? {
-        return productService.getProductForUpdate(eshopUuid, olderThanInHours)
+    override fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductDetailInfo? {
+        return productService.findProductForUpdate(eshopUuid, olderThanInHours)
     }
 
     @Transactional
@@ -201,7 +210,7 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional(readOnly = true)
-    override fun findProductsInGroup(groupId: Long?, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto> {
+    override fun findProductsInGroup(groupId: Long, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto> {
         return productService.findProductsInGroup(groupId, withPriceOnly, *eshopsToSkip)
     }
 
@@ -236,8 +245,8 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional(readOnly = true)
-    override fun getProductForUpdate(productId: Long): ProductDetailInfo {
-        return productService.getProductForUpdate(productId)
+    override fun findProductForUpdate(productId: Long): ProductDetailInfo {
+        return productService.findProductForUpdate(productId)
     }
 
     @Transactional(readOnly = true)
