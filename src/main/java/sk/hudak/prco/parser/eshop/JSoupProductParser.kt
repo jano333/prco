@@ -20,9 +20,7 @@ import java.util.*
 /**
  * Created by jan.hudak on 9/29/2017.
  */
-abstract class JSoupProductParser/*(protected var unitParser: UnitParser,
-                                  protected var userAgentDataHolder: UserAgentDataHolder,
-                                  protected var searchUrlBuilder: SearchUrlBuilder)*/ : EshopProductsParser {
+abstract class JSoupProductParser : EshopProductsParser {
 
     protected var unitParser: UnitParser
     protected var userAgentDataHolder: UserAgentDataHolder
@@ -36,15 +34,10 @@ abstract class JSoupProductParser/*(protected var unitParser: UnitParser,
         this.searchUrlBuilder = searchUrlBuilder;
     }
 
-    @JvmField
     protected val TIMEOUT_15_SECOND = 15000
-    @JvmField
     protected val TIMEOUT_10_SECOND = 10000
-    @JvmField
     protected val DEFAULT_TIMEOUT_3_SECOND = 3000
-    @JvmField
     protected val DATE_FORMAT_HH_MM_YYYY = "dd.MM.yyyy"
-    @JvmField
     val SINGLE_PAGE_ONE = 1
 
     companion object {
@@ -96,6 +89,7 @@ abstract class JSoupProductParser/*(protected var unitParser: UnitParser,
      * @param documentDetailProduct
      * @return
      */
+    //TODO zrusit obptional
     protected abstract fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String>
 
     /**
@@ -104,6 +98,7 @@ abstract class JSoupProductParser/*(protected var unitParser: UnitParser,
      * @param documentDetailProduct
      * @return
      */
+    //TODO zrusit obptional
     protected abstract fun parseProductPictureURL(documentDetailProduct: Document): Optional<String>
 
     /**
@@ -138,7 +133,7 @@ abstract class JSoupProductParser/*(protected var unitParser: UnitParser,
         // 2. krok - parsujem prvu stranku
         val firstPageUrls = internalParsePageForProductUrls(firstPageDocument, searchUrl)
         if (firstPageUrls.isEmpty()) {
-            log.warn("none products URL found for keyword {}", searchKeyWord)
+            log.info("none products URL found for keyword '{}'", searchKeyWord)
             return emptyList()
         }
 
