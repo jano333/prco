@@ -3,7 +3,7 @@ zle vypisy, preco 0/0 a na konci je << updateProductData eshop KID_MARKET, produ
 2019-08-27 12:37:20,119 DEBUG [KID_MARKET-thread] [] s.h.p.s.Starter [Starter.java:242] >> eshop: KID_MARKET, updated/waiting: 0/0
 2019-08-27 12:37:20,119 DEBUG [KID_MARKET-thread] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:149] marking task for eshop KID_MARKET as FINISHED_OK
 2019-08-27 12:37:20,119 DEBUG [KID_MARKET-thread] [] s.h.p.m.u.NgUpdateProductDataManagerImpl [NgUpdateProductDataManagerImpl.kt:187] << updateProductData eshop KID_MARKET, productForUpdateIds count 1
--------------
+-------------JSoupProductParser
 2019-08-22 12:46:24,125 ERROR [FEEDO-thread] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
 2019-08-22 12:46:24,125 ERROR [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:288] error while creating new product from URL for eshop FEEDO
 sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop FEEDO
@@ -35,31 +35,9 @@ vrati redirect na toto:
 https://www.pilulka24.sk/nutrilon
 takze vsetko urobit po novom
 ------------
-15:49:41,443 |-WARN in Logger[org.springframework.core.env.PropertySourcesPropertyResolver] - No appenders present in context [default] for logger [org.springframework.core.env.PropertySourcesPropertyResolver].
-------------
+https://stackoverflow.com/questions/30549489/what-is-this-spring-jpa-open-in-view-true-property-in-spring-boot
 2019-08-19 15:49:49,139 WARN [main] [] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration [JpaBaseConfiguration.java:235] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
 ------------
-2019-08-19 15:49:47,794 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final com.querydsl.jpa.impl.JPAQuery sk.hudak.prco.dao.db.impl.BaseDaoImpl.from(com.querydsl.core.types.EntityPath)] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,794 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final sk.hudak.prco.model.core.DbEntity sk.hudak.prco.dao.db.impl.BaseDaoImpl.findById(java.lang.Class,java.lang.Long)] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,794 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final com.querydsl.jpa.impl.JPAQueryFactory sk.hudak.prco.dao.db.impl.BaseDaoImpl.getQueryFactory()] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,794 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final javax.persistence.EntityManager sk.hudak.prco.dao.db.impl.BaseDaoImpl.getEm()] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,841 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final com.querydsl.jpa.impl.JPAQuery sk.hudak.prco.dao.db.impl.BaseDaoImpl.from(com.querydsl.core.types.EntityPath)] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,841 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final sk.hudak.prco.model.core.DbEntity sk.hudak.prco.dao.db.impl.BaseDaoImpl.findById(java.lang.Class,java.lang.Long)] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,841 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final com.querydsl.jpa.impl.JPAQueryFactory sk.hudak.prco.dao.db.impl.BaseDaoImpl.getQueryFactory()] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,841 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final javax.persistence.EntityManager sk.hudak.prco.dao.db.impl.BaseDaoImpl.getEm()] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,872 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final com.querydsl.jpa.impl.JPAQuery sk.hudak.prco.dao.db.impl.BaseDaoImpl.from(com.querydsl.core.types.EntityPath)] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,872 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final sk.hudak.prco.model.core.DbEntity sk.hudak.prco.dao.db.impl.BaseDaoImpl.findById(java.lang.Class,java.lang.Long)] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,872 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final com.querydsl.jpa.impl.JPAQueryFactory sk.hudak.prco.dao.db.impl.BaseDaoImpl.getQueryFactory()] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,872 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final javax.persistence.EntityManager sk.hudak.prco.dao.db.impl.BaseDaoImpl.getEm()] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,919 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final com.querydsl.jpa.impl.JPAQuery sk.hudak.prco.dao.db.impl.BaseDaoImpl.from(com.querydsl.core.types.EntityPath)] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,919 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final sk.hudak.prco.model.core.DbEntity sk.hudak.prco.dao.db.impl.BaseDaoImpl.findById(java.lang.Class,java.lang.Long)] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,919 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final com.querydsl.jpa.impl.JPAQueryFactory sk.hudak.prco.dao.db.impl.BaseDaoImpl.getQueryFactory()] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,919 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final javax.persistence.EntityManager sk.hudak.prco.dao.db.impl.BaseDaoImpl.getEm()] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,935 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final com.querydsl.jpa.impl.JPAQuery sk.hudak.prco.dao.db.impl.BaseDaoImpl.from(com.querydsl.core.types.EntityPath)] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,935 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final sk.hudak.prco.model.core.DbEntity sk.hudak.prco.dao.db.impl.BaseDaoImpl.findById(java.lang.Class,java.lang.Long)] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,935 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final com.querydsl.jpa.impl.JPAQueryFactory sk.hudak.prco.dao.db.impl.BaseDaoImpl.getQueryFactory()] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
-2019-08-19 15:49:47,935 INFO [main] [] o.s.a.f.CglibAopProxy [CglibAopProxy.java:265] Final method [protected final javax.persistence.EntityManager sk.hudak.prco.dao.db.impl.BaseDaoImpl.getEm()] cannot get proxied via CGLIB: Calls to this method will NOT be routed to the target instance and might lead to NPEs against uninitialized fields in the proxy instance.
--------------------
 2019-08-19 14:59:28,949 DEBUG [MALL-thread] [] s.h.p.m.a.NgAddingNewProductManagerImpl [NgAddingNewProductManagerImpl.kt:148] starting 3 of 4
 2019-08-19 14:59:28,949 DEBUG [MALL-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:246] request URL: https://www.mall.sk/detske-mlieka/nutrilon-nutrilon-1-ha-prosyneo-specialne-dojcenske-mlieko-6x800-g
 2019-08-19 14:59:28,949 DEBUG [MALL-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:249] userAgent: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko
@@ -456,8 +434,6 @@ Caused by: sun.security.provider.certpath.SunCertPathBuilderException: unable to
 	at sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:382)
 	... 31 common frames omitted
 ----------------------
-4
-dalo zle unity: Absolut vodka 40% 1x1 l
 ------------------------------------------------------------------------------------------------------------------------
 3
 TODO: doriesit nove produkty pre ktore nevie vyparsovat unit co mam na UI
@@ -467,36 +443,6 @@ pre tieto dve nerozpozna unit produktu(nie je tam jednotka len cislo, ide o plie
 https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121218245
 https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121218256
 ------------------------------------------------------------------------------------------------------------------------
-1
-BUG:
-2018-09-05 10:05:29,929 ERROR [HORNBACH] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:85] error while creating new product
-sk.hudak.prco.exception.PrcoRuntimeException: error while downloading/parsing content for url https://www.hornbach.sk/shop/vyhladavanie/sortiment/pampers%205
-	at sk.hudak.prco.eshop.HornbachProductParser.retrieveDocument(HornbachProductParser.java:70)
-	at sk.hudak.prco.parser.eshop.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:53)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParser.searchProductUrls(JsoupHtmlParser.java:41)
-	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$8(AddingNewProductManagerImpl.java:80)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.NullPointerException: null
-	at org.apache.http.impl.cookie.PublicSuffixDomainFilter.match(PublicSuffixDomainFilter.java:93)
-	at org.apache.http.impl.cookie.CookieSpecBase.match(CookieSpecBase.java:136)
-	at org.apache.http.impl.cookie.DefaultCookieSpec.match(DefaultCookieSpec.java:178)
-	at org.apache.http.client.protocol.RequestAddCookies.process(RequestAddCookies.java:166)
-	at org.apache.http.protocol.ImmutableHttpProcessor.process(ImmutableHttpProcessor.java:133)
-	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:183)
-	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:89)
-	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:111)
-	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:185)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:72)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:221)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:165)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:140)
-	at sk.hudak.prco.eshop.HornbachProductParser.retrieveDocument(HornbachProductParser.java:67)
-	... 8 common frames omitted
-----------------------------------------------------------------------------------------------------------------------------------------------------------
 19
 2019-04-01 13:39:25,482 DEBUG [http-nio-8080-exec-2] [] s.h.p.s.i.NewProductServiceImpl [NewProductServiceImpl.java:155] new product with id 8550 was updated with unit data UnitTypeValueCount(unit=KUS, value=51, packageCount=1)
 2019-04-01 13:39:25,488 ERROR [http-nio-8080-exec-2] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]]
