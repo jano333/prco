@@ -10,10 +10,10 @@ import java.util.*
 import javax.persistence.EntityManager
 
 abstract class BaseDaoImpl<T : DbEntity>(
-        protected val em: EntityManager)
+        protected open val em: EntityManager)
     : BaseDao<T> {
 
-    protected val queryFactory: JPAQueryFactory = JPAQueryFactory(em)
+    protected open val queryFactory: JPAQueryFactory = JPAQueryFactory(em)
 
     override fun save(entity: T): Long {
         entity.created = Date()
@@ -27,7 +27,7 @@ abstract class BaseDaoImpl<T : DbEntity>(
         em.merge(entity)
     }
 
-    protected fun findById(clazz: Class<T>, id: Long?): T {
+    protected open fun findById(clazz: Class<T>, id: Long?): T {
         return em.find(clazz, id) ?: throw PrcoRuntimeException("Entity ${clazz.simpleName} not found by id $id")
     }
 
@@ -35,7 +35,7 @@ abstract class BaseDaoImpl<T : DbEntity>(
         em.remove(entity)
     }
 
-    protected fun from(from: EntityPath<T>): JPAQuery<T> {
+    protected open fun from(from: EntityPath<T>): JPAQuery<T> {
         //FIXME skusit s jednou instanciou factory...
         return JPAQueryFactory(em).selectFrom(from)
     }
