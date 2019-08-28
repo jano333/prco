@@ -50,18 +50,25 @@ class FourKidsProductParser(unitParser: UnitParser, userAgentDataHolder: UserAge
 
     override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
         return documentList.select("#products-list > div > a").stream()
-                .map { element -> eshopUuid.productStartUrl + element.attr("href") }
+                .map {
+                     eshopUuid.productStartUrl + it.attr("href")
+                }
                 .toList()
     }
 
     override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
-        return ofNullable(documentDetailProduct.select("div.product-detail > div.col-xs-12.col-md-7 > h1").first())
+        var first = documentDetailProduct.select("div.product-detail > div.col-xs-12.col-md-7 > h1").first()
+        if(first == null){
+            first = documentDetailProduct.select("div.product-detail > div.col-xs-12.col-md-5 > h1").first()
+        }
+
+        return ofNullable(first)
                 .map { it.text() }
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
         return ofNullable(documentDetailProduct.select("div.product-detail > div.col-xs-12.col-md-7 > div.img-detail.relative.text-center > a > img").first())
-                .map { element -> element.attr("src") }
+                .map { it.attr("src") }
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
@@ -70,7 +77,7 @@ class FourKidsProductParser(unitParser: UnitParser, userAgentDataHolder: UserAge
     }
 
     override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
-        return Optional.ofNullable(documentDetailProduct.select("p[class='price']").first())
+        return ofNullable(documentDetailProduct.select("p[class='price']").first())
                 .map { it.text() }
                 .map { removeEnd(it, " €") }
                 .map { ConvertUtils.convertToBigDecimal(it) }

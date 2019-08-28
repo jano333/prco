@@ -6,6 +6,7 @@ import sk.hudak.prco.builder.SearchUrlBuilderImpl
 import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.dto.ProductUpdateData
 import sk.hudak.prco.eshop.AlzaProductParser
+import sk.hudak.prco.eshop.FourKidsProductParser
 import sk.hudak.prco.eshop.MallProductParser
 import sk.hudak.prco.eshop.drugstore.DrogerkaProductParser
 import sk.hudak.prco.eshop.pharmacy.LekarenBellaProductParser
@@ -26,20 +27,27 @@ fun main() {
 
     //       println(test.parseUrlsOfProduct(EshopUuid.MALL, "pampers"));
 //
-//    println(test.parseProductNewData("https://www.lekaren-bella.sk/zbozi/3636199/nutrilon-5-800g"))
+    println(test.parseProductNewData("https://www.4kids.sk/pampers-plenkove-kalhotky-carry-pack-5-junior-22ks"))
 
-    println(test.parseProductUpdateData("https://www.drogerka.sk/index.php?route=product/product&product_id=1490&search=pampers"))
+    //println(test.parseProductUpdateData("https://www.drogerka.sk/index.php?route=product/product&product_id=1490&search=pampers"))
 }
 
 class ProductParserTest {
 
     private fun getParserForEshop(eshopUuid: EshopUuid): EshopProductsParser {
         return when (eshopUuid) {
+            // A
             EshopUuid.ALZA -> AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            // D
             EshopUuid.DROGERKA -> DrogerkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            // F
+            EshopUuid.FOUR_KIDS -> FourKidsProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            // P
             EshopUuid.PILULKA -> PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            // L
             EshopUuid.LEKAREN_BELLA -> LekarenBellaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.LEKAREN_EXPRES -> LekarenExpresProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            // M
             EshopUuid.MALL -> MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             //TODO others
             else -> throw PrcoRuntimeException("Pridaj implementaciu do testu pre eshop $eshopUuid")
