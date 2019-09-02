@@ -14,7 +14,7 @@ import sk.hudak.prco.utils.UserAgentDataHolder
 import java.math.BigDecimal
 import java.util.*
 import java.util.Optional.ofNullable
-import java.util.stream.Collectors
+import kotlin.streams.toList
 
 @Component
 class BrendonProductParser(unitParser: UnitParser,
@@ -31,7 +31,7 @@ class BrendonProductParser(unitParser: UnitParser,
     override fun parseCountOfPages(documentList: Document): Int {
         return ofNullable(documentList.select("ul[class='pagermenu'] li[class='bluelink'] span").first())
                 .map { it.text() }
-                .map { text -> StringUtils.removeStart(text, "1 / ") }
+                .map { StringUtils.removeStart(it, "1 / ") }
                 .map { Integer.valueOf(it) }
                 .orElse(1)
     }
@@ -39,12 +39,12 @@ class BrendonProductParser(unitParser: UnitParser,
     override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
         return documentList.select("body > div.maincontent.clear > div > div.col700_container > div > div.middle-left_ > div > a")
                 .stream()
-                .map { element -> eshopUuid.productStartUrl + element.attr("href") }
-                .collect(Collectors.toList())
+                .map { eshopUuid.productStartUrl + it.attr("href") }
+                .toList()
     }
 
     override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
-        return Optional.ofNullable(documentDetailProduct.select("div.product-name > h1").first())
+        return ofNullable(documentDetailProduct.select("div.product-name > h1").first())
                 .map { it.text() }
     }
 
@@ -64,7 +64,7 @@ class BrendonProductParser(unitParser: UnitParser,
                 .map { it.text() }
                 .map { it.trim { it <= ' ' } }
                 .filter { StringUtils.isNotBlank(it) }
-                .map { text -> StringUtils.removeEnd(text, " €") }
+                .map { StringUtils.removeEnd(it, " €") }
                 .filter { StringUtils.isNotBlank(it) }
                 .map { ConvertUtils.convertToBigDecimal(it) }
     }
