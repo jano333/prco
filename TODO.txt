@@ -3,7 +3,7 @@ zle vypisy, preco 0/0 a na konci je << updateProductData eshop KID_MARKET, produ
 2019-08-27 12:37:20,119 DEBUG [KID_MARKET-thread] [] s.h.p.s.Starter [Starter.java:242] >> eshop: KID_MARKET, updated/waiting: 0/0
 2019-08-27 12:37:20,119 DEBUG [KID_MARKET-thread] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:149] marking task for eshop KID_MARKET as FINISHED_OK
 2019-08-27 12:37:20,119 DEBUG [KID_MARKET-thread] [] s.h.p.m.u.NgUpdateProductDataManagerImpl [NgUpdateProductDataManagerImpl.kt:187] << updateProductData eshop KID_MARKET, productForUpdateIds count 1
--------------JSoupProductParser
+-------------
 2019-08-22 12:46:24,125 ERROR [FEEDO-thread] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
 2019-08-22 12:46:24,125 ERROR [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:288] error while creating new product from URL for eshop FEEDO
 sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop FEEDO
@@ -25,8 +25,10 @@ insert into new_product (created, updated, confirm_validity, eshop_uuid, name, p
 	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:714)
 	at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:532)
 ------------
+toto nizsie nefunguje ani tak ako som popisal:
 dalo:
-2019-08-19 15:52:40,016 DEBUG [PILULKA_24-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:246] request URL: https://www.pilulka24.sk/lovela
+2019-08-19 15:52:40,016 DEBUG [PILULKA_24-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:246]
+request URL: https://www.pilulka24.sk/lovela
 a ma byt:
 https://www.pilulka24.sk/vyhladavanie?q=lovela
 pre nutrilon to funguje ale pre lovela nie a potom
@@ -126,67 +128,6 @@ insert into new_product (created, updated, confirm_validity, eshop_uuid, name, p
 2019-08-19 14:59:30,027 DEBUG [main] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:112] submitting new task for eshop MALL
 2019-08-19 14:59:30,027 DEBUG [MALL-thread] [] s.h.p.m.a.NgAddingNewProductManagerImpl [NgAddingNewProductManagerImpl.kt:62] >> addNewProductsByKeywordForEshop eshop MALL, searchKeyWord lovela
 ----------------------------
-Ked skonci na timeout pri pridavani novych produktov tak nech pokracuje...
-2019-08-13 13:06:05,823 DEBUG [PILULKA_24] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:171] starting 100 of 143
-2019-08-13 13:06:05,823 DEBUG [PILULKA_24] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:175] checking existence of product URL https://www.pilulka24.sk/pampers-activebaby-giant-pack-4-maxiplus-70ks
-2019-08-13 13:06:05,823 DEBUG [PILULKA_24] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:246] request URL: https://www.pilulka24.sk/pampers-activebaby-giant-pack-4-maxiplus-70ks
-2019-08-13 13:06:05,823 DEBUG [PILULKA_24] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:249] userAgent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1
-2019-08-13 13:06:08,839 ERROR [PILULKA_24] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:230] error while creating new product from URL for eshop PILULKA_24
-sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop PILULKA_24
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:157)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:31)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:94)
-	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:207)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException: timeout
-	at sk.hudak.prco.parser.eshop.JSoupProductParser.retrieveDocument(JSoupProductParser.kt:275)
-	at sk.hudak.prco.parser.eshop.JSoupProductParser.parseProductNewData(JSoupProductParser.kt:159)
-	at sk.hudak.prco.parser.html.JsoupHtmlParserImpl.parseProductNewData(JsoupHtmlParserImpl.kt:31)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.kt:182)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:154)
-	... 8 common frames omitted
-Caused by: java.net.SocketTimeoutException: connect timed out
-	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
-	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
-	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
-	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
-	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
-	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
-	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
-	at java.net.Socket.connect(Socket.java:589)
-	at sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:668)
-	at sun.net.NetworkClient.doConnect(NetworkClient.java:175)
-	at sun.net.www.http.HttpClient.openServer(HttpClient.java:432)
-	at sun.net.www.http.HttpClient.openServer(HttpClient.java:527)
-	at sun.net.www.protocol.https.HttpsClient.<init>(HttpsClient.java:264)
-	at sun.net.www.protocol.https.HttpsClient.New(HttpsClient.java:367)
-	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.getNewHttpClient(AbstractDelegateHttpsURLConnection.java:191)
-	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1104)
-	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:998)
-	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:177)
-	at sun.net.www.protocol.https.HttpsURLConnectionImpl.connect(HttpsURLConnectionImpl.java:153)
-	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:652)
-	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:629)
-	at org.jsoup.helper.HttpConnection.execute(HttpConnection.java:261)
-	at org.jsoup.helper.HttpConnection.get(HttpConnection.java:250)
-	at sk.hudak.prco.parser.eshop.JSoupProductParser.retrieveDocument(JSoupProductParser.kt:259)
-	... 12 common frames omitted
-2019-08-13 13:06:08,839 DEBUG [PILULKA_24] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:169] marking task for eshop PILULKA_24 as FINISHED_WITH_ERROR
-2019-08-13 13:06:08,839 DEBUG [PILULKA_24] [] s.h.p.s.i.ErrorServiceImpl [ErrorServiceImpl.kt:103] create entity ErrorEntity with id 5727 msg: error while creating new product from URL for eshop PILULKA_24
-2019-08-13 13:06:08,839 DEBUG [PILULKA_24] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:104] << addNewProductsByKeywordForEshop eshop PILULKA_24, searchKeyWord pampers
-2019-08-13 13:06:08,839 DEBUG [PILULKA_24]
-
-
-
-
-
-
-
-
 ********************
 For KOTLIN remove Optional keyword, use ? instead
 *****************************************************************************************
