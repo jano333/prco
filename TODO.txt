@@ -240,10 +240,6 @@ BUG:
 PAMPERS Plienky Active Baby-Dry Mega Quad S4
 ma na konci nieco co vyzera ako medzera ale nie je to medzera
 -----------------------------------------------------------------------------------------------------------------------
-11
-2019-02-20 14:58:39,257 ERROR [MAMA_A_JA] [] s.h.p.m.i.UpdateProductDataManagerImpl [UpdateProductDataManagerImpl.java:194] error while updating product data
-sk.hudak.prco.exception.PrcoRuntimeException: Parser implementation for eshop MAMA_A_JAnot found.
------------------------------------------------------------------------------------------------------------------------
 9
 BUG
 duplicita v grupe:
@@ -253,11 +249,6 @@ eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2851, 'Pa
 eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2913, 'Pampers Active Baby 5 Megapack+ 11-16Kg 110ks', https://kidmarket.sk/jednorazove-plienky/1046-pampers-active-baby-5-megapack-11-16kg-110ks-8001090951762.html?search_query=pampers&results=42, last updated 03-01-2019 14:57:53
 eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2919, 'Pampers Active Baby 5 Megapack+ 11-16Kg 110ks', https://kidmarket.sk/jednorazove-plienky/1046-pampers-active-baby-5-megapack-11-16kg-110ks-8001090951762.html?search_query=pampers&results=38, last updated 03-01-2019 14:58:59
 --------------------------------------------------------------------------------------------------------------------
-7
-TODO log each type of unit parser exception name, najlepsie asi specialny typ chyby aby som vedel ze parsing nepresiel...
-a dat len nech maze starsie zaznamy ako 30 dni, a teda aj nech tam vklada ak tam taka chyba este nie je equal na zaklade name
-produktu
-----------------------------------------------------------------------------------------------------------------------------------------------------------
 6
 2018-08-08 15:10:57,680 ERROR [HORNBACH] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:82] error while creating new product
 sk.hudak.prco.exception.PrcoRuntimeException: error while downloading/parsing content for url https://www.hornbach.sk/shop/vyhladavanie/sortiment/nutrilon%205

@@ -61,6 +61,7 @@ public enum EshopUuid {
             "https://www.alza.sk/search-p" + PAGE_NUMBER_TEMP + ".htm?exps=" + KEYWORD_TEMP,
             5, 12, 24),
 
+    //TODO
 //    ANDREA_SHOP("https://www.andreashop.sk",
 //            "https://www.andreashop.sk/vyhladavanie?op=search&search={keyword}",
 //            "??",
@@ -71,6 +72,7 @@ public enum EshopUuid {
             "https://www.amddrogeria.sk/catalog/search/?q=" + KEYWORD_TEMP + "&offset=" + OFFSET_TEMP,
             5, 12, 24),
 
+    //TODO pre pampers nefunguje
     BRENDON("https://www.brendon.sk",
             "https://www.brendon.sk/search?q=" + KEYWORD_TEMP,
             "https://www.brendon.sk/search?q=" + KEYWORD_TEMP + "&pagenumber=" + PAGE_NUMBER_TEMP,

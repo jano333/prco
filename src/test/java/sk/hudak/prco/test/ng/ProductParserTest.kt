@@ -6,9 +6,11 @@ import sk.hudak.prco.builder.SearchUrlBuilderImpl
 import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.dto.ProductUpdateData
 import sk.hudak.prco.eshop.AlzaProductParser
+import sk.hudak.prco.eshop.BrendonProductParser
 import sk.hudak.prco.eshop.FourKidsProductParser
 import sk.hudak.prco.eshop.MallProductParser
 import sk.hudak.prco.eshop.drugstore.DrogerkaProductParser
+import sk.hudak.prco.eshop.pharmacy.DrMaxProductParser
 import sk.hudak.prco.eshop.pharmacy.LekarenBellaProductParser
 import sk.hudak.prco.eshop.pharmacy.LekarenExpresProductParser
 import sk.hudak.prco.eshop.pharmacy.PilulkaProductParser
@@ -25,9 +27,9 @@ fun main() {
 
     val test = ProductParserTest()
 
-    //       println(test.parseUrlsOfProduct(EshopUuid.MALL, "pampers"));
+           println(test.parseUrlsOfProduct(EshopUuid.BRENDON, "pampers"));
 //
-    println(test.parseProductNewData("https://www.4kids.sk/pampers-plenkove-kalhotky-carry-pack-5-junior-22ks"))
+//    println(test.parseProductNewData("https://www.drmax.sk/nutrilon-1-pronutra/"))
 
     //println(test.parseProductUpdateData("https://www.drogerka.sk/index.php?route=product/product&product_id=1490&search=pampers"))
 }
@@ -38,8 +40,11 @@ class ProductParserTest {
         return when (eshopUuid) {
             // A
             EshopUuid.ALZA -> AlzaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            // B
+            EshopUuid.BRENDON -> BrendonProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // D
             EshopUuid.DROGERKA -> DrogerkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            EshopUuid.DR_MAX -> DrMaxProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // F
             EshopUuid.FOUR_KIDS -> FourKidsProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // P
@@ -70,15 +75,15 @@ class ProductParserTest {
         eshopUuidParser = EnumImplEshopUuidParserImpl()
     }
 
-    public fun parseUrlsOfProduct(eshopUuid: EshopUuid, keyword: String): List<String> {
+    fun parseUrlsOfProduct(eshopUuid: EshopUuid, keyword: String): List<String> {
         return getParserForEshop(eshopUuid).parseUrlsOfProduct(keyword)
     }
 
-    public fun parseProductNewData(productUrl: String): ProductNewData {
+    fun parseProductNewData(productUrl: String): ProductNewData {
         return getParserForEshop(eshopUuidParser.parseEshopUuid(productUrl)).parseProductNewData(productUrl)
     }
 
-    public fun parseProductUpdateData(productUrl: String): ProductUpdateData {
+    fun parseProductUpdateData(productUrl: String): ProductUpdateData {
         return getParserForEshop(eshopUuidParser.parseEshopUuid(productUrl)).parseProductUpdateData(productUrl)
     }
 
