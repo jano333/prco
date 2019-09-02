@@ -219,6 +219,8 @@ public enum EshopUuid {
             "https://www.pilulka.sk/hledat?q=" + KEYWORD_TEMP + "&page=" + PAGE_NUMBER_TEMP,
             5, 12, -1),
 
+    //TODO nefunguje paging pre 2 stranku pre lovela verzus pampers a nutrilon, maju vlastne URL pre vyhladavanie... pre nutrilon a pre pampers...
+    // a zle mi urobi redirect
     PILULKA_24(
             PHARMACY,
             "https://www.pilulka24.sk/",

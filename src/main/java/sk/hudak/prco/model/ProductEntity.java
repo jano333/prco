@@ -25,6 +25,7 @@ import java.util.Objects;
 @EqualsAndHashCode
 public class ProductEntity extends DbEntity {
 
+    // generovane databazov pri prvom vlozeni do DB
     @Id
     @GeneratedValue(generator = "PRODUCT_SEC", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "PRODUCT_SEC", sequenceName = "PRODUCT_SEC", allocationSize = 1)
@@ -32,13 +33,14 @@ public class ProductEntity extends DbEntity {
 
     /**
      * URL produktu
+     * - prvy krat sa nastavuje pri vytvoreni, nasledne aktualizuje cez update job(koli redirect napr.)
      */
     @Column(nullable = false, unique = true)
     private String url;
 
     /**
      * Unikatny identifikator eshopu ku ktoremu patri dany produkt
-     * - nastavuje sa raz iba pri prvom vytvoreni
+     * - nastavuje sa raz iba pri prvom vytvoreni(nemeni sa)
      */
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -46,6 +48,7 @@ public class ProductEntity extends DbEntity {
 
     /**
      * Typ meratelnej jednotky(GRAM, MILILITER, KUS...)
+     * - nastavuje sa raz iba pri prvom vytvoreni(nemeni sa)
      */
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
