@@ -9,6 +9,7 @@ object ConvertUtils {
     private const val COMMA = ","
     private const val DOT = "."
 
+    //TODO uribit ako extenzions  pre String class !!!
     @JvmStatic
     fun convertToBigDecimal(value: String): BigDecimal {
         notNullNotEmpty(value, "value")

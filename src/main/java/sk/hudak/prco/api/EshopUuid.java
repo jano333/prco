@@ -107,6 +107,11 @@ public enum EshopUuid {
             "https://www.esodrogeria.eu/search-engine.htm?slovo=" + KEYWORD_TEMP + "&search_submit=&hledatjak=2&page=" + PAGE_NUMBER_TEMP + "&man=9",
             5, 12, 21),
 
+    FARBY("https://www.farby.sk",
+            "https://www.farby.sk/vyhladavanie?hladaj=" + KEYWORD_TEMP,
+            null,
+            1, 12, -1),
+
     // done
     FEEDO("https://www.feedo.sk",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/",

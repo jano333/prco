@@ -242,7 +242,7 @@ public class Starter {
                 log.debug(">> eshop: {}, updated/waiting: {}/{}",
                         updateStatusInfo.getEshopUuid(), updateStatusInfo.getCountOfProductsAlreadyUpdated(), updateStatusInfo.getCountOfProductsWaitingToBeUpdated());
 
-        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
+//        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
 //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
 //        updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.ALZA, listener);
@@ -256,7 +256,7 @@ public class Starter {
 
         // --- ADD NEW PRODUCTS ---
 //        newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.MALL, "nutrilon");
+        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FARBY, "lovela");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PERINBABA, "pampers 5");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "pampers 5");

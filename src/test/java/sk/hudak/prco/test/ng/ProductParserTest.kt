@@ -5,10 +5,7 @@ import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.builder.SearchUrlBuilderImpl
 import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.dto.ProductUpdateData
-import sk.hudak.prco.eshop.AlzaProductParser
-import sk.hudak.prco.eshop.BrendonProductParser
-import sk.hudak.prco.eshop.FourKidsProductParser
-import sk.hudak.prco.eshop.MallProductParser
+import sk.hudak.prco.eshop.*
 import sk.hudak.prco.eshop.drugstore.DrogerkaProductParser
 import sk.hudak.prco.eshop.pharmacy.DrMaxProductParser
 import sk.hudak.prco.eshop.pharmacy.LekarenBellaProductParser
@@ -27,11 +24,11 @@ fun main() {
 
     val test = ProductParserTest()
 
-           println(test.parseUrlsOfProduct(EshopUuid.BRENDON, "pampers"));
+//           println(test.parseUrlsOfProduct(EshopUuid.FARBY, "pampers"));
 //
-//    println(test.parseProductNewData("https://www.drmax.sk/nutrilon-1-pronutra/"))
+//    println(test.parseProductNewData("https://www.farby.sk/156498/pampers-premium-care-plienky-maxi-52-ks/"))
 
-    //println(test.parseProductUpdateData("https://www.drogerka.sk/index.php?route=product/product&product_id=1490&search=pampers"))
+    println(test.parseProductUpdateData("https://www.farby.sk/156498/pampers-premium-care-plienky-maxi-52-ks/"))
 }
 
 class ProductParserTest {
@@ -47,6 +44,7 @@ class ProductParserTest {
             EshopUuid.DR_MAX -> DrMaxProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // F
             EshopUuid.FOUR_KIDS -> FourKidsProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            EshopUuid.FARBY -> FarbyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // P
             EshopUuid.PILULKA -> PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // L
