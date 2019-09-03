@@ -19,18 +19,15 @@ import sk.hudak.prco.service.ProductCommonService
 import sk.hudak.prco.utils.Validate.notNull
 import sk.hudak.prco.utils.Validate.notNullNotEmpty
 import java.util.*
-import java.util.stream.Collectors
-
-//TODO preco to kontlin chce ze to ma byt ope?
+import kotlin.streams.toList
 
 @Service("productCommonService")
-open class ProductCommonServiceImpl(
-        private val newProductEntityDao: NewProductEntityDbDao,
-        private val notInterestedProductDbDao: NotInterestedProductDbDao,
-        private val productEntityDao: ProductEntityDao,
-        private val groupEntityDao: GroupEntityDao,
-        private val groupOfProductFindEntityDao: GroupOfProductFindEntityDao,
-        private val mapper: PrcoOrikaMapper
+open class ProductCommonServiceImpl(private val newProductEntityDao: NewProductEntityDbDao,
+                                    private val notInterestedProductDbDao: NotInterestedProductDbDao,
+                                    private val productEntityDao: ProductEntityDao,
+                                    private val groupEntityDao: GroupEntityDao,
+                                    private val groupOfProductFindEntityDao: GroupOfProductFindEntityDao,
+                                    private val mapper: PrcoOrikaMapper
 ) : ProductCommonService {
 
     companion object {
@@ -59,7 +56,11 @@ open class ProductCommonServiceImpl(
             EshopUuid.values().forEach {
                 eshopProductInfo[it] = EshopProductInfoDto(
                         productEntityDao.countOfAllProductInEshop(it),
-                        productEntityDao.countOfAllProductInEshopUpdatedMax24Hours(it))
+
+                        //TODO udaj ohladne hodin zobrat z eshop configu
+                        productEntityDao.countOfAllProductInEshopUpdatedMax24Hours(it)
+                        //TODO
+                        /*0, 0, 0*/)
             }
             result.eshopProductInfo = eshopProductInfo
 
@@ -140,34 +141,29 @@ open class ProductCommonServiceImpl(
     }
 
     override fun importNewProducts(newProductList: List<NewProductFullDto>): Long {
-        notNull(newProductList, "newProductList")
-
         // validacia na povinne parametre
-        newProductList.forEach { dto ->
-            notNull(dto, "dto")
-            notNullNotEmpty(dto.url, "url")
-            notNullNotEmpty(dto.name, "name")
-            notNull(dto.confirmValidity, "confirmValidity")
+        newProductList.forEach {
+            notNull(it, "dto")
+            notNullNotEmpty(it.url, "url")
+            notNullNotEmpty(it.name, "name")
+            notNull(it.confirmValidity, "confirmValidity")
         }
 
         // filter na tie, ktore este nemam v DB
         val notExistingYet = newProductList.stream()
                 .filter { (_, _, _, url) -> !internalExistProductWithURL(url) }
-                .collect(Collectors.toList())
-
+                .toList()
 
         // premapovanie a save do DB
-        notExistingYet.forEach { dto ->
+        notExistingYet.forEach {
             // NewProductFullDto -> NewProductEntity
-            newProductEntityDao.save(mapper.map(dto, NewProductEntity::class.java))
+            newProductEntityDao.save(mapper.map(it, NewProductEntity::class.java))
         }
 
         return notExistingYet.size.toLong()
     }
 
     override fun importProducts(productList: List<ProductFullDto>): Long {
-        notNull(productList, "productList")
-
         productList.forEach { dto ->
             notNull(dto, "dto")
             notNullNotEmpty(dto.url, "url")
@@ -178,34 +174,37 @@ open class ProductCommonServiceImpl(
 
         // filter na tie, ktore este nemam v DB
         val notExistingYet = productList.stream()
-                .filter { dto -> !internalExistProductWithURL(dto.url) }
-                .collect(Collectors.toList())
+                .filter { !internalExistProductWithURL(it.url) }
+                .toList()
 
         // premapovanie a save do DB
-        notExistingYet.forEach { dto -> productEntityDao.save(mapper.map(dto, ProductEntity::class.java)) }
+        notExistingYet.forEach { productEntityDao.save(mapper.map(it, ProductEntity::class.java)) }
 
         return notExistingYet.size.toLong()
     }
 
 
-    override fun importNotInterestedProducts(productList: List<NotInterestedProductFullDto>): Long {
-        notNull(productList, "productList")
+    override fun importNotInterestedProducts(notInterestedProductList: List<NotInterestedProductFullDto>): Long {
 
-        productList.forEach { dto ->
-            notNull(dto, "dto")
-            notNullNotEmpty(dto.url, "url")
-            notNullNotEmpty(dto.name, "name")
+        notInterestedProductList.forEach {
+            notNull(it, "dto")
+            notNullNotEmpty(it.url, "url")
+            notNullNotEmpty(it.name, "name")
             //TODO ostatne validacie na povinne atributy
 
         }
 
         // filter na tie, ktore este nemam v DB
-        val notExistingYet = productList.stream()
-                .filter { dto -> !internalExistProductWithURL(dto.url) }
-                .collect(Collectors.toList())
+        val notExistingYet = notInterestedProductList.stream()
+                .filter {
+                    !internalExistProductWithURL(it.url)
+                }
+                .toList()
 
         // premapovanie a save do DB
-        notExistingYet.forEach { dto -> notInterestedProductDbDao.save(mapper.map(dto, NotInterestedProductEntity::class.java)) }
+        notExistingYet.forEach {
+            notInterestedProductDbDao.save(mapper.map(it, NotInterestedProductEntity::class.java))
+        }
 
         return notExistingYet.size.toLong()
     }

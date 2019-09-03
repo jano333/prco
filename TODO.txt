@@ -336,11 +336,6 @@ Caused by: sun.security.provider.certpath.SunCertPathBuilderException: unable to
 3
 TODO: doriesit nove produkty pre ktore nevie vyparsovat unit co mam na UI
 ------------------------------------------------------------------------------------------------------------------------
-2
-pre tieto dve nerozpozna unit produktu(nie je tam jednotka len cislo, ide o plienky pre obe URL
-https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121218245
-https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121218256
-------------------------------------------------------------------------------------------------------------------------
 19
 2019-04-01 13:39:25,482 DEBUG [http-nio-8080-exec-2] [] s.h.p.s.i.NewProductServiceImpl [NewProductServiceImpl.java:155] new product with id 8550 was updated with unit data UnitTypeValueCount(unit=KUS, value=51, packageCount=1)
 2019-04-01 13:39:25,488 ERROR [http-nio-8080-exec-2] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]]

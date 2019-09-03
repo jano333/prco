@@ -4,7 +4,11 @@ import sk.hudak.prco.api.EshopUuid
 
 data class EshopProductInfoDto(
         val countOfAllProduct: Long,
-        val countOfAlreadyUpdated: Long) : DtoAble
+        val countOfAlreadyUpdated: Long
+//        val countOfNew: Long,
+//        val countOfInterested: Long,
+//        val countOfNotInterested: Long
+        ) : DtoAble
 
 class ProductStatisticInfoDto {
     var countOfNewProducts: Long = 0
@@ -23,13 +27,23 @@ class ProductStatisticInfoDto {
     var eshopProductInfo: Map<EshopUuid, EshopProductInfoDto>? = null
 
     override fun toString(): String {
-        return "ProductStatisticInfoDto{\n" +
+        var s = "ProductStatisticInfoDto{\n" +
                 "countOfNewProducts=$countOfNewProducts\n" +
                 "countOfInterestedProducts=$countOfInterestedProducts\n" +
                 "countOfNotInterestedProducts=$countOfNotInterestedProducts\n" +
                 "countOfAllProducts=$countOfAllProducts\n" +
                 "countOfProductsNotInAnyGroup=$countOfProductsNotInAnyGroup\n" +
                 "countProductInGroup=$countProductInGroup\n" +
-                "eshopProductInfo=$eshopProductInfo\n}"
+                "eshopProductInfo=\n"
+        if (eshopProductInfo != null) {
+            eshopProductInfo!!.forEach { (eshopUuid, dto) ->
+                s = "$s$eshopUuid=$dto\n"
+            }
+        }
+
+        return s +
+
+
+                "}"
     }
 }
