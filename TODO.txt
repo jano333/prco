@@ -1,5 +1,17 @@
 
 ----------------
+2019-09-03 13:10:19,594 DEBUG [MALL-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:152] starting 3 of 6
+2019-09-03 13:10:19,594 DEBUG [MALL-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:241] request URL: https://www.mall.sk/plienky-pampers-11-25-kg/pampers-activepants-5-junior-mega-box-96-ks
+2019-09-03 13:10:19,594 DEBUG [MALL-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:244] userAgent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36
+2019-09-03 13:10:19,628 DEBUG [MALL-thread] [] s.h.p.s.PrcoCustomTrustManager [SSLHandling.kt:277] server cert subject name CN=www.mall.sk,OU=IT Operations,O=Internet Mall Slovakia s.r.o.,L=Bratislava,C=SK,2.5.4.5=#130a33352039353020323236,1.3.6.1.4.1.311.60.2.1.3=#1302534b,2.5.4.15=#0c1450726976617465204f7267616e697a6174696f6e
+2019-09-03 13:10:19,628 DEBUG [MALL-thread] [] s.h.p.s.PrcoCustomTrustManager [SSLHandling.kt:286] delegating checking to java default trust manager
+2019-09-03 13:10:20,701 DEBUG [MALL-thread] [] s.h.p.p.u.UnitParserImpl [UnitParserImpl.kt:30] parsing product name to retrieve unit info: Pampers ActivePants 5 Junior Mega Box 96 ks
+2019-09-03 13:10:20,702 DEBUG [MALL-thread] [] s.h.p.s.i.NewProductServiceImpl [NewProductServiceImpl.kt:77] create new entity NewProductEntity with id 11588
+2019-09-03 13:10:20,705 WARN [MALL-thread] [] o.h.e.j.s.SqlExceptionHelper [SqlExceptionHelper.java:129] SQL Error: 23505, SQLState: 23505
+2019-09-03 13:10:20,706 ERROR [MALL-thread] [] o.h.e.j.s.SqlExceptionHelper [SqlExceptionHelper.java:131] Unique index or primary key violation: "UK_Q38OW0XNE3DVN4HQ7G29YV9R0_INDEX_D ON PUBLIC.NEW_PRODUCT(URL) VALUES ('https://www.mall.sk/plienky-pampers-11-25-kg/pampers-activepants-5-junior-mega-box-96-ks', 402)"; SQL statement:
+insert into new_product (created, updated, confirm_validity, eshop_uuid, name, picture_url, unit, unit_package_count, unit_value, url, valid, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) [23505-196]
+2019-09-03 13:10:20,713 ERROR [MALL-thread] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
+2019-09-03 13:10:20,716 ERROR [MALL-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:294] error while creating new product from URL for eshop MALL
 sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop MALL
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:139)
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:22)
@@ -26,14 +38,53 @@ insert into new_product (created, updated, confirm_validity, eshop_uuid, name, p
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.processNewProductUrl(AddingNewProductManagerImpl.kt:193)
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.kt:154)
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:136)
-	... 8 more
+	... 8 common frames omitted
 Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement
 	at org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:112)
 	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:42)
 	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:111)
 	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:97)
 	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:178)
-	at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.ja
+	at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:3032)
+	at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:3547)
+	at org.hibernate.action.internal.EntityInsertAction.execute(EntityInsertAction.java:89)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:600)
+	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:474)
+	at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:337)
+	at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:39)
+	at org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1437)
+	at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:494)
+	at org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:3245)
+	at org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:2451)
+	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:473)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:156)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.access$100(JdbcResourceLocalTransactionCoordinatorImpl.java:38)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:231)
+	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:68)
+	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:536)
+	... 19 common frames omitted
+Caused by: org.h2.jdbc.JdbcSQLException: Unique index or primary key violation: "UK_Q38OW0XNE3DVN4HQ7G29YV9R0_INDEX_D ON PUBLIC.NEW_PRODUCT(URL) VALUES ('https://www.mall.sk/plienky-pampers-11-25-kg/pampers-activepants-5-junior-mega-box-96-ks', 402)"; SQL statement:
+insert into new_product (created, updated, confirm_validity, eshop_uuid, name, picture_url, unit, unit_package_count, unit_value, url, valid, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) [23505-196]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.index.BaseIndex.getDuplicateKeyException(BaseIndex.java:103)
+	at org.h2.mvstore.db.MVSecondaryIndex.checkUnique(MVSecondaryIndex.java:231)
+	at org.h2.mvstore.db.MVSecondaryIndex.add(MVSecondaryIndex.java:190)
+	at org.h2.mvstore.db.MVTable.addRow(MVTable.java:705)
+	at org.h2.command.dml.Insert.insertRows(Insert.java:156)
+	at org.h2.command.dml.Insert.update(Insert.java:114)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:101)
+	at org.h2.command.Command.executeUpdate(Command.java:260)
+	at org.h2.jdbc.JdbcPreparedStatement.executeUpdateInternal(JdbcPreparedStatement.java:164)
+	at org.h2.jdbc.JdbcPreparedStatement.executeUpdate(JdbcPreparedStatement.java:150)
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:175)
+	... 36 common frames omitted
+2019-09-03 13:10:20,716 DEBUG [MALL-thread] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:149] marking task for eshop MALL as FINISHED_WITH_ERROR
+2019-09-03 13:10:20,717 DEBUG [MALL-thread] [] s.h.p.s.i.ErrorServiceImpl [ErrorServiceImpl.kt:103] create entity ErrorEntity with id 6175 msg: error while creating new product from URL for eshop MALL
+2019-09-03 13:10:20,721 DEBUG [MALL-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:81] << addNewProductsByKeywordForEshop eshop MALL, searchKeyWord pampers
 ------------------------------------------------------------------------------------------------------------------------
  brendon pre pampers nefunguje:
  'https://www.brendon.sk/search?q=pampers':
