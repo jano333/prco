@@ -13,6 +13,8 @@ import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ConvertUtils
 import sk.hudak.prco.utils.UserAgentDataHolder
+import sk.hudak.prco.utils.href
+import sk.hudak.prco.utils.src
 import java.math.BigDecimal
 import java.util.*
 import java.util.Optional.ofNullable
@@ -31,9 +33,11 @@ class MaxikovyHrackyProductParser(unitParser: UnitParser, userAgentDataHolder: U
 
     override fun parseCountOfPages(documentList: Document): Int {
         //Optional[Zobrazuji 1-60 z 807 produktů]
-        val countOfProductsOpt = ofNullable(documentList.select("div.line-sort > div > div.col-sm-4.text-right.top-12.font-12").first())
+        val map = ofNullable(documentList.select("div.line-sort > div > div.col-sm-4.text-right.top-12.font-12").first())
                 .map { it.text() }
+        val countOfProductsOpt = map
                 .map { StringUtils.removeEnd(it, " produktů") }
+                .map { StringUtils.removeEnd(it, " produkty") }
                 .map { removeStart(it, it.substring(0, it.indexOf(" z ") + 3)) }
                 .map { it.trim({ it <= ' ' }) }
                 .map { Integer.valueOf(it) }
@@ -54,7 +58,7 @@ class MaxikovyHrackyProductParser(unitParser: UnitParser, userAgentDataHolder: U
     override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
         return documentList.select("#product-list-box > div[class='col-sm-4 col-lg-2-4']").stream()
                 .map { it.select("div > div > a").first() }
-                .map { eshopUuid.productStartUrl + it.attr("href") }
+                .map { eshopUuid.productStartUrl + it.href() }
                 .map { "$it?zmena_meny=EUR" }
                 .toList()
     }
@@ -66,7 +70,7 @@ class MaxikovyHrackyProductParser(unitParser: UnitParser, userAgentDataHolder: U
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
         return ofNullable(documentDetailProduct.select("#product-info > div.col-xs-12.col-md-7 > div.main-image > a > img").first())
-                .map { element -> element.attr("src") }
+                .map { it.src() }
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
