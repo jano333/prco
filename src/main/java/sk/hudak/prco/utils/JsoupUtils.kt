@@ -2,7 +2,34 @@ package sk.hudak.prco.utils
 
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 import java.util.*
+
+/**
+ * Same as elements.attr("src")
+ */
+fun Elements.src(): String? =
+        this.attr("src")
+
+/**
+ * Same as element.attr("src")
+ */
+fun Element.src(): String? =
+        this.attr("src")
+
+
+/**
+ * Same as elements.attr("href")
+ */
+fun Elements.href(): String? =
+        this.attr("href")
+
+/**
+ * Same as element.attr("href")
+ */
+fun Element.href(): String? =
+        this.attr("href")
+
 
 object JsoupUtils {
 
