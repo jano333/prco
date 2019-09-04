@@ -24,7 +24,7 @@ fun main() {
 
     val test = ProductParserTest()
 //    https://www.maxikovy-hracky.cz/vyhledavani?search=pampers
-           println(test.parseUrlsOfProduct(EshopUuid.MAXIKOVY_HRACKY, "pampers"));
+           println(test.parseUrlsOfProduct(EshopUuid.MALL, "pampers"));
 //
 //    println(test.parseProductNewData("https://www.farby.sk/156498/pampers-premium-care-plienky-maxi-52-ks/"))
 

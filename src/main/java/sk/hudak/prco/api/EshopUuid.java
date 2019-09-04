@@ -1,6 +1,7 @@
 package sk.hudak.prco.api;
 
 import static sk.hudak.prco.api.EshopCategory.DRUGSTORE;
+import static sk.hudak.prco.api.EshopCategory.NONE;
 import static sk.hudak.prco.api.EshopCategory.PHARMACY;
 import static sk.hudak.prco.api.SearchTemplateConstants.KEYWORD_TEMP;
 import static sk.hudak.prco.api.SearchTemplateConstants.OFFSET_TEMP;
@@ -56,7 +57,9 @@ public enum EshopUuid {
 
 
     // done
-    ALZA("https://www.alza.sk",
+    ALZA(
+            NONE,
+            "https://www.alza.sk",
             "https://www.alza.sk/search.htm?exps=" + KEYWORD_TEMP,
             "https://www.alza.sk/search-p" + PAGE_NUMBER_TEMP + ".htm?exps=" + KEYWORD_TEMP,
             5, 12, 24),
@@ -67,13 +70,16 @@ public enum EshopUuid {
 //            "??",
 //            3, 12, -1),
 
-    AMD_DROGERIA("https://www.amddrogeria.sk",
+    AMD_DROGERIA(
+            DRUGSTORE,
+            "https://www.amddrogeria.sk",
             "https://www.amddrogeria.sk/catalog/search/?q=" + KEYWORD_TEMP,
             "https://www.amddrogeria.sk/catalog/search/?q=" + KEYWORD_TEMP + "&offset=" + OFFSET_TEMP,
             5, 12, 24),
 
     //TODO pre pampers nefunguje
-    BRENDON("https://www.brendon.sk",
+    BRENDON(NONE,
+            "https://www.brendon.sk",
             "https://www.brendon.sk/search?q=" + KEYWORD_TEMP,
             "https://www.brendon.sk/search?q=" + KEYWORD_TEMP + "&pagenumber=" + PAGE_NUMBER_TEMP,
             5, 12, 30),
@@ -107,18 +113,24 @@ public enum EshopUuid {
             "https://www.esodrogeria.eu/search-engine.htm?slovo=" + KEYWORD_TEMP + "&search_submit=&hledatjak=2&page=" + PAGE_NUMBER_TEMP + "&man=9",
             5, 12, 21),
 
-    FARBY("https://www.farby.sk",
+    FARBY(
+            NONE,
+            "https://www.farby.sk",
             "https://www.farby.sk/vyhladavanie?hladaj=" + KEYWORD_TEMP,
             null,
             1, 12, -1),
 
     // done
-    FEEDO("https://www.feedo.sk",
+    FEEDO(
+            NONE,
+            "https://www.feedo.sk",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/",
             "https://www.feedo.sk/vysledky-hladania/{keyword}/filter/?strana={pageNumber}",
             5, 12, 20),
 
-    FOUR_KIDS("https://www.4kids.sk",
+    FOUR_KIDS(
+            NONE,
+            "https://www.4kids.sk",
             "https://www.4kids.sk/vyhledavani?search=" + KEYWORD_TEMP,
             "https://www.4kids.sk/vyhledavani?page=" + PAGE_NUMBER_TEMP + "&search=" + KEYWORD_TEMP,
             5, 12, -1),
@@ -131,7 +143,9 @@ public enum EshopUuid {
             5, 12, 24),
 
     //TODO impl,
-    HORNBACH("https://www.hornbach.sk/",
+    HORNBACH(
+            NONE,
+            "https://www.hornbach.sk/",
             "https://www.hornbach.sk/shop/vyhladavanie/sortiment/{keyword}",
             "TODO nie je to cez parameter v stranke...",
             5, 12, -1),
@@ -143,7 +157,9 @@ public enum EshopUuid {
             "http://www.internetovalekaren.eu/catalog/search/?q=" + KEYWORD_TEMP + "&offset=" + OFFSET_TEMP,
             5, 12, 22),
 
-    KID_MARKET("https://kidmarket.sk/",
+    KID_MARKET(
+            NONE,
+            "https://kidmarket.sk/",
             "https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query={keyword}&submit_search=",
             "https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query={keyword}&submit_search=&p={pageNumber}",
             5, 12, -1),
@@ -177,18 +193,23 @@ public enum EshopUuid {
             "https://www.magano.sk/produkty/search/" + PAGE_NUMBER_TEMP + "?term=" + KEYWORD_TEMP,
             5, 12, 12),
 
-    MALL("https://www.mall.sk",
+    MALL(
+            NONE,
+            "https://www.mall.sk",
             "https://www.mall.sk/hladaj?s={keyword}",
             "https://www.mall.sk/hladaj?page={pageNumber}&s=" + KEYWORD_TEMP,
             3, 12, -1),
 
     MAXIKOVY_HRACKY(
+            NONE,
             "https://www.maxikovy-hracky.cz",
             "https://www.maxikovy-hracky.cz/vyhledavani?search=" + KEYWORD_TEMP,
             "https://www.maxikovy-hracky.cz/vyhledavani?page=" + PAGE_NUMBER_TEMP + "&search=" + KEYWORD_TEMP,
             3, 12, 60),
 
-    METRO("https://sortiment.metro.sk",
+    METRO(
+            NONE,
+            "https://sortiment.metro.sk",
             "https://sortiment.metro.sk/sk/search/?q={keyword}",
             "https://sortiment.metro.sk/sk/search/?p={pageNumber}&search_by_price=dph_without&category_id=0&ownbrand=0&product_type_id=0&inaction=0&mysort=0&pcheck=0&local=0&orderby=wght&direction=asc&q={keyword}&extorder=0&onstock=0",
             5, 12, -1),
@@ -202,12 +223,16 @@ public enum EshopUuid {
 
 
     //TODO impl
-    OBI("https://www.obi.sk",
+    OBI(
+            NONE,
+            "https://www.obi.sk",
             "https://www.obi.sk/search/{keyword}/?isi=true",
             "https://www.obi.sk/search/{keyword}?page={pageNumber}",
             5, 12, -1),
 
-    PERINBABA("http://www.perinbaba.sk/",
+    PERINBABA(
+            NONE,
+            "http://www.perinbaba.sk/",
             "http://www.perinbaba.sk/catalogsearch/result/?limit=48&q=" + KEYWORD_TEMP,
             "http://www.perinbaba.sk/catalogsearch/result/index/?limit=48&p={pageNumber}&q=" + KEYWORD_TEMP,
             5, 12, -1),
@@ -235,7 +260,9 @@ public enum EshopUuid {
             "https://www.pilulka24.sk/" + KEYWORD_TEMP + "?page=" + PAGE_NUMBER_TEMP + "&pageTo=0",
             5, 12, 40),
 
-    TESCO("https://potravinydomov.itesco.sk",
+    TESCO(
+            NONE,
+            "https://potravinydomov.itesco.sk",
             "https://potravinydomov.itesco.sk/groceries/sk-SK/search?query={keyword}",
             "https://potravinydomov.itesco.sk/groceries/sk-SK/search?query={keyword}&page={pageNumber}",
             5, 12, -1);
@@ -266,12 +293,6 @@ public enum EshopUuid {
         this.olderThanInHours = olderThanInHours;
         this.maxCountOfProductOnPage = maxCountOfProductOnPage;
         this.countToWaitInSecond = 3;
-    }
-
-    EshopUuid(String productStartUrl, String searchTemplateUrl, String searchTemplateUrlWithPageNumber,
-              int maxCountOfNewPages, int olderThanInHours, int maxCountOfProductOnPage) {
-        this(null, productStartUrl, searchTemplateUrl, searchTemplateUrlWithPageNumber, maxCountOfNewPages,
-                olderThanInHours, maxCountOfProductOnPage);
     }
 
     /**
