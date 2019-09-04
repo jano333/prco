@@ -56,8 +56,7 @@ class NewProductServiceImpl(private val newProductEntityDao: NewProductEntityDbD
             notNullNotEmpty(newProductCreateDto.name, "name")
 
             // check if product with given URL already exist
-            // TODO impl exist method
-            if (existProductWithUrl(newProductCreateDto.url)) {
+            if (newProductEntityDao.existWithUrl(newProductCreateDto.url!!)) {
                 throw PrcoRuntimeException("Product with URL ${newProductCreateDto.url} already exist.")
             }
 
@@ -85,7 +84,6 @@ class NewProductServiceImpl(private val newProductEntityDao: NewProductEntityDbD
             log.debug(errMsg, e)
             throw PrcoRuntimeException(errMsg, e)
         }
-
     }
 
     override fun getNewProduct(newProductId: Long): NewProductFullDto {
@@ -93,9 +91,9 @@ class NewProductServiceImpl(private val newProductEntityDao: NewProductEntityDbD
     }
 
     override fun findFirstInvalidNewProduct(): NewProductInfoDetail? {
-        return newProductEntityDao.findFirstInvalid()
-                .map { newProductEntity -> mapper.map(newProductEntity, NewProductInfoDetail::class.java) }
-                .orElse(null)
+        return newProductEntityDao.findFirstInvalid()?.let {
+            mapper.map(it, NewProductInfoDetail::class.java)
+        }
     }
 
 
@@ -121,11 +119,7 @@ class NewProductServiceImpl(private val newProductEntityDao: NewProductEntityDbD
         log.debug("product with id {} has been updated to {}", newProductId, correctUnitData)
     }
 
-    private fun existProductWithUrl(url: String?): Boolean {
-        //TODO impl
-        return false
-    }
-
+    //TODO povinne
     override fun reprocessProductData(newProductId: Long?) {
         notNull(newProductId, NEW_PRODUCT_ID)
 

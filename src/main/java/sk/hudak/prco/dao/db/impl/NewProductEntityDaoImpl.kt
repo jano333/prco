@@ -8,8 +8,6 @@ import sk.hudak.prco.dao.db.NewProductEntityDbDao
 import sk.hudak.prco.dto.product.NewProductFilterUIDto
 import sk.hudak.prco.model.NewProductEntity
 import sk.hudak.prco.model.QNewProductEntity
-import java.util.*
-import java.util.Optional.ofNullable
 import javax.persistence.EntityManager
 
 @Component
@@ -28,11 +26,11 @@ open class NewProductEntityDaoImpl(em: EntityManager)
         return findById(NewProductEntity::class.java, id)
     }
 
-    override fun findFirstInvalid(): Optional<NewProductEntity> {
-        return ofNullable(from(QNewProductEntity.newProductEntity)
+    override fun findFirstInvalid(): NewProductEntity? {
+        return from(QNewProductEntity.newProductEntity)
                 .where(QNewProductEntity.newProductEntity.valid.eq(java.lang.Boolean.FALSE))
                 .limit(1)
-                .fetchFirst())
+                .fetchFirst()
     }
 
     override fun findByFilter(filter: NewProductFilterUIDto): List<NewProductEntity> {

@@ -1,5 +1,8 @@
 
 ----------------
+je to koli tomu ze zoznam URL pre mall vrati niektore produkty 3 krat,
+je preto ze je tam 3 page? to znamena ze niektore tam prida 3 krat
+
 2019-09-03 13:10:19,594 DEBUG [MALL-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:152] starting 3 of 6
 2019-09-03 13:10:19,594 DEBUG [MALL-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:241] request URL: https://www.mall.sk/plienky-pampers-11-25-kg/pampers-activepants-5-junior-mega-box-96-ks
 2019-09-03 13:10:19,594 DEBUG [MALL-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:244] userAgent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36

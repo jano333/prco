@@ -6,6 +6,7 @@ import sk.hudak.prco.dto.ProductUpdateData
 
 interface HtmlParser {
 
+    // FIXME zmenit navratovu hodnotu z List<String> na Set<String>
     fun searchProductUrls(eshopUuid: EshopUuid, searchKeyWord: String): List<String>
 
     /**

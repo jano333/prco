@@ -17,14 +17,12 @@ import javax.persistence.EntityManager
 @Repository
 open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(em), ProductEntityDao {
 
-
     companion object {
         val OLDER_THAN_IN_HOURS = 24
     }
 
     override fun findById(id: Long): ProductEntity =
             findById(ProductEntity::class.java, id)
-
 
     override fun existWithUrl(url: String): Boolean =
             from(QProductEntity.productEntity)

@@ -80,10 +80,11 @@ open class ProductCommonServiceImpl(private val newProductEntityDao: NewProductE
             return true
         }
         // produkty, o ktore nemam zaujem
-        return if (notInterestedProductDbDao.existWithUrl(productURL)) {
+        if (notInterestedProductDbDao.existWithUrl(productURL)) {
             true
-        } else productEntityDao.existWithUrl(productURL)
+        }
         // produkty, o ktore mam zaujem - aktualizuju sa
+        return productEntityDao.existWithUrl(productURL)
     }
 
     override fun markNewProductAsInterested(vararg newProductIds: Long) {

@@ -67,6 +67,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                 // filter only non existing
                 val notExistingProducts = filterOnlyNotExistingWithException(urlList, eshopUuid)
                 log.debug("count of non existing products URL  ${notExistingProducts.size}")
+                log.debug("list of notexisting products URL $notExistingProducts")
 
                 createNewProductsErrorWrapper(eshopUuid, notExistingProducts)
 

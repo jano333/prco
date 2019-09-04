@@ -23,12 +23,12 @@ import sk.hudak.prco.utils.UserAgentDataHolder
 fun main() {
 
     val test = ProductParserTest()
-
-//           println(test.parseUrlsOfProduct(EshopUuid.FARBY, "pampers"));
+//    https://www.maxikovy-hracky.cz/vyhledavani?search=pampers
+           println(test.parseUrlsOfProduct(EshopUuid.MAXIKOVY_HRACKY, "pampers"));
 //
 //    println(test.parseProductNewData("https://www.farby.sk/156498/pampers-premium-care-plienky-maxi-52-ks/"))
 
-    println(test.parseProductUpdateData("https://www.farby.sk/156498/pampers-premium-care-plienky-maxi-52-ks/"))
+//    println(test.parseProductUpdateData("https://www.farby.sk/156498/pampers-premium-care-plienky-maxi-52-ks/"))
 }
 
 class ProductParserTest {
@@ -52,6 +52,7 @@ class ProductParserTest {
             EshopUuid.LEKAREN_EXPRES -> LekarenExpresProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // M
             EshopUuid.MALL -> MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            EshopUuid.MAXIKOVY_HRACKY -> MaxikovyHrackyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             //TODO others
             else -> throw PrcoRuntimeException("Pridaj implementaciu do testu pre eshop $eshopUuid")
         }
