@@ -26,7 +26,12 @@ class SearchUrlBuilderImpl : SearchUrlBuilder {
      * @return
      */
     override fun buildSearchUrl(eshopUuid: EshopUuid, searchKeyword: String): String {
-        val searchUrl = eshopUuid.searchTemplateUrl.replace(SearchTemplateConstants.KEYWORD_TEMP, searchKeyword)
+        val searchUrl: String
+        if (eshopUuid.config != null && eshopUuid.config.isDynamicSearchUrlByKeyWord) {
+            searchUrl = eshopUuid.config.buildSearchUrlForKeyWord(searchKeyword, 1)
+        } else {
+            searchUrl = eshopUuid.searchTemplateUrl.replace(SearchTemplateConstants.KEYWORD_TEMP, searchKeyword)
+        }
 
         // safe converzation URL space to %20 see: https://stackoverflow.com/questions/724043/http-url-address-encoding-in-java
         try {
@@ -42,15 +47,19 @@ class SearchUrlBuilderImpl : SearchUrlBuilder {
     }
 
     override fun buildSearchUrl(eshopUuid: EshopUuid, searchKeyWord: String, currentPageNumber: Int): String {
-        val searchTemplateUrlWithPageNumber = eshopUuid.searchTemplateUrlWithPageNumber
         val searchUrl: String
-        if (searchTemplateUrlWithPageNumber.contains(SearchTemplateConstants.OFFSET_TEMP)) {
-            searchUrl = buildSearchUrl(eshopUuid,
-                    searchKeyWord,
-                    (currentPageNumber - 1) * eshopUuid.maxCountOfProductOnPage,
-                    eshopUuid.maxCountOfProductOnPage)
+        if (eshopUuid.config != null && eshopUuid.config.isDynamicSearchUrlByKeyWord) {
+            searchUrl = eshopUuid.config.buildSearchUrlForKeyWord(searchKeyWord, currentPageNumber)
+
         } else {
-            searchUrl = buildSearchUrl2(eshopUuid, searchKeyWord, currentPageNumber)
+            if (eshopUuid.searchTemplateUrlWithPageNumber.contains(SearchTemplateConstants.OFFSET_TEMP)) {
+                searchUrl = buildSearchUrl(eshopUuid,
+                        searchKeyWord,
+                        (currentPageNumber - 1) * eshopUuid.maxCountOfProductOnPage,
+                        eshopUuid.maxCountOfProductOnPage)
+            } else {
+                searchUrl = buildSearchUrl2(eshopUuid, searchKeyWord, currentPageNumber)
+            }
         }
 
         return searchUrl

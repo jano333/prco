@@ -24,11 +24,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Component
-class MallProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+class MallProductParser(unitParser: UnitParser,
+                        userAgentDataHolder: UserAgentDataHolder,
+                        searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
     companion object {
-        private val MAX_COUNT_OF_PRODUCT_PRE_PAGE = 48
+        private const val MAX_COUNT_OF_PRODUCT_PRE_PAGE = 48
     }
 
     override val eshopUuid: EshopUuid
@@ -61,7 +63,7 @@ class MallProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDa
     override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
         val result = ArrayList<String>(MAX_COUNT_OF_PRODUCT_PRE_PAGE)
         documentList.select("h3[class=lst-product-item-title]")
-                .forEach { element -> result.add(eshopUuid.productStartUrl + element.child(0).attr("href")) }
+                .forEach { result.add(eshopUuid.productStartUrl + it.child(0).attr("href")) }
         return result
     }
 

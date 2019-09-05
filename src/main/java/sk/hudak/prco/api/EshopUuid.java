@@ -57,12 +57,8 @@ public enum EshopUuid {
 
 
     // done
-    ALZA(
-            NONE,
-            "https://www.alza.sk",
-            "https://www.alza.sk/search.htm?exps=" + KEYWORD_TEMP,
-            "https://www.alza.sk/search-p" + PAGE_NUMBER_TEMP + ".htm?exps=" + KEYWORD_TEMP,
-            5, 12, 24),
+    ALZA(AlzaEshopConfiguration.INSTANCE),
+
 
     //TODO
 //    ANDREA_SHOP("https://www.andreashop.sk",
@@ -193,12 +189,7 @@ public enum EshopUuid {
             "https://www.magano.sk/produkty/search/" + PAGE_NUMBER_TEMP + "?term=" + KEYWORD_TEMP,
             5, 12, 12),
 
-    MALL(
-            NONE,
-            "https://www.mall.sk",
-            "https://www.mall.sk/hladaj?s={keyword}",
-            "https://www.mall.sk/hladaj?page={pageNumber}&s=" + KEYWORD_TEMP,
-            3, 12, -1),
+    MALL(MallEshopConfiguration.INSTANCE),
 
     MAXIKOVY_HRACKY(
             NONE,
@@ -283,6 +274,22 @@ public enum EshopUuid {
 
     private EshopCategory category;
 
+    private EshopConfiguration config;
+
+    EshopUuid(EshopConfiguration config) {
+        this.config = config;
+        //TODO zrusit tie premenenne a nahladit imploementociou pre dynamik
+        this.category = config.getCategory();
+        this.productStartUrl = config.getProductStartUrl();
+        this.searchTemplateUrl = config.getSearchTemplateUrl();
+        this.searchTemplateUrlWithPageNumber = config.getSearchTemplateUrlWithPageNumber();
+        this.maxCountOfNewPages = config.getMaxCountOfNewPages();
+        this.olderThanInHours = getOlderThanInHours();
+        this.maxCountOfProductOnPage = getMaxCountOfProductOnPage();
+        this.countToWaitInSecond = 3;
+    }
+
+
     EshopUuid(EshopCategory category, String productStartUrl, String searchTemplateUrl, String searchTemplateUrlWithPageNumber,
               int maxCountOfNewPages, int olderThanInHours, int maxCountOfProductOnPage) {
         this.category = category;
@@ -293,6 +300,10 @@ public enum EshopUuid {
         this.olderThanInHours = olderThanInHours;
         this.maxCountOfProductOnPage = maxCountOfProductOnPage;
         this.countToWaitInSecond = 3;
+    }
+
+    public EshopConfiguration getConfig() {
+        return config;
     }
 
     /**
