@@ -26,8 +26,9 @@ class PilulkaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgen
     override val eshopUuid: EshopUuid
         get() = PILULKA
 
-    override val timeout: Int
-        get() = TIMEOUT_10_SECOND
+    override// koli pomalym odozvam davam na 15 sekund
+    val timeout: Int
+        get() = TIMEOUT_15_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         val firstElementByClass = getFirstElementByClass(documentList, "pager")
