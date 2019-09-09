@@ -126,15 +126,17 @@ open class ProductCommonServiceImpl(private val newProductEntityDao: NewProductE
             // find existing product
             val newProductEntity = newProductEntityDao.findById(newProductId)
 
-            //TODO tak ako v metode hore impl -> overim ci uz s takou URL neexistuje PRODUCT...
+            if (notInterestedProductDbDao.existWithUrl(newProductEntity.url)) {
+                log.warn("product with url {} already exist in products -> deleting from new", newProductEntity.url)
 
-            // map NewProductEntity -> NotInterestedProductEntity
-            val notInterestedProductEntity = mapper.map(newProductEntity, NotInterestedProductEntity::class.java)
+            } else {
+                // map NewProductEntity -> NotInterestedProductEntity
+                val notInterestedProductEntity = mapper.map(newProductEntity, NotInterestedProductEntity::class.java)
 
-            // save new NotInterestedProductEntity
-            notInterestedProductDbDao.save(notInterestedProductEntity)
-            log.trace("created new {} with id {}", NotInterestedProductEntity::class.java.simpleName, notInterestedProductEntity.id)
-
+                // save new NotInterestedProductEntity
+                notInterestedProductDbDao.save(notInterestedProductEntity)
+                log.trace("created new {} with id {}", NotInterestedProductEntity::class.java.simpleName, notInterestedProductEntity.id)
+            }
             // remove NewProductEntity
             newProductEntityDao.delete(newProductEntity)
             log.debug("deleted {} with id {}", NewProductEntity::class.java.simpleName, newProductEntity.id)
