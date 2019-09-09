@@ -251,7 +251,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         }
 
         if (notExistingProducts.isEmpty()) {
-            log.warn("count of non existing products URL is zero")
+            log.debug("count of non existing products URL is zero")
         }
         return notExistingProducts
     }
