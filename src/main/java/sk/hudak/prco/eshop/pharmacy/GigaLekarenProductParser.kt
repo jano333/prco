@@ -17,7 +17,9 @@ import java.util.Optional.ofNullable
 import java.util.stream.Collectors
 
 @Component
-class GigaLekarenProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+class GigaLekarenProductParser(unitParser: UnitParser,
+                               userAgentDataHolder: UserAgentDataHolder,
+                               searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
     override val eshopUuid: EshopUuid

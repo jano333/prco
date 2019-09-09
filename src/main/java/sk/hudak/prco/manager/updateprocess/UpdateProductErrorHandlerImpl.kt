@@ -3,8 +3,8 @@ package sk.hudak.prco.manager.updateprocess
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.dto.product.ProductDetailInfo
-import sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException
-import sk.hudak.prco.exception.HttpStatusErrorPrcoException
+import sk.hudak.prco.exception.HttpSocketTimeoutParserException
+import sk.hudak.prco.exception.HttpStatusParserException
 import sk.hudak.prco.manager.error.ErrorLogManager
 import sk.hudak.prco.service.InternalTxService
 
@@ -21,10 +21,10 @@ class UpdateProductErrorHandlerImpl(private val internalTxService: InternalTxSer
         log.error("error while parsing product update data for product ${productForUpdate.url}", error)
 
         when (error) {
-            is HttpStatusErrorPrcoException -> {
+            is HttpStatusParserException -> {
                 handleHttpStatusError(error, productForUpdate)
             }
-            is HttpSocketTimeoutPrcoRuntimeException -> {
+            is HttpSocketTimeoutParserException -> {
                 handleHttpSocketTimeoutError(error, productForUpdate)
             }
             else -> {
@@ -33,7 +33,7 @@ class UpdateProductErrorHandlerImpl(private val internalTxService: InternalTxSer
         }
     }
 
-    private fun handleHttpStatusError(e: HttpStatusErrorPrcoException, productDetailInfo: ProductDetailInfo) {
+    private fun handleHttpStatusError(e: HttpStatusParserException, productDetailInfo: ProductDetailInfo) {
         log.error("http status: ${e.httpStatus}")
         if (404 == e.httpStatus) {
             internalTxService.removeProduct(productDetailInfo.id)
@@ -41,7 +41,7 @@ class UpdateProductErrorHandlerImpl(private val internalTxService: InternalTxSer
         errorLogManager.saveInvalidHttpStatusError(productDetailInfo.eshopUuid, productDetailInfo.url, e.message, e)
     }
 
-    private fun handleHttpSocketTimeoutError(error: HttpSocketTimeoutPrcoRuntimeException, productDetailInfo: ProductDetailInfo) {
+    private fun handleHttpSocketTimeoutError(error: HttpSocketTimeoutParserException, productDetailInfo: ProductDetailInfo) {
         errorLogManager.saveTimeout4Error(productDetailInfo.eshopUuid, productDetailInfo.url, error.message, error)
     }
 

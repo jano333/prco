@@ -16,6 +16,7 @@ data class NewProductCreateDto(
         var pictureUrl: String? = null) : DtoAble {
 
 
+    //TODO toto sa naco pouziva prest ? parametre v create new Dto
     /**
      * @return true, ak sa podarilo vsetko uspesne vyparsovat(vsetky parametre), inak false
      */

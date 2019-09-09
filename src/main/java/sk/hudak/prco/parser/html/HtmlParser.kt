@@ -3,6 +3,8 @@ package sk.hudak.prco.parser.html
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.dto.ProductUpdateData
+import sk.hudak.prco.exception.EshopNotFoundParserException
+import sk.hudak.prco.exception.EshopParserNotFoundException
 
 interface HtmlParser {
 
@@ -14,6 +16,8 @@ interface HtmlParser {
      *
      * @param productUrl
      * @return
+     * @throws [EshopNotFoundParserException]
+     * @throws [EshopParserNotFoundException]
      */
     fun parseProductNewData(productUrl: String): ProductNewData
 

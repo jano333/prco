@@ -25,6 +25,7 @@ interface EshopProductsParser {
     /**
      * @param productUrl url konkretneho produktu
      * @return
+     * @throws TODO
      */
     fun parseProductNewData(productUrl: String): ProductNewData
 

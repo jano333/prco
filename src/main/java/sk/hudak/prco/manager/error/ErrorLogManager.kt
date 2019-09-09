@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component
 import sk.hudak.prco.api.ErrorType
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ErrorCreateDto
-import sk.hudak.prco.exception.HttpSocketTimeoutPrcoRuntimeException
-import sk.hudak.prco.exception.HttpStatusErrorPrcoException
+import sk.hudak.prco.exception.HttpSocketTimeoutParserException
+import sk.hudak.prco.exception.HttpStatusParserException
 import sk.hudak.prco.service.InternalTxService
 
 @Component
@@ -33,13 +33,14 @@ class ErrorLogManager(private val internalTxService: InternalTxService) {
     fun logErrorParsingProductNewData(eshopUuid: EshopUuid, e: Exception) {
         internalTxService.createError(ErrorCreateDto(
                 eshopUuid,
+                //TODO typ je nspravny...
                 ErrorType.PARSING_PRODUCT_URLS, null,
                 e.message,
                 ExceptionUtils.getStackTrace(e), null,
                 null))
     }
 
-    fun saveInvalidHttpStatusError(eshopUuid: EshopUuid, url: String, message: String?, e: HttpStatusErrorPrcoException) {
+    fun saveInvalidHttpStatusError(eshopUuid: EshopUuid, url: String, message: String?, e: HttpStatusParserException) {
         internalTxService.createError(ErrorCreateDto(
                 errorType = if (404 == e.httpStatus) ErrorType.HTTP_STATUS_404_ERR else ErrorType.HTTP_STATUS_ERR,
                 eshopUuid = eshopUuid,
@@ -60,7 +61,7 @@ class ErrorLogManager(private val internalTxService: InternalTxService) {
         )
     }
 
-    fun saveTimeout4Error(eshopUuid: EshopUuid, url: String, message: String?, e: HttpSocketTimeoutPrcoRuntimeException) {
+    fun saveTimeout4Error(eshopUuid: EshopUuid, url: String, message: String?, e: HttpSocketTimeoutParserException) {
         internalTxService.createError(ErrorCreateDto(
                 errorType = ErrorType.TIME_OUT_ERR,
                 eshopUuid = eshopUuid,

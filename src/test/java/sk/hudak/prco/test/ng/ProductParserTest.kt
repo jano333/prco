@@ -7,10 +7,7 @@ import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.dto.ProductUpdateData
 import sk.hudak.prco.eshop.*
 import sk.hudak.prco.eshop.drugstore.DrogerkaProductParser
-import sk.hudak.prco.eshop.pharmacy.DrMaxProductParser
-import sk.hudak.prco.eshop.pharmacy.LekarenBellaProductParser
-import sk.hudak.prco.eshop.pharmacy.LekarenExpresProductParser
-import sk.hudak.prco.eshop.pharmacy.PilulkaProductParser
+import sk.hudak.prco.eshop.pharmacy.*
 import sk.hudak.prco.exception.PrcoRuntimeException
 import sk.hudak.prco.parser.eshop.EshopProductsParser
 import sk.hudak.prco.parser.eshopuid.EnumImplEshopUuidParserImpl
@@ -24,9 +21,9 @@ fun main() {
 
     val test = ProductParserTest()
 //    https://www.maxikovy-hracky.cz/vyhledavani?search=pampers
-           println(test.parseUrlsOfProduct(EshopUuid.MALL, "pampers"));
+//           println(test.parseUrlsOfProduct(EshopUuid.MALL, "pampers"));
 //
-//    println(test.parseProductNewData("https://www.farby.sk/156498/pampers-premium-care-plienky-maxi-52-ks/"))
+    println(test.parseProductNewData("https://www.gigalekaren.sk/produkt/nutrilon-kase-pronutra-ml-kr-s-piskoty-6m-225g/"))
 
 //    println(test.parseProductUpdateData("https://www.farby.sk/156498/pampers-premium-care-plienky-maxi-52-ks/"))
 }
@@ -45,6 +42,8 @@ class ProductParserTest {
             // F
             EshopUuid.FOUR_KIDS -> FourKidsProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.FARBY -> FarbyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            // G
+            EshopUuid.GIGA_LEKAREN -> GigaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // P
             EshopUuid.PILULKA -> PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // L

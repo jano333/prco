@@ -152,29 +152,28 @@ abstract class JSoupProductParser : EshopProductsParser {
         //FIXME prepisat tak ako je parseProductUpdateData myslim tym tie optional(overit ci uz to tak nie je)
 
         val document = retrieveDocument(productUrl)
+        //TODO porozmyslat ci tu nerobit alebo logovat redirect... tak ako je pre update proces
 
-        val result = ProductNewData()
-        result.eshopUuid = eshopUuid
-        result.url = productUrl
+        val result = ProductNewData(eshopUuid, productUrl)
 
         val productNameOpt = parseProductNameFromDetail(document)
-        logWarningIfNull(productNameOpt, "productName", document.location())
-        if (productNameOpt.isPresent) {
+        logWarningIfNullOrEmpty(productNameOpt, "productName", document.location())
+        if (productNameOpt.isPresent && productNameOpt.get().isNotBlank()) {
             result.name = productNameOpt.get()
         }
 
         val productPictureUrlOpt = internalParseProductPictureURL(document, productUrl)
-        logWarningIfNull(productPictureUrlOpt, "pictureUrl", document.location())
-        if (productPictureUrlOpt.isPresent) {
+        logWarningIfNullOrEmpty(productPictureUrlOpt, "pictureUrl", document.location())
+        if (productPictureUrlOpt.isPresent && productPictureUrlOpt.get().isNotBlank()) {
             result.pictureUrl = productPictureUrlOpt.get()
         }
 
         // ak nemame nazov produktu nemozeme pokracovat v parsovani 'unit'
-        if (!productNameOpt.isPresent) {
+        if (result.name == null) {
             return result
         }
 
-        parseUnitValueCount(document, productNameOpt.get())
+        parseUnitValueCount(document, result.name!!)
                 .ifPresent { (unit, value, packageCount) ->
                     result.unit = unit
                     result.unitValue = value
@@ -206,12 +205,12 @@ abstract class JSoupProductParser : EshopProductsParser {
 
         // product name
         val productNameOpt = parseProductNameFromDetail(document)
-        logWarningIfNull(productNameOpt, "productName", document.location())
+        logWarningIfNullOrEmpty(productNameOpt, "productName", document.location())
         val productName = productNameOpt.orElseThrow { ProductNameNotFoundException(productUrl) }
 
         // product price for package
         val productPriceForPackageOpt = parseProductPriceForPackage(document)
-        logWarningIfNull(productPriceForPackageOpt, "priceForPackage", document.location())
+        logWarningIfNullOrEmpty(productPriceForPackageOpt, "priceForPackage", document.location())
         val productPriceForPackage = productPriceForPackageOpt.orElseThrow { ProductPriceNotFoundException(productUrl) }
 
         // product action
@@ -236,18 +235,19 @@ abstract class JSoupProductParser : EshopProductsParser {
                 if (pictureUrl.isPresent) pictureUrl.get() else null)
     }
 
+    /**
+     * TODO spisat ake vynimky moze vyhadzovat
+     */
     protected open fun retrieveDocument(productUrl: String): Document {
         try {
             log.debug("request URL: {}", productUrl)
-
-            val userAgent = userAgent
             log.debug("userAgent: {}", userAgent)
 
             val connection = Jsoup.connect(productUrl)
                     .userAgent(userAgent)
                     .timeout(timeout)
 
-            if (cookie != null && !cookie.isEmpty()) {
+            if (cookie.isNotEmpty()) {
                 connection.cookies(cookie)
             }
 
@@ -255,26 +255,27 @@ abstract class JSoupProductParser : EshopProductsParser {
 
 
         } catch (e: Exception) {
-            //FIXME dane spracovanie urobit tak aby sa dalo v jednotlivych impl overigovat
-            val errMsg = "error creating document for url '$productUrl': "
-            if (e is HttpStatusException) {
-                val statusCode = e.statusCode
-                if (404 == statusCode) {
-                    throw HttpErrorProductNotFoundPrcoException("$errMsg $e", e)
+            throw convertToParserException(productUrl, e)
+        }
+    }
+
+    protected open fun convertToParserException(productUrl: String, e: Exception): PrcoRuntimeException {
+        val errMsg = "error creating document for url '$productUrl': "
+        return when (e) {
+            is HttpStatusException -> {
+                if (404 == e.statusCode) {
+                    ProductNotFoundHttpParserException("$errMsg $e", e)
                 } else {
-                    throw HttpStatusErrorPrcoException(statusCode, "$errMsg $e", e)
+                    HttpStatusParserException(e.statusCode, "$errMsg $e", e)
                 }
-
-
-            } else if (e is SocketTimeoutException) {
-                throw HttpSocketTimeoutPrcoRuntimeException(e)
-
-            } else {
-                log.error(errMsg, e)
-                throw PrcoRuntimeException(errMsg, e)
+            }
+            is SocketTimeoutException -> {
+                HttpSocketTimeoutParserException(e)
+            }
+            else -> {
+                DefaultHttpParserException(errMsg, e)
             }
         }
-
     }
 
     protected open fun parseNextPage(searchKeyWord: String, currentPageNumber: Int): List<String>? {
@@ -294,7 +295,7 @@ abstract class JSoupProductParser : EshopProductsParser {
             urls.stream()
                     .filter { value -> value == null || value.isEmpty() }
                     .findAny()
-                    .ifPresent { s -> throw PrcoRuntimeException("at least one url is null or empty") }
+                    .ifPresent { throw PrcoRuntimeException("at least one url is null or empty") }
 
             return urls
         } catch (e: Exception) {
@@ -327,7 +328,6 @@ abstract class JSoupProductParser : EshopProductsParser {
         } catch (e: Exception) {
             throw PrcoRuntimeException("error while parsing product action, URL: $productUrl", e)
         }
-
     }
 
     private fun internalGetCountOfPages(documentList: Document, searchUrl: String): Int {
@@ -336,13 +336,20 @@ abstract class JSoupProductParser : EshopProductsParser {
         } catch (e: Exception) {
             throw PrcoRuntimeException("error while parsing count of page for products, search URL: $searchUrl", e)
         }
-
     }
 
-    private fun logWarningIfNull(propertyValue: Optional<*>, propertyName: String, productUrl: String) {
+    private fun logWarningIfNullOrEmpty(propertyValue: Optional<*>, propertyName: String, productUrl: String) {
         if (!propertyValue.isPresent) {
             log.warn("property {} is null for product url {}", propertyName, productUrl)
+            return
         }
+
+        if (propertyValue.get() is String) {
+            if ((propertyValue.get() as String).isBlank()) {
+                log.warn("property {} is blank for product url {}", propertyName, productUrl)
+            }
+        }
+
     }
 
 }

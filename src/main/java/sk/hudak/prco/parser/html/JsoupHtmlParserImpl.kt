@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.dto.ProductUpdateData
-import sk.hudak.prco.exception.EshopParserNotFoundPrcoException
+import sk.hudak.prco.exception.EshopParserNotFoundException
 import sk.hudak.prco.parser.eshop.EshopProductsParser
 import sk.hudak.prco.parser.eshopuid.EshopUuidParser
 
@@ -47,6 +47,6 @@ class JsoupHtmlParserImpl(
         return productParsers.stream()
                 .filter { it.eshopUuid == eshopUuid }
                 .findFirst()
-                .orElseThrow { EshopParserNotFoundPrcoException(eshopUuid) }
+                .orElseThrow { EshopParserNotFoundException(eshopUuid) }
     }
 }

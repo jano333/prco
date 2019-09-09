@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.product.NewProductCreateDto
-import sk.hudak.prco.exception.PrcoRuntimeException
+import sk.hudak.prco.exception.*
 import sk.hudak.prco.manager.error.ErrorLogManager
 import sk.hudak.prco.mapper.PrcoOrikaMapper
 import sk.hudak.prco.parser.eshop.EshopProductsParser
@@ -142,8 +142,8 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
     }
 
     private enum class ContinueStatus {
-        //TODO 3 stavy, pozri update stavy
-        CONTINUE_TO_NEXT_ONE,
+        CONTINUE_TO_NEXT_ONE_OK,
+        CONTINUE_TO_NEXT_ONE_ERROR,
         STOP_PROCESSING_NEXT_ONE
     }
 
@@ -158,7 +158,8 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                 ContinueStatus.STOP_PROCESSING_NEXT_ONE -> {
                     break@loop
                 }
-                ContinueStatus.CONTINUE_TO_NEXT_ONE -> {
+                ContinueStatus.CONTINUE_TO_NEXT_ONE_OK,
+                ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR -> {
                     // sleep pre dalsou iteraciou, iba ak aktualne nie je zaroven posledny
                     if (currentUrlIndex + 1 != urlList.size) {
                         sleepRandomSafe()
@@ -181,18 +182,32 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         } catch (e: Exception) {
             log.error(e.message, e)
             errorLogManager.logErrorParsingProductNewData(eshopUuid, e)
-            return ContinueStatus.CONTINUE_TO_NEXT_ONE
+            return when (e) {
+                is EshopNotFoundParserException,
+                is EshopParserNotFoundException -> {
+                    ContinueStatus.STOP_PROCESSING_NEXT_ONE
+                }
+                is ProductNotFoundHttpParserException,
+                is HttpStatusParserException,
+                is HttpSocketTimeoutParserException,
+                is DefaultHttpParserException -> {
+                    ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR
+                }
+                else -> {
+                    ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR
+                }
+            }
         }
 
         if (null == productNewData.name) {
             errorLogManager.logErrorParsingProductNameForNewProduct(eshopUuid, productUrl)
             log.warn("new product not contains name, skipping to next product")
-            return ContinueStatus.CONTINUE_TO_NEXT_ONE
+            return ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR
         }
 
         // preklopim a pridavam do DB
         internalTxService.createNewProduct(mapper.map(productNewData, NewProductCreateDto::class.java))
-        return ContinueStatus.CONTINUE_TO_NEXT_ONE
+        return ContinueStatus.CONTINUE_TO_NEXT_ONE_OK
     }
 
     private fun searchProductUrls(eshopUuid: EshopUuid, searchKeyWord: String): List<String> {

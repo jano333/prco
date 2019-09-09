@@ -2,14 +2,9 @@ package sk.hudak.prco.exception
 
 import java.net.SocketTimeoutException
 
-
-open class HttpStatusErrorPrcoException : PrcoRuntimeException {
+open class HttpStatusParserException : PrcoRuntimeException {
 
     val httpStatus: Int
-
-    constructor(httpStatus: Int, message: String) : super(message) {
-        this.httpStatus = httpStatus
-    }
 
     constructor(httpStatus: Int, message: String, cause: Throwable) :
             super(message, cause) {
@@ -17,8 +12,11 @@ open class HttpStatusErrorPrcoException : PrcoRuntimeException {
     }
 }
 
-class HttpErrorProductNotFoundPrcoException(message: String, cause: Throwable) :
-        HttpStatusErrorPrcoException(404, message, cause)
+class ProductNotFoundHttpParserException(message: String, cause: Throwable) :
+        HttpStatusParserException(404, message, cause)
 
-class HttpSocketTimeoutPrcoRuntimeException(e: SocketTimeoutException) :
+class HttpSocketTimeoutParserException(e: SocketTimeoutException) :
         PrcoRuntimeException("timeout", e)
+
+class DefaultHttpParserException(message: String, cause: Throwable):
+    PrcoRuntimeException(message, cause)

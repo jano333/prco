@@ -8,23 +8,21 @@ import java.util.*
 
 interface InternalMarkerDto
 
-data class ProductNewData(
-        var eshopUuid: EshopUuid? = null,
-        var url: String? = null,
-        var name: String? = null,
-        var unit: Unit? = null,
-        var unitValue: BigDecimal? = null,
-        var unitPackageCount: Int? = null,
-        var pictureUrl: String? = null) : InternalMarkerDto {
-    //TODO poprehadzovat na optional tie ktore mozu byt null
-
+data class ProductNewData(val eshopUuid: EshopUuid,
+                          val url: String,
+        // nepovinne:
+                          var name: String? = null,
+                          var pictureUrl: String? = null,
+                          var unit: Unit? = null,
+                          var unitValue: BigDecimal? = null,
+                          var unitPackageCount: Int? = null) : InternalMarkerDto {
 
     /**
      * @return true, ak sa podarilo vsetko uspesne vyparsovat(vsetky parametre), inak false
      */
     val isValid: Boolean
         get() {
-            if (url == null || url!!.trim { it <= ' ' }.isEmpty()) {
+            if (url.trim { it <= ' ' }.isEmpty()) {
                 return false
             }
             if (name == null || name!!.trim { it <= ' ' }.isEmpty()) {
