@@ -3,6 +3,7 @@ package sk.hudak.prco.task
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.utils.ThreadUtils
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -26,7 +27,7 @@ data class TaskContext @JvmOverloads constructor(
 
 interface EshopTaskManager {
 
-    fun  dajmiho(eshopUuid: EshopUuid): Executor
+    fun dajmiho(eshopUuid: EshopUuid): Executor
 
     val tasks: Map<EshopUuid, TaskContext>
 
@@ -113,9 +114,9 @@ class EshopTaskManagerImpl : EshopTaskManager {
         return executors[eshopUuid]!!.submit(task)
     }
 
-    override fun <T> submitTask(eshopUuid: EshopUuid, task: Callable<T>): Future<T>{
-         return executors[eshopUuid]!!.submit(task)
-     }
+    override fun <T> submitTask(eshopUuid: EshopUuid, task: Callable<T>): Future<T> {
+        return executors[eshopUuid]!!.submit(task)
+    }
 
 
     override fun isTaskRunning(eshopUuid: EshopUuid): Boolean {
@@ -180,25 +181,31 @@ class EshopTaskManagerImpl : EshopTaskManager {
     }
 }
 
-abstract class ExceptionHandlingRunnable : Runnable {
+/**
+ * @param T return type of [doInRunnable] method
+ */
+abstract class ExceptionHandlingRunnable<T>(prcoObservable: PrcoObservable) : Runnable {
 
     final override fun run() {
+        var result: T? = null
+        var error = false
         try {
-            doInRunnable()
+            result = doInRunnable()
 
         } catch (e: Exception) {
             handleException(e)
+            error = true
 
         } finally {
-            doInFinally()
+            doInFinally(result, error)
         }
     }
 
-    abstract fun doInRunnable()
+    abstract fun doInRunnable(): T
 
     abstract fun handleException(e: Exception)
 
-    open fun doInFinally() {
+    open fun doInFinally(result: T?, error: Boolean) {
         // nothing, can be use for custom logic
     }
 }

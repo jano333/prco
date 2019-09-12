@@ -127,7 +127,7 @@ open class ProductCommonServiceImpl(private val newProductEntityDao: NewProductE
             val newProductEntity = newProductEntityDao.findById(newProductId)
 
             if (notInterestedProductDbDao.existWithUrl(newProductEntity.url)) {
-                log.warn("product with url {} already exist in products -> deleting from new", newProductEntity.url)
+                log.warn("product with url {} already exist in not interested products -> deleting from new", newProductEntity.url)
 
             } else {
                 // map NewProductEntity -> NotInterestedProductEntity

@@ -24,15 +24,15 @@ import java.math.BigDecimal
 import java.util.*
 
 @Component
-class AlzaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+class AlzaProductParser(unitParser: UnitParser,
+                        userAgentDataHolder: UserAgentDataHolder,
+                        searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = ALZA
+    override val eshopUuid: EshopUuid = ALZA
 
     // koli pomalym odozvam davam na 10 sekund
-    override val timeout: Int
-        get() = TIMEOUT_10_SECOND
+    override val timeout: Int = TIMEOUT_10_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         // zaujimaju aj tak maximalne 3 page viac nie...

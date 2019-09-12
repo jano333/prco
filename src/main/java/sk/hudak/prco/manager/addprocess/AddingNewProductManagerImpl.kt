@@ -4,6 +4,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.product.NewProductCreateDto
+import sk.hudak.prco.events.CoreEvent
+import sk.hudak.prco.events.EshopKeywordFinish
+import sk.hudak.prco.events.PrcoObservable
+import sk.hudak.prco.events.PrcoObserver
 import sk.hudak.prco.exception.*
 import sk.hudak.prco.manager.error.ErrorLogManager
 import sk.hudak.prco.mapper.PrcoOrikaMapper
@@ -25,11 +29,24 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                                   private val eshopTaskManager: EshopTaskManager,
                                   private val eshopUuidParser: EshopUuidParser,
                                   private val productsParsers: List<EshopProductsParser>,
-                                  private val errorLogManager: ErrorLogManager)
-    : AddingNewProductManager {
+                                  private val errorLogManager: ErrorLogManager,
+                                  private val prcoObservable: PrcoObservable)
+    : AddingNewProductManager, PrcoObserver {
 
     companion object {
         val log = LoggerFactory.getLogger(AddingNewProductManagerImpl::class.java)!!
+    }
+
+    init {
+        prcoObservable.addObserver(this)
+    }
+
+    override fun update(source: Observable?, event: CoreEvent) {
+        when (event) {
+            is EshopKeywordFinish -> {
+                log.debug("eshop ${event.eshopUuid} finished adding new products for keyword ${event.keyword}")
+            }
+        }
     }
 
     override fun addNewProductsByKeywordsForAllEshops(vararg searchKeyWords: String) {
@@ -54,9 +71,9 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
     }
 
     override fun addNewProductsByKeywordForEshop(eshopUuid: EshopUuid, searchKeyWord: String) {
-        eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
+        eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable<String>(prcoObservable) {
 
-            override fun doInRunnable() {
+            override fun doInRunnable(): String {
                 log.debug(">> addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWord $searchKeyWord")
                 eshopTaskManager.markTaskAsRunning(eshopUuid)
 
@@ -72,16 +89,26 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                 createNewProductsErrorWrapper(eshopUuid, notExistingProducts)
 
                 eshopTaskManager.markTaskAsFinished(eshopUuid, false)
+
+                return ""
             }
 
             override fun handleException(e: Exception) {
                 handleExceptionAddNewProducts(e, eshopUuid)
             }
 
-            override fun doInFinally() {
+            override fun doInFinally(value: String?, error: Boolean) {
                 log.debug("<< addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWord $searchKeyWord")
+                // TODO notify
+//                notifyFinishProcessingKeywordForEshop(eshopUuid, searchKeyWord, urlList.size, filterOnlyNotExisting.size)
             }
         })
+    }
+
+
+    private fun notifyFinishProcessingKeywordForEshop(eshopUuid: EshopUuid, keyword: String, countOfFound: Int, countOfAdded: Int) {
+        //TODO impl v osobitnom thread-e
+        prcoObservable.notify(EshopKeywordFinish(eshopUuid, keyword, countOfFound, countOfAdded))
     }
 
     override fun addNewProductsByUrl(productsUrl: List<String>) {
@@ -102,32 +129,32 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         // spustim parsovanie pre kazdy eshop
         for ((eshopUuid, productUrlList) in eshopUrls) {
 
-            eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
+            eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable<String>(prcoObservable) {
 
-                override fun doInRunnable() {
+                override fun doInRunnable(): String {
                     log.debug(">> addNewProductsByUrlsForEshop eshop $eshopUuid")
                     eshopTaskManager.markTaskAsRunning(eshopUuid)
 
                     createNewProductsErrorWrapper(eshopUuid, productUrlList!!)
 
                     eshopTaskManager.markTaskAsFinished(eshopUuid, false)
+                    return ""
                 }
 
                 override fun handleException(e: Exception) {
                     handleExceptionAddNewProducts(e, eshopUuid)
                 }
 
-                override fun doInFinally() {
+                override fun doInFinally(value: String?, error: Boolean) {
                     log.debug("<< addNewProductsByUrlsForEshop eshop $eshopUuid")
                 }
 
             })
+            //TODO notify
 
             // kazdy dalsi spusti s 2 sekundovym oneskorenim
             sleepSafe(2)
         }
-
-
 
         log.debug("<< addNewProductsByUrl count of URLs: ${productsUrl.size}")
     }
@@ -187,10 +214,10 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                 is EshopParserNotFoundException -> {
                     ContinueStatus.STOP_PROCESSING_NEXT_ONE
                 }
-                is ProductNotFoundHttpParserException,
+                is ProductPageNotFoundHttpParserException,
                 is HttpStatusParserException,
                 is HttpSocketTimeoutParserException,
-                is DefaultHttpParserException -> {
+                is CoreParserException -> {
                     ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR
                 }
                 else -> {

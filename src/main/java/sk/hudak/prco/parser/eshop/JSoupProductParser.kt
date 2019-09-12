@@ -264,7 +264,7 @@ abstract class JSoupProductParser : EshopProductsParser {
         return when (e) {
             is HttpStatusException -> {
                 if (404 == e.statusCode) {
-                    ProductNotFoundHttpParserException("$errMsg $e", e)
+                    ProductPageNotFoundHttpParserException("$errMsg $e", e)
                 } else {
                     HttpStatusParserException(e.statusCode, "$errMsg $e", e)
                 }
@@ -273,7 +273,7 @@ abstract class JSoupProductParser : EshopProductsParser {
                 HttpSocketTimeoutParserException(e)
             }
             else -> {
-                DefaultHttpParserException(errMsg, e)
+                CoreParserException(errMsg, e)
             }
         }
     }

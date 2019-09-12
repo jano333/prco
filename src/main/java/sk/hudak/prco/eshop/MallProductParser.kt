@@ -33,11 +33,9 @@ class MallProductParser(unitParser: UnitParser,
         private const val MAX_COUNT_OF_PRODUCT_PRE_PAGE = 48
     }
 
-    override val eshopUuid: EshopUuid
-        get() = MALL
+    override val eshopUuid: EshopUuid = MALL
 
-    override val timeout: Int
-        get() = TIMEOUT_15_SECOND
+    override val timeout: Int = TIMEOUT_15_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         val scriptContent = documentList.getElementsByTag("script").stream()

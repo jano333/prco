@@ -11,6 +11,7 @@ import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ConvertUtils
 import sk.hudak.prco.utils.UserAgentDataHolder
+import sk.hudak.prco.utils.href
 import java.math.BigDecimal
 import java.util.*
 import java.util.Optional.ofNullable
@@ -22,11 +23,9 @@ class BrendonProductParser(unitParser: UnitParser,
                            searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = BRENDON
+    override val eshopUuid: EshopUuid = BRENDON
 
-    override val timeout: Int
-        get() = TIMEOUT_15_SECOND
+    override val timeout: Int = TIMEOUT_15_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         return ofNullable(documentList.select("ul[class='pagermenu'] li[class='bluelink'] span").first())
@@ -39,7 +38,7 @@ class BrendonProductParser(unitParser: UnitParser,
     override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
         return documentList.select("body > div.maincontent.clear > div > div.col700_container > div > div.middle-left_ > div > a")
                 .stream()
-                .map { eshopUuid.productStartUrl + it.attr("href") }
+                .map { eshopUuid.productStartUrl + it.href()}
                 .toList()
     }
 

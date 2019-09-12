@@ -16,14 +16,14 @@ import java.util.*
 import java.util.stream.Collectors
 
 @Component
-class AmdDrogeriaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+class AmdDrogeriaProductParser(unitParser: UnitParser,
+                               userAgentDataHolder: UserAgentDataHolder,
+                               searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = AMD_DROGERIA
+    override val eshopUuid: EshopUuid = AMD_DROGERIA
 
-    override val timeout: Int
-        get() = TIMEOUT_10_SECOND
+    override val timeout: Int = TIMEOUT_10_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         val first = Optional.ofNullable(documentList.select("div.searching__toolbar-bottom > div > ul").first())

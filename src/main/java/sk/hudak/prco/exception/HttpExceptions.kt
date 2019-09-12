@@ -12,11 +12,11 @@ open class HttpStatusParserException : PrcoRuntimeException {
     }
 }
 
-class ProductNotFoundHttpParserException(message: String, cause: Throwable) :
+class ProductPageNotFoundHttpParserException(message: String, cause: Throwable) :
         HttpStatusParserException(404, message, cause)
 
 class HttpSocketTimeoutParserException(e: SocketTimeoutException) :
         PrcoRuntimeException("timeout", e)
 
-class DefaultHttpParserException(message: String, cause: Throwable):
+class CoreParserException(message: String, cause: Throwable):
     PrcoRuntimeException(message, cause)

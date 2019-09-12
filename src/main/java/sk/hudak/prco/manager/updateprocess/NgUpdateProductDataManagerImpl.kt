@@ -21,7 +21,6 @@ import sk.hudak.prco.task.ExceptionHandlingRunnable
 import sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe
 import sk.hudak.prco.utils.ThreadUtils.sleepSafe
 import java.util.*
-import javax.annotation.PostConstruct
 
 @Primary
 @Component
@@ -37,8 +36,7 @@ class NgUpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
         val log = LoggerFactory.getLogger(NgUpdateProductDataManagerImpl::class.java)!!
     }
 
-    @PostConstruct
-    fun init() {
+    init {
         prcoObservable.addObserver(this)
     }
 
@@ -52,9 +50,9 @@ class NgUpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
 
         val eshopUuid = productForUpdate.eshopUuid
 
-        eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
+        eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable<String>(prcoObservable) {
 
-            override fun doInRunnable() {
+            override fun doInRunnable(): String {
                 log.debug(">> updateProductData eshop $eshopUuid, productId $productId")
                 eshopTaskManager.markTaskAsRunning(eshopUuid)
 
@@ -62,13 +60,14 @@ class NgUpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
                 //ignorujem response lebo je to len jeden
 
                 eshopTaskManager.markTaskAsFinished(eshopUuid, false)
+                return ""
             }
 
             override fun handleException(e: Exception) {
                 handleExceptionUpdateProducts(e, eshopUuid)
             }
 
-            override fun doInFinally() {
+            override fun doInFinally(value: String?, error: Boolean) {
                 log.debug("<< updateProductData eshop $eshopUuid, productId $productId")
                 prcoObservable.notify(object : CoreEvent(EventType.UPDATE_PRODUCT) {})
             }
@@ -85,9 +84,9 @@ class NgUpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
 
     override fun updateProductDataForEachProductInEshop(eshopUuid: EshopUuid, listener: UpdateProductDataListener) {
 
-        eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
+        eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable<String>(prcoObservable) {
 
-            override fun doInRunnable() {
+            override fun doInRunnable(): String {
                 log.debug(">> updateProductDataForEachProductInEshop eshop $eshopUuid")
                 eshopTaskManager.markTaskAsRunning(eshopUuid)
 
@@ -113,13 +112,14 @@ class NgUpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
                 }
 
                 eshopTaskManager.markTaskAsFinished(eshopUuid, false)
+                return ""
             }
 
             override fun handleException(e: Exception) {
                 handleExceptionUpdateProducts(e, eshopUuid)
             }
 
-            override fun doInFinally() {
+            override fun doInFinally(value: String?, error: Boolean) {
                 log.debug("<< updateProductDataForEachProductInEshop eshop $eshopUuid")
                 prcoObservable.notify(object : CoreEvent(EventType.UPDATE_PRODUCT) {})
             }
@@ -152,9 +152,9 @@ class NgUpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
             return
         }
 
-        eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
+        eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable<String>(prcoObservable) {
 
-            override fun doInRunnable() {
+            override fun doInRunnable(): String {
                 log.debug(">> updateProductData eshop $eshopUuid, product for update ids count ${productForUpdateIds.size}")
                 eshopTaskManager.markTaskAsRunning(eshopUuid)
 
@@ -190,18 +190,20 @@ class NgUpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
                         }
                     }
 
+                    //TODO zrusit a dat cez observable....
                     listener.onUpdateStatus(UpdateStatusInfo(eshopUuid, countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated))
 
                 }// koniec for cyklu
 
                 eshopTaskManager.markTaskAsFinished(eshopUuid, false)
+                return ""
             }
 
             override fun handleException(e: Exception) {
                 handleExceptionUpdateProducts(e, eshopUuid)
             }
 
-            override fun doInFinally() {
+            override fun doInFinally(value: String?, error: Boolean) {
                 log.debug("<< updateProductData eshop $eshopUuid, productForUpdateIds count ${productForUpdateIds.size}")
             }
         })
