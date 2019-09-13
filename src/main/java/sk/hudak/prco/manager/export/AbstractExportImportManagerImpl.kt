@@ -1,14 +1,14 @@
 package sk.hudak.prco.manager.export
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import sk.hudak.prco.service.InternalTxService
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.inject.Inject
 
 abstract class AbstractExportImportManagerImpl {
 
-    @Inject
+    @Autowired
     protected var internalTxService: InternalTxService? = null
 
     @Value("\${prco.server.export.import.root.dir}")
