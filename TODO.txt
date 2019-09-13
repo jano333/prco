@@ -1,3 +1,16 @@
+-----------
+60 stranok?
+2019-09-13 15:48:30,899 DEBUG [KID_MARKET-thread] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:144] marking task for eshop KID_MARKET as RUNNING
+2019-09-13 15:48:30,899 DEBUG [KID_MARKET-thread] [] s.h.p.p.h.JsoupHtmlParserImpl [JsoupHtmlParserImpl.kt:22] start searching for keyword 'pampers'
+2019-09-13 15:48:30,899 DEBUG [KID_MARKET-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:243] request URL: https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query=pampers&submit_search=
+2019-09-13 15:48:30,899 DEBUG [KID_MARKET-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:244] userAgent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36
+2019-09-13 15:48:30,941 DEBUG [KID_MARKET-thread] [] s.h.p.s.PrcoCustomTrustManager [SSLHandling.kt:277] server cert subject name CN=admin.asdata.sk
+2019-09-13 15:48:30,961 DEBUG [KID_MARKET-thread] [] s.h.p.s.PrcoCustomHostnameVerifier [SSLHandling.kt:365] verify kidmarket.sk
+2019-09-13 15:48:31,626 DEBUG [KID_MARKET-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:124] new pages count: 60
+2019-09-13 15:48:31,626 DEBUG [KID_MARKET-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:130] count of new pages changed to maxim: 5
+2019-09-13 15:48:31,628 DEBUG [KID_MARKET-thread] [] s.h.p.u.ThreadUtils [ThreadUtils.kt:34] start sleeping for 20 sec
+
+----------
 2019-09-12 14:43:52,166 DEBUG [FEEDO-thread] [] s.h.p.p.u.UnitParserImpl [UnitParserImpl.kt:30] parsing product name to retrieve unit info: 14x PAMPERS Aqua Pure 48 ks - detské čistiace obrúsky
 2019-09-12 14:43:52,170 ERROR [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:337] error while creating new product from URL for eshop FEEDO
 sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop FEEDO
