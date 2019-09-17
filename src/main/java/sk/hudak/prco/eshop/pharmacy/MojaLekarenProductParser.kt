@@ -18,15 +18,15 @@ import java.util.*
 import java.util.Optional.ofNullable
 
 @Component
-class MojaLekarenProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+class MojaLekarenProductParser(unitParser: UnitParser,
+                               userAgentDataHolder: UserAgentDataHolder,
+                               searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = MOJA_LEKAREN
+    override val eshopUuid: EshopUuid = MOJA_LEKAREN
 
-    override// koli pomalym odozvam davam na 15 sekund
-    val timeout: Int
-        get() = TIMEOUT_15_SECOND
+    // koli pomalym odozvam davam na 15 sekund
+    override val timeout: Int = TIMEOUT_15_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         val select = documentList.select("p.pagination__part.pagination__part--page").first() ?: return SINGLE_PAGE_ONE
@@ -48,6 +48,9 @@ class MojaLekarenProductParser(unitParser: UnitParser, userAgentDataHolder: User
         if (element == null) {
             element = documentDetailProduct.select("div > article > h1").first()
         }
+        if (element == null) {
+            element = documentDetailProduct.select("div.detail-top.list > div > article > h1").first()
+        }
 
         return ofNullable(element)
                 .map { it.text() }
@@ -65,9 +68,17 @@ class MojaLekarenProductParser(unitParser: UnitParser, userAgentDataHolder: User
     }
 
     override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
-        return Optional.of(documentDetailProduct.select("span[itemprop=price]").first())
+        var element = documentDetailProduct.select("span[itemprop=price]").first()
+        if (element != null) {
+            val attr = element.attr("content")
+            if (attr.isNotBlank()) {
+                return ofNullable(ConvertUtils.convertToBigDecimal(attr))
+            }
+        }
+        return Optional.of(element)
                 .filter { Objects.nonNull(it) }
                 .map { it.text() }
+                .filter { StringUtils.isNotBlank(it) }
                 .map { ConvertUtils.convertToBigDecimal(it) }
     }
 
