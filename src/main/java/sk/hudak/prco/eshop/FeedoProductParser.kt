@@ -21,21 +21,25 @@ import java.util.*
 import kotlin.streams.toList
 
 @Component
-class FeedoProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+class FeedoProductParser(unitParser: UnitParser,
+                         userAgentDataHolder: UserAgentDataHolder,
+                         searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = FEEDO
+    override val eshopUuid: EshopUuid = FEEDO
 
-    override val timeout: Int
-        get() = TIMEOUT_15_SECOND
+    override val timeout: Int = TIMEOUT_15_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         val countOfProductString = Optional.ofNullable(documentList.select("#content > div.clearfix.mb-2 > h1:nth-child(1) > span").first())
-                .map { it.text() }
-                .filter { it.contains("(") }
-                .filter { it.contains(")") }
-                .map { it.substring(it.indexOf('(') + 1, it.indexOf(')')) }
+                .map {
+                    it.text() }
+                .filter {
+                    it.contains("(") && it.contains(")")}
+                .map {
+                    val substring = it.substring(it.indexOf('(') + 1, it.indexOf(')'))
+                    substring
+                }
                 .orElseThrow { PrcoRuntimeException("None product count found for: " + documentList.location()) }
 
         return calculateCountOfPages(Integer.valueOf(countOfProductString), eshopUuid.maxCountOfProductOnPage)

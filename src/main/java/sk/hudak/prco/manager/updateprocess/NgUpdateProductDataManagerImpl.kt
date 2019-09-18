@@ -1,7 +1,6 @@
 package sk.hudak.prco.manager.updateprocess
 
 import org.slf4j.LoggerFactory
-import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ProductUpdateData
@@ -22,7 +21,7 @@ import sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe
 import sk.hudak.prco.utils.ThreadUtils.sleepSafe
 import java.util.*
 
-@Primary
+//TODO remove Ng
 @Component
 class NgUpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
                                      private val internalTxService: InternalTxService,
@@ -90,7 +89,7 @@ class NgUpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
                 log.debug(">> updateProductDataForEachProductInEshop eshop $eshopUuid")
                 eshopTaskManager.markTaskAsRunning(eshopUuid)
 
-                var productForUpdate = internalTxService.findProductForUpdate(eshopUuid, eshopUuid.olderThanInHours)
+                var productForUpdate: ProductDetailInfo? = internalTxService.findProductForUpdate(eshopUuid, eshopUuid.olderThanInHours)
                 // until we have anything for update
                 loop@
                 while (productForUpdate != null) {
@@ -257,7 +256,6 @@ class NgUpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
             htmlParser.parseProductUpdateData(productUrl)
 
         } catch (e: Exception) {
-            //TODO premenovat na updateParserErrorHandler
             updateProductErrorHandler.processParsingError(e, productForUpdate)
             return ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR
         }

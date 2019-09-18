@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.product.NewProductCreateDto
 import sk.hudak.prco.events.CoreEvent
-import sk.hudak.prco.events.EshopKeywordFinish
+import sk.hudak.prco.events.EventType
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.events.PrcoObserver
 import sk.hudak.prco.exception.*
@@ -43,7 +43,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is EshopKeywordFinish -> {
+            is EshopKeywordFinishEvent -> {
                 log.debug("eshop ${event.eshopUuid} finished adding new products for keyword ${event.keyword}")
             }
         }
@@ -78,13 +78,15 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                 eshopTaskManager.markTaskAsRunning(eshopUuid)
 
                 // vyparsujem vsetky url-cky produktov, ktore sa najdu na strankach(prechadza aj pageovane stranky)
-                val urlList: List<String> = searchProductUrls(eshopUuid, searchKeyWord)
+                var urlList: List<String> = searchProductUrls(eshopUuid, searchKeyWord)
                 log.debug("count of products URL ${urlList.size}")
+
+                urlList = filterDuplicity(eshopUuid, searchKeyWord, urlList)
+                log.debug("count of products URL after duplicity check ${urlList.size}")
 
                 // filter only non existing
                 val notExistingProducts = filterOnlyNotExistingWithException(urlList, eshopUuid)
                 log.debug("count of non existing products URL  ${notExistingProducts.size}")
-                log.debug("list of notexisting products URL $notExistingProducts")
 
                 createNewProductsErrorWrapper(eshopUuid, notExistingProducts)
 
@@ -105,10 +107,33 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         })
     }
 
+    private fun filterDuplicity(eshopUuid: EshopUuid, searchKeyWord: String, urlList: List<String>): List<String> {
+        // key: productUrl, value: count of duplicity
+        var result = mutableMapOf<String, Int>()
+        urlList.forEach {
+            var entry = result[it]
+            if (entry == null) {
+                result[it] = 1
+            } else {
+                entry++
+                result[it] = entry
+            }
+        }
+
+        result.forEach { (key, value) ->
+            if (value != 1) {
+                log.error("product with URL $key is more than one, count: $value")
+                errorLogManager.logErrorDuplicityDuringfindinUrlOfProducts(eshopUuid, searchKeyWord, key)
+            }
+        }
+
+        return result.keys.toList()
+    }
+
 
     private fun notifyFinishProcessingKeywordForEshop(eshopUuid: EshopUuid, keyword: String, countOfFound: Int, countOfAdded: Int) {
         //TODO impl v osobitnom thread-e
-        prcoObservable.notify(EshopKeywordFinish(eshopUuid, keyword, countOfFound, countOfAdded))
+        prcoObservable.notify(EshopKeywordFinishEvent(eshopUuid, keyword, countOfFound, countOfAdded))
     }
 
     override fun addNewProductsByUrl(productsUrl: List<String>) {
@@ -348,6 +373,12 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
 
 }
+
+data class EshopKeywordFinishEvent(val eshopUuid: EshopUuid,
+                                   val keyword: String,
+                                   val countOfFound: Int,
+                                   val countOfAdded: Int)
+    : CoreEvent(EventType.ESHOP_KEYWORD_FINISH)
 
 
 class SearchProductUrlsException(val eshopUuid: EshopUuid, val searchKeyWord: String, e: Exception) :

@@ -1,8 +1,3 @@
-2019-09-17 10:53:04,909 INFO [FEEDO-thread] [] s.h.p.p.h.JsoupHtmlParserImpl [JsoupHtmlParserImpl.kt:26] count of products found for keyword 'pampers': 100
-2019-09-17 10:53:04,909 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:82] count of products URL 100
-2019-09-17 10:53:04,909 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:85] count of products URL after duplicity check 20
-2019-09-17 10:53:04,915 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:315] product https://www.feedo.sk/pampers-premium-care-5-junior-88ks-11-16-kg-mega-box-jednorazove-plienky/ already existing
-
 -------------------------------------------------------------------------------
 2019-09-17 10:03:47,548 ERROR [PILULKA_24-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:321] error while parsing eshop PILULKA_24 products URLs for keyword lovela
 sk.hudak.prco.manager.addprocess.SearchProductUrlsException: error while parsing eshop PILULKA_24 products URLs for keyword lovela

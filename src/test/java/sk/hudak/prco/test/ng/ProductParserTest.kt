@@ -21,11 +21,14 @@ fun main() {
 
     val test = ProductParserTest()
 //    https://www.maxikovy-hracky.cz/vyhledavani?search=pampers
-//           println(test.parseUrlsOfProduct(EshopUuid.MALL, "pampers"));
+    val urlList = test.parseUrlsOfProduct(EshopUuid.FEEDO, "pampers")
+    println("count in list ${urlList.size}")
+    println("count in set ${HashSet(urlList).size}")
+    println(urlList);
 //
-    println(test.parseProductNewData("https://www.gigalekaren.sk/produkt/nutrilon-kase-pronutra-ml-kr-s-piskoty-6m-225g/"))
+//    println(test.parseProductNewData("https://www.gigalekaren.sk/produkt/nutrilon-kase-pronutra-ml-kr-s-piskoty-6m-225g/"))
 
-//    println(test.parseProductUpdateData("https://www.farby.sk/156498/pampers-premium-care-plienky-maxi-52-ks/"))
+//    println(test.parseProductUpdateData("https://www.mojalekaren.sk//pampers-active-baby-dry-3-midi-5-9kg-68-kusov/"))
 }
 
 class ProductParserTest {
@@ -40,19 +43,21 @@ class ProductParserTest {
             EshopUuid.DROGERKA -> DrogerkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.DR_MAX -> DrMaxProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // F
-            EshopUuid.FOUR_KIDS -> FourKidsProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.FARBY -> FarbyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            EshopUuid.FEEDO -> FeedoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            EshopUuid.FOUR_KIDS -> FourKidsProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // G
             EshopUuid.GIGA_LEKAREN -> GigaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-            // P
-            EshopUuid.PILULKA -> PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // L
             EshopUuid.LEKAREN_BELLA -> LekarenBellaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.LEKAREN_EXPRES -> LekarenExpresProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // M
             EshopUuid.MALL -> MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.MAXIKOVY_HRACKY -> MaxikovyHrackyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-            //TODO others
+            EshopUuid.MOJA_LEKAREN -> MojaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            // P
+            EshopUuid.PILULKA -> PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+
             else -> throw PrcoRuntimeException("Pridaj implementaciu do testu pre eshop $eshopUuid")
         }
     }

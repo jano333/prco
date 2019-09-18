@@ -1,6 +1,5 @@
 package sk.hudak.prco.events
 
-import sk.hudak.prco.api.EshopUuid
 import java.util.*
 
 enum class EventType {
@@ -16,12 +15,6 @@ abstract class CoreEvent(val eventType: EventType) {
         return "CoreEvent(eventType=$eventType, created=$created)"
     }
 }
-
-data class EshopKeywordFinish(val eshopUuid: EshopUuid,
-                         val keyword: String,
-                         val countOfFound: Int,
-                         val countOfAdded: Int)
-    : CoreEvent(EventType.ESHOP_KEYWORD_FINISH)
 
 interface PrcoObserver : Observer {
 

@@ -25,7 +25,24 @@ object MallEshopConfiguration : DynamicEshopConfiguration(
     }
 }
 
+object FeedoEshopConfiguration : StaticEshopConfiguration(
+        EshopCategory.NONE,
+        "https://www.feedo.sk",
+        "https://www.feedo.sk/vysledky-hladania/$KEYWORD_TEMP/",
+//        "https://www.feedo.sk/vysledky-hladania/$KEYWORD_TEMP/filter/?strana=$PAGE_NUMBER_TEMP",
+        "https://www.feedo.sk/vysledky-hladania/$KEYWORD_TEMP/?page=$PAGE_NUMBER_TEMP",
+        5, 12, 20
+)
 
+//
+
+
+//FEEDO(
+//NONE,
+//"https://www.feedo.sk",
+//"https://www.feedo.sk/vysledky-hladania/{keyword}/",
+//"https://www.feedo.sk/vysledky-hladania/{keyword}/filter/?strana={pageNumber}",
+//5, 12, 20),
 
 
 abstract class EshopConfiguration(
@@ -75,14 +92,14 @@ abstract class DynamicEshopConfiguration(category: EshopCategory,
                                          olderThanInHours: Int,
                                          maxCountOfProductOnPage: Int)
     : EshopConfiguration(
-        category,
-        productStartUrl,
-        true,
-        null,
-        null,
-        maxCountOfNewPages,
-        olderThanInHours,
-        maxCountOfProductOnPage) {
+        category = category,
+        productStartUrl = productStartUrl,
+        isDynamicSearchUrlByKeyWord = true,
+        searchTemplateUrl = null,
+        searchTemplateUrlWithPageNumber = null,
+        maxCountOfNewPages = maxCountOfNewPages,
+        olderThanInHours = olderThanInHours,
+        maxCountOfProductOnPage = maxCountOfProductOnPage) {
 
     //TODO po preklopenie vsetkych eshop to odkomentovat
 //    override val searchTemplateUrl: String?

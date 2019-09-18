@@ -55,10 +55,7 @@ public enum EshopUuid {
 
     //TODO pridat prvy parameter boolean ktory bude hovorit o tom ci je alebo nie je enablovany dany eshop
 
-
-    // done
     ALZA(AlzaEshopConfiguration.INSTANCE),
-
 
     //TODO
 //    ANDREA_SHOP("https://www.andreashop.sk",
@@ -116,13 +113,7 @@ public enum EshopUuid {
             null,
             1, 12, -1),
 
-    // done
-    FEEDO(
-            NONE,
-            "https://www.feedo.sk",
-            "https://www.feedo.sk/vysledky-hladania/{keyword}/",
-            "https://www.feedo.sk/vysledky-hladania/{keyword}/filter/?strana={pageNumber}",
-            5, 12, 20),
+    FEEDO(FeedoEshopConfiguration.INSTANCE),
 
     FOUR_KIDS(
             NONE,
@@ -284,12 +275,23 @@ public enum EshopUuid {
         this.searchTemplateUrl = config.getSearchTemplateUrl();
         this.searchTemplateUrlWithPageNumber = config.getSearchTemplateUrlWithPageNumber();
         this.maxCountOfNewPages = config.getMaxCountOfNewPages();
-        this.olderThanInHours = getOlderThanInHours();
-        this.maxCountOfProductOnPage = getMaxCountOfProductOnPage();
+        this.olderThanInHours = config.getOlderThanInHours();
+        this.maxCountOfProductOnPage = config.getMaxCountOfProductOnPage();
         this.countToWaitInSecond = 3;
     }
 
-
+    /**
+     * use config constructor instead
+     *
+     * @param category
+     * @param productStartUrl
+     * @param searchTemplateUrl
+     * @param searchTemplateUrlWithPageNumber
+     * @param maxCountOfNewPages
+     * @param olderThanInHours
+     * @param maxCountOfProductOnPage
+     */
+    @Deprecated
     EshopUuid(EshopCategory category, String productStartUrl, String searchTemplateUrl, String searchTemplateUrlWithPageNumber,
               int maxCountOfNewPages, int olderThanInHours, int maxCountOfProductOnPage) {
         this.category = category;

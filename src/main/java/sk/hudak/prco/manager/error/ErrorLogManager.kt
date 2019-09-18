@@ -71,5 +71,14 @@ class ErrorLogManager(private val internalTxService: InternalTxService) {
         )
     }
 
+    fun logErrorDuplicityDuringfindinUrlOfProducts(eshopUuid: EshopUuid, searchKeyWord: String, productUrl: String) {
+        internalTxService.createError(ErrorCreateDto(
+                eshopUuid,
+                ErrorType.PARSING_PRODUCT_NEW_DATA, null,
+                "duplicity product url found",
+                null, productUrl,
+                searchKeyWord))
+    }
+
 
 }
