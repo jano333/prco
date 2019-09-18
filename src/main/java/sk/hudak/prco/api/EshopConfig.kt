@@ -4,46 +4,55 @@ import sk.hudak.prco.api.SearchTemplateConstants.KEYWORD_TEMP
 import sk.hudak.prco.api.SearchTemplateConstants.PAGE_NUMBER_TEMP
 import sk.hudak.prco.exception.PrcoRuntimeException
 
-object AlzaEshopConfiguration : StaticEshopConfiguration(
-        EshopCategory.NONE,
+/****************************/
+/*            A             */
+/****************************/
+object AlzaEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
         "https://www.alza.sk",
         "https://www.alza.sk/search.htm?exps=" + KEYWORD_TEMP,
         "https://www.alza.sk/search-p" + PAGE_NUMBER_TEMP + ".htm?exps=" + KEYWORD_TEMP,
         5, 12, 24
 )
-
-object MallEshopConfiguration : DynamicEshopConfiguration(
-        EshopCategory.NONE,
+/****************************/
+/*            F             */
+/****************************/
+object FeedoEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
+        "https://www.feedo.sk",
+        "https://www.feedo.sk/vysledky-hladania/$KEYWORD_TEMP/",
+        "https://www.feedo.sk/vysledky-hladania/$KEYWORD_TEMP/?page=$PAGE_NUMBER_TEMP",
+        5, 12, 20
+)
+/****************************/
+/*            M             */
+/****************************/
+object MallEshopConfiguration : DynamicEshopConfiguration(EshopCategory.NONE,
         "https://www.mall.sk",
         3, 12, -1) {
 
     override fun buildSearchUrlForKeyWord(keyword: String, pageNumber: Int): String {
         return when (keyword) {
-            "pampers", "nutrilon" -> "https://www.mall.sk/znacka/$keyword?page=$pageNumber"
+            "pampers",
+            "nutrilon" -> "https://www.mall.sk/znacka/$keyword?page=$pageNumber"
             else -> "https://www.mall.sk/hladaj?page=$pageNumber&s=$keyword"
         }
     }
 }
+/****************************/
+/*            P             */
+/****************************/
+object Pilulka24EshopConfiguration : DynamicEshopConfiguration(
+        EshopCategory.PHARMACY,
+        "https://www.pilulka24.sk/",
+        5, 12, 40) {
 
-object FeedoEshopConfiguration : StaticEshopConfiguration(
-        EshopCategory.NONE,
-        "https://www.feedo.sk",
-        "https://www.feedo.sk/vysledky-hladania/$KEYWORD_TEMP/",
-//        "https://www.feedo.sk/vysledky-hladania/$KEYWORD_TEMP/filter/?strana=$PAGE_NUMBER_TEMP",
-        "https://www.feedo.sk/vysledky-hladania/$KEYWORD_TEMP/?page=$PAGE_NUMBER_TEMP",
-        5, 12, 20
-)
-
-//
-
-
-//FEEDO(
-//NONE,
-//"https://www.feedo.sk",
-//"https://www.feedo.sk/vysledky-hladania/{keyword}/",
-//"https://www.feedo.sk/vysledky-hladania/{keyword}/filter/?strana={pageNumber}",
-//5, 12, 20),
-
+    override fun buildSearchUrlForKeyWord(keyword: String, pageNumber: Int): String {
+        return when (keyword) {
+            "pampers" -> "https://www.pilulka24.sk/detske-plienky/pampers?page=$pageNumber"
+            "nutrilon" -> "https://www.pilulka24.sk/nutrilon?page=$pageNumber"
+            else -> "https://www.pilulka24.sk/vyhladavanie?page=$pageNumber&q=$keyword"
+        }
+    }
+}
 
 abstract class EshopConfiguration(
         val category: EshopCategory,

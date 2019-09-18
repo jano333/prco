@@ -7,9 +7,6 @@ import static sk.hudak.prco.api.SearchTemplateConstants.KEYWORD_TEMP;
 import static sk.hudak.prco.api.SearchTemplateConstants.OFFSET_TEMP;
 import static sk.hudak.prco.api.SearchTemplateConstants.PAGE_NUMBER_TEMP;
 
-/**
- * Created by jan.hudak on 9/29/2017.
- */
 public enum EshopUuid {
 
 //    diskontdrogerie.cz
@@ -233,14 +230,7 @@ public enum EshopUuid {
             "https://www.pilulka.sk/hledat?q=" + KEYWORD_TEMP + "&page=" + PAGE_NUMBER_TEMP,
             5, 12, -1),
 
-    //TODO nefunguje paging pre 2 stranku pre lovela verzus pampers a nutrilon, maju vlastne URL pre vyhladavanie... pre nutrilon a pre pampers...
-    // a zle mi urobi redirect
-    PILULKA_24(
-            PHARMACY,
-            "https://www.pilulka24.sk/",
-            "https://www.pilulka24.sk/" + KEYWORD_TEMP,
-            "https://www.pilulka24.sk/" + KEYWORD_TEMP + "?page=" + PAGE_NUMBER_TEMP + "&pageTo=0",
-            5, 12, 40),
+    PILULKA_24(Pilulka24EshopConfiguration.INSTANCE),
 
     TESCO(
             NONE,
