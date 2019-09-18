@@ -17,6 +17,7 @@ import sk.hudak.prco.parser.html.HtmlParser
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.EshopTaskManager
 import sk.hudak.prco.task.ExceptionHandlingRunnable
+import sk.hudak.prco.task.SingleContext
 import sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe
 import sk.hudak.prco.utils.ThreadUtils.sleepSafe
 import sk.hudak.prco.utils.Validate.notEmpty
@@ -44,7 +45,9 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
             is EshopKeywordFinishEvent -> {
-                log.debug("eshop ${event.eshopUuid} finished adding new products for keyword ${event.keyword}")
+                //TODO do osobitnej tabulky ukladat historicke informacie
+                log.debug("eshop '${event.eshopUuid}' finished adding new products for keyword '${event.keyword}'")
+                log.debug(event.toString())
             }
         }
     }
@@ -71,69 +74,39 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
     }
 
     override fun addNewProductsByKeywordForEshop(eshopUuid: EshopUuid, searchKeyWord: String) {
-        eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable<String>(prcoObservable) {
+        eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
 
-            override fun doInRunnable(): String {
+            override fun doInRunnable(context: SingleContext) {
                 log.debug(">> addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWord $searchKeyWord")
                 eshopTaskManager.markTaskAsRunning(eshopUuid)
+                context.addValue("eshopUuid", eshopUuid)
+                context.addValue("searchKeyWord", searchKeyWord)
 
                 // vyparsujem vsetky url-cky produktov, ktore sa najdu na strankach(prechadza aj pageovane stranky)
-                var urlList: List<String> = searchProductUrls(eshopUuid, searchKeyWord)
+                var urlList: List<String> = searchProductUrls(context, eshopUuid, searchKeyWord)
                 log.debug("count of products URL ${urlList.size}")
 
-                urlList = filterDuplicity(eshopUuid, searchKeyWord, urlList)
+                urlList = filterDuplicity(context, eshopUuid, searchKeyWord, urlList)
                 log.debug("count of products URL after duplicity check ${urlList.size}")
 
                 // filter only non existing
-                val notExistingProducts = filterOnlyNotExistingWithException(urlList, eshopUuid)
+                val notExistingProducts = filterOnlyNotExistingWithException(context, urlList, eshopUuid)
                 log.debug("count of non existing products URL  ${notExistingProducts.size}")
 
-                createNewProductsErrorWrapper(eshopUuid, notExistingProducts)
+                createNewProductsErrorWrapper(context, eshopUuid, notExistingProducts)
 
                 eshopTaskManager.markTaskAsFinished(eshopUuid, false)
-
-                return ""
             }
 
-            override fun handleException(e: Exception) {
+            override fun handleException(context: SingleContext, e: Exception) {
                 handleExceptionAddNewProducts(e, eshopUuid)
             }
 
-            override fun doInFinally(value: String?, error: Boolean) {
+            override fun doInFinally(context: SingleContext) {
                 log.debug("<< addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWord $searchKeyWord")
-                // TODO notify
-//                notifyFinishProcessingKeywordForEshop(eshopUuid, searchKeyWord, urlList.size, filterOnlyNotExisting.size)
+                notifyFinishProcessingKeywordForEshop(context)
             }
         })
-    }
-
-    private fun filterDuplicity(eshopUuid: EshopUuid, searchKeyWord: String, urlList: List<String>): List<String> {
-        // key: productUrl, value: count of duplicity
-        var result = mutableMapOf<String, Int>()
-        urlList.forEach {
-            var entry = result[it]
-            if (entry == null) {
-                result[it] = 1
-            } else {
-                entry++
-                result[it] = entry
-            }
-        }
-
-        result.forEach { (key, value) ->
-            if (value != 1) {
-                log.error("product with URL $key is more than one, count: $value")
-                errorLogManager.logErrorDuplicityDuringfindinUrlOfProducts(eshopUuid, searchKeyWord, key)
-            }
-        }
-
-        return result.keys.toList()
-    }
-
-
-    private fun notifyFinishProcessingKeywordForEshop(eshopUuid: EshopUuid, keyword: String, countOfFound: Int, countOfAdded: Int) {
-        //TODO impl v osobitnom thread-e
-        prcoObservable.notify(EshopKeywordFinishEvent(eshopUuid, keyword, countOfFound, countOfAdded))
     }
 
     override fun addNewProductsByUrl(productsUrl: List<String>) {
@@ -154,23 +127,22 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         // spustim parsovanie pre kazdy eshop
         for ((eshopUuid, productUrlList) in eshopUrls) {
 
-            eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable<String>(prcoObservable) {
+            eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
 
-                override fun doInRunnable(): String {
+                override fun doInRunnable(context: SingleContext) {
                     log.debug(">> addNewProductsByUrlsForEshop eshop $eshopUuid")
                     eshopTaskManager.markTaskAsRunning(eshopUuid)
 
-                    createNewProductsErrorWrapper(eshopUuid, productUrlList!!)
+                    createNewProductsErrorWrapper(context, eshopUuid, productUrlList!!)
 
                     eshopTaskManager.markTaskAsFinished(eshopUuid, false)
-                    return ""
                 }
 
-                override fun handleException(e: Exception) {
+                override fun handleException(context: SingleContext, e: Exception) {
                     handleExceptionAddNewProducts(e, eshopUuid)
                 }
 
-                override fun doInFinally(value: String?, error: Boolean) {
+                override fun doInFinally(context: SingleContext) {
                     log.debug("<< addNewProductsByUrlsForEshop eshop $eshopUuid")
                 }
 
@@ -184,9 +156,43 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         log.debug("<< addNewProductsByUrl count of URLs: ${productsUrl.size}")
     }
 
-    private fun createNewProductsErrorWrapper(eshopUuid: EshopUuid, urlList: List<String>) {
+
+    private fun filterDuplicity(context: SingleContext, eshopUuid: EshopUuid, searchKeyWord: String, urlList: List<String>): List<String> {
+        // key: productUrl, value: count of duplicity
+        var result = mutableMapOf<String, Int>()
+        urlList.forEach {
+            var entry = result[it]
+            if (entry == null) {
+                result[it] = 1
+            } else {
+                entry++
+                result[it] = entry
+            }
+        }
+
+        result.forEach { (key, value) ->
+            if (value != 1) {
+                log.error("product with URL $key is more than one, count: $value")
+                errorLogManager.logErrorDuplicityDuringfindinUrlOfProducts(eshopUuid, searchKeyWord, key)
+            }
+        }
+
+        val toList = result.keys.toList()
+        context.addValue("countOfFoundProductUrlsWithDuplicity", (toList.size - urlList.size))
+        return toList
+    }
+
+    private fun notifyFinishProcessingKeywordForEshop(context: SingleContext) {
+        //TODO impl v osobitnom thread-e
+        prcoObservable.notify(EshopKeywordFinishEvent(eshopUuid = context.values["eshopUuid"] as EshopUuid,
+                keyword = context.values["searchKeyWord"] as String,
+                countOfFound = context.values["countOfFoundProductUrls"] as Int,
+                countOfAdded = context.values["countOfProcessed"] as Int))
+    }
+
+    private fun createNewProductsErrorWrapper(context: SingleContext, eshopUuid: EshopUuid, urlList: List<String>) {
         try {
-            createNewProducts(eshopUuid, urlList)
+            createNewProducts(context, eshopUuid, urlList)
 
         } catch (e: Exception) {
             throw CreateNewProductsForUrlsException(eshopUuid, e)
@@ -199,7 +205,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         STOP_PROCESSING_NEXT_ONE
     }
 
-    private fun createNewProducts(eshopUuid: EshopUuid, urlList: List<String>) {
+    private fun createNewProducts(context: SingleContext, eshopUuid: EshopUuid, urlList: List<String>) {
         loop@
         for (currentUrlIndex in urlList.indices) {
             log.debug("starting {} of {}", currentUrlIndex + 1, urlList.size)
@@ -208,6 +214,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
             when (processNewProductUrl) {
                 ContinueStatus.STOP_PROCESSING_NEXT_ONE -> {
+                    context.addValue("countOfProcessed", currentUrlIndex + 1)
                     break@loop
                 }
                 ContinueStatus.CONTINUE_TO_NEXT_ONE_OK,
@@ -218,6 +225,10 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                     }
                 }
             }
+        }
+
+        if (!context.existValueForKey("countOfProcessed")) {
+            context.addValue("countOfProcessed", urlList.size)
         }
     }
 
@@ -262,7 +273,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         return ContinueStatus.CONTINUE_TO_NEXT_ONE_OK
     }
 
-    private fun searchProductUrls(eshopUuid: EshopUuid, searchKeyWord: String): List<String> {
+    private fun searchProductUrls(context: SingleContext, eshopUuid: EshopUuid, searchKeyWord: String): List<String> {
         val urlList = try {
             // vyparsujem vsetky url-cky produktov, ktore sa najdu na strankach(prechadza aj pageovane stranky)
             htmlParser.searchProductUrls(eshopUuid, searchKeyWord)
@@ -270,7 +281,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         } catch (e: Exception) {
             throw SearchProductUrlsException(eshopUuid, searchKeyWord, e)
         }
-
+        context.addValue("countOfFoundProductUrls", urlList.size)
         if (urlList.isEmpty()) {
             log.debug("none url found for eshop $eshopUuid and keyword $searchKeyWord")
             throw NoProductUrlsFoundFondForKeywordException(eshopUuid, searchKeyWord)
@@ -299,9 +310,10 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
      * @param productsUrl list of product URL for given eshop
      * @param eshopUuid eshop to which this URLs belongs to
      */
-    private fun filterOnlyNotExistingWithException(productsUrl: List<String>, eshopUuid: EshopUuid): List<String> {
+    private fun filterOnlyNotExistingWithException(context: SingleContext, productsUrl: List<String>, eshopUuid: EshopUuid): List<String> {
         val notExistingProducts = internalFilterOnlyNonExistingUrls(productsUrl)
 
+        context.addValue("countOfNonExistingProductUrls", notExistingProducts.size)
         if (notExistingProducts.isEmpty()) {
             throw AllProductsWithGivenUrlsAlreadyExistingException(eshopUuid)
         }

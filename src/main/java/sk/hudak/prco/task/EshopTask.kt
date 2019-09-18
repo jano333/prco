@@ -3,14 +3,12 @@ package sk.hudak.prco.task
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.utils.ThreadUtils
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.*
-import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
 enum class TaskStatus {
@@ -21,7 +19,7 @@ enum class TaskStatus {
     FINISHED_WITH_ERROR
 }
 
-data class TaskContext @JvmOverloads constructor(
+data class TaskContext constructor(
         val status: TaskStatus,
         val lastChanged: Date = Date())
 
@@ -83,8 +81,8 @@ class EshopTaskManagerImpl : EshopTaskManager {
             return false
         }
 
-    @PostConstruct
-    fun init() {
+
+    init {
         EshopUuid.values().forEach {
             executors[it] = createExecutorServiceForEshop(it)
             internalTask[it] = TaskContext(TaskStatus.STOPPED)
@@ -181,31 +179,42 @@ class EshopTaskManagerImpl : EshopTaskManager {
     }
 }
 
-/**
- * @param T return type of [doInRunnable] method
- */
-abstract class ExceptionHandlingRunnable<T>(prcoObservable: PrcoObservable) : Runnable {
+class SingleContext {
+    var error = false
+    var values: MutableMap<String, Any> = mutableMapOf()
+
+    fun addValue(key: String, value: Any) {
+        values[key] = value
+    }
+
+    fun existValueForKey(key: String): Boolean = values[key] != null
+
+    override fun toString(): String {
+        return "SingleContext(error=$error, values=$values)"
+    }
+}
+
+abstract class ExceptionHandlingRunnable : Runnable {
 
     final override fun run() {
-        var result: T? = null
-        var error = false
+        var context = SingleContext()
         try {
-            result = doInRunnable()
+            doInRunnable(context)
 
         } catch (e: Exception) {
-            handleException(e)
-            error = true
+            context.error = true
+            handleException(context, e)
 
         } finally {
-            doInFinally(result, error)
+            doInFinally(context)
         }
     }
 
-    abstract fun doInRunnable(): T
+    abstract fun doInRunnable(context: SingleContext)
 
-    abstract fun handleException(e: Exception)
+    abstract fun handleException(context: SingleContext, e: Exception)
 
-    open fun doInFinally(result: T?, error: Boolean) {
+    open fun doInFinally(context: SingleContext) {
         // nothing, can be use for custom logic
     }
 }

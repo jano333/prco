@@ -257,7 +257,7 @@ public class Starter {
         // --- ADD NEW PRODUCTS ---
         newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "pampers");
-//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PERINBABA, "pampers 5");
+//        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PILULKA_24, "lovela");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "pampers");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "pampers 5");
 //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "pampers");
