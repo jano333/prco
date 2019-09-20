@@ -125,6 +125,7 @@ class MallProductParser(unitParser: UnitParser,
                 .map { JsoupUtils.srcAttribute(it) }
     }
 
+    //TODO toto dat do util
     private fun parseDate(strDate: String?, format: String): Date? {
         if (strDate == null) {
             return null

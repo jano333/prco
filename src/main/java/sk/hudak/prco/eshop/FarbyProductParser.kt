@@ -22,12 +22,9 @@ class FarbyProductParser(unitParser: UnitParser,
                          searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = EshopUuid.FARBY
+    override val eshopUuid: EshopUuid = EshopUuid.FARBY
 
-    override val timeout: Int
-        get() = TIMEOUT_10_SECOND
-
+    override val timeout: Int = TIMEOUT_10_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         // nie je pagging

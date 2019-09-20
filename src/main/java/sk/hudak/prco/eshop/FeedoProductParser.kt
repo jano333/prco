@@ -32,14 +32,9 @@ class FeedoProductParser(unitParser: UnitParser,
 
     override fun parseCountOfPages(documentList: Document): Int {
         val countOfProductString = Optional.ofNullable(documentList.select("#content > div.clearfix.mb-2 > h1:nth-child(1) > span").first())
-                .map {
-                    it.text() }
-                .filter {
-                    it.contains("(") && it.contains(")")}
-                .map {
-                    val substring = it.substring(it.indexOf('(') + 1, it.indexOf(')'))
-                    substring
-                }
+                .map { it.text() }
+                .filter { it.contains("(") && it.contains(")") }
+                .map { it.substring(it.indexOf('(') + 1, it.indexOf(')')) }
                 .orElseThrow { PrcoRuntimeException("None product count found for: " + documentList.location()) }
 
         return calculateCountOfPages(Integer.valueOf(countOfProductString), eshopUuid.maxCountOfProductOnPage)
