@@ -21,7 +21,7 @@ fun main() {
 
     val test = ProductParserTest()
 //    https://www.maxikovy-hracky.cz/vyhledavani?search=pampers
-    val urlList = test.parseUrlsOfProduct(EshopUuid.FEEDO, "pampers")
+    val urlList = test.parseUrlsOfProduct(EshopUuid.KID_MARKET, "pampers")
     println("count in list ${urlList.size}")
     println("count in set ${HashSet(urlList).size}")
     println(urlList);
@@ -48,6 +48,8 @@ class ProductParserTest {
             EshopUuid.FOUR_KIDS -> FourKidsProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // G
             EshopUuid.GIGA_LEKAREN -> GigaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            // K
+            EshopUuid.KID_MARKET -> KidMarketProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // L
             EshopUuid.LEKAREN_BELLA -> LekarenBellaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.LEKAREN_EXPRES -> LekarenExpresProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)

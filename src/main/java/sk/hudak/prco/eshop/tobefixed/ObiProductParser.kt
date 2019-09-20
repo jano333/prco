@@ -1,4 +1,4 @@
-package sk.hudak.prco.eshop
+package sk.hudak.prco.eshop.tobefixed
 
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.TextNode

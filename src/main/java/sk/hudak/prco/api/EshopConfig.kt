@@ -22,6 +22,24 @@ object FeedoEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
         "https://www.feedo.sk/vysledky-hladania/$KEYWORD_TEMP/?page=$PAGE_NUMBER_TEMP",
         5, 12, 20
 )
+
+/****************************/
+/*            K             */
+/****************************/
+object KidMarketEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
+        "https://kidmarket.sk/",
+        "https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query=$KEYWORD_TEMP&submit_search=",
+        "https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query=$KEYWORD_TEMP&submit_search=&p=$PAGE_NUMBER_TEMP",
+        5, 12, 32
+)
+
+//KID_MARKET(
+//NONE,
+//"https://kidmarket.sk/",
+//"https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query={keyword}&submit_search=",
+//"https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query={keyword}&submit_search=&p={pageNumber}",
+//5, 12, 32),
+
 /****************************/
 /*            M             */
 /****************************/

@@ -10,27 +10,33 @@ import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ConvertUtils
+import sk.hudak.prco.utils.JsoupUtils
 import sk.hudak.prco.utils.JsoupUtils.notExistElement
 import sk.hudak.prco.utils.UserAgentDataHolder
+import sk.hudak.prco.utils.src
 import java.math.BigDecimal
 import java.util.*
 import java.util.Optional.ofNullable
 
 @Component
-class KidMarketProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder) : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
+class KidMarketProductParser(unitParser: UnitParser,
+                             userAgentDataHolder: UserAgentDataHolder,
+                             searchUrlBuilder: SearchUrlBuilder)
+    : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = KID_MARKET
+    override val eshopUuid: EshopUuid = KID_MARKET
 
-
-    override val timeout: Int
-        get() = TIMEOUT_15_SECOND
+    override val timeout: Int = TIMEOUT_15_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
-        return ofNullable(documentList.select("span[class=heading-counter]").first())
+        val countOfProducts = ofNullable(documentList.select("span[class=heading-counter]").first())
                 .map { it.text() }
-                .map { textValue -> Integer.valueOf(StringUtils.removeStart(textValue, "Nájdené výsledky: ")) }
+                .map { Integer.valueOf(StringUtils.removeStart(it, "Nájdené výsledky: ")) }
                 .orElse(0)
+        if (countOfProducts == 0) {
+            return 1
+        }
+        return JsoupUtils.calculateCountOfPages(countOfProducts, eshopUuid.maxCountOfProductOnPage)
     }
 
     override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
@@ -56,13 +62,13 @@ class KidMarketProductParser(unitParser: UnitParser, userAgentDataHolder: UserAg
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
         return ofNullable(documentDetailProduct.select("#bigpic").first())
-                .map { element -> element.attr("src") }
+                .map { it.src() }
     }
 
     override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
         return ofNullable(documentDetailProduct.select("#our_price_display").first())
                 .map { it.text() }
-                .map { text -> StringUtils.removeEnd(text, "€") }
+                .map { StringUtils.removeEnd(it, "€") }
                 .map { ConvertUtils.convertToBigDecimal(it) }
     }
 

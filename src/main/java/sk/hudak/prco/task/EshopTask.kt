@@ -96,12 +96,17 @@ class EshopTaskManagerImpl : EshopTaskManager {
         }
     }
 
-    private fun createExecutorServiceForEshop(value: EshopUuid): ExecutorService {
+    private fun createExecutorServiceForEshop(eshopUuid: EshopUuid): ExecutorService {
+
         return Executors.newSingleThreadExecutor {
-            Thread(it, "${value.name}-thread")
+            val thread = Thread(it, "${eshopUuid.name}-thread")
+            thread.uncaughtExceptionHandler = PrcoUncaughtExceptionHandler(eshopUuid)
+
+            thread
         }
     }
 
+    // TODO to co za nazov
     override fun dajmiho(eshopUuid: EshopUuid): Executor {
         return executors[eshopUuid]!!
     }
@@ -179,8 +184,20 @@ class EshopTaskManagerImpl : EshopTaskManager {
     }
 }
 
+data class PrcoUncaughtExceptionHandler(val eshopUuid: EshopUuid)
+    : Thread.UncaughtExceptionHandler {
+
+    companion object {
+        val log = LoggerFactory.getLogger(PrcoUncaughtExceptionHandler::class.java)!!
+    }
+    override fun uncaughtException(t: Thread?, e: Throwable?) {
+        log.error("eshop: $eshopUuid", e)
+    }
+}
+
 class SingleContext {
     var error = false
+    var errMsg: String? = null
     var values: MutableMap<String, Any> = mutableMapOf()
 
     fun addValue(key: String, value: Any) {
@@ -203,6 +220,7 @@ abstract class ExceptionHandlingRunnable : Runnable {
 
         } catch (e: Exception) {
             context.error = true
+            context.errMsg = e.message
             handleException(context, e)
 
         } finally {

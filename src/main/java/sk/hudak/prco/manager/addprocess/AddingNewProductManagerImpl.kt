@@ -23,6 +23,34 @@ import sk.hudak.prco.utils.ThreadUtils.sleepSafe
 import sk.hudak.prco.utils.Validate.notEmpty
 import java.util.*
 
+interface AddingNewProductManager {
+
+    /**
+     * @param productsUrl list of new product URL's
+     */
+    fun addNewProductsByUrl(productsUrl: List<String>)
+
+    /**
+     * Vyhlada produkty s danym klucovym slovom pre konkretny eshop a ulozi ich do tabulky NEW_PRODUCT.
+     *
+     * @param eshopUuid     eshop identifikator
+     * @param searchKeyWord search key word
+     */
+    fun addNewProductsByKeywordForEshop(eshopUuid: EshopUuid, searchKeyWord: String)
+
+    /**
+     * Vyhlada produkty s danym klucovym slovom pre vsetky eshopy a ulozi ich do tabulky NEW_PRODUCT.
+     *
+     * @param searchKeyWord search key word
+     */
+    fun addNewProductsByKeywordForAllEshops(searchKeyWord: String)
+
+    /**
+     * @param searchKeyWords search key words
+     */
+    fun addNewProductsByKeywordsForAllEshops(vararg searchKeyWords: String)
+}
+
 @Component
 class AddingNewProductManagerImpl(private val internalTxService: InternalTxService,
                                   private val mapper: PrcoOrikaMapper,
@@ -36,17 +64,24 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
     companion object {
         val log = LoggerFactory.getLogger(AddingNewProductManagerImpl::class.java)!!
+
+        private const val CTX_ESHOP_UUID_KEY = "eshopUuid"
+        private const val CTX_SEARCH_KEYWORD_KEY = "searchKeyWord"
+        private const val CTX_COUNT_OF_FOUND_PRODUCT_URLS_KEY = "countOfFoundProductUrls"
+        private const val CTX_COUNT_OF_FOUND_PRODUCT_URLS_WITH_DUPLICITY_KEY = "countOfFoundProductUrlsWithDuplicity"
+        //TODO ostatne
     }
 
+    // registering itself as observer
     init {
         prcoObservable.addObserver(this)
     }
 
+    // handling events produced by observable
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
             is EshopKeywordFinishEvent -> {
                 //TODO do osobitnej tabulky ukladat historicke informacie
-                log.debug("eshop '${event.eshopUuid}' finished adding new products for keyword '${event.keyword}'")
                 log.debug(event.toString())
             }
         }
@@ -73,14 +108,15 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                 }
     }
 
+
     override fun addNewProductsByKeywordForEshop(eshopUuid: EshopUuid, searchKeyWord: String) {
         eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
 
             override fun doInRunnable(context: SingleContext) {
                 log.debug(">> addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWord $searchKeyWord")
                 eshopTaskManager.markTaskAsRunning(eshopUuid)
-                context.addValue("eshopUuid", eshopUuid)
-                context.addValue("searchKeyWord", searchKeyWord)
+                context.addValue(CTX_ESHOP_UUID_KEY, eshopUuid)
+                context.addValue(CTX_SEARCH_KEYWORD_KEY, searchKeyWord)
 
                 // vyparsujem vsetky url-cky produktov, ktore sa najdu na strankach(prechadza aj pageovane stranky)
                 var urlList: List<String> = searchProductUrls(context, eshopUuid, searchKeyWord)
@@ -115,18 +151,15 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
         // filtrujem len tie ktore este neexistuju
         val notExistingProducts = filterOnlyNotExisting(productsUrl)
-        log.debug("count of non existing URLs ${notExistingProducts.size}")
         if (notExistingProducts.isNullOrEmpty()) {
             log.debug("<< addNewProductsByUrl count of URLs: ${productsUrl.size}")
             return
         }
 
         // roztriedim URL podla typu eshopu
-        val eshopUrls: EnumMap<EshopUuid, MutableList<String>> = convertToUrlsByEshop(notExistingProducts)
+        for ((eshopUuid, productUrlList) in convertToUrlsByEshop(notExistingProducts)) {
 
-        // spustim parsovanie pre kazdy eshop
-        for ((eshopUuid, productUrlList) in eshopUrls) {
-
+            // spustim parsovanie pre kazdy eshop
             eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
 
                 override fun doInRunnable(context: SingleContext) {
@@ -144,15 +177,12 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
                 override fun doInFinally(context: SingleContext) {
                     log.debug("<< addNewProductsByUrlsForEshop eshop $eshopUuid")
+                    //TODO notify
                 }
-
             })
-            //TODO notify
-
             // kazdy dalsi spusti s 2 sekundovym oneskorenim
             sleepSafe(2)
         }
-
         log.debug("<< addNewProductsByUrl count of URLs: ${productsUrl.size}")
     }
 
@@ -178,16 +208,24 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         }
 
         val toList = result.keys.toList()
-        context.addValue("countOfFoundProductUrlsWithDuplicity", (toList.size - urlList.size))
+
+        context.addValue(CTX_COUNT_OF_FOUND_PRODUCT_URLS_WITH_DUPLICITY_KEY, (toList.size - urlList.size))
         return toList
     }
 
     private fun notifyFinishProcessingKeywordForEshop(context: SingleContext) {
         //TODO impl v osobitnom thread-e
-        prcoObservable.notify(EshopKeywordFinishEvent(eshopUuid = context.values["eshopUuid"] as EshopUuid,
-                keyword = context.values["searchKeyWord"] as String,
-                countOfFound = context.values["countOfFoundProductUrls"] as Int,
-                countOfAdded = context.values["countOfProcessed"] as Int))
+        try {
+            val any = context.values["countOfProcessed"]
+            prcoObservable.notify(EshopKeywordFinishEvent(eshopUuid = context.values[CTX_ESHOP_UUID_KEY] as EshopUuid,
+                    error = context.error,
+                    errMsg = context.errMsg,
+                    keyword = context.values[CTX_SEARCH_KEYWORD_KEY] as String,
+                    countOfFound = context.values[CTX_COUNT_OF_FOUND_PRODUCT_URLS_KEY] as Int,
+                    countOfAdded = if (any is Int) any else 0))
+        } catch (e: Exception) {
+            log.error("error while notifying observers", e)
+        }
     }
 
     private fun createNewProductsErrorWrapper(context: SingleContext, eshopUuid: EshopUuid, urlList: List<String>) {
@@ -303,7 +341,9 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
     }
 
     private fun filterOnlyNotExisting(productsUrl: List<String>): List<String> {
-        return internalFilterOnlyNonExistingUrls(productsUrl)
+        val notExistingProducts = internalFilterOnlyNonExistingUrls(productsUrl)
+        log.debug("count of non existing URLs ${notExistingProducts.size}")
+        return notExistingProducts
     }
 
     /**
@@ -383,13 +423,14 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         }
     }
 
-
 }
 
 data class EshopKeywordFinishEvent(val eshopUuid: EshopUuid,
+                                   val error: Boolean,
+                                   val errMsg: String?,
                                    val keyword: String,
-                                   val countOfFound: Int,
-                                   val countOfAdded: Int)
+                                   val countOfFound: Int?,
+                                   val countOfAdded: Int?)
     : CoreEvent(EventType.ESHOP_KEYWORD_FINISH)
 
 
@@ -404,3 +445,4 @@ class AllProductsWithGivenUrlsAlreadyExistingException(val eshopUuid: EshopUuid)
 
 class CreateNewProductsForUrlsException(val eshopUuid: EshopUuid, e: Exception) :
         PrcoRuntimeException("error while creating new product from URL for eshop $eshopUuid", e)
+

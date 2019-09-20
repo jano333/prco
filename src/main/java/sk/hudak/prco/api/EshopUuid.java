@@ -141,12 +141,7 @@ public enum EshopUuid {
             "http://www.internetovalekaren.eu/catalog/search/?q=" + KEYWORD_TEMP + "&offset=" + OFFSET_TEMP,
             5, 12, 22),
 
-    KID_MARKET(
-            NONE,
-            "https://kidmarket.sk/",
-            "https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query={keyword}&submit_search=",
-            "https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query={keyword}&submit_search=&p={pageNumber}",
-            5, 12, -1),
+    KID_MARKET(KidMarketEshopConfiguration.INSTANCE),
 
     LEKAREN_BELLA(
             PHARMACY,

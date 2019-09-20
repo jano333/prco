@@ -1,45 +1,3 @@
-2019-09-18 16:17:37,859 ERROR [KID_MARKET-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:193] tu som
-kotlin.TypeCastException: null cannot be cast to non-null type kotlin.Int
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.notifyFinishProcessingKeywordForEshop(AddingNewProductManagerImpl.kt:191)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$notifyFinishProcessingKeywordForEshop(AddingNewProductManagerImpl.kt:27)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInFinally(AddingNewProductManagerImpl.kt:107)
-	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:209)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
---------------------------------------------------------------------------------
-toto suvisi s tym ze je 60 stranok a je v zozname dvakrat dany produkt
-2019-09-17 09:55:46,400 ERROR [KID_MARKET-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:337] error while creating new product from URL for eshop KID_MARKET
-sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop KID_MARKET
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:167)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:26)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:89)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:74)
-	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:193)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: sk.hudak.prco.exception.PrcoRuntimeException: Product with URL https://kidmarket.sk/avivaze/133-lovela-sensitive-avivaz-2-l-8594002683177.html already exist.
-	at sk.hudak.prco.service.impl.NewProductServiceImpl.createNewProduct(NewProductServiceImpl.kt:60)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl.createNewProduct(InternalTxServiceImpl.kt:83)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$FastClassBySpringCGLIB$$6a8a885c.invoke(<generated>)
-	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:204)
-	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:746)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:294)
-	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:98)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$EnhancerBySpringCGLIB$$cd801688.createNewProduct(<generated>)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.processNewProductUrl(AddingNewProductManagerImpl.kt:236)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.kt:182)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:164)
-	... 9 common frames omitted
-
 ----------------
 zmenint na warning nie error:
 2019-09-13 15:58:28,367 ERROR [PERINBABA-thread] [] s.h.p.m.u.UpdateProductErrorHandlerImpl [UpdateProductErrorHandlerImpl.kt:21] error while parsing product update data for product http://www.perinbaba.sk/plienky-new-baby-dry-2-mini-3-6kg-giant-pack-100ks.html
@@ -67,18 +25,6 @@ Caused by: org.jsoup.HttpStatusException: HTTP error fetching URL
 	at sk.hudak.prco.parser.eshop.JSoupProductParser.retrieveDocument(JSoupProductParser.kt:254)
 	... 13 common frames omitted
 2019-09-13 15:58:28,368 ERROR [PERINBABA-thread] [] s.h.p.m.u.UpdateProductErrorHandlerImpl [UpdateProductErrorHandlerImpl.kt:37] http status: 404
-----------
-60 stranok?
-2019-09-13 15:48:30,899 DEBUG [KID_MARKET-thread] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:144] marking task for eshop KID_MARKET as RUNNING
-2019-09-13 15:48:30,899 DEBUG [KID_MARKET-thread] [] s.h.p.p.h.JsoupHtmlParserImpl [JsoupHtmlParserImpl.kt:22] start searching for keyword 'pampers'
-2019-09-13 15:48:30,899 DEBUG [KID_MARKET-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:243] request URL: https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query=pampers&submit_search=
-2019-09-13 15:48:30,899 DEBUG [KID_MARKET-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:244] userAgent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36
-2019-09-13 15:48:30,941 DEBUG [KID_MARKET-thread] [] s.h.p.s.PrcoCustomTrustManager [SSLHandling.kt:277] server cert subject name CN=admin.asdata.sk
-2019-09-13 15:48:30,961 DEBUG [KID_MARKET-thread] [] s.h.p.s.PrcoCustomHostnameVerifier [SSLHandling.kt:365] verify kidmarket.sk
-2019-09-13 15:48:31,626 DEBUG [KID_MARKET-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:124] new pages count: 60
-2019-09-13 15:48:31,626 DEBUG [KID_MARKET-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:130] count of new pages changed to maxim: 5
-2019-09-13 15:48:31,628 DEBUG [KID_MARKET-thread] [] s.h.p.u.ThreadUtils [ThreadUtils.kt:34] start sleeping for 20 sec
-
 ----------
 2019-09-12 14:43:52,166 DEBUG [FEEDO-thread] [] s.h.p.p.u.UnitParserImpl [UnitParserImpl.kt:30] parsing product name to retrieve unit info: 14x PAMPERS Aqua Pure 48 ks - detské čistiace obrúsky
 2019-09-12 14:43:52,170 ERROR [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:337] error while creating new product from URL for eshop FEEDO
