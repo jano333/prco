@@ -1,6 +1,14 @@
--------------------------------------------------------------------------------
-ked vyparsuje zodinalny zoznam URL produktov ktore ma pridavat, tak potom este nech zaloguje chybu ak je tam niektory dvakrat a jeden odmaze,
-nech nenastane chyba pri vytvarani...
+2019-09-18 16:17:37,859 ERROR [KID_MARKET-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:193] tu som
+kotlin.TypeCastException: null cannot be cast to non-null type kotlin.Int
+	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.notifyFinishProcessingKeywordForEshop(AddingNewProductManagerImpl.kt:191)
+	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$notifyFinishProcessingKeywordForEshop(AddingNewProductManagerImpl.kt:27)
+	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInFinally(AddingNewProductManagerImpl.kt:107)
+	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:209)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
 --------------------------------------------------------------------------------
 toto suvisi s tym ze je 60 stranok a je v zozname dvakrat dany produkt
 2019-09-17 09:55:46,400 ERROR [KID_MARKET-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:337] error while creating new product from URL for eshop KID_MARKET
