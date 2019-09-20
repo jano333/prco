@@ -41,7 +41,7 @@ abstract class JSoupProductParser : EshopProductsParser {
     val SINGLE_PAGE_ONE = 1
 
     companion object {
-        val log = LoggerFactory.getLogger(JSoupProductParser::class.java)
+        val log = LoggerFactory.getLogger(JSoupProductParser::class.java)!!
     }
 
     protected val userAgent: String
