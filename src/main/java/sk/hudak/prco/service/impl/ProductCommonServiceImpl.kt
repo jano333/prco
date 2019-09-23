@@ -85,7 +85,7 @@ open class ProductCommonServiceImpl(private val newProductEntityDao: NewProductE
         }
         // produkty, o ktore nemam zaujem
         if (notInterestedProductDbDao.existWithUrl(productURL)) {
-            true
+            return true
         }
         // produkty, o ktore mam zaujem - aktualizuju sa
         return productEntityDao.existWithUrl(productURL)
