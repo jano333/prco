@@ -8,7 +8,8 @@ import java.util.concurrent.*
 import java.util.concurrent.atomic.AtomicInteger
 
 @Component
-class RemoveEshopManagerImp(private val internalTxService: InternalTxService) : RemoveEshopManager {
+class RemoveEshopManagerImp(private val internalTxService: InternalTxService)
+    : RemoveEshopManager {
 
     companion object {
         val log = LoggerFactory.getLogger(RemoveEshopManagerImp::class.java)!!
