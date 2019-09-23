@@ -23,4 +23,6 @@ interface NewProductEntityDbDao : BaseDao<NewProductEntity> {
 
     fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<NewProductEntity>
 
+    fun countOfAllProductInEshop(eshopUuid: EshopUuid): Long
+
 }

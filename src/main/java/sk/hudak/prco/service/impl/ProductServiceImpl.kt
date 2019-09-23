@@ -26,6 +26,7 @@ import kotlin.Comparator
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.streams.toList
+
 @Service("productService")
 class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
                          private val groupEntityDao: GroupEntityDao,
@@ -309,14 +310,31 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
         log.debug("product with id {} was updated with common price {}", productId, newCommonPrice)
     }
 
-    override fun getEshopForProductId(productId: Long): EshopUuid {
-        notNull(productId, PRODUCT_ID)
+    override fun updateProductUrl(productId: Long, newProductUrl: String) {
+        notEmpty(newProductUrl, "newProductUrl")
 
+        val productEntity = productEntityDao.findById(productId)
+        productEntity.url = newProductUrl
+        productEntityDao.update(productEntity)
+        log.debug("product with id $productId was updated with url $newProductUrl")
+    }
+
+    override fun getEshopForProductId(productId: Long): EshopUuid {
         return productEntityDao.findById(productId).eshopUuid
     }
 
     override fun findProductForUpdate(productId: Long): ProductDetailInfo {
         return mapper.map(productEntityDao.findById(productId), ProductDetailInfo::class.java)
+    }
+
+    override fun getProductForUpdateByUrl(productUrl: String): ProductDetailInfo? {
+        val findByUrl = productEntityDao.findByUrl(productUrl)
+        return if (findByUrl != null) {
+            //TODO zrusit mapper mame kotlin extension function!!!
+            mapper.map(findByUrl, ProductDetailInfo::class.java)
+        } else {
+            null
+        }
     }
 
     override fun updateProduct(updateData: ProductUpdateDataDto) {

@@ -3,12 +3,12 @@ package sk.hudak.prco.dto
 import sk.hudak.prco.api.EshopUuid
 
 data class EshopProductInfoDto(
-        val countOfAllProduct: Long,
-        val countOfAlreadyUpdated: Long
-//        val countOfNew: Long,
-//        val countOfInterested: Long,
-//        val countOfNotInterested: Long
-        ) : DtoAble
+        val countOfNew: Long,
+        val countOfInterested: Long,
+        val countOfAlreadyUpdated: Long,
+        val countOfNotInterested: Long,
+        val countOfAllProduct: Long
+) : DtoAble
 
 class ProductStatisticInfoDto {
     var countOfNewProducts: Long = 0

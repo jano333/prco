@@ -28,14 +28,17 @@ data class ProductNewData(val eshopUuid: EshopUuid,
             if (name == null || name!!.trim { it <= ' ' }.isEmpty()) {
                 return false
             }
-            return eshopUuid != null && unit != null && unitValue != null && unitPackageCount != null
+            return unit != null && unitValue != null && unitPackageCount != null
         }
 }
 
+// TODO porozmyslat ci toto nema ist do package pre update manager.... nech je to biznisovo spolu vsetko co sa tyka update
+// TODO prerobit nech konstruktor je z 2 parametrami povinny !!!
 class ProductUpdateData : InternalMarkerDto {
 
     val url: String
     val eshopUuid: EshopUuid
+    val redirect: Boolean
 
     var name: String? = null
     var priceForPackage: BigDecimal? = null
@@ -45,17 +48,19 @@ class ProductUpdateData : InternalMarkerDto {
     val isProductAvailable: Boolean
         get() = name != null && priceForPackage != null
 
-    constructor(url: String, eshopUuid: EshopUuid) {
+    constructor(url: String, eshopUuid: EshopUuid, redirect: Boolean) {
         this.url = url
         this.eshopUuid = eshopUuid
+        this.redirect = redirect
     }
 
 
-    constructor(url: String, eshopUuid: EshopUuid,
+    constructor(url: String, eshopUuid: EshopUuid, redirect: Boolean,
                 name: String?, priceForPackage: BigDecimal?, productAction: ProductAction?, actionValidity: Date?, pictureUrl: String?) {
         // povinne
         this.url = url
         this.eshopUuid = eshopUuid
+        this.redirect = redirect
         // optional
         this.name = name
         this.priceForPackage = priceForPackage
@@ -65,13 +70,16 @@ class ProductUpdateData : InternalMarkerDto {
     }
 
     override fun toString(): String {
-        return "ProductUpdateData(url=$url, " +
+        return "ProductUpdateData(" +
+                "url='$url', " +
                 "eshopUuid=$eshopUuid, " +
+                "redirect=$redirect, " +
                 "name=$name, " +
                 "priceForPackage=$priceForPackage, " +
                 "productAction=$productAction, " +
                 "actionValidity=$actionValidity, " +
-                "pictureUrl=$pictureUrl)"
+                "pictureUrl=$pictureUrl" +
+                ")"
     }
 
 

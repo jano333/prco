@@ -54,13 +54,17 @@ open class ProductCommonServiceImpl(private val newProductEntityDao: NewProductE
 
             val eshopProductInfo = EnumMap<EshopUuid, EshopProductInfoDto>(EshopUuid::class.java)
             EshopUuid.values().forEach {
+                //TODO udaj ohladne hodin zobrat z eshop configu
+                val countOfAlreadyUpdated = productEntityDao.countOfAllProductInEshopUpdatedMax24Hours(it)
+                val countOfNew = newProductEntityDao.countOfAllProductInEshop(it)
+                val countOfInterested = productEntityDao.countOfAllProductInEshop(it)
+                val countOfNotInterested = notInterestedProductDbDao.countOfAllProductInEshop(it)
                 eshopProductInfo[it] = EshopProductInfoDto(
-                        productEntityDao.countOfAllProductInEshop(it),
-
-                        //TODO udaj ohladne hodin zobrat z eshop configu
-                        productEntityDao.countOfAllProductInEshopUpdatedMax24Hours(it)
-                        //TODO
-                        /*0, 0, 0*/)
+                        countOfNew,
+                        countOfInterested,
+                        countOfAlreadyUpdated,
+                        countOfNotInterested,
+                        countOfNew + countOfInterested + countOfNotInterested)
             }
             result.eshopProductInfo = eshopProductInfo
 

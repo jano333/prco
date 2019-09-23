@@ -74,4 +74,10 @@ open class NewProductEntityDaoImpl(em: EntityManager)
                 .limit(maxCountToDelete)
                 .fetch()
     }
+
+    override fun countOfAllProductInEshop(eshopUuid: EshopUuid): Long {
+        return from(QNewProductEntity.newProductEntity)
+                .where(QNewProductEntity.newProductEntity.eshopUuid.eq(eshopUuid))
+                .fetchCount()
+    }
 }

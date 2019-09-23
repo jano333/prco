@@ -23,7 +23,18 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
                                  @param:Qualifier("groupService") private val groupService: GroupService,
                                  @param:Qualifier("watchDogService") private val watchDogService: WatchDogService,
                                  @param:Qualifier("errorService") private val errorService: ErrorService,
-                                 @param:Qualifier("groupProductKeywordsService") private val groupProductKeywordsService: GroupProductKeywordsService) : InternalTxService {
+                                 @param:Qualifier("groupProductKeywordsService") private val groupProductKeywordsService: GroupProductKeywordsService)
+    : InternalTxService {
+
+    @Transactional
+    override fun updateProductUrl(productId: Long, newProductUrl: String) {
+        productService.updateProductUrl(productId, newProductUrl)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getProductForUpdateByUrl(productUrl: String): ProductDetailInfo? =
+            productService.getProductForUpdateByUrl(productUrl)
+
 
     @Transactional(readOnly = true)
     override fun findProductForUpdateInGroup(groupId: Long): Map<EshopUuid, List<Long>> =

@@ -40,7 +40,36 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
     }
 
     override fun update(source: Observable?, event: CoreEvent) {
+        //TODO vypis?
         log.debug("updateObservable.update ${source?.javaClass?.simpleName} - event $event")
+    }
+
+    override fun updateProductDataForEachProductInEachEshop(listener: UpdateProductDataListener) {
+        EshopUuid.values().forEach {
+            updateProductDataForEachProductInEshop(it, listener)
+            // kazdy dalsi spusti s 1 sekundovym oneskorenim
+            sleepSafe(1)
+        }
+    }
+
+    override fun updateProductDataForEachProductNotInAnyGroup(listener: UpdateProductDataListener) {
+        internalTxService.findProductsForUpdateWhichAreNotInAnyGroup()
+                .forEach { eshopUuid, productIds ->
+                    // spusti update danych produktov v ehope
+                    updateProductData(eshopUuid, productIds, listener)
+                    // pre kazdy dalsi eshop pockaj so spustenim 2 sekundy
+                    sleepSafe(2)
+                }
+    }
+
+    override fun updateProductDataForEachProductInGroup(groupId: Long, listener: UpdateProductDataListener) {
+        internalTxService.findProductForUpdateInGroup(groupId)
+                .forEach { eshopUuid, productIds ->
+                    // spusti update danych produktov v ehope
+                    updateProductData(eshopUuid, productIds, listener)
+                    // pre kazdy dalsi eshop pockaj so spustenim 2 sekundy
+                    sleepSafe(2)
+                }
     }
 
     override fun updateProductData(productId: Long) {
@@ -67,17 +96,10 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
 
             override fun doInFinally(context: SingleContext) {
                 log.debug("<< updateProductData eshop $eshopUuid, productId $productId")
+                //TODO event poriesit
                 prcoObservable.notify(object : CoreEvent(EventType.UPDATE_PRODUCT) {})
             }
         })
-    }
-
-    override fun updateProductDataForEachProductInEachEshop(listener: UpdateProductDataListener) {
-        EshopUuid.values().forEach {
-            updateProductDataForEachProductInEshop(it, listener)
-            // kazdy dalsi spusti s 1 sekundovym oneskorenim
-            sleepSafe(1)
-        }
     }
 
     override fun updateProductDataForEachProductInEshop(eshopUuid: EshopUuid, listener: UpdateProductDataListener) {
@@ -118,29 +140,10 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
 
             override fun doInFinally(context: SingleContext) {
                 log.debug("<< updateProductDataForEachProductInEshop eshop $eshopUuid")
+                //TODO event
                 prcoObservable.notify(object : CoreEvent(EventType.UPDATE_PRODUCT) {})
             }
         })
-    }
-
-    override fun updateProductDataForEachProductInGroup(groupId: Long, listener: UpdateProductDataListener) {
-        internalTxService.findProductForUpdateInGroup(groupId)
-                .forEach { eshopUuid, productIds ->
-                    // spusti update danych produktov v ehope
-                    updateProductData(eshopUuid, productIds, listener)
-                    // pre kazdy dalsi eshop pockaj so spustenim 2 sekundy
-                    sleepSafe(2)
-                }
-    }
-
-    override fun updateProductDataForEachProductNotInAnyGroup(listener: UpdateProductDataListener) {
-        internalTxService.findProductsForUpdateWhichAreNotInAnyGroup()
-                .forEach { eshopUuid, productIds ->
-                    // spusti update danych produktov v ehope
-                    updateProductData(eshopUuid, productIds, listener)
-                    // pre kazdy dalsi eshop pockaj so spustenim 2 sekundy
-                    sleepSafe(2)
-                }
     }
 
     private fun updateProductData(eshopUuid: EshopUuid, productForUpdateIds: List<Long>, listener: UpdateProductDataListener) {
@@ -237,62 +240,80 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
     }
 
     private fun updateProductData(productForUpdate: ProductDetailInfo, listener: UpdateProductDataListener): ContinueStatus {
-        val eshopUuid = productForUpdate.eshopUuid
-        val productId = productForUpdate.id
-        val productUrl = productForUpdate.url
+        eshopTaskManager.sleepIfNeeded(productForUpdate.eshopUuid)
 
-        eshopTaskManager.sleepIfNeeded(eshopUuid)
-
-        if (eshopTaskManager.isTaskShouldStopped(eshopUuid)) {
-            eshopTaskManager.markTaskAsStopped(eshopUuid)
+        if (eshopTaskManager.isTaskShouldStopped(productForUpdate.eshopUuid)) {
+            eshopTaskManager.markTaskAsStopped(productForUpdate.eshopUuid)
             return ContinueStatus.STOP_PROCESSING_NEXT_ONE
         }
 
-        // parsujem data
+        // parsujem update data pre danu URL
         val updateData: ProductUpdateData = try {
-            htmlParser.parseProductUpdateData(productUrl)
+            htmlParser.parseProductUpdateData(productForUpdate.url)
 
         } catch (e: Exception) {
             updateProductErrorHandler.processParsingError(e, productForUpdate)
             return ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR
         }
 
+        // no redirect -> product url was not changed
+        if (!updateData.redirect) {
+            // if not available -> continue to next one
+            if (!updateData.isProductAvailable) {
+                // mark it as unavailable
+                internalTxService.markProductAsUnavailable(productForUpdate.id)
+                return ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR
+            }
+            // update product data
+            internalTxService.updateProduct(updateData.toProductUpdateDataDto(productForUpdate.id))
+            return ContinueStatus.CONTINUE_TO_NEXT_ONE_OK
+        }
+
+        // redirect -> url was changed, try to find product with new URL
+        var newProductForUpdate: ProductDetailInfo? = internalTxService.getProductForUpdateByUrl(updateData.url)
+
+        // product with new URL don't exist
+        if (newProductForUpdate == null) {
+            log.debug("product with redirect URL ${updateData.url} not exist")
+            // if not available -> update only URL
+            if (!updateData.isProductAvailable) {
+                // update only URL of product
+                internalTxService.updateProductUrl(productForUpdate.id, updateData.url)
+                // mark it as unavailable
+                internalTxService.markProductAsUnavailable(productForUpdate.id)
+                return ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR
+            }
+
+            // update product data
+            internalTxService.updateProduct(updateData.toProductUpdateDataDto(productForUpdate.id))
+            return ContinueStatus.CONTINUE_TO_NEXT_ONE_OK
+        }
+
+        // product with new URL exist
+        log.debug("product with redirect URL: ${updateData.url} exist, id: ${newProductForUpdate.id}")
+
+        // remove product with old URL
+        internalTxService.removeProduct(productForUpdate.id)
+
         // if not available -> continue to next one
         if (!updateData.isProductAvailable) {
-            internalTxService.markProductAsUnavailable(productId)
+            // mark it as unavailable
+            internalTxService.markProductAsUnavailable(newProductForUpdate.id)
             return ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR
         }
 
-        // check duplicity
-        //FIXME zrusit optional
-        val existingProductIdOpt = internalTxService.getProductWithUrl(productUrl, productId)
-        if (existingProductIdOpt.isPresent) {
-            log.debug("exist another product ${existingProductIdOpt.get()} with url $productUrl")
-            log.debug("product $productId will be removed, url $productUrl")
-        }
+        // update product data
+        internalTxService.updateProduct(updateData.toProductUpdateDataDto(newProductForUpdate.id))
 
-        val productIdToBeUpdated = if (existingProductIdOpt.isPresent) existingProductIdOpt.get() else productId
-
-        //FIXME premapovanie cez sk.hudak.prco mapper nie takto rucne, nech mam na jednom mieste tie preklapacky...
-        internalTxService.updateProduct(ProductUpdateDataDto(
-                productIdToBeUpdated,
-                updateData.url,
-                updateData.name,
-                updateData.priceForPackage,
-                updateData.productAction,
-                updateData.actionValidity,
-                updateData.pictureUrl))
-
-        // remove duplicity product with old URL
-        if (existingProductIdOpt.isPresent) {
-            internalTxService.removeProduct(productId)
-        }
-        // notify listener
-        notifyUpdateListener(eshopUuid, listener)
+        //-------
+        // TODO zrusit a prerobit cez observable
+        //  notify listener
+        notifyUpdateListener(productForUpdate.eshopUuid, listener)
 
         return ContinueStatus.CONTINUE_TO_NEXT_ONE_OK
     }
 
+    //TODO spolocne aj pre add process
     private enum class ContinueStatus {
         CONTINUE_TO_NEXT_ONE_OK,
         CONTINUE_TO_NEXT_ONE_ERROR,
@@ -322,3 +343,14 @@ class UpdateProductException(productForUpdate: ProductDetailInfo, e: Exception) 
 
 class GettingProductForUpdateException(eshopUuid: EshopUuid, e: Exception) :
         PrcoRuntimeException("error while retrieving next product from DB to update for eshop $eshopUuid", e)
+
+fun ProductUpdateData.toProductUpdateDataDto(productId: Long): ProductUpdateDataDto =
+        ProductUpdateDataDto(
+                productId,
+                this.url,
+                this.name,
+                this.priceForPackage,
+                this.productAction,
+                this.actionValidity,
+                this.pictureUrl)
+

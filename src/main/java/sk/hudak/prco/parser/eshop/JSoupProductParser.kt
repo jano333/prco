@@ -189,10 +189,13 @@ abstract class JSoupProductParser : EshopProductsParser {
 
         // because there could be redirect
         val realProductUrl = document.location()
-        if (productUrl != realProductUrl) {
+        val redirect = if (productUrl != realProductUrl) {
             log.warn("redirecting: ")
-            log.warn("from {}", productUrl)
-            log.warn("to {}", realProductUrl)
+            log.warn("from $productUrl")
+            log.warn("to $realProductUrl")
+            true
+        }else {
+            false
         }
 
         // ak je produkt nedostupny tak nastavim len url a eshop uuid
@@ -200,7 +203,7 @@ abstract class JSoupProductParser : EshopProductsParser {
             //TODO pridat ako osobitnu chybu, pripadne do osobitnej tabulku na vyhodnotenie ak je napr.
             // 5 produktov po sebe oznacenych za nedostupnych tak overit ci je to naozaj tak
             log.warn("product is unavailable: {} ", productUrl)
-            return ProductUpdateData(realProductUrl, eshopUuid)
+            return ProductUpdateData(realProductUrl, eshopUuid, redirect)
         }
 
         // product name
@@ -227,6 +230,7 @@ abstract class JSoupProductParser : EshopProductsParser {
         return ProductUpdateData(
                 realProductUrl,
                 eshopUuid,
+                redirect,
                 productName,
                 productPriceForPackage,
                 // FIXME spojit do jedneho ohladne product action

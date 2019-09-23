@@ -51,4 +51,10 @@ open class NotInterestedProductDaoImpl(em: EntityManager)
                 .limit(maxCountToDelete)
                 .fetch()
     }
+
+    override fun countOfAllProductInEshop(eshopUuid: EshopUuid): Long {
+        return from(QNotInterestedProductEntity.notInterestedProductEntity)
+                .where(QNotInterestedProductEntity.notInterestedProductEntity.eshopUuid.eq(eshopUuid))
+                .fetchCount()
+    }
 }

@@ -31,7 +31,11 @@ interface ProductService {
      * @param productId      product id
      * @param newCommonPrice common(bezna cena) productu
      */
+    //TODO zrusit ? v  Long?
     fun updateProductCommonPrice(productId: Long?, newCommonPrice: BigDecimal)
+
+
+    fun updateProductUrl(productId: Long, newProductUrl: String)
 
     /**
      * set field 'LastTimeDataUpdated' to null for product in given eshop
@@ -45,6 +49,7 @@ interface ProductService {
      *
      * @param productId product id
      */
+    //TODO zrusit ? v  Long?
     fun resetUpdateDateProduct(productId: Long?)
 
     /**
@@ -52,6 +57,7 @@ interface ProductService {
      *
      * @param productId product id
      */
+    //TODO zrusit ? v  Long?
     fun markProductAsUnavailable(productId: Long?)
 
     /**
@@ -67,6 +73,7 @@ interface ProductService {
      *
      * @param productId product id
      */
+    //TODO zrusit ? v  Long?
     fun removeProduct(productId: Long?)
 
 
@@ -85,6 +92,7 @@ interface ProductService {
      * @param productId product id
      * @return product data
      */
+    //TODO zrusit ? v  Long?
     fun getProduct(productId: Long?): ProductAddingToGroupDto
 
     /**
@@ -107,6 +115,13 @@ interface ProductService {
      * @return
      */
     fun findProductForUpdate(productId: Long): ProductDetailInfo
+
+
+    /**
+     * vyhlada product na zaklade URL, pozor nemusi existovat...
+     */
+    fun getProductForUpdateByUrl(productUrl: String): ProductDetailInfo?
+
 
     /**
      * @param eshopUuid        eshop unique identifier

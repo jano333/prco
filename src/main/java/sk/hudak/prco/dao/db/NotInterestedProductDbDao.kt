@@ -16,4 +16,7 @@ interface NotInterestedProductDbDao : BaseDao<NotInterestedProductEntity> {
     fun findFistTenURL(): List<String>
 
     fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<NotInterestedProductEntity>
+
+    fun countOfAllProductInEshop(eshopUuid: EshopUuid): Long
+
 }
