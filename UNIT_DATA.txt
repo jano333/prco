@@ -1,3 +1,6 @@
+---------------
+unit info not found for '100 ks v balení, veľkosť l'
+---------------
 unit info not found for 'nutrilon 1 5x18.3g'
 ----------------------
 dalo zle unity: Absolut vodka 40% 1x1 l
