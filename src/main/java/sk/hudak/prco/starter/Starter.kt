@@ -19,6 +19,7 @@ import sk.hudak.prco.manager.updateprocess.UpdateProductDataListener
 import sk.hudak.prco.manager.updateprocess.UpdateProductDataManager
 import sk.hudak.prco.manager.updateprocess.UpdateStatusInfo
 import sk.hudak.prco.parser.html.HtmlParser
+import sk.hudak.prco.reporter.FacebookReporter
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.service.UIService
 import sk.hudak.prco.service.WatchDogService
@@ -39,7 +40,8 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
               private val internalTxService: InternalTxService,
               private val uiService: UIService,
               private val theadStatisticManager: EshopThreadStatisticManager,
-              private val newProductManager: AddingNewProductManager) {
+              private val newProductManager: AddingNewProductManager,
+              private val facebookReporter: FacebookReporter) {
 
     @Autowired
     private val dbExportImportManager: DbExportImportManager? = null
@@ -170,7 +172,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
 
         //        internalTxService.removeProductByUrl("https://www.brendon.sk/Products/Details/118425");
 
-        showProductsInGroupForFb(257L, true, EshopUuid.METRO)
+        println(facebookReporter.doFullReport())
 
         // nutrilon 4
         //        showProductsInGroup(33L);
@@ -207,7 +209,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         errorFindFilterDto.statusCodesToSkip = arrayOf("404")
         errorFindFilterDto.limit = 50
         internalTxService.findErrorsByFilter(errorFindFilterDto)
-                .forEach { errorListDto -> println(errorListDto.customToString()) }
+                .forEach { println(it.customToString()) }
 
         createGroupKeyWords()
         showGroupKeysWords()
@@ -224,10 +226,9 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
                         updateStatusInfo.eshopUuid, updateStatusInfo.countOfProductsAlreadyUpdated, updateStatusInfo.countOfProductsWaitingToBeUpdated)
 
             }
-
         }
 
-//        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener);
+        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener)
         //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
         //        updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.ALZA, listener);
@@ -514,24 +515,6 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         }
     }
 
-    private fun showProductsInGroupForFb(groupId: Long, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid) {
-        println("For FB(top 5): ")
-        val group = uiService!!.getGroupById(groupId)
-        val productsInGroup = uiService.findProductsInGroup(groupId, withPriceOnly, *eshopsToSkip)
-
-        val sb = StringBuilder()
-        sb.append(group.name).append("(").append(productsInGroup.size).append(" produktov):")
-        sb.append("\n")
-        for (i in 0..4) {
-            val product = productsInGroup[i]
-            sb.append(i + 1).append(". ")
-            sb.append(formatPriceFb(product.priceForUnit)).append("€/ ").append(product.unit!!.name + " ")
-            sb.append(formatPriceFb(product.priceForOneItemInPackage)).append("€/balenie ")
-            sb.append(product.url)
-            sb.append("\n")
-        }
-        println(sb.toString())
-    }
 
     private fun formatDate(date: Date?): String {
         return if (date == null) {

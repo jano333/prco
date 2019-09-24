@@ -1,9 +1,25 @@
+A jednotka bola vypredna !!!
+Pampers 2 premium (40 produktov, 16 eshopov):
+1.  5,92€  0,074€/kus https://www.lekarenvkocke.sk/zq6025f1ed79a26f4062768f02939b425a-pampers-premium-care-2-mini-detske-plienky-3-6-kg-1x80-ks
+2. 34,89€  0,145€/kus https://www.amddrogeria.sk/pampers-premium-care-2-mini-3-6-kg-240-ks/
+3.  3,58€  0,156€/kus https://kidmarket.sk/premium-care/2566-pampers-premium-care-2-mini-23ks-4-8kg-8001841104652.html
+4. 12,49€  0,156€/kus https://www.amddrogeria.sk/pampers-premium-mini-80ks/
+5. 37,88€  0,158€/kus https://kidmarket.sk/premium-care/1039-pampers-premium-care-2-mini-240ks-mounthly-pack-3-6kg-8001090379474.html
 
+----------
+TODO EshopThreadStatisticManagerImpl urobit nech sa sam zastavi ked je finished alebo running 0 proste nech sa vypne ked uz nic nebezi...
+
+pampers 7 zelene kategoria chyba
+pampers biele 6 kategoria chyba
+
+TODO prest not interesting ktore maju slovo pampers ci tam nie je 7 alebo nieco zabudnute(len manualne staci, netreba UI)
+TODO dokoncit facebook pre grupu pamper zelene1-7(urobit kategorie aj pre 7) a biele0-5 a nutrilo 1-6
+TODO pampers 4 a 4+ davat spolu
+TODO nutrilon good sleep
+TODO pampers pants
+TODO nutrilon pro futura
 ---------------------
 remove lobmok from pom.xml, fist find ussage
----------------
-https://www.pilulka24.sk/tena-men-protective-underwear-level-4-m-nohavicky-plienkove-12ks
-nestiahne obrazok pri zobrazovani novych produktov
 ---------------------------------------------------------------------------------------------
 GIGA lekaren tam dat asi dlzie casy medzi jednotlivymi requestami lebo ma blokuju....
 2019-09-20 13:15:03,484 DEBUG [GIGA_LEKAREN-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:249] starting 21 of 39
