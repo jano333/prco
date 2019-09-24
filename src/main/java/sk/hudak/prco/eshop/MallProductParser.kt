@@ -12,11 +12,11 @@ import sk.hudak.prco.exception.PrcoRuntimeException
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal
-import sk.hudak.prco.utils.JsoupUtils
 import sk.hudak.prco.utils.JsoupUtils.notExistElement
 import sk.hudak.prco.utils.PatternUtils.NUMBER_AT_LEAST_ONE
 import sk.hudak.prco.utils.PatternUtils.createMatcher
 import sk.hudak.prco.utils.UserAgentDataHolder
+import sk.hudak.prco.utils.src
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.ParseException
@@ -122,7 +122,7 @@ class MallProductParser(unitParser: UnitParser,
             img = documentDetailProduct.select("img.gallery-magnifier__normal").first()
         }
         return Optional.ofNullable(img)
-                .map { JsoupUtils.srcAttribute(it) }
+                .map { it.src() }
     }
 
     //TODO toto dat do util

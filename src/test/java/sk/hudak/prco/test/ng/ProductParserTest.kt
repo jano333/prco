@@ -20,13 +20,13 @@ import sk.hudak.prco.utils.UserAgentDataHolder
 fun main() {
 
     val test = ProductParserTest()
-//    https://www.maxikovy-hracky.cz/vyhledavani?search=pampers
-    val urlList = test.parseUrlsOfProduct(EshopUuid.KID_MARKET, "pampers")
-    println("count in list ${urlList.size}")
-    println("count in set ${HashSet(urlList).size}")
-    println(urlList);
+
+//    val urlList = test.parseUrlsOfProduct(EshopUuid.KID_MARKET, "pampers")
+//    println("count in list ${urlList.size}")
+//    println("count in set ${HashSet(urlList).size}")
+//    println(urlList);
 //
-//    println(test.parseProductNewData("https://www.gigalekaren.sk/produkt/nutrilon-kase-pronutra-ml-kr-s-piskoty-6m-225g/"))
+    println(test.parseProductNewData("https://www.pilulka24.sk/pampers-activebaby-giant-pack-2-mini-100"))
 
 //    println(test.parseProductUpdateData("https://www.mojalekaren.sk//pampers-active-baby-dry-3-midi-5-9kg-68-kusov/"))
 }
@@ -59,6 +59,7 @@ class ProductParserTest {
             EshopUuid.MOJA_LEKAREN -> MojaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // P
             EshopUuid.PILULKA -> PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            EshopUuid.PILULKA_24 -> Pilulka24ProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 
             else -> throw PrcoRuntimeException("Pridaj implementaciu do testu pre eshop $eshopUuid")
         }

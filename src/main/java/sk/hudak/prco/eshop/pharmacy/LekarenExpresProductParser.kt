@@ -10,9 +10,9 @@ import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ConvertUtils
-import sk.hudak.prco.utils.JsoupUtils
 import sk.hudak.prco.utils.JsoupUtils.notExistElement
 import sk.hudak.prco.utils.UserAgentDataHolder
+import sk.hudak.prco.utils.href
 import java.math.BigDecimal
 import java.util.*
 import java.util.Optional.ofNullable
@@ -54,7 +54,7 @@ class LekarenExpresProductParser(unitParser: UnitParser, userAgentDataHolder: Us
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
         return ofNullable(documentDetailProduct.select("#topImg > a").first())
-                .map { JsoupUtils.hrefAttribute(it) }
+                .map { it.href() }
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

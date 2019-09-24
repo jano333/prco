@@ -43,14 +43,6 @@ object JsoupUtils {
         }
     }
 
-    fun hrefAttribute(element: Element?): String? {
-        return element?.attr("href")
-    }
-
-    fun srcAttribute(element: Element?): String? {
-        return element?.attr("src")
-    }
-
     fun dataSrcAttribute(element: Element?): String? {
         return element?.attr("data-src")
     }
