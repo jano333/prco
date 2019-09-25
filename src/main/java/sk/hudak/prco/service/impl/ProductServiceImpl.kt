@@ -281,12 +281,12 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
     override fun resetUpdateDateForAllProductsInEshop(eshopUuid: EshopUuid) {
 
         //FIXME robit bulkovo po 25 ks, nie vsetky natiahnut naraz
-        productEntityDao.findByFilter(ProductFilterUIDto(eshopUuid))
-                .forEach { productEntity ->
-                    productEntity.lastTimeDataUpdated = null
-                    productEntityDao.update(productEntity)
-                }
-        log.debug("all products for eshop {} marked as not updated yet", eshopUuid)
+        val findByFilter = productEntityDao.findByFilter(ProductFilterUIDto(eshopUuid))
+        findByFilter.forEach { productEntity ->
+            productEntity.lastTimeDataUpdated = null
+            productEntityDao.update(productEntity)
+        }
+        log.debug("all products ${findByFilter.size} for eshop $eshopUuid marked as not updated yet")
     }
 
     override fun updateProductCommonPrice(productId: Long, newCommonPrice: BigDecimal) {
