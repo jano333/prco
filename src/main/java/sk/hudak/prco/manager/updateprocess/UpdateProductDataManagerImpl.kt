@@ -111,6 +111,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
                 eshopTaskManager.markTaskAsRunning(eshopUuid)
 
                 var productForUpdate: ProductDetailInfo? = internalTxService.findProductForUpdate(eshopUuid, eshopUuid.olderThanInHours)
+                var finishedWithError = false
                 // until we have anything for update
                 loop@
                 while (productForUpdate != null) {
@@ -120,18 +121,22 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
                     val continueStatus = updateProductDataErrorWrapper(productForUpdate, EMPTY_INSTANCE)
 
                     when (continueStatus) {
-                        ContinueStatus.STOP_PROCESSING_NEXT_ONE -> {
+                        ContinueUpdateStatus.STOP_PROCESSING_NEXT_ONE_OK -> {
                             break@loop
                         }
-                        ContinueStatus.CONTINUE_TO_NEXT_ONE_OK,
-                        ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR -> {
+                        ContinueUpdateStatus.STOP_PROCESSING_NEXT_ONE_ERROR -> {
+                            finishedWithError = true
+                            break@loop
+                        }
+                        ContinueUpdateStatus.CONTINUE_TO_NEXT_ONE_OK,
+                        ContinueUpdateStatus.CONTINUE_TO_NEXT_ONE_ERROR -> {
                             sleepRandomSafe()
                             productForUpdate = internalTxService.findProductForUpdate(eshopUuid, eshopUuid.olderThanInHours)
                         }
                     }
                 }
 
-                eshopTaskManager.markTaskAsFinished(eshopUuid, false)
+                eshopTaskManager.markTaskAsFinished(eshopUuid, finishedWithError)
             }
 
             override fun handleException(context: SingleContext, e: Exception) {
@@ -172,18 +177,18 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
                     val continueStatus = updateProductDataErrorWrapper(productForUpdate, EMPTY_INSTANCE)
 
                     when (continueStatus) {
-                        ContinueStatus.STOP_PROCESSING_NEXT_ONE -> {
+                        ContinueUpdateStatus.STOP_PROCESSING_NEXT_ONE_OK -> {
                             break@loop
                         }
 
-                        ContinueStatus.CONTINUE_TO_NEXT_ONE_OK -> {
+                        ContinueUpdateStatus.CONTINUE_TO_NEXT_ONE_OK -> {
                             countOfProductsAlreadyUpdated++
                             countOfProductsWaitingToBeUpdated--
                             //TODO iba ak nie je posledny tak toto rob:
                             sleepRandomSafe()
                         }
 
-                        ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR -> {
+                        ContinueUpdateStatus.CONTINUE_TO_NEXT_ONE_ERROR -> {
                             countOfProductsWaitingToBeUpdated--
                             //TODO iba ak nie je posledny tak toto rob:
                             sleepRandomSafe()
@@ -230,7 +235,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
     }
 
 
-    private fun updateProductDataErrorWrapper(productForUpdate: ProductDetailInfo, listener: UpdateProductDataListener): ContinueStatus {
+    private fun updateProductDataErrorWrapper(productForUpdate: ProductDetailInfo, listener: UpdateProductDataListener): ContinueUpdateStatus {
         return try {
             updateProductData(productForUpdate, listener)
 
@@ -239,12 +244,12 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
         }
     }
 
-    private fun updateProductData(productForUpdate: ProductDetailInfo, listener: UpdateProductDataListener): ContinueStatus {
+    private fun updateProductData(productForUpdate: ProductDetailInfo, listener: UpdateProductDataListener): ContinueUpdateStatus {
         eshopTaskManager.sleepIfNeeded(productForUpdate.eshopUuid)
 
         if (eshopTaskManager.isTaskShouldStopped(productForUpdate.eshopUuid)) {
             eshopTaskManager.markTaskAsStopped(productForUpdate.eshopUuid)
-            return ContinueStatus.STOP_PROCESSING_NEXT_ONE
+            return ContinueUpdateStatus.STOP_PROCESSING_NEXT_ONE_OK
         }
 
         // parsujem update data pre danu URL
@@ -252,8 +257,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
             htmlParser.parseProductUpdateData(productForUpdate.url)
 
         } catch (e: Exception) {
-            updateProductErrorHandler.processParsingError(e, productForUpdate)
-            return ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR
+            return updateProductErrorHandler.processParsingError(e, productForUpdate)
         }
 
         // no redirect -> product url was not changed
@@ -262,11 +266,11 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
             if (!updateData.isProductAvailable) {
                 // mark it as unavailable
                 internalTxService.markProductAsUnavailable(productForUpdate.id)
-                return ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR
+                return ContinueUpdateStatus.CONTINUE_TO_NEXT_ONE_ERROR
             }
             // update product data
             internalTxService.updateProduct(updateData.toProductUpdateDataDto(productForUpdate.id))
-            return ContinueStatus.CONTINUE_TO_NEXT_ONE_OK
+            return ContinueUpdateStatus.CONTINUE_TO_NEXT_ONE_OK
         }
 
         // redirect -> url was changed, try to find product with new URL
@@ -281,12 +285,12 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
                 internalTxService.updateProductUrl(productForUpdate.id, updateData.url)
                 // mark it as unavailable
                 internalTxService.markProductAsUnavailable(productForUpdate.id)
-                return ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR
+                return ContinueUpdateStatus.CONTINUE_TO_NEXT_ONE_ERROR
             }
 
             // update product data
             internalTxService.updateProduct(updateData.toProductUpdateDataDto(productForUpdate.id))
-            return ContinueStatus.CONTINUE_TO_NEXT_ONE_OK
+            return ContinueUpdateStatus.CONTINUE_TO_NEXT_ONE_OK
         }
 
         // product with new URL exist
@@ -299,7 +303,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
         if (!updateData.isProductAvailable) {
             // mark it as unavailable
             internalTxService.markProductAsUnavailable(newProductForUpdate.id)
-            return ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR
+            return ContinueUpdateStatus.CONTINUE_TO_NEXT_ONE_ERROR
         }
 
         // update product data
@@ -310,15 +314,9 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
         //  notify listener
         notifyUpdateListener(productForUpdate.eshopUuid, listener)
 
-        return ContinueStatus.CONTINUE_TO_NEXT_ONE_OK
+        return ContinueUpdateStatus.CONTINUE_TO_NEXT_ONE_OK
     }
 
-    //TODO spolocne aj pre add process
-    private enum class ContinueStatus {
-        CONTINUE_TO_NEXT_ONE_OK,
-        CONTINUE_TO_NEXT_ONE_ERROR,
-        STOP_PROCESSING_NEXT_ONE
-    }
 
     private fun notifyUpdateListener(eshopUuid: EshopUuid, listener: UpdateProductDataListener) {
         //TODO volat len ak to nie je empty implementacia
@@ -336,6 +334,13 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
             }
         }
     }
+}
+
+enum class ContinueUpdateStatus {
+    CONTINUE_TO_NEXT_ONE_OK,
+    CONTINUE_TO_NEXT_ONE_ERROR,
+    STOP_PROCESSING_NEXT_ONE_OK,
+    STOP_PROCESSING_NEXT_ONE_ERROR
 }
 
 class UpdateProductException(productForUpdate: ProductDetailInfo, e: Exception) :

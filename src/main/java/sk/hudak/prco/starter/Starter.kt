@@ -162,29 +162,12 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
 
 
         // --- PRODUCTS ---
-        //        showAllProducts();
-
-        // pampers 4
-        //        showProductsInGroup(1L, true, EshopUuid.METRO);
-        // pampers 5
-        //        showProductsInGroup(321L, true);
-
-
         //        internalTxService.removeProductByUrl("https://www.brendon.sk/Products/Details/118425");
+        //        deleteProductsFromNotInterested(EshopUuid.DR_MAX);
 
         println(facebookReporter.doFullReport())
 
-        // nutrilon 4
-        //        showProductsInGroup(33L);
-        // nutrilon 5
-        //        showProductsInGroup(257L, true);
-
         //        showProductNotInterested(EshopUuid.DROGERIA_VMD);
-
-        //        deleteProductsFromNotInterested(EshopUuid.DR_MAX);
-
-        // olej
-        //        showProductsInGroup(225L);
 
 
         //        showAllProductsInAllGroups();
@@ -231,7 +214,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         updateProductDataManager.updateProductDataForEachProductInEachEshop(listener)
         //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
-        //        updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.ALZA, listener);
+//                updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.MAXIKOVY_HRACKY, listener);
         // updatne vsetky produkty v danej skupine
         //        updateProductDataManager.updateProductDataForEachProductInGroup(33L);
 

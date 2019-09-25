@@ -1,13 +1,30 @@
-A jednotka bola vypredna !!!
-Pampers 2 premium (40 produktov, 16 eshopov):
-1.  5,92€  0,074€/kus https://www.lekarenvkocke.sk/zq6025f1ed79a26f4062768f02939b425a-pampers-premium-care-2-mini-detske-plienky-3-6-kg-1x80-ks
-2. 34,89€  0,145€/kus https://www.amddrogeria.sk/pampers-premium-care-2-mini-3-6-kg-240-ks/
-3.  3,58€  0,156€/kus https://kidmarket.sk/premium-care/2566-pampers-premium-care-2-mini-23ks-4-8kg-8001841104652.html
-4. 12,49€  0,156€/kus https://www.amddrogeria.sk/pampers-premium-mini-80ks/
-5. 37,88€  0,158€/kus https://kidmarket.sk/premium-care/1039-pampers-premium-care-2-mini-240ks-mounthly-pack-3-6kg-8001090379474.html
-
-----------
-TODO EshopThreadStatisticManagerImpl urobit nech sa sam zastavi ked je finished alebo running 0 proste nech sa vypne ked uz nic nebezi...
+2019-09-25 11:05:12,161 DEBUG [MAXIKOVY_HRACKY-thread] [] s.h.p.s.PrcoCustomTrustManager [SSLHandling.kt:286] delegating checking to java default trust manager
+2019-09-25 11:05:12,408 ERROR [MAXIKOVY_HRACKY-thread] [] s.h.p.m.u.UpdateProductErrorHandlerImpl [UpdateProductErrorHandlerImpl.kt:22] error while parsing product update data for product https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-76-ks
+sk.hudak.prco.exception.StringToNumberConvertPrcoException: error while converting value 469 Kč to java.math.BigDecimal
+	at sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal(ConvertUtils.kt:21)
+	at sk.hudak.prco.eshop.MaxikovyHrackyProductParser$parseProductPriceForPackage$3.apply(MaxikovyHrackyProductParser.kt:89)
+	at sk.hudak.prco.eshop.MaxikovyHrackyProductParser$parseProductPriceForPackage$3.apply(MaxikovyHrackyProductParser.kt:24)
+	at java.util.Optional.map(Optional.java:215)
+	at sk.hudak.prco.eshop.MaxikovyHrackyProductParser.parseProductPriceForPackage(MaxikovyHrackyProductParser.kt:89)
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.parseProductUpdateData(JSoupProductParser.kt:215)
+	at sk.hudak.prco.parser.html.JsoupHtmlParserImpl.parseProductUpdateData(JsoupHtmlParserImpl.kt:35)
+	at sk.hudak.prco.manager.updateprocess.UpdateProductDataManagerImpl.updateProductData(UpdateProductDataManagerImpl.kt:252)
+	at sk.hudak.prco.manager.updateprocess.UpdateProductDataManagerImpl.updateProductDataErrorWrapper(UpdateProductDataManagerImpl.kt:235)
+	at sk.hudak.prco.manager.updateprocess.UpdateProductDataManagerImpl.access$updateProductDataErrorWrapper(UpdateProductDataManagerImpl.kt:26)
+	at sk.hudak.prco.manager.updateprocess.UpdateProductDataManagerImpl$updateProductDataForEachProductInEshop$1.doInRunnable(UpdateProductDataManagerImpl.kt:120)
+	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:219)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.NumberFormatException: null
+	at java.math.BigDecimal.<init>(BigDecimal.java:494)
+	at java.math.BigDecimal.<init>(BigDecimal.java:383)
+	at java.math.BigDecimal.<init>(BigDecimal.java:806)
+	at sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal(ConvertUtils.kt:18)
+	... 16 common frames omitted
+----------------------------
 
 pampers 7 zelene kategoria chyba
 pampers biele 6 kategoria chyba
@@ -62,6 +79,7 @@ Caused by: sk.hudak.prco.exception.PrcoRuntimeException: Product with URL https:
 	... 9 common frames omitted
 2019-09-12 14:49:10,504 DEBUG [KID_MARKET-thread] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:150] marking task for eshop KID_MARKET as FINISHED_WITH_ERROR
 -----------------------------------------------------------
+TODO EshopThreadStatisticManagerImpl urobit nech sa sam zastavi ked je finished alebo running 0 proste nech sa vypne ked uz nic nebezi...
 
 2019-09-09 13:44:18,841 DEBUG [GIGA_LEKAREN-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:153] starting 17 of 19
 2019-09-09 13:44:18,841 DEBUG [GIGA_LEKAREN-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:241] request URL: https://www.gigalekaren.sk/produkt/nutrilon-kase-pronutra-ml-kr-s-piskoty-6m-225g/
