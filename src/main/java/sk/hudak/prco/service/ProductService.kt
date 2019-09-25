@@ -31,8 +31,7 @@ interface ProductService {
      * @param productId      product id
      * @param newCommonPrice common(bezna cena) productu
      */
-    //TODO zrusit ? v  Long?
-    fun updateProductCommonPrice(productId: Long?, newCommonPrice: BigDecimal)
+    fun updateProductCommonPrice(productId: Long, newCommonPrice: BigDecimal)
 
 
     fun updateProductUrl(productId: Long, newProductUrl: String)
@@ -49,23 +48,21 @@ interface ProductService {
      *
      * @param productId product id
      */
-    //TODO zrusit ? v  Long?
-    fun resetUpdateDateProduct(productId: Long?)
+    fun resetUpdateDateProduct(productId: Long)
 
     /**
      * Reset of all prices to null, same for action and 'lastTimeDataUpdated'.
      *
      * @param productId product id
      */
-    //TODO zrusit ? v  Long?
-    fun markProductAsUnavailable(productId: Long?)
+    fun markProductAsUnavailable(productId: Long)
 
     /**
      * Move product to NotInteredted product. Before that it removes it from all group and after moving it delete it.
      *
      * @param productId product id
      */
-    fun markProductAsNotInterested(productId: Long?)
+    fun markProductAsNotInterested(productId: Long)
 
 
     /**
@@ -73,10 +70,9 @@ interface ProductService {
      *
      * @param productId product id
      */
-    //TODO zrusit ? v  Long?
-    fun removeProduct(productId: Long?)
+    fun removeProduct(productId: Long)
 
-
+    //TODO dat navratovu hodnotu boolen ci sa taky vobec nasiel
     fun removeProductByUrl(productUrl: String)
 
     /**

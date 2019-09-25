@@ -54,7 +54,7 @@ class UIServiceImpl(
     }
 
     override fun updateCommonPrice(productId: Long?, newCommonPrice: BigDecimal) {
-        internalTxService.updateProductCommonPrice(productId, newCommonPrice)
+        internalTxService.updateProductCommonPrice(productId!!, newCommonPrice)
     }
 
     override fun resetUpdateDateForAllProductsInEshop(eshopUuid: EshopUuid) {
@@ -66,7 +66,7 @@ class UIServiceImpl(
     }
 
     override fun removeProduct(productId: Long?) {
-        internalTxService.removeProduct(productId)
+        internalTxService.removeProduct(productId!!)
     }
 
     override fun findProductsInGroup(groupId: Long, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto> {
@@ -140,6 +140,6 @@ class UIServiceImpl(
     }
 
     override fun markProductAsNotInterested(productId: Long?) {
-        internalTxService.markProductAsNotInterested(productId)
+        internalTxService.markProductAsNotInterested(productId!!)
     }
 }

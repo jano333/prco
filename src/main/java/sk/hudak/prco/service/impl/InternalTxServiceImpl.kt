@@ -166,12 +166,12 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional
-    override fun markProductAsUnavailable(productId: Long?) {
+    override fun markProductAsUnavailable(productId: Long) {
         productService.markProductAsUnavailable(productId)
     }
 
     @Transactional
-    override fun resetUpdateDateProduct(productId: Long?) {
+    override fun resetUpdateDateProduct(productId: Long) {
         productService.resetUpdateDateProduct(productId)
     }
 
@@ -186,7 +186,7 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional
-    override fun markProductAsNotInterested(productId: Long?) {
+    override fun markProductAsNotInterested(productId: Long) {
         productService.markProductAsNotInterested(productId)
     }
 
@@ -211,7 +211,7 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional
-    override fun removeProduct(productId: Long?) {
+    override fun removeProduct(productId: Long) {
         productService.removeProduct(productId)
     }
 
@@ -246,7 +246,7 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional
-    override fun updateProductCommonPrice(productId: Long?, newCommonPrice: BigDecimal) {
+    override fun updateProductCommonPrice(productId: Long, newCommonPrice: BigDecimal) {
         productService.updateProductCommonPrice(productId, newCommonPrice)
     }
 

@@ -40,9 +40,7 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
     companion object {
         val log = LoggerFactory.getLogger(ProductServiceImpl::class.java)!!
 
-        private val PRODUCT_ID = "productId"
-        private val ESHOP_UUID = "eshopUuid"
-        private val PRODUCT_URL = "productURL"
+        private const val PRODUCT_URL = "productURL"
     }
 
 
@@ -51,10 +49,10 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
 
         var result = HashMap<EshopUuid, MutableList<Long>>()
         EshopUuid.values().forEach {
-            result.put(it, ArrayList())
+            result[it] = ArrayList()
         }
         productEntityList.forEach {
-            result.get(it.eshopUuid)?.add(it.id)
+            result[it.eshopUuid]?.add(it.id)
         }
         return result
     }
@@ -64,10 +62,10 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
         //FIXME tato preklapacka je aj hore
         var result = HashMap<EshopUuid, MutableList<Long>>()
         EshopUuid.values().forEach {
-            result.put(it, ArrayList())
+            result[it] = ArrayList()
         }
         productEntityList.forEach {
-            result.get(it.eshopUuid)?.add(it.id)
+            result[it.eshopUuid]?.add(it.id)
         }
         return result
 
@@ -91,7 +89,6 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
     }
 
     override fun findProducts(filter: ProductFilterUIDto): List<ProductFullDto> {
-        notNull(filter, "filter")
         //FIXME skusit optimalizovat databazovo
 
         val productFullDtos = mapper.mapAsList<Any, ProductFullDto>(
@@ -162,8 +159,6 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
     }
 
     override fun findProductsBestPriceInGroupDto(eshopUuid: EshopUuid): List<ProductBestPriceInGroupDto> {
-        notNull(eshopUuid, ESHOP_UUID)
-
         val productsInAction = productEntityDao.findByFilter(ProductFilterUIDto(eshopUuid, java.lang.Boolean.TRUE))
 
         return productsInAction.stream()
@@ -204,19 +199,18 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
 
             //TODO ak je vo viacerych grupach
             val products = groupEntityDao.findById(groupIdOptional.get()).products
-            var withValidPriceForPackage = products.filter { it.priceForUnit != null }.toList()
+            val withValidPriceForPackage = products.filter { it.priceForUnit != null }.toList()
 
             // FIXME cez db query
             Collections.sort(withValidPriceForPackage, Comparator.comparing { productEntity: ProductEntity ->
                 productEntity.priceForUnit
             })
 
-            withValidPriceForPackage[0].id.equals(it.id)
+            withValidPriceForPackage[0].id == it.id
         }
     }
 
     override fun getStatisticForUpdateForEshop(eshopUuid: EshopUuid, olderThanInHours: Int): StatisticForUpdateForEshopDto {
-        notNull(eshopUuid, ESHOP_UUID)
         notNegativeAndNotZeroValue(olderThanInHours, "olderThanInHours")
 
         return StatisticForUpdateForEshopDto(
@@ -225,10 +219,8 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
                 productEntityDao.countOfProductsAlreadyUpdated(eshopUuid, olderThanInHours))
     }
 
-    override fun removeProduct(productId: Long?) {
-        notNull(productId, PRODUCT_ID)
-
-        removeProduct(productEntityDao.findById(productId!!));
+    override fun removeProduct(productId: Long) {
+        removeProduct(productEntityDao.findById(productId))
     }
 
     override fun removeProductByUrl(productUrl: String) {
@@ -281,13 +273,12 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
     }
 
     override fun existProductWithUrl(productURL: String): Boolean {
-        notNullNotEmpty(productURL, PRODUCT_URL)
+        notEmpty(productURL, PRODUCT_URL)
 
         return productEntityDao.existWithUrl(productURL)
     }
 
     override fun resetUpdateDateForAllProductsInEshop(eshopUuid: EshopUuid) {
-        notNull(eshopUuid, ESHOP_UUID)
 
         //FIXME robit bulkovo po 25 ks, nie vsetky natiahnut naraz
         productEntityDao.findByFilter(ProductFilterUIDto(eshopUuid))
@@ -298,8 +289,7 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
         log.debug("all products for eshop {} marked as not updated yet", eshopUuid)
     }
 
-    override fun updateProductCommonPrice(productId: Long?, newCommonPrice: BigDecimal) {
-        notNull(productId, PRODUCT_ID)
+    override fun updateProductCommonPrice(productId: Long, newCommonPrice: BigDecimal) {
         notNull(newCommonPrice, "newCommonPrice")
         // TODO validacia na vecsie ako nula...
 
@@ -338,7 +328,6 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
     }
 
     override fun updateProduct(updateData: ProductUpdateDataDto) {
-        notNull(updateData, "updateData")
         notNull(updateData.id, "id")
         notNullNotEmpty(updateData.name, "name")
         notNullNotEmpty(updateData.url, "url")
@@ -376,8 +365,8 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
     }
 
 
-    override fun markProductAsUnavailable(productId: Long?) {
-        val updateEntity = productDataUpdateEntityDao.findById(productId!!)
+    override fun markProductAsUnavailable(productId: Long) {
+        val updateEntity = productDataUpdateEntityDao.findById(productId)
         updateEntity.lastTimeDataUpdated = Date()
         // prices
         updateEntity.priceForOneItemInPackage = null
@@ -391,14 +380,14 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
         log.info("product with id {} was reset/mark as unavailable", productId)
     }
 
-    override fun resetUpdateDateProduct(productId: Long?) {
+    override fun resetUpdateDateProduct(productId: Long) {
         internalLastTimeDataUpdated(productId, null)
     }
 
 
-    override fun markProductAsNotInterested(productId: Long?) {
+    override fun markProductAsNotInterested(productId: Long) {
         // vyhladam povodny produkt
-        val productEntity = productEntityDao.findById(productId!!)
+        val productEntity = productEntityDao.findById(productId)
 
         // premapujem do noveho
         val notInterestedProductEntity = mapper.map(productEntity, NotInterestedProductEntity::class.java)
@@ -418,8 +407,6 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
     }
 
     override fun findDuplicityProductsByNameAndPriceInEshop(eshopUuid: EshopUuid): List<ProductFullDto> {
-        notNull(eshopUuid, "eshopUuid")
-
         val tmp = HashMap<String, MutableList<ProductEntity>>()
         for (productEntity in productEntityDao.findByFilter(ProductFilterUIDto(eshopUuid))) {
             var values: MutableList<ProductEntity>? = tmp[productEntity.name]
