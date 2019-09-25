@@ -50,7 +50,7 @@ class ProductUpdateData : InternalMarkerDto {
     companion object {
         fun createUnavailable(url: String, eshopUuid: EshopUuid, redirect: Boolean): ProductUpdateData {
             return ProductUpdateData(url, eshopUuid, redirect, null, null, null,
-                    null, null, true)
+                    null, null, false)
         }
 
         fun createAvailable(url: String, eshopUuid: EshopUuid, redirect: Boolean,
