@@ -39,24 +39,31 @@ class ProductUpdateData : InternalMarkerDto {
     val url: String
     val eshopUuid: EshopUuid
     val redirect: Boolean
+    val isProductAvailable: Boolean
 
     var name: String? = null
     var priceForPackage: BigDecimal? = null
     var productAction: ProductAction? = null
     var actionValidity: Date? = null
     var pictureUrl: String? = null
-    val isProductAvailable: Boolean
-        get() = name != null && priceForPackage != null
 
-    constructor(url: String, eshopUuid: EshopUuid, redirect: Boolean) {
-        this.url = url
-        this.eshopUuid = eshopUuid
-        this.redirect = redirect
+    companion object {
+        fun createUnavailable(url: String, eshopUuid: EshopUuid, redirect: Boolean): ProductUpdateData {
+            return ProductUpdateData(url, eshopUuid, redirect, null, null, null,
+                    null, null, true)
+        }
+
+        fun createAvailable(url: String, eshopUuid: EshopUuid, redirect: Boolean,
+                            name: String?, pictureUrl: String?, priceForPackage: BigDecimal?,
+                            productAction: ProductAction?, actionValidity: Date?): ProductUpdateData {
+            return ProductUpdateData(url, eshopUuid, redirect, name, priceForPackage, productAction,
+                    actionValidity, pictureUrl, true)
+        }
+
     }
 
-
-    constructor(url: String, eshopUuid: EshopUuid, redirect: Boolean,
-                name: String?, priceForPackage: BigDecimal?, productAction: ProductAction?, actionValidity: Date?, pictureUrl: String?) {
+    private constructor(url: String, eshopUuid: EshopUuid, redirect: Boolean, name: String?, priceForPackage: BigDecimal?,
+                        productAction: ProductAction?, actionValidity: Date?, pictureUrl: String?, isProductAvailable: Boolean) {
         // povinne
         this.url = url
         this.eshopUuid = eshopUuid
@@ -67,19 +74,20 @@ class ProductUpdateData : InternalMarkerDto {
         this.productAction = productAction
         this.actionValidity = actionValidity
         this.pictureUrl = pictureUrl
+        this.isProductAvailable = isProductAvailable
+
     }
 
     override fun toString(): String {
-        return "ProductUpdateData(" +
-                "url='$url', " +
+        return "ProductUpdateData(url='$url', " +
                 "eshopUuid=$eshopUuid, " +
-                "redirect=$redirect, " +
-                "name=$name, " +
+                "redirect=$redirect," +
+                " name=$name, " +
                 "priceForPackage=$priceForPackage, " +
                 "productAction=$productAction, " +
                 "actionValidity=$actionValidity, " +
-                "pictureUrl=$pictureUrl" +
-                ")"
+                "pictureUrl=$pictureUrl, " +
+                "isProductAvailable=$isProductAvailable)"
     }
 
 
@@ -89,24 +97,6 @@ data class StatisticForUpdateForEshopDto(
         val eshopUuid: EshopUuid,
         val countOfProductsWaitingToBeUpdated: Long,
         val countOfProductsAlreadyUpdated: Long) : InternalMarkerDto
-
-class ParsingDataResponse : InternalMarkerDto {
-
-    var productUpdateData: ProductUpdateData? = null
-    var error: Exception? = null
-
-    val isError: Boolean
-        get() = error != null
-
-    constructor(productUpdateData: ProductUpdateData) {
-        this.productUpdateData = productUpdateData
-    }
-
-    constructor(error: Exception) {
-        this.error = error
-    }
-
-}
 
 data class ProductUpdateDataDto(var id: Long?,
                                 var url: String?,

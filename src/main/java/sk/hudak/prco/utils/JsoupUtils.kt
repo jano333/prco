@@ -8,26 +8,26 @@ import java.util.*
 /**
  * Same as elements.attr("src")
  */
-fun Elements.src(): String? =
+fun Elements.src(): String =
         this.attr("src")
 
 /**
  * Same as element.attr("src")
  */
-fun Element.src(): String? =
+fun Element.src(): String =
         this.attr("src")
 
 
 /**
  * Same as elements.attr("href")
  */
-fun Elements.href(): String? =
+fun Elements.href(): String =
         this.attr("href")
 
 /**
  * Same as element.attr("href")
  */
-fun Element.href(): String? =
+fun Element.href(): String =
         this.attr("href")
 
 

@@ -194,7 +194,7 @@ abstract class JSoupProductParser : EshopProductsParser {
             log.warn("from $productUrl")
             log.warn("to $realProductUrl")
             true
-        }else {
+        } else {
             false
         }
 
@@ -202,8 +202,9 @@ abstract class JSoupProductParser : EshopProductsParser {
         if (isProductUnavailable(document)) {
             //TODO pridat ako osobitnu chybu, pripadne do osobitnej tabulku na vyhodnotenie ak je napr.
             // 5 produktov po sebe oznacenych za nedostupnych tak overit ci je to naozaj tak
-            log.warn("product is unavailable: {} ", productUrl)
-            return ProductUpdateData(realProductUrl, eshopUuid, redirect)
+            // ale toto musi byt o uroven vyssie
+            log.warn("product is unavailable: $realProductUrl")
+            return ProductUpdateData.createUnavailable(realProductUrl, eshopUuid, redirect)
         }
 
         // product name
@@ -216,6 +217,9 @@ abstract class JSoupProductParser : EshopProductsParser {
         logWarningIfNullOrEmpty(productPriceForPackageOpt, "priceForPackage", document.location())
         val productPriceForPackage = productPriceForPackageOpt.orElseThrow { ProductPriceNotFoundException(productUrl) }
 
+        // product picture
+        val pictureUrl = internalParseProductPictureURL(document, productUrl)
+
         // product action
         val productAction = internalParseProductAction(document, productUrl)
         // validity of action
@@ -224,19 +228,16 @@ abstract class JSoupProductParser : EshopProductsParser {
             productActionValidity = internalParseProductActionValidity(document, productUrl)
         }
 
-        // product picture
-        val pictureUrl = internalParseProductPictureURL(document, productUrl)
-
-        return ProductUpdateData(
+        return ProductUpdateData.createAvailable(
                 realProductUrl,
                 eshopUuid,
                 redirect,
                 productName,
+                if (pictureUrl.isPresent) pictureUrl.get() else null,
                 productPriceForPackage,
                 // FIXME spojit do jedneho ohladne product action
                 if (productAction.isPresent) productAction.get() else null,
-                if (productActionValidity.isPresent) productActionValidity.get() else null,
-                if (pictureUrl.isPresent) pictureUrl.get() else null)
+                if (productActionValidity.isPresent) productActionValidity.get() else null)
     }
 
     /**

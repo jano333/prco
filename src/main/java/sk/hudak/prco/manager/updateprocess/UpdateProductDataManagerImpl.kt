@@ -168,6 +168,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
 
                 listener.onUpdateStatus(UpdateStatusInfo(eshopUuid, countOfProductsWaitingToBeUpdated, countOfProductsAlreadyUpdated))
 
+                var finishedWithError = false
                 loop@
                 for (productForUpdateId in productForUpdateIds) {
                     // read detail about product
@@ -178,6 +179,10 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
 
                     when (continueStatus) {
                         ContinueUpdateStatus.STOP_PROCESSING_NEXT_ONE_OK -> {
+                            break@loop
+                        }
+                        ContinueUpdateStatus.STOP_PROCESSING_NEXT_ONE_ERROR -> {
+                            finishedWithError = true
                             break@loop
                         }
 
@@ -200,7 +205,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
 
                 }// koniec for cyklu
 
-                eshopTaskManager.markTaskAsFinished(eshopUuid, false)
+                eshopTaskManager.markTaskAsFinished(eshopUuid, finishedWithError)
             }
 
             override fun handleException(context: SingleContext, e: Exception) {
