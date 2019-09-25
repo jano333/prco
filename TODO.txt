@@ -1,3 +1,17 @@
+
+----------------
+2019-09-25 14:55:29,532 DEBUG [DROGERIA_VMD-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:248] request URL: https://www.drogeria-vmd.sk/hladanie-stranka-3/?q=pampers
+2019-09-25 14:55:29,532 DEBUG [DROGERIA_VMD-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:249] userAgent: Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko
+2019-09-25 14:55:29,567 DEBUG [DROGERIA_VMD-thread] [] s.h.p.s.PrcoCustomHostnameVerifier [SSLHandling.kt:365] verify www.drogeria-vmd.sk
+2019-09-25 14:55:30,242 INFO [DROGERIA_VMD-thread] [] s.h.p.p.h.JsoupHtmlParserImpl [JsoupHtmlParserImpl.kt:26] count of products found for keyword 'pampers': 35
+2019-09-25 14:55:30,243 DEBUG [DROGERIA_VMD-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:123] count of products URL 35
+2019-09-25 14:55:30,243 ERROR [DROGERIA_VMD-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:205] product with URL https://www.drogeria-vmd.sk/pampers-pure-protect-1-2-5kg-35ks-3120-1/ is more than one, count: 2
+2019-09-25 14:55:30,253 DEBUG [DROGERIA_VMD-thread] [] s.h.p.s.i.ErrorServiceImpl [ErrorServiceImpl.kt:80] update entity ErrorEntity with id 6404, type PARSING_PRODUCT_NEW_DATA, msg 'duplicity product url found'
+2019-09-25 14:55:30,276 ERROR [DROGERIA_VMD-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:205] product with URL https://www.drogeria-vmd.sk/pampers-active-baby-giant-pack-3-midi-6-10-kg-plenkove-kalhotky-90-kusu/ is more than one, count: 2
+2019-09-25 14:55:30,294 DEBUG [DROGERIA_VMD-thread] [] s.h.p.s.i.ErrorServiceImpl [ErrorServiceImpl.kt:103] create entity ErrorEntity with id 6442 msg: duplicity product url found
+2019-09-25 14:55:30,298 DEBUG [DROGERIA_VMD-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:126] count of products URL after duplicity check 33
+2019-09-25 14:55:30,309 DEBUG [DROGERIA_VMD-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:367] product https://www.drogeria-vmd.sk/pampers-det-ubr-natur-clean-4x64ks-7059/ already existing
+----------------
 2019-09-25 11:05:12,161 DEBUG [MAXIKOVY_HRACKY-thread] [] s.h.p.s.PrcoCustomTrustManager [SSLHandling.kt:286] delegating checking to java default trust manager
 2019-09-25 11:05:12,408 ERROR [MAXIKOVY_HRACKY-thread] [] s.h.p.m.u.UpdateProductErrorHandlerImpl [UpdateProductErrorHandlerImpl.kt:22] error while parsing product update data for product https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-76-ks
 sk.hudak.prco.exception.StringToNumberConvertPrcoException: error while converting value 469 Kč to java.math.BigDecimal
@@ -208,151 +222,11 @@ Caused by: sk.hudak.prco.exception.RequiredParameterException: parameter name is
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:137)
 	... 8 common frames omitted
 --------------------
-2019-09-05 14:52:16,626 DEBUG [FEEDO-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:241] request URL: https://www.feedo.sk/vysledky-hladania/pampers/filter/?strana=5
-2019-09-05 14:52:16,626 DEBUG [FEEDO-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:244] userAgent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36
-2019-09-05 14:52:16,659 DEBUG [FEEDO-thread] [] s.h.p.s.PrcoCustomHostnameVerifier [SSLHandling.kt:365] verify www.feedo.sk
-2019-09-05 14:52:17,600 INFO [FEEDO-thread] [] s.h.p.p.h.JsoupHtmlParserImpl [JsoupHtmlParserImpl.kt:26] count of products found for keyword 'pampers': 100
-2019-09-05 14:52:17,600 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:65] count of products URL 100
-2019-09-05 14:52:17,603 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-5-junior-88ks-11-16-kg-mega-box-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,607 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-4-maxi-168-ks-9-14-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,609 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-3-midi-204-ks-6-10-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,612 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-2-mini-240-ks-4-8-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,615 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-new-baby-dry-2-4-8-kg-228-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,617 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-5-junior-136-ks-11-16-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,620 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-1-newborn-234-ks-2-5-kg-mesacne-balenie-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,623 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-4-8-14kg-174-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,627 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-5-11-16-kg-150-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,630 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-3-6-10-kg-208-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,633 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-4-10-15-kg-152-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,636 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-new-baby-dry-2-4-8-kg-215-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,638 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-6-13-18-kg-124-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,643 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-7-15-kg-112-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,645 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-new-baby-dry-1-2-5kg-215-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,649 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/f072343/ already existing
-2019-09-05 14:52:17,650 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-pants-5-96ks-12-17-kg-mega-box-plienkove-nohavicky/ already existing
-2019-09-05 14:52:17,650 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-pants-4-104ks-9-15-kg-mega-box-plienkove-nohavicky/ already existing
-2019-09-05 14:52:17,651 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/12x-pampers-sensitive-56-ks-vlhcene-obrusky/ already existing
-2019-09-05 14:52:17,654 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-5-junior-88ks-11-16-kg-mega-box-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,658 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-4-maxi-168-ks-9-14-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,661 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-3-midi-204-ks-6-10-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,664 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-2-mini-240-ks-4-8-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,667 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-new-baby-dry-2-4-8-kg-228-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,669 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-5-junior-136-ks-11-16-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,672 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-1-newborn-234-ks-2-5-kg-mesacne-balenie-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,675 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-6-13-18-kg-124-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,678 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-4-8-14kg-174-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,680 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-3-6-10-kg-208-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,683 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-5-11-16-kg-150-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,686 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-new-baby-dry-2-4-8-kg-215-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,690 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-7-15-kg-112-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,694 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-4-10-15-kg-152-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,697 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-new-baby-dry-1-2-5kg-215-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,700 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/f072343/ already existing
-2019-09-05 14:52:17,701 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-pants-5-96ks-12-17-kg-mega-box-plienkove-nohavicky/ already existing
-2019-09-05 14:52:17,702 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-pants-4-104ks-9-15-kg-mega-box-plienkove-nohavicky/ already existing
-2019-09-05 14:52:17,702 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/12x-pampers-sensitive-56-ks-vlhcene-obrusky/ already existing
-2019-09-05 14:52:17,705 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-5-junior-88ks-11-16-kg-mega-box-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,708 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-4-maxi-168-ks-9-14-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,711 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-3-midi-204-ks-6-10-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,714 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-2-mini-240-ks-4-8-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,717 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-new-baby-dry-2-4-8-kg-228-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,719 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-5-junior-136-ks-11-16-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,722 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-1-newborn-234-ks-2-5-kg-mesacne-balenie-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,726 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-6-13-18-kg-124-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,729 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-4-8-14kg-174-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,732 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-3-6-10-kg-208-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,734 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-5-11-16-kg-150-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,737 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-new-baby-dry-2-4-8-kg-215-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,740 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-7-15-kg-112-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,743 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-4-10-15-kg-152-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,745 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-new-baby-dry-1-2-5kg-215-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,750 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/f072343/ already existing
-2019-09-05 14:52:17,751 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-pants-5-96ks-12-17-kg-mega-box-plienkove-nohavicky/ already existing
-2019-09-05 14:52:17,752 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-pants-4-104ks-9-15-kg-mega-box-plienkove-nohavicky/ already existing
-2019-09-05 14:52:17,753 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/12x-pampers-sensitive-56-ks-vlhcene-obrusky/ already existing
-2019-09-05 14:52:17,755 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-5-junior-88ks-11-16-kg-mega-box-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,760 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-4-maxi-168-ks-9-14-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,762 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-3-midi-204-ks-6-10-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,765 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-2-mini-240-ks-4-8-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,768 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-new-baby-dry-2-4-8-kg-228-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,771 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-5-junior-136-ks-11-16-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,776 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-1-newborn-234-ks-2-5-kg-mesacne-balenie-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,779 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-6-13-18-kg-124-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,782 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-4-8-14kg-174-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,786 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-3-6-10-kg-208-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,792 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-5-11-16-kg-150-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,795 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-new-baby-dry-2-4-8-kg-215-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,800 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-7-15-kg-112-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,803 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-4-10-15-kg-152-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,807 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-new-baby-dry-1-2-5kg-215-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,812 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/f072343/ already existing
-2019-09-05 14:52:17,814 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-pants-5-96ks-12-17-kg-mega-box-plienkove-nohavicky/ already existing
-2019-09-05 14:52:17,815 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-pants-4-104ks-9-15-kg-mega-box-plienkove-nohavicky/ already existing
-2019-09-05 14:52:17,816 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/12x-pampers-sensitive-56-ks-vlhcene-obrusky/ already existing
-2019-09-05 14:52:17,820 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-5-junior-88ks-11-16-kg-mega-box-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,824 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-4-maxi-168-ks-9-14-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,826 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-3-midi-204-ks-6-10-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,829 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-2-mini-240-ks-4-8-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,832 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-new-baby-dry-2-4-8-kg-228-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,834 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-5-junior-136-ks-11-16-kg-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,837 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-premium-care-1-newborn-234-ks-2-5-kg-mesacne-balenie-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,841 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-4-8-14kg-174-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,844 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-5-11-16-kg-150-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,847 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-3-6-10-kg-208-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,849 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-4-10-15-kg-152-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,852 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-new-baby-dry-2-4-8-kg-215-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,854 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-6-13-18-kg-124-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,859 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-active-baby-7-15-kg-112-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,862 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-new-baby-dry-1-2-5kg-215-ks-mesacna-zasoba-jednorazove-plienky/ already existing
-2019-09-05 14:52:17,865 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/f072343/ already existing
-2019-09-05 14:52:17,866 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-pants-5-96ks-12-17-kg-mega-box-plienkove-nohavicky/ already existing
-2019-09-05 14:52:17,867 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/pampers-pants-4-104ks-9-15-kg-mega-box-plienkove-nohavicky/ already existing
-2019-09-05 14:52:17,867 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:248] product https://www.feedo.sk/12x-pampers-sensitive-56-ks-vlhcene-obrusky/ already existing
-2019-09-05 14:52:17,867 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:69] count of non existing products URL  5
-2019-09-05 14:52:17,867 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:70] list of notexisting products URL [https://www.feedo.sk/14x-pampers-aqua-pure-48-ks-detske-cistiace-obrusky/, https://www.feedo.sk/14x-pampers-aqua-pure-48-ks-detske-cistiace-obrusky/, https://www.feedo.sk/14x-pampers-aqua-pure-48-ks-detske-cistiace-obrusky/, https://www.feedo.sk/14x-pampers-aqua-pure-48-ks-detske-cistiace-obrusky/, https://www.feedo.sk/14x-pampers-aqua-pure-48-ks-detske-cistiace-obrusky/]
-2019-09-05 14:52:17,867 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:153] starting 1 of 5
-2019-09-05 14:52:17,868 DEBUG [FEEDO-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:241] request URL: https://www.feedo.sk/14x-pampers-aqua-pure-48-ks-detske-cistiace-obrusky/
-2019-09-05 14:52:17,868 DEBUG [FEEDO-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:244] userAgent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36
-2019-09-05 14:52:18,734 DEBUG [FEEDO-thread] [] s.h.p.p.u.UnitParserImpl [UnitParserImpl.kt:30] parsing product name to retrieve unit info: 14x PAMPERS Aqua Pure 48 ks - detské čistiace obrúsky
-2019-09-05 14:52:18,736 DEBUG [FEEDO-thread] [] s.h.p.s.i.NewProductServiceImpl [NewProductServiceImpl.kt:76] create new entity NewProductEntity with id 11669
-2019-09-05 14:52:18,737 DEBUG [FEEDO-thread] [] s.h.p.u.ThreadUtils [ThreadUtils.kt:34] start sleeping for 16 sec
-2019-09-05 14:52:34,737 DEBUG [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:153] starting 2 of 5
-2019-09-05 14:52:34,737 DEBUG [FEEDO-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:241] request URL: https://www.feedo.sk/14x-pampers-aqua-pure-48-ks-detske-cistiace-obrusky/
-2019-09-05 14:52:34,737 DEBUG [FEEDO-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:244] userAgent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36
-2019-09-05 14:52:34,774 DEBUG [FEEDO-thread] [] s.h.p.s.PrcoCustomHostnameVerifier [SSLHandling.kt:365] verify www.feedo.sk
-2019-09-05 14:52:34,816 DEBUG [FEEDO-thread] [] s.h.p.p.u.UnitParserImpl [UnitParserImpl.kt:30] parsing product name to retrieve unit info: 14x PAMPERS Aqua Pure 48 ks - detské čistiace obrúsky
-14:52:34,821 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - Elapsed period: Tue Sep 03 16:12:03 CEST 2019
-14:52:34,821 |-INFO in c.q.l.co.rolling.helper.RenameUtil - Renaming file [\dev\prco\logs\prco-error.log] to [\dev\prco\logs\prco-error-2019_09_03.log26006678533800.tmp]
-14:52:34,824 |-INFO in ch.qos.logback.core.rolling.helper.Compressor - ZIP compressing [\dev\prco\logs\prco-error-2019_09_03.log26006678533800.tmp] as [\dev\prco\logs\prco-error-2019_09_03.log.zip]
-2019-09-05 14:52:34,821 ERROR [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:295] error while creating new product from URL for eshop FEEDO
-sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop FEEDO
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:140)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:22)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:72)
-	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:187)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: sk.hudak.prco.exception.PrcoRuntimeException: Product with URL https://www.feedo.sk/14x-pampers-aqua-pure-48-ks-detske-cistiace-obrusky/ already exist.
-	at sk.hudak.prco.service.impl.NewProductServiceImpl.createNewProduct(NewProductServiceImpl.kt:60)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl.createNewProduct(InternalTxServiceImpl.kt:83)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$FastClassBySpringCGLIB$$6a8a885c.invoke(<generated>)
-	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:204)
-	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:746)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:294)
-	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:98)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$EnhancerBySpringCGLIB$$bdb457b3.createNewProduct(<generated>)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.processNewProductUrl(AddingNewProductManagerImpl.kt:194)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.kt:155)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:137)
-	... 8 common frames omitted
-2019-09-05 14:52:34,825 DEBUG [FEEDO-thread] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:149] marking task for eshop FEEDO as FINISHED_WITH_ERROR
+pre toto nerozpazna groupu pampers zelene 4+
+Pampers Active Baby 10-15kg veľ.4+ 70ks
 ----------------
+pocas update nech zobrazuje aj approximetly end time for current task for eshop
+---------------
 zmenint na warning nie error:
 2019-09-13 15:58:28,367 ERROR [PERINBABA-thread] [] s.h.p.m.u.UpdateProductErrorHandlerImpl [UpdateProductErrorHandlerImpl.kt:21] error while parsing product update data for product http://www.perinbaba.sk/plienky-new-baby-dry-2-mini-3-6kg-giant-pack-100ks.html
 sk.hudak.prco.exception.ProductPageNotFoundHttpParserException: error creating document for url 'http://www.perinbaba.sk/plienky-new-baby-dry-2-mini-3-6kg-giant-pack-100ks.html':  org.jsoup.HttpStatusException: HTTP error fetching URL. Status=404, URL=http://www.perinbaba.sk/plienky-new-baby-dry-2-mini-3-6kg-giant-pack-100ks.html
@@ -388,27 +262,6 @@ zle vypisy, preco 0/0 a na konci je << updateProductData eshop KID_MARKET, produ
 2019-08-27 12:37:20,119 DEBUG [KID_MARKET-thread] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:149] marking task for eshop KID_MARKET as FINISHED_OK
 2019-08-27 12:37:20,119 DEBUG [KID_MARKET-thread] [] s.h.p.m.u.NgUpdateProductDataManagerImpl [NgUpdateProductDataManagerImpl.kt:187] << updateProductData eshop KID_MARKET, productForUpdateIds count 1
 ------------------------------------------------------------------------------------------------------------------------
-2019-08-22 12:46:24,125 ERROR [FEEDO-thread] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
-2019-08-22 12:46:24,125 ERROR [FEEDO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:288] error while creating new product from URL for eshop FEEDO
-sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop FEEDO
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:135)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:24)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:72)
-	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:187)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: org.springframework.dao.DataIntegrityViolationException: could not execute statement; SQL [n/a]; constraint ["UK_Q38OW0XNE3DVN4HQ7G29YV9R0_INDEX_D ON PUBLIC.NEW_PRODUCT(URL) VALUES ('https://www.feedo.sk/nutrilon-2-350g-dojcenske-mlieko/', 892)"; SQL statement:
-insert into new_product (created, updated, confirm_validity, eshop_uuid, name, picture_url, unit, unit_package_count, unit_value, url, valid, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) [23505-196]]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
-	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:259)
-	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:225)
-	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:540)
-	at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:746)
-	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:714)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:532)
-------------
 toto nizsie nefunguje ani tak ako som popisal:
 dalo:
 2019-08-19 15:52:40,016 DEBUG [PILULKA_24-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:246]
@@ -421,97 +274,6 @@ vrati redirect na toto:
 https://www.pilulka24.sk/nutrilon
 takze vsetko urobit po novom
 ------------
-https://stackoverflow.com/questions/30549489/what-is-this-spring-jpa-open-in-view-true-property-in-spring-boot
-2019-08-19 15:49:49,139 WARN [main] [] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration [JpaBaseConfiguration.java:235] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-------------
-2019-08-19 14:59:28,949 DEBUG [MALL-thread] [] s.h.p.m.a.NgAddingNewProductManagerImpl [NgAddingNewProductManagerImpl.kt:148] starting 3 of 4
-2019-08-19 14:59:28,949 DEBUG [MALL-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:246] request URL: https://www.mall.sk/detske-mlieka/nutrilon-nutrilon-1-ha-prosyneo-specialne-dojcenske-mlieko-6x800-g
-2019-08-19 14:59:28,949 DEBUG [MALL-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:249] userAgent: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko
-2019-08-19 14:59:28,980 DEBUG [MALL-thread] [] s.h.p.s.PrcoCustomTrustManager [SSLHandling.kt:273] server cert subject name CN=www.mall.sk,OU=IT Operations,O=Internet Mall Slovakia s.r.o.,L=Bratislava,C=SK,2.5.4.5=#130a33352039353020323236,1.3.6.1.4.1.311.60.2.1.3=#1302534b,2.5.4.15=#0c1450726976617465204f7267616e697a6174696f6e
-2019-08-19 14:59:28,980 DEBUG [MALL-thread] [] s.h.p.s.PrcoCustomTrustManager [SSLHandling.kt:282] delegating checking to java default trust manager
-2019-08-19 14:59:29,840 DEBUG [MALL-thread] [] s.h.p.p.u.UnitParserImpl [UnitParserImpl.kt:30] parsing product name to retrieve unit info: Nutrilon Nutrilon 1 HA PROSYNEO špeciálne dojčenské mlieko 6x800 g
-2019-08-19 14:59:29,855 DEBUG [MALL-thread] [] s.h.p.s.i.NewProductServiceImpl [NewProductServiceImpl.kt:77] create new entity NewProductEntity with id 11276
-2019-08-19 14:59:29,855 WARN [MALL-thread] [] o.h.e.j.s.SqlExceptionHelper [SqlExceptionHelper.java:129] SQL Error: 23505, SQLState: 23505
-2019-08-19 14:59:29,855 ERROR [MALL-thread] [] o.h.e.j.s.SqlExceptionHelper [SqlExceptionHelper.java:131] Unique index or primary key violation: "UK_Q38OW0XNE3DVN4HQ7G29YV9R0_INDEX_D ON PUBLIC.NEW_PRODUCT(URL) VALUES ('https://www.mall.sk/detske-mlieka/nutrilon-nutrilon-1-ha-prosyneo-specialne-dojcenske-mlieko-6x800-g', 851)"; SQL statement:
-insert into new_product (created, updated, confirm_validity, eshop_uuid, name, picture_url, unit, unit_package_count, unit_value, url, valid, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) [23505-196]
-2019-08-19 14:59:29,855 ERROR [MALL-thread] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
-2019-08-19 14:59:29,871 ERROR [MALL-thread] [] s.h.p.m.a.NgAddingNewProductManagerImpl [NgAddingNewProductManagerImpl.kt:289] error while creating new product from URL for eshop MALL
-sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop MALL
-	at sk.hudak.prco.manager.addprocess.NgAddingNewProductManagerImpl.createNewProductsErrorWrapper(NgAddingNewProductManagerImpl.kt:136)
-	at sk.hudak.prco.manager.addprocess.NgAddingNewProductManagerImpl.access$createNewProductsErrorWrapper(NgAddingNewProductManagerImpl.kt:25)
-	at sk.hudak.prco.manager.addprocess.NgAddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(NgAddingNewProductManagerImpl.kt:73)
-	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:187)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: org.springframework.dao.DataIntegrityViolationException: could not execute statement; SQL [n/a]; constraint ["UK_Q38OW0XNE3DVN4HQ7G29YV9R0_INDEX_D ON PUBLIC.NEW_PRODUCT(URL) VALUES ('https://www.mall.sk/detske-mlieka/nutrilon-nutrilon-1-ha-prosyneo-specialne-dojcenske-mlieko-6x800-g', 851)"; SQL statement:
-insert into new_product (created, updated, confirm_validity, eshop_uuid, name, picture_url, unit, unit_package_count, unit_value, url, valid, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) [23505-196]]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
-	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:259)
-	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:225)
-	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:540)
-	at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:746)
-	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:714)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:532)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:304)
-	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:98)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$EnhancerBySpringCGLIB$$92d6a5e.createNewProduct(<generated>)
-	at sk.hudak.prco.manager.addprocess.NgAddingNewProductManagerImpl.processNewProductUrl(NgAddingNewProductManagerImpl.kt:189)
-	at sk.hudak.prco.manager.addprocess.NgAddingNewProductManagerImpl.createNewProducts(NgAddingNewProductManagerImpl.kt:151)
-	at sk.hudak.prco.manager.addprocess.NgAddingNewProductManagerImpl.createNewProductsErrorWrapper(NgAddingNewProductManagerImpl.kt:133)
-	... 8 common frames omitted
-Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement
-	at org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:112)
-	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:42)
-	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:111)
-	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:97)
-	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:178)
-	at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:3032)
-	at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:3547)
-	at org.hibernate.action.internal.EntityInsertAction.execute(EntityInsertAction.java:89)
-	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:600)
-	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:474)
-	at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:337)
-	at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:39)
-	at org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1437)
-	at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:494)
-	at org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:3245)
-	at org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:2451)
-	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:473)
-	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:156)
-	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.access$100(JdbcResourceLocalTransactionCoordinatorImpl.java:38)
-	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:231)
-	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:68)
-	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:536)
-	... 19 common frames omitted
-Caused by: org.h2.jdbc.JdbcSQLException: Unique index or primary key violation: "UK_Q38OW0XNE3DVN4HQ7G29YV9R0_INDEX_D ON PUBLIC.NEW_PRODUCT(URL) VALUES ('https://www.mall.sk/detske-mlieka/nutrilon-nutrilon-1-ha-prosyneo-specialne-dojcenske-mlieko-6x800-g', 851)"; SQL statement:
-insert into new_product (created, updated, confirm_validity, eshop_uuid, name, picture_url, unit, unit_package_count, unit_value, url, valid, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) [23505-196]
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
-	at org.h2.message.DbException.get(DbException.java:179)
-	at org.h2.message.DbException.get(DbException.java:155)
-	at org.h2.index.BaseIndex.getDuplicateKeyException(BaseIndex.java:103)
-	at org.h2.mvstore.db.MVSecondaryIndex.checkUnique(MVSecondaryIndex.java:231)
-	at org.h2.mvstore.db.MVSecondaryIndex.add(MVSecondaryIndex.java:190)
-	at org.h2.mvstore.db.MVTable.addRow(MVTable.java:705)
-	at org.h2.command.dml.Insert.insertRows(Insert.java:156)
-	at org.h2.command.dml.Insert.update(Insert.java:114)
-	at org.h2.command.CommandContainer.update(CommandContainer.java:101)
-	at org.h2.command.Command.executeUpdate(Command.java:260)
-	at org.h2.jdbc.JdbcPreparedStatement.executeUpdateInternal(JdbcPreparedStatement.java:164)
-	at org.h2.jdbc.JdbcPreparedStatement.executeUpdate(JdbcPreparedStatement.java:150)
-	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61)
-	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java)
-	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:175)
-	... 36 common frames omitted
-2019-08-19 14:59:29,871 DEBUG [MALL-thread] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:149] marking task for eshop MALL as FINISHED_WITH_ERROR
-2019-08-19 14:59:29,871 DEBUG [MALL-thread] [] s.h.p.s.i.ErrorServiceImpl [ErrorServiceImpl.kt:103] create entity ErrorEntity with id 5855 msg: error while creating new product from URL for eshop MALL
-2019-08-19 14:59:29,871 DEBUG [MALL-thread] [] s.h.p.m.a.NgAddingNewProductManagerImpl [NgAddingNewProductManagerImpl.kt:83] << addNewProductsByKeywordForEshop eshop MALL, searchKeyWord nutrilon
-2019-08-19 14:59:30,027 DEBUG [main] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:112] submitting new task for eshop MALL
-2019-08-19 14:59:30,027 DEBUG [MALL-thread] [] s.h.p.m.a.NgAddingNewProductManagerImpl [NgAddingNewProductManagerImpl.kt:62] >> addNewProductsByKeywordForEshop eshop MALL, searchKeyWord lovela
-----------------------------
 ********************
 For KOTLIN remove Optional keyword, use ? instead
 *****************************************************************************************
@@ -571,9 +333,6 @@ Caused by: java.lang.NumberFormatException: null
 2019-06-07 13:55:40,548 DEBUG [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:230] userAgent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1
 2019-06-07 13:55:40,952 WARN [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:178] redirecting:
 2019-06-07 13:55:40,952 WARN [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:179] from https://www.brendon.sk/Products/Details/118431
-
-
-
 -----------------------------------------------------------------------------------------------------------------------
 49:
 -----------------------------------------------------------------------------------------------------------------------
@@ -585,183 +344,28 @@ Je to toiste(prest vsetky eshopy a vypisat duplicity na zaklade nazvu) !!!
 21 BUG
 !!! do nutrilon groupy som pridal aj vanilku
 -----------------------------------------------------------------------------------------------------------------------
-45 BUG
-overit MOJA_LEKAREN lebo neako stale mi dava vela novych produktov ci je to ok
------------------------------------------------------------------------------------------------------------------------
 46 FEATURE
 !!! ak ide o pridanie noveho produktu a produkt je nedostupny tak preskakovat dany produkt a ist na dalsi !!!
 -----------------------------------------------------------------------------------------------------------------------
-32 FEATURE
-FEATURE: ked spadne update jedneho produktu na 'SocketTimeoutException: Read timed out' tak nech pokracuje update dalsich, ale len pre dany typ chyby
------------------------------------------------------------------------------------------------------------------------
-
-*************************************************************************************
-
-
 47 BUG MINOR
 Pampers Pampers Premium Care, Veľkosť 6, Plienka 38x
 nevie rozpoznat groupu
 -----------------------------------------------------------------------------------------------------------------------
-31 BUG PILULKA
-produktu je nedostupny a nevyparsuje nam ani meno....
-2019-05-03 09:48:49,693 WARN [main] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:332] property productName is null for product url https://www.pilulka.sk/pampers-active-baby-4-8-14kg-monthly-box-174ks-utierky-zadarmo
-ProductNewData(url=https://www.pilulka.sk/pampers-s4-active-baby-monthly-box-174ks, name=null, eshopUuid=PILULKA, unit=null, unitValue=null, unitPackageCount=null, pictureUrl=null)
------------------------------------------------------------------------------------------------------------------------
-14
 BUG: dvojite lomitka:
 https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/
 ----------------------------------
-13
 BUG:
 https://www.mojalekaren.sk//nutrilon-comfort-1-400g/
 tento produkt neexistuje a vrati 302 na https://www.mojalekaren.sk/, potrebujem urobit to aby som to odchytil
 ------------------------------------------------------------------------------
-12
 BUG:
 PAMPERS Plienky Active Baby-Dry Mega Quad S4
 ma na konci nieco co vyzera ako medzera ale nie je to medzera
 -----------------------------------------------------------------------------------------------------------------------
-9
-BUG
-duplicita v grupe:
+BUG duplicita v grupe:
 eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2113, 'Pampers Active Baby 5 Megapack+ 11-16Kg 110ks', https://kidmarket.sk/jednorazove-plienky/1046-pampers-active-baby-5-megapack-11-16kg-110ks-8001090951762.html?search_query=pampers&results=44, last updated 03-01-2019 14:48:09
 eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2818, 'Pampers Active Baby 5 Megapack+ 11-16Kg 110ks', https://kidmarket.sk/jednorazove-plienky/1046-pampers-active-baby-5-megapack-11-16kg-110ks-8001090951762.html?search_query=pampers&results=39, last updated 03-01-2019 14:55:45
 eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2851, 'Pampers Active Baby 5 Megapack+ 11-16Kg 110ks', https://kidmarket.sk/jednorazove-plienky/1046-pampers-active-baby-5-megapack-11-16kg-110ks-8001090951762.html?search_query=pampers&results=37, last updated 03-01-2019 14:56:50
 eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2913, 'Pampers Active Baby 5 Megapack+ 11-16Kg 110ks', https://kidmarket.sk/jednorazove-plienky/1046-pampers-active-baby-5-megapack-11-16kg-110ks-8001090951762.html?search_query=pampers&results=42, last updated 03-01-2019 14:57:53
 eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2919, 'Pampers Active Baby 5 Megapack+ 11-16Kg 110ks', https://kidmarket.sk/jednorazove-plienky/1046-pampers-active-baby-5-megapack-11-16kg-110ks-8001090951762.html?search_query=pampers&results=38, last updated 03-01-2019 14:58:59
---------------------------------------------------------------------------------------------------------------------
-6
-2018-08-08 15:10:57,680 ERROR [HORNBACH] [] s.h.p.m.i.AddingNewProductManagerImpl [AddingNewProductManagerImpl.java:82] error while creating new product
-sk.hudak.prco.exception.PrcoRuntimeException: error while downloading/parsing content for url https://www.hornbach.sk/shop/vyhladavanie/sortiment/nutrilon%205
-	at sk.hudak.prco.eshop.HornbachProductParser.retrieveDocument(HornbachProductParser.java:70)
-	at sk.hudak.prco.parser.eshop.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:51)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParser.searchProductUrls(JsoupHtmlParser.java:41)
-	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$6(AddingNewProductManagerImpl.java:77)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.NullPointerException: null
-	at org.apache.http.impl.cookie.PublicSuffixDomainFilter.match(PublicSuffixDomainFilter.java:93)
-	at org.apache.http.impl.cookie.CookieSpecBase.match(CookieSpecBase.java:136)
-	at org.apache.http.impl.cookie.DefaultCookieSpec.match(DefaultCookieSpec.java:178)
-	at org.apache.http.client.protocol.RequestAddCookies.process(RequestAddCookies.java:166)
-	at org.apache.http.protocol.ImmutableHttpProcessor.process(ImmutableHttpProcessor.java:133)
-	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:183)
-	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:89)
-	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:111)
-	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:185)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:72)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:221)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:165)
-	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:140)
-	at sk.hudak.prco.eshop.HornbachProductParser.retrieveDocument(HornbachProductParser.java:67)
-	... 8 common frames omitted
--------------------------------------------------------------------------------------------------
-5
-2018-08-07 11:53:12,803 DEBUG [OBI] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:152] request URL: https://www.obi.sk/search/nutrilon%204/?isi=true
-2018-08-07 11:53:12,803 DEBUG [OBI] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:155] userAgent: Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko
-2018-08-07 11:53:12,949 DEBUG [OBI] [] s.h.p.s.PrcoCustomTrustManager [PrcoCustomTrustManager.java:41] checkServerTrusted() for hostname CN=*.obi.at,O=OBI Smart Technologies GmbH,L=Wermelskirchen,ST=Nordrhein-Westfalen,C=DE
-2018-08-07 11:53:12,950 DEBUG [OBI] [] s.h.p.s.PrcoCustomTrustManager [PrcoCustomTrustManager.java:52] server cert subject name CN=*.obi.at,O=OBI Smart Technologies GmbH,L=Wermelskirchen,ST=Nordrhein-Westfalen,C=DE
-2018-08-07 11:53:12,950 DEBUG [OBI] [] s.h.p.s.PrcoCustomTrustManager [PrcoCustomTrustManager.java:53] delegating checking to java default trust manager
-2018-08-07 11:53:12,968 ERROR [OBI] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:175] error creating document for url 'https://www.obi.sk/search/nutrilon%204/?isi=true':
-javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
-	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
-	at sun.security.ssl.SSLSocketImpl.fatal(SSLSocketImpl.java:1949)
-	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:302)
-	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
-	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1506)
-	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
-	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:979)
-	at sun.security.ssl.Handshaker.process_record(Handshaker.java:914)
-	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1062)
-	at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1375)
-	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1403)
-	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1387)
-	at sun.net.www.protocol.https.HttpsClient.afterConnect(HttpsClient.java:559)
-	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:185)
-	at sun.net.www.protocol.https.HttpsURLConnectionImpl.connect(HttpsURLConnectionImpl.java:153)
-	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:652)
-	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:629)
-	at org.jsoup.helper.HttpConnection.execute(HttpConnection.java:261)
-	at org.jsoup.helper.HttpConnection.get(HttpConnection.java:250)
-	at sk.hudak.prco.parser.eshop.JSoupProductParser.retrieveDocument(JSoupProductParser.java:165)
-	at sk.hudak.prco.parser.eshop.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.java:51)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParser.searchProductUrls(JsoupHtmlParser.java:41)
-	at sk.hudak.prco.manager.impl.AddingNewProductManagerImpl.lambda$addNewProductsByKeywordForEshop$7(AddingNewProductManagerImpl.java:77)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
-	at sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:387)
-	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:230)
-	at sun.security.validator.Validator.validate(Validator.java:260)
-	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
-	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:229)
-	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:105)
-	at sk.hudak.prco.ssl.PrcoCustomTrustManager.checkServerTrusted(PrcoCustomTrustManager.java:54)
-	at sun.security.ssl.AbstractTrustManagerWrapper.checkServerTrusted(SSLContextImpl.java:922)
-	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1488)
-	... 23 common frames omitted
-Caused by: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
-	at sun.security.provider.certpath.SunCertPathBuilder.build(SunCertPathBuilder.java:146)
-	at sun.security.provider.certpath.SunCertPathBuilder.engineBuild(SunCertPathBuilder.java:131)
-	at java.security.cert.CertPathBuilder.build(CertPathBuilder.java:280)
-	at sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:382)
-	... 31 common frames omitted
-----------------------
-------------------------------------------------------------------------------------------------------------------------
-3
-TODO: doriesit nove produkty pre ktore nevie vyparsovat unit co mam na UI
-------------------------------------------------------------------------------------------------------------------------
-19
-2019-04-01 13:39:25,482 DEBUG [http-nio-8080-exec-2] [] s.h.p.s.i.NewProductServiceImpl [NewProductServiceImpl.java:155] new product with id 8550 was updated with unit data UnitTypeValueCount(unit=KUS, value=51, packageCount=1)
-2019-04-01 13:39:25,488 ERROR [http-nio-8080-exec-2] [] o.h.i.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java:39] HHH000346: Error during managed flush [Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]]
-2019-04-01 13:39:25,512 ERROR [http-nio-8080-exec-2] [] o.a.c.c.C.[.[.[.[dispatcherServlet] [DirectJDKLog.java:182] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.orm.ObjectOptimisticLockingFailureException: Object of class [sk.hudak.prco.model.NewProductEntity] with identifier [8550]: optimistic locking failed; nested exception is org.hibernate.StaleObjectStateException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]] with root cause
-org.hibernate.StaleObjectStateException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect) : [sk.hudak.prco.model.NewProductEntity#8550]
-	at org.hibernate.persister.entity.AbstractEntityPersister.check(AbstractEntityPersister.java:2414)
-	at org.hibernate.persister.entity.AbstractEntityPersister.update(AbstractEntityPersister.java:3216)
-	at org.hibernate.persister.entity.AbstractEntityPersister.updateOrInsert(AbstractEntityPersister.java:3090)
-	at org.hibernate.persister.entity.AbstractEntityPersister.update(AbstractEntityPersister.java:3491)
-	at org.hibernate.action.internal.EntityUpdateAction.execute(EntityUpdateAction.java:145)
-	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:600)
-	at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:474)
-	at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:337)
-	at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:39)
-	at org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1437)
-	at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:494)
-	at org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:3245)
-	at org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:2451)
-	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:473)
-	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.beforeCompletionCallback(JdbcResourceLocalTransactionCoordinatorImpl.java:156)
-	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl.access$100(JdbcResourceLocalTransactionCoordinatorImpl.java:38)
-	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.commit(JdbcResourceLocalTransactionCoordinatorImpl.java:231)
-	at org.hibernate.engine.transaction.internal.TransactionImpl.commit(TransactionImpl.java:68)
-	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:536)
-	at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:746)
-	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:714)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:532)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:304)
-	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:98)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$EnhancerBySpringCGLIB$$48b78007.repairInvalidUnitForNewProductByReprocessing(<generated>)
-	at sk.hudak.prco.service.impl.UIServiceImpl.tryToRepairInvalidUnitForNewProductByReprocessing(UIServiceImpl.java:103)
-	at sk.hudak.prco.ui.controller.NewProductController.reprocessNewProducts(NewProductController.java:60)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:497)
-	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
-	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
-	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
-	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:877)
-	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:783)
-	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
-	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:991)
-	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:925)
-	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:974)
-	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:866)
+-------------------------------------------------------------------------------------------------------------------
