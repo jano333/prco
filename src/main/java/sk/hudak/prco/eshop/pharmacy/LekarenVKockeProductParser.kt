@@ -12,20 +12,21 @@ import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ConvertUtils
 import sk.hudak.prco.utils.UserAgentDataHolder
+import sk.hudak.prco.utils.href
 import java.math.BigDecimal
 import java.util.*
 import java.util.Optional.ofNullable
 import kotlin.streams.toList
 
 @Component
-class LekarenVKockeProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+class LekarenVKockeProductParser(unitParser: UnitParser,
+                                 userAgentDataHolder: UserAgentDataHolder,
+                                 searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = LEKAREN_V_KOCKE
+    override val eshopUuid: EshopUuid = LEKAREN_V_KOCKE
 
-    override val timeout: Int
-        get() = TIMEOUT_10_SECOND
+    override val timeout: Int = TIMEOUT_10_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         val size = documentList.select("nav > ul > li").size
@@ -37,7 +38,7 @@ class LekarenVKockeProductParser(unitParser: UnitParser, userAgentDataHolder: Us
     override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
         return documentList.select("div[class='product col-xs-12 col-xs-offset-0 col-s-6 col-s-offset-0 col-sm-3 col-sm-offset-0'] > a")
                 .stream()
-                .map { it.attr("href") }
+                .map { it.href() }
                 .filter { StringUtils.isNotBlank(it) }
                 .toList()
     }
@@ -60,8 +61,14 @@ class LekarenVKockeProductParser(unitParser: UnitParser, userAgentDataHolder: Us
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
-        return !ofNullable(documentDetailProduct.select("button[value='KOUPIT']").first())
-                .isPresent
+        var vypredane = false
+        documentDetailProduct.select("td > strong > span[class='taxt-danger']")?.let {
+            if("Vypredané".equals(it.text())){
+                vypredane = true
+            }
+        }
+        val existButton = documentDetailProduct.select("button[value='KOUPIT']").first() != null
+        return !vypredane && existButton
     }
 
     override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
