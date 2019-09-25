@@ -61,13 +61,14 @@ class FeedoProductParser(unitParser: UnitParser,
         var select = documentDetailProduct.select("div[class=price price-premium] span")
         if (select.isEmpty()) {
             // akcna cena
-            select = documentDetailProduct.select("div[class=price price-discount] span")
+            select = documentDetailProduct.select("div.prices.prices-detail > div > div > p > span.price.price-discount")
         }
         if (select.isEmpty()) {
             // normalna cena
             select = documentDetailProduct.select("div[class=price price-base] span")
         }
         if (select.isEmpty()) {
+            //#content > div > div.row.product-info > div.col-xs-18.col-md-9.product-info-cart > div.product-item-caption.clearfix > form > div.prices.prices-detail > div > span.price-base
             // novinka
             select = documentDetailProduct.select("div[class=price] span[class=price-base]")
         }
