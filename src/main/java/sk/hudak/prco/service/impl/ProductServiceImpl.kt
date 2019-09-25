@@ -47,7 +47,7 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
     override fun findProductForUpdateInGroup(groupId: Long): Map<EshopUuid, List<Long>> {
         val productEntityList = groupEntityDao.findProductForUpdateInGroup(groupId)
 
-        var result = HashMap<EshopUuid, MutableList<Long>>()
+        val result = HashMap<EshopUuid, MutableList<Long>>()
         EshopUuid.values().forEach {
             result[it] = ArrayList()
         }
@@ -60,7 +60,7 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
     override fun findProductsForUpdateWhichAreNotInAnyGroup(): Map<EshopUuid, List<Long>> {
         val productEntityList = groupOfProductFindEntityDao.findProductsWitchAreNotInAnyGroup(true)
         //FIXME tato preklapacka je aj hore
-        var result = HashMap<EshopUuid, MutableList<Long>>()
+        val result = HashMap<EshopUuid, MutableList<Long>>()
         EshopUuid.values().forEach {
             result[it] = ArrayList()
         }
@@ -290,10 +290,9 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
     }
 
     override fun updateProductCommonPrice(productId: Long, newCommonPrice: BigDecimal) {
-        notNull(newCommonPrice, "newCommonPrice")
         // TODO validacia na vecsie ako nula...
 
-        val product = productEntityDao.findById(productId!!)
+        val product = productEntityDao.findById(productId)
         product.commonPrice = newCommonPrice
         productEntityDao.update(product)
 
@@ -428,7 +427,7 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
     }
 
     override fun getProductWithUrl(productUrl: String, productIdToIgnore: Long?): Optional<Long> {
-        notNullNotEmpty(productUrl, "productUrl")
+        notEmpty(productUrl, "productUrl")
         notNull(productIdToIgnore, "productIdToIgnore")
 
         return productEntityDao.getProductWithUrl(productUrl, productIdToIgnore)

@@ -51,9 +51,9 @@ interface ProductService {
     fun resetUpdateDateProduct(productId: Long)
 
     /**
-     * Reset of all prices to null, same for action and 'lastTimeDataUpdated'.
+     * Reset of all prices to null, same for action.
      *
-     * @param productId product id
+     * @param productId product id which will be mark as unavailable
      */
     fun markProductAsUnavailable(productId: Long)
 
