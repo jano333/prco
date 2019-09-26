@@ -1,4 +1,48 @@
-
+-------------------------
+preco je nula???
+2019-09-26 13:46:08,078 DEBUG [DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:32] AddProductsToEshopByKeywordFinishedEvent(DROGERKA)
+2019-09-26 13:46:08,078 DEBUG [DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop DROGERKA and searchKeyWord nutrilon
+2019-09-26 13:46:08,078 DEBUG [DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
+2019-09-26 13:46:08,078 DEBUG [DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
+-------------------------
+preco je nula???
+2019-09-26 13:45:58,891 DEBUG [PILULKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:32] AddProductsToEshopByKeywordFinishedEvent(PILULKA)
+2019-09-26 13:45:58,891 DEBUG [PILULKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop PILULKA and searchKeyWord pampers
+2019-09-26 13:45:58,891 DEBUG [PILULKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
+2019-09-26 13:45:58,891 DEBUG [PILULKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
+-------------------------
+preco je nula???
+2019-09-26 13:45:58,589 DEBUG [ALZA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:32] AddProductsToEshopByKeywordFinishedEvent(ALZA)
+2019-09-26 13:45:58,589 DEBUG [ALZA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop ALZA and searchKeyWord nutrilon
+2019-09-26 13:45:58,589 DEBUG [ALZA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
+2019-09-26 13:45:58,589 DEBUG [ALZA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
+--------------------
+preco je nula???
+2019-09-26 13:45:55,985 DEBUG [TESCO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:32] AddProductsToEshopByKeywordFinishedEvent(TESCO)
+2019-09-26 13:45:55,985 DEBUG [TESCO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop TESCO and searchKeyWord pampers
+2019-09-26 13:45:55,985 DEBUG [TESCO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
+2019-09-26 13:45:55,985 DEBUG [TESCO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
+-------------
+preco je nula???
+2019-09-26 13:45:44,482 DEBUG [METRO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:32] AddProductsToEshopByKeywordFinishedEvent(METRO)
+2019-09-26 13:45:44,482 DEBUG [METRO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop METRO and searchKeyWord pampers
+2019-09-26 13:45:44,482 DEBUG [METRO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
+2019-09-26 13:45:44,482 DEBUG [METRO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
+-------------
+preco je nula???
+2019-09-26 13:45:38,015 DEBUG [LEKAREN_V_KOCKE-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:32] AddProductsToEshopByKeywordFinishedEvent(LEKAREN_V_KOCKE)
+2019-09-26 13:45:38,016 DEBUG [LEKAREN_V_KOCKE-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop LEKAREN_V_KOCKE and searchKeyWord pampers
+2019-09-26 13:45:38,016 DEBUG [LEKAREN_V_KOCKE-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
+2019-09-26 13:45:38,016 DEBUG [LEKAREN_V_KOCKE-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
+---------
+preco je nula??? to co naslo? brendon pre pampers ma produkty!!!
+AddProductsToEshopByKeywordFinishedEvent(BRENDON)
+2019-09-26 13:45:11,315 DEBUG [BRENDON-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop BRENDON and searchKeyWord pampers
+2019-09-26 13:45:11,315 DEBUG [BRENDON-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
+2019-09-26 13:45:11,315 DEBUG [BRENDON-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
+----------------
+nevie nacitat groupu
+Pampers New Baby-Dry 2-5kg veľ.1 43ks
 ----------------
 2019-09-25 14:55:29,532 DEBUG [DROGERIA_VMD-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:248] request URL: https://www.drogeria-vmd.sk/hladanie-stranka-3/?q=pampers
 2019-09-25 14:55:29,532 DEBUG [DROGERIA_VMD-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:249] userAgent: Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko

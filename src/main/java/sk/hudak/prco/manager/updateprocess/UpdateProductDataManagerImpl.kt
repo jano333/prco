@@ -7,7 +7,6 @@ import sk.hudak.prco.dto.ProductUpdateData
 import sk.hudak.prco.dto.ProductUpdateDataDto
 import sk.hudak.prco.dto.product.ProductDetailInfo
 import sk.hudak.prco.events.CoreEvent
-import sk.hudak.prco.events.EventType
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.events.PrcoObserver
 import sk.hudak.prco.exception.PrcoRuntimeException
@@ -97,7 +96,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
             override fun doInFinally(context: SingleContext) {
                 log.debug("<< updateProductData eshop $eshopUuid, productId $productId")
                 //TODO event poriesit
-                prcoObservable.notify(object : CoreEvent(EventType.UPDATE_PRODUCT) {})
+//                prcoObservable.notify(object : CoreEvent(EventType.UPDATE_PRODUCT) {})
             }
         })
     }
@@ -146,7 +145,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
             override fun doInFinally(context: SingleContext) {
                 log.debug("<< updateProductDataForEachProductInEshop eshop $eshopUuid")
                 //TODO event
-                prcoObservable.notify(object : CoreEvent(EventType.UPDATE_PRODUCT) {})
+//                prcoObservable.notify(object : CoreEvent(EventType.UPDATE_PRODUCT) {})
             }
         })
     }

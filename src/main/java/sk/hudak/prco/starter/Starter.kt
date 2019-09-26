@@ -211,26 +211,21 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
             }
         }
 
-        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener)
+//        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener)
         //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
-//                updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.MAXIKOVY_HRACKY, listener);
+//                updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.FEEDO, listener)
         // updatne vsetky produkty v danej skupine
         //        updateProductDataManager.updateProductDataForEachProductInGroup(33L);
 
         //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
         //        updateProductDataManager.updateProductData(3118L);
-        //        uiService.resetUpdateDateForAllProductsInEshop(EshopUuid.TESCO);
+//                uiService.resetUpdateDateForAllProductsInEshop(EshopUuid.FEEDO)
         //        uiService.updateProductCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-//                newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
-        //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.KID_MARKET, "lovela");
-        //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.PILULKA_24, "lovela");
-        //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "pampers");
-        //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "pampers 5");
-        //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.ALZA, "pampers");
-        //        newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "nutrilon 5");
+                newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
+//                newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "lovela");
         //        newProductManager.addNewProductsByUrl(
         //                  "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120575818",
         //                  "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120307521",

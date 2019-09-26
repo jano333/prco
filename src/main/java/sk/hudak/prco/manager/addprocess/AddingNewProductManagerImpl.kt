@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.product.NewProductCreateDto
 import sk.hudak.prco.events.CoreEvent
-import sk.hudak.prco.events.EventType
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.events.PrcoObserver
 import sk.hudak.prco.exception.*
@@ -67,9 +66,9 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
         private const val CTX_ESHOP_UUID_KEY = "eshopUuid"
         private const val CTX_SEARCH_KEYWORD_KEY = "searchKeyWord"
+        private const val CTX_COUNT_OF_PROCESSED = "countOfProcessed"
         private const val CTX_COUNT_OF_FOUND_PRODUCT_URLS_KEY = "countOfFoundProductUrls"
         private const val CTX_COUNT_OF_FOUND_PRODUCT_URLS_WITH_DUPLICITY_KEY = "countOfFoundProductUrlsWithDuplicity"
-        //TODO ostatne
     }
 
     // registering itself as observer
@@ -80,9 +79,8 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
     // handling events produced by observable
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is EshopKeywordFinishEvent -> {
+            is AddProductsToEshopByKeywordFinishedEvent -> {
                 //TODO do osobitnej tabulky ukladat historicke informacie
-                log.debug(event.toString())
             }
         }
     }
@@ -216,11 +214,11 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
     private fun notifyFinishProcessingKeywordForEshop(context: SingleContext) {
         //TODO impl v osobitnom thread-e
         try {
-            val any = context.values["countOfProcessed"]
-            prcoObservable.notify(EshopKeywordFinishEvent(eshopUuid = context.values[CTX_ESHOP_UUID_KEY] as EshopUuid,
+            val any = context.values[CTX_COUNT_OF_PROCESSED]
+            prcoObservable.notify(AddProductsToEshopByKeywordFinishedEvent(eshopUuid = context.values[CTX_ESHOP_UUID_KEY] as EshopUuid,
+                    keyword = context.values[CTX_SEARCH_KEYWORD_KEY] as String,
                     error = context.error,
                     errMsg = context.errMsg,
-                    keyword = context.values[CTX_SEARCH_KEYWORD_KEY] as String,
                     countOfFound = context.values[CTX_COUNT_OF_FOUND_PRODUCT_URLS_KEY] as Int,
                     countOfAdded = if (any is Int) any else 0))
         } catch (e: Exception) {
@@ -252,7 +250,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
             when (processNewProductUrl) {
                 ContinueStatus.STOP_PROCESSING_NEXT_ONE -> {
-                    context.addValue("countOfProcessed", currentUrlIndex + 1)
+                    context.addValue(CTX_COUNT_OF_PROCESSED, currentUrlIndex + 1)
                     break@loop
                 }
                 ContinueStatus.CONTINUE_TO_NEXT_ONE_OK,
@@ -265,8 +263,8 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
             }
         }
 
-        if (!context.existValueForKey("countOfProcessed")) {
-            context.addValue("countOfProcessed", urlList.size)
+        if (!context.existValueForKey(CTX_COUNT_OF_PROCESSED)) {
+            context.addValue(CTX_COUNT_OF_PROCESSED, urlList.size)
         }
     }
 
@@ -425,14 +423,30 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
 }
 
-data class EshopKeywordFinishEvent(val eshopUuid: EshopUuid,
-                                   val error: Boolean,
-                                   val errMsg: String?,
-                                   val keyword: String,
-                                   val countOfFound: Int?,
-                                   val countOfAdded: Int?)
-    : CoreEvent(EventType.ESHOP_KEYWORD_FINISH)
+abstract class AddProcessEvent(val eshopUuid: EshopUuid) : CoreEvent() {
+    override fun toString(): String {
+        return "AddProcessEvent(eshopUuid=$eshopUuid)"
+    }
+}
 
+class AddProductsToEshopByKeywordFinishedEvent(eshopUuid: EshopUuid,
+                                               val keyword: String,
+                                               val error: Boolean,
+                                               val errMsg: String?,
+                                               val countOfFound: Int?,
+                                               val countOfAdded: Int?)
+    : AddProcessEvent(eshopUuid) {
+
+    override fun toString(): String {
+        return "EshopKeywordFinishEvent(" +
+                "eshopUuid=$eshopUuid, " +
+                "keyword='$keyword', " +
+                "error=$error, " +
+                "errMsg=$errMsg, " +
+                "countOfFound=$countOfFound, " +
+                "countOfAdded=$countOfAdded)"
+    }
+}
 
 class SearchProductUrlsException(val eshopUuid: EshopUuid, val searchKeyWord: String, e: Exception) :
         PrcoRuntimeException("error while parsing eshop $eshopUuid products URLs for keyword $searchKeyWord", e)

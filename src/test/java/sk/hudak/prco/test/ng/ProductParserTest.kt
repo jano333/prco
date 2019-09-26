@@ -6,6 +6,7 @@ import sk.hudak.prco.builder.SearchUrlBuilderImpl
 import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.dto.ProductUpdateData
 import sk.hudak.prco.eshop.*
+import sk.hudak.prco.eshop.drugstore.DrogeriaVmdProductParser
 import sk.hudak.prco.eshop.drugstore.DrogerkaProductParser
 import sk.hudak.prco.eshop.pharmacy.*
 import sk.hudak.prco.exception.PrcoRuntimeException
@@ -21,14 +22,13 @@ fun main() {
 
     val test = ProductParserTest()
 
-//    val urlList = test.parseUrlsOfProduct(EshopUuid.KID_MARKET, "pampers")
-//    println("count in list ${urlList.size}")
-//    println("count in set ${HashSet(urlList).size}")
-//    println(urlList);
+    val urlList = test.parseUrlsOfProduct(EshopUuid.DROGERIA_VMD, "pampers")
+    println("count in list ${urlList.size}")
+    println("count in set ${HashSet(urlList).size}")
+    println(urlList);
 //
-    println(test.parseProductNewData("https://www.pilulka24.sk/pampers-activebaby-giant-pack-2-mini-100"))
-
-//    println(test.parseProductUpdateData("https://www.mojalekaren.sk//pampers-active-baby-dry-3-midi-5-9kg-68-kusov/"))
+//    println(test.parseProductNewData("https://www.pilulka24.sk/pampers-activebaby-giant-pack-2-mini-100"))
+//    println(test.parseProductUpdateData("https://www.feedo.sk/nutrilon-5-pronutra-800-g-dojcenske-mlieko/"))
 }
 
 class ProductParserTest {
@@ -40,8 +40,9 @@ class ProductParserTest {
             // B
             EshopUuid.BRENDON -> BrendonProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // D
-            EshopUuid.DROGERKA -> DrogerkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.DR_MAX -> DrMaxProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            EshopUuid.DROGERIA_VMD -> DrogeriaVmdProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            EshopUuid.DROGERKA -> DrogerkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // F
             EshopUuid.FARBY -> FarbyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.FEEDO -> FeedoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
@@ -53,6 +54,7 @@ class ProductParserTest {
             // L
             EshopUuid.LEKAREN_BELLA -> LekarenBellaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.LEKAREN_EXPRES -> LekarenExpresProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            EshopUuid.LEKAREN_V_KOCKE -> LekarenVKockeProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // M
             EshopUuid.MALL -> MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.MAXIKOVY_HRACKY -> MaxikovyHrackyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
