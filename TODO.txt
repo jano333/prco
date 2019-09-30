@@ -27,7 +27,7 @@ preco je nula???
 2019-09-26 13:45:38,016 DEBUG [LEKAREN_V_KOCKE-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
 2019-09-26 13:45:38,016 DEBUG [LEKAREN_V_KOCKE-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
 ---------
-preco je nula??? to co naslo? brendon pre pampers ma produkty!!!
+TODO je bug lebo su tam produkty!!!
 AddProductsToEshopByKeywordFinishedEvent(BRENDON)
 2019-09-26 13:45:11,315 DEBUG [BRENDON-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop BRENDON and searchKeyWord pampers
 2019-09-26 13:45:11,315 DEBUG [BRENDON-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
