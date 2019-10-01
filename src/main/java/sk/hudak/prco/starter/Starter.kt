@@ -224,8 +224,8 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         //        uiService.updateProductCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-                newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
-//                newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, "lovela");
+//                newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
+                newProductManager.addNewProductsByKeywordForEshop(EshopUuid.METRO, "pampers");
         //        newProductManager.addNewProductsByUrl(
         //                  "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120575818",
         //                  "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120307521",

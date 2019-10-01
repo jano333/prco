@@ -1,14 +1,4 @@
 -------------------------
-TODO je to bug
-my volame:
- https://www.pilulka.sk/hledat?q=pampers
- a mame volat:
- https://www.pilulka.sk/detske-plienky/pampers
-2019-09-26 13:45:58,891 DEBUG [PILULKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:32] AddProductsToEshopByKeywordFinishedEvent(PILULKA)
-2019-09-26 13:45:58,891 DEBUG [PILULKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop PILULKA and searchKeyWord pampers
-2019-09-26 13:45:58,891 DEBUG [PILULKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
-2019-09-26 13:45:58,891 DEBUG [PILULKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
--------------------------
 TODO je bug lebo su tam produkty!!!
 2019-09-26 13:45:55,985 DEBUG [TESCO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:32] AddProductsToEshopByKeywordFinishedEvent(TESCO)
 2019-09-26 13:45:55,985 DEBUG [TESCO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop TESCO and searchKeyWord pampers

@@ -218,13 +218,7 @@ public enum EshopUuid {
             "https://www.prva-lekaren.sk/search?lm=12&st=" + PAGE_NUMBER_TEMP + "&q=" + KEYWORD_TEMP,
             5, 12, 12),
 
-    PILULKA(
-            PHARMACY,
-            "https://www.pilulka.sk",
-            "https://www.pilulka.sk/hledat?q=" + KEYWORD_TEMP,
-            "https://www.pilulka.sk/hledat?q=" + KEYWORD_TEMP + "&page=" + PAGE_NUMBER_TEMP,
-            5, 12, -1),
-
+    PILULKA(PilulkaEshopConfiguration.INSTANCE),
     PILULKA_24(Pilulka24EshopConfiguration.INSTANCE),
 
     TESCO(

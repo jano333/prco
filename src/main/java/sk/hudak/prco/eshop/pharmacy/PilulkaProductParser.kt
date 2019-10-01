@@ -12,45 +12,38 @@ import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal
 import sk.hudak.prco.utils.JsoupUtils
-import sk.hudak.prco.utils.JsoupUtils.getFirstElementByClass
 import sk.hudak.prco.utils.UserAgentDataHolder
+import sk.hudak.prco.utils.href
 import java.math.BigDecimal
 import java.util.*
 import java.util.Optional.ofNullable
-import kotlin.streams.toList
 
 @Component
-class PilulkaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+class PilulkaProductParser(unitParser: UnitParser,
+                           userAgentDataHolder: UserAgentDataHolder,
+                           searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = PILULKA
+    override val eshopUuid: EshopUuid = PILULKA
 
-    override// koli pomalym odozvam davam na 15 sekund
-    val timeout: Int
-        get() = TIMEOUT_15_SECOND
+    // koli pomalym odozvam davam na 15 sekund
+    override val timeout: Int = TIMEOUT_15_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
-        val firstElementByClass = getFirstElementByClass(documentList, "pager")
-        return if (!firstElementByClass.isPresent) {
-            1
-        } else Integer.valueOf(firstElementByClass.get().getElementsByTag("a").last().text())
-        // hodnotu z posledneho a tagu pod tagom pager
+        val text = documentList.select("#js-product-list-content > p").first()
+                ?.text()
+        if (text == null || text.isBlank()) {
+            return 1
+        }
+        val pocetProduktov = StringUtils.remove(text, " produktov").toInt()
+        return JsoupUtils.calculateCountOfPages(pocetProduktov, eshopUuid.maxCountOfProductOnPage)
     }
 
     override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
-        val allElementsOpt = Optional.ofNullable(documentList.select("div[class=product-list]").first())
-                .map { it.children() }
-                .map { it.first() }
-                .map { it.children() }
-                .map { it.select("div > h3 > a") }
-
-        return if (!allElementsOpt.isPresent) {
-            emptyList()
-        } else allElementsOpt.get().stream()
-                .map { it.select("div > h3 > a").first() }
-                .filter { Objects.nonNull(it) }
-                .map { a -> eshopUuid.productStartUrl + a.attr("href") }
+        return documentList.select("div[class='col-6 col-sm-4 col-lg-3 p-0 product-card__border'] > div > a")
+                .map { it.href() }
+                .filter { it.isNotBlank() }
+                .map { eshopUuid.productStartUrl + it }
                 .toList()
     }
 
@@ -78,7 +71,7 @@ class PilulkaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgen
         }
 
         first = documentDetailProduct.select("span[class='fs-28 mb-3 text-primary fwb']").first()
-        return Optional.ofNullable(first)
+        return ofNullable(first)
                 .map { it.text() }
                 .map { StringUtils.removeEnd(it, " €") }
                 .map { convertToBigDecimal(it) }
@@ -96,7 +89,7 @@ class PilulkaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgen
         return ofNullable(first)
                 .map { JsoupUtils.dataSrcAttribute(it) }
                 .map { it!!.substring(1) }
-                .map {eshopUuid.productStartUrl + "/" + it }
+                .map { eshopUuid.productStartUrl + "/" + it }
     }
 
     override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {

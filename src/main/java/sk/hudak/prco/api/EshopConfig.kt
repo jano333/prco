@@ -58,6 +58,20 @@ object MallEshopConfiguration : DynamicEshopConfiguration(EshopCategory.NONE,
 /****************************/
 /*            P             */
 /****************************/
+object PilulkaEshopConfiguration : DynamicEshopConfiguration(
+        EshopCategory.PHARMACY,
+        "https://www.pilulka.sk",
+        5, 12, 40) {
+
+    override fun buildSearchUrlForKeyWord(keyword: String, pageNumber: Int): String {
+        return when (keyword) {
+            "pampers" -> "https://www.pilulka.sk/detske-plienky/pampers?page=$pageNumber"
+            "nutrilon" -> "https://www.pilulka.sk/nutrilon?page=$pageNumber"
+            else -> "https://www.pilulka.sk/hledat?q=$keyword&page=$pageNumber"
+        }
+    }
+}
+
 object Pilulka24EshopConfiguration : DynamicEshopConfiguration(
         EshopCategory.PHARMACY,
         "https://www.pilulka24.sk/",
