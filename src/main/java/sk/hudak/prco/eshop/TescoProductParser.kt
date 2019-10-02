@@ -11,45 +11,50 @@ import sk.hudak.prco.exception.PrcoRuntimeException
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal
+import sk.hudak.prco.utils.JsoupUtils
 import sk.hudak.prco.utils.JsoupUtils.getTextFromFirstElementByClass
 import sk.hudak.prco.utils.JsoupUtils.notExistElement
 import sk.hudak.prco.utils.UserAgentDataHolder
+import sk.hudak.prco.utils.href
 import java.math.BigDecimal
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.Optional.ofNullable
-import java.util.stream.Collectors
 
 /**
  * Created by jan.hudak on 9/29/2017.
  */
 @Component
-class TescoProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+class TescoProductParser(unitParser: UnitParser,
+                         userAgentDataHolder: UserAgentDataHolder,
+                         searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = TESCO
+    override val eshopUuid: EshopUuid = TESCO
 
-    override val timeout: Int
-        get() = TIMEOUT_10_SECOND
+    override val timeout: Int = TIMEOUT_10_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
-        val navEl = documentList.select("nav.pagination--page-selector-wrapper").first() ?: return 1
-        val ulEl = navEl.child(0)
-        val liEls = ulEl.children()
-        val liElCount = liEls.size
-        // prvy a posledny vynechavam
-        return liElCount - 2
+        val navEl = documentList.select("div.items-count__container > span").first() ?: return 1
+        val text = navEl.text()
+        if (text.isNotBlank()) {
+            val pocetProduktov = StringUtils.remove(text, " položky").toInt()
+            return JsoupUtils.calculateCountOfPages(pocetProduktov, eshopUuid.maxCountOfProductOnPage)
+        }
+        return 1
     }
 
     override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
-        return documentList.select("div[class=product-details--content] a[class='product-tile--title product-tile--browsable']")
-                .stream()
-                .map { it.attr("href") }
+
+
+        val select = documentList.select("li.product-list--list-item > div > div > div > div > a")
+
+        return select
+                .map { it.href() }
                 .filter { StringUtils.isNotBlank(it) }
                 .map { eshopUuid.productStartUrl + it }
-                .collect(Collectors.toList())
+                .toList()
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

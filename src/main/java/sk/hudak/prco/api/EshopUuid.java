@@ -221,12 +221,7 @@ public enum EshopUuid {
     PILULKA(PilulkaEshopConfiguration.INSTANCE),
     PILULKA_24(Pilulka24EshopConfiguration.INSTANCE),
 
-    TESCO(
-            NONE,
-            "https://potravinydomov.itesco.sk",
-            "https://potravinydomov.itesco.sk/groceries/sk-SK/search?query={keyword}",
-            "https://potravinydomov.itesco.sk/groceries/sk-SK/search?query={keyword}&page={pageNumber}",
-            5, 12, -1);
+    TESCO(TescoEshopConfiguration.INSTANCE);
 
     private String productStartUrl;
 

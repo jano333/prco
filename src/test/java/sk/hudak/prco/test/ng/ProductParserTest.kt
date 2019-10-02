@@ -22,7 +22,7 @@ fun main() {
 
     val test = ProductParserTest()
 
-    val urlList = test.parseUrlsOfProduct(EshopUuid.PILULKA, "pampers")
+    val urlList = test.parseUrlsOfProduct(EshopUuid.TESCO, "pampers")
     println("count in list ${urlList.size}")
     println("count in set ${HashSet(urlList).size}")
     println(urlList);
@@ -62,6 +62,8 @@ class ProductParserTest {
             // P
             EshopUuid.PILULKA -> PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.PILULKA_24 -> Pilulka24ProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+           // T
+            EshopUuid.TESCO -> TescoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 
             else -> throw PrcoRuntimeException("Pridaj implementaciu do testu pre eshop $eshopUuid")
         }

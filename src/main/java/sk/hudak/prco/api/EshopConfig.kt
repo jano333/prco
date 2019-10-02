@@ -86,6 +86,17 @@ object Pilulka24EshopConfiguration : DynamicEshopConfiguration(
     }
 }
 
+/****************************/
+/*            T             */
+/****************************/
+object TescoEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
+        "https://potravinydomov.itesco.sk",
+        "https://potravinydomov.itesco.sk/groceries/sk-SK/search?query=$KEYWORD_TEMP",
+        "https://potravinydomov.itesco.sk/groceries/sk-SK/search?query=$KEYWORD_TEMP&page=$PAGE_NUMBER_TEMP",
+        5, 12, 24
+)
+
+
 abstract class EshopConfiguration(
         val category: EshopCategory,
         val productStartUrl: String,

@@ -1,9 +1,3 @@
--------------------------
-TODO je bug lebo su tam produkty!!!
-2019-09-26 13:45:55,985 DEBUG [TESCO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:32] AddProductsToEshopByKeywordFinishedEvent(TESCO)
-2019-09-26 13:45:55,985 DEBUG [TESCO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop TESCO and searchKeyWord pampers
-2019-09-26 13:45:55,985 DEBUG [TESCO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
-2019-09-26 13:45:55,985 DEBUG [TESCO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
 -------------
 TODO je bug lebo su tam produkty!!!
 2019-09-26 13:45:44,482 DEBUG [METRO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:32] AddProductsToEshopByKeywordFinishedEvent(METRO)
@@ -17,7 +11,7 @@ preco je nula???
 2019-09-26 13:45:38,016 DEBUG [LEKAREN_V_KOCKE-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
 2019-09-26 13:45:38,016 DEBUG [LEKAREN_V_KOCKE-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
 ---------
-TODO je bug lebo su tam produkty!!!
+TODO je bug lebo su tam produkty!!! to iste aj pre nutrilon nic nenajde...
 AddProductsToEshopByKeywordFinishedEvent(BRENDON)
 2019-09-26 13:45:11,315 DEBUG [BRENDON-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop BRENDON and searchKeyWord pampers
 2019-09-26 13:45:11,315 DEBUG [BRENDON-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
