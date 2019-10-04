@@ -16,7 +16,7 @@ import sk.hudak.prco.utils.UserAgentDataHolder
 import sk.hudak.prco.utils.href
 import java.math.BigDecimal
 import java.util.*
-import java.util.Optional.ofNullable
+import java.util.Optional.*
 
 @Component
 class PilulkaProductParser(unitParser: UnitParser,
@@ -78,18 +78,26 @@ class PilulkaProductParser(unitParser: UnitParser,
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
-        var first: Element? = documentDetailProduct.select("#pr-img-carousel > ul > li > a > img").first()
-        if (first != null) {
-            return Optional.of(eshopUuid.productStartUrl + "/" + first.attr("src"))
-        }
-        first = documentDetailProduct.select("div[class='product-detail__images'] > picture > a > img").first()
-        if (first == null) {
-            first = documentDetailProduct.select("div[class='product-detail__images w-100 js-carousel-item'] > picture > a > img").first()
-        }
-        return ofNullable(first)
+        // 1 scenar
+        val result: Optional<String> = ofNullable(documentDetailProduct.select("div[class='product-detail__images'] > picture > a > img").first())
                 .map { JsoupUtils.dataSrcAttribute(it) }
-                .map { it!!.substring(1) }
-                .map { eshopUuid.productStartUrl + "/" + it }
+        if (result.isPresent) {
+            return result
+        }
+
+        // 2 scenar
+        var let: String? = documentDetailProduct.select("#js-product-carousel > div:nth-child(1) > picture > a > img")
+                .first()
+                ?.let {
+                    JsoupUtils.dataSrcAttribute(it)
+                }
+        if (let != null && let.isNotBlank()) {
+            return of(let)
+        }
+
+        // ak ani jeden scenar
+        return empty()
+
     }
 
     override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {

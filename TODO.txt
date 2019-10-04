@@ -1,9 +1,91 @@
+
 -------------
-TODO je bug lebo su tam produkty!!!
-2019-09-26 13:45:44,482 DEBUG [METRO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:32] AddProductsToEshopByKeywordFinishedEvent(METRO)
-2019-09-26 13:45:44,482 DEBUG [METRO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop METRO and searchKeyWord pampers
-2019-09-26 13:45:44,482 DEBUG [METRO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
-2019-09-26 13:45:44,482 DEBUG [METRO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
+bug:
+PILULKA [6550] 04-10-2019 15:37:19 UNKNOWN status: null message: no url found for eshop PILULKA and searchKeyWord lovela url null
+-------------
+No bug
+PRVA_LEKAREN [6549] 04-10-2019 15:37:14 UNKNOWN status: null message: no url found for eshop PRVA_LEKAREN and searchKeyWord lovela url null
+-------------
+
+TODO prest zoznam:
+PERINBABA [6547] 04-10-2019 15:37:08 UNKNOWN status: null message: no url found for eshop PERINBABA and searchKeyWord lovela url null
+METRO [6546] 04-10-2019 15:37:03 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord lovela url null
+MAXIKOVY_HRACKY [6545] 04-10-2019 15:37:01 UNKNOWN status: null message: no url found for eshop MAXIKOVY_HRACKY and searchKeyWord lovela url null
+LEKAREN_V_KOCKE [6544] 04-10-2019 15:36:57 UNKNOWN status: null message: no url found for eshop LEKAREN_V_KOCKE and searchKeyWord lovela url null
+LEKAREN_EXPRES [6543] 04-10-2019 15:36:56 UNKNOWN status: null message: no url found for eshop LEKAREN_EXPRES and searchKeyWord lovela url null
+LEKAREN_BELLA [6542] 04-10-2019 15:36:52 UNKNOWN status: null message: no url found for eshop LEKAREN_BELLA and searchKeyWord lovela url null
+INTERNETOVA_LEKAREN [6541] 04-10-2019 15:36:48 UNKNOWN status: null message: no url found for eshop INTERNETOVA_LEKAREN and searchKeyWord lovela url null
+GIGA_LEKAREN [6540] 04-10-2019 15:36:46 UNKNOWN status: null message: no url found for eshop GIGA_LEKAREN and searchKeyWord lovela url null
+FOUR_KIDS [6539] 04-10-2019 15:36:43 UNKNOWN status: null message: no url found for eshop FOUR_KIDS and searchKeyWord lovela url null
+DROGERKA [6538] 04-10-2019 15:36:36 UNKNOWN status: null message: no url found for eshop DROGERKA and searchKeyWord lovela url null
+BRENDON [6537] 04-10-2019 15:36:30 UNKNOWN status: null message: no url found for eshop BRENDON and searchKeyWord lovela url null
+PERINBABA [6536] 04-10-2019 15:36:16 UNKNOWN status: null message: no url found for eshop PERINBABA and searchKeyWord nutrilon url null
+METRO [6535] 04-10-2019 15:36:11 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord nutrilon url null
+MAXIKOVY_HRACKY [6534] 04-10-2019 15:36:09 UNKNOWN status: null message: no url found for eshop MAXIKOVY_HRACKY and searchKeyWord nutrilon url null
+MAGANO [6533] 04-10-2019 15:36:06 UNKNOWN status: null message: no url found for eshop MAGANO and searchKeyWord nutrilon url null
+LEKAREN_V_KOCKE [6532] 04-10-2019 15:36:05 UNKNOWN status: null message: no url found for eshop LEKAREN_V_KOCKE and searchKeyWord nutrilon url null
+FOUR_KIDS [6531] 04-10-2019 15:35:51 UNKNOWN status: null message: no url found for eshop FOUR_KIDS and searchKeyWord nutrilon url null
+FARBY [6530] 04-10-2019 15:35:48 UNKNOWN status: null message: no url found for eshop FARBY and searchKeyWord nutrilon url null
+ESO_DROGERIA [6529] 04-10-2019 15:35:46 UNKNOWN status: null message: no url found for eshop ESO_DROGERIA and searchKeyWord nutrilon url null
+DROGERKA [6528] 04-10-2019 15:35:44 UNKNOWN status: null message: no url found for eshop DROGERKA and searchKeyWord nutrilon url null
+BRENDON [6527] 04-10-2019 15:35:39 UNKNOWN status: null message: no url found for eshop BRENDON and searchKeyWord nutrilon url null
+ALZA [6526] 04-10-2019 15:35:34 UNKNOWN status: null message: no url found for eshop ALZA and searchKeyWord nutrilon url null
+METRO [6525] 04-10-2019 15:35:19 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord pampers url null
+LEKAREN_V_KOCKE [6524] 04-10-2019 15:35:14 UNKNOWN status: null message: no url found for eshop LEKAREN_V_KOCKE and searchKeyWord pampers url null
+DROGERIA_VMD [6523] 04-10-2019 15:35:07 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/pampers-sleep-play-5-junior-11-25-kg-42-ks-detske-plenkove-nohavicky/
+BRENDON [6522] 04-10-2019 15:34:46 UNKNOWN status: null message: no url found for eshop BRENDON and searchKeyWord pampers url null
+DROGERIA_VMD [6492] 04-10-2019 15:08:31 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/pampers-giantpack-junior-5-11-16kg-64ks-9974/
+DROGERIA_VMD [6491] 04-10-2019 15:08:31 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/pampers-splashers-plen-kal-do-vody-3-4-6-11kg-12ks-8346/
+DROGERIA_VMD [6490] 04-10-2019 15:08:31 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/pampers-splashers-plen-kal-do-vody-4-5-9-15kg-11ks-8384/
+DROGERIA_VMD [6404] 04-10-2019 15:08:31 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/pampers-pure-protect-1-2-5kg-35ks-3120-1/
+DROGERIA_VMD [6403] 04-10-2019 15:08:31 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/pampers-vlhc-ubrousky-aqua-pure-3x48ks-3388/
+-----------
+DROGERIA_VMD [6548] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/canpol-dudlik-silikon-dynamic-lovi-indian-summer-0-3m-2ks-modre-8556/
+DROGERIA_VMD [6402] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/lovela-40dav-5kg-bile-pradlo-4300/
+DROGERIA_VMD [6401] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/lovela-26dav-3-25kg-bile-pradlo-1937/
+DROGERIA_VMD [6400] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/lovela-40dav-5kg-barevne-pradlo-4294/
+DROGERIA_VMD [6399] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/lovela-13dav-1-625kg-bile-pradlo-9071/
+---------
+2019-10-04 15:17:18,292 DEBUG [MAGANO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:37] AddProductsToEshopByKeywordFinishedEvent(MAGANO)
+2019-10-04 15:17:18,292 DEBUG [MAGANO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop MAGANO and searchKeyWord nutrilon
+2019-10-04 15:17:18,293 DEBUG [MAGANO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:39] count of found: 0
+2019-10-04 15:17:18,293 DEBUG [MAGANO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:40] count of added: 0
+2019-10-04 15:17:18,298 DEBUG [TESCO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:365] product https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002016453922 already existing
+--------
+2019-10-04 15:17:03,900 DEBUG [FOUR_KIDS-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:37] AddProductsToEshopByKeywordFinishedEvent(FOUR_KIDS)
+2019-10-04 15:17:03,900 DEBUG [FOUR_KIDS-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop FOUR_KIDS and searchKeyWord nutrilon
+2019-10-04 15:17:03,900 DEBUG [FOUR_KIDS-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:39] count of found: 0
+2019-10-04 15:17:03,900 DEBUG [FOUR_KIDS-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:40] count of added: 0
+---------
+2019-10-04 15:17:00,517 DEBUG [FARBY-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:37] AddProductsToEshopByKeywordFinishedEvent(FARBY)
+2019-10-04 15:17:00,517 DEBUG [FARBY-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop FARBY and searchKeyWord nutrilon
+2019-10-04 15:17:00,517 DEBUG [FARBY-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:39] count of found: 0
+2019-10-04 15:17:00,517 DEBUG [FARBY-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:40] count of added: 0
+--------------
+2019-10-04 15:16:58,233 DEBUG [ESO_DROGERIA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:37] AddProductsToEshopByKeywordFinishedEvent(ESO_DROGERIA)
+2019-10-04 15:16:58,233 DEBUG [ESO_DROGERIA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop ESO_DROGERIA and searchKeyWord nutrilon
+2019-10-04 15:16:58,234 DEBUG [ESO_DROGERIA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:39] count of found: 0
+2019-10-04 15:16:58,234 DEBUG [ESO_DROGERIA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:40] count of added: 0
+-----------
+2019-10-04 15:16:56,366 DEBUG [DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:37] AddProductsToEshopByKeywordFinishedEvent(DROGERKA)
+2019-10-04 15:16:56,366 DEBUG [DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop DROGERKA and searchKeyWord nutrilon
+2019-10-04 15:16:56,366 DEBUG [DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:39] count of found: 0
+2019-10-04 15:16:56,366 DEBUG [DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:40] count of added: 0
+
+----------
+alza nema nutrilon, teda urobit do konfigujracie klucove slova ktore nema hladat, respo urobit
+databazu kde bude vezba eshop -> key word, ktore je podporovane...
+
+-------------------------------
+update processs urobit tak ze najprv nech ide po grupach pampers, potom nutrilon, lovela a potom ostatne grupy a potom to co ostalo
+akonahle skonci update danej grupy nech posle event s report ako to dopadlo... console debug report
+-------------------------------
+nie je tam 5 ale ze to je len jeden kus
+Nutrilon 4 batoľacia mliečna výživa v prášku 800g 5+1 zdarma
+-------------
+TODO urobit update process pre new produkty(teda urobit reporocess data ale s delay)
+-------------
+//TODO urobit ked vyparsuje URL picture, tak na overenie zavolat danu URL ci pride http 200 aby sa toto nestavalo...
 -------------
 preco je nula???
 2019-09-26 13:45:38,015 DEBUG [LEKAREN_V_KOCKE-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:32] AddProductsToEshopByKeywordFinishedEvent(LEKAREN_V_KOCKE)
@@ -12,11 +94,17 @@ preco je nula???
 2019-09-26 13:45:38,016 DEBUG [LEKAREN_V_KOCKE-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
 ---------
 TODO je bug lebo su tam produkty!!! to iste aj pre nutrilon nic nenajde...
-AddProductsToEshopByKeywordFinishedEvent(BRENDON)
+AddProductsToEshopByKeywordFinishedEvent(BRENDON) ani pampoers ani nutilon
 2019-09-26 13:45:11,315 DEBUG [BRENDON-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop BRENDON and searchKeyWord pampers
 2019-09-26 13:45:11,315 DEBUG [BRENDON-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
 2019-09-26 13:45:11,315 DEBUG [BRENDON-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
 ----------------
+TODO je bug lebo su tam produkty!!!
+2019-09-26 13:45:44,482 DEBUG [METRO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:32] AddProductsToEshopByKeywordFinishedEvent(METRO)
+2019-09-26 13:45:44,482 DEBUG [METRO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop METRO and searchKeyWord pampers
+2019-09-26 13:45:44,482 DEBUG [METRO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
+2019-09-26 13:45:44,482 DEBUG [METRO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
+------------------
 nevie nacitat groupu
 Pampers New Baby-Dry 2-5kg veľ.1 43ks
 ----------------

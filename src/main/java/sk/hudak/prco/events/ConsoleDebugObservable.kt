@@ -29,12 +29,17 @@ class ConsoleDebugObservable(prcoObservable: PrcoObservable) : PrcoObserver {
 
     private fun processEshopKeywordFinishEvent(event: AddProductsToEshopByKeywordFinishedEvent) {
         if (event.error) {
-            log.debug(ConsoleWithColor.wrapWithColor(AddProductsToEshopByKeywordFinishedEvent::class.java.simpleName + "(" + event.eshopUuid + ")", ConsoleColor.RED))
-            log.debug(ConsoleWithColor.wrapWithColor("err msg: " + event.errMsg, ConsoleColor.RED))
-            log.debug(ConsoleWithColor.wrapWithColor("count of found: ${event.countOfFound}", ConsoleColor.RED))
-            log.debug(ConsoleWithColor.wrapWithColor("count of added: ${event.countOfAdded}", ConsoleColor.RED))
+            val color = if (event.countOfFound == 0) {
+                ConsoleColor.RED
+            } else {
+                ConsoleColor.GREEN
+            }
+            log.debug(ConsoleWithColor.wrapWithColor("${AddProductsToEshopByKeywordFinishedEvent::class.java.simpleName}(${event.eshopUuid})", color))
+            log.debug(ConsoleWithColor.wrapWithColor("err msg: ${event.errMsg}", color))
+            log.debug(ConsoleWithColor.wrapWithColor("count of found: ${event.countOfFound}", color))
+            log.debug(ConsoleWithColor.wrapWithColor("count of added: ${event.countOfAdded}", color))
         } else {
-            log.debug(ConsoleWithColor.wrapWithColor(AddProductsToEshopByKeywordFinishedEvent::class.java.simpleName + "(" + event.eshopUuid + ")", ConsoleColor.GREEN))
+            log.debug(ConsoleWithColor.wrapWithColor("${AddProductsToEshopByKeywordFinishedEvent::class.java.simpleName}(${event.eshopUuid})", ConsoleColor.GREEN))
             log.debug(ConsoleWithColor.wrapWithColor("count of found: ${event.countOfFound}", ConsoleColor.YELLOW))
             log.debug(ConsoleWithColor.wrapWithColor("count of added: ${event.countOfAdded}", ConsoleColor.YELLOW))
         }

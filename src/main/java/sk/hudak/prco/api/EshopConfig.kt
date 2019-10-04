@@ -3,6 +3,7 @@ package sk.hudak.prco.api
 import sk.hudak.prco.api.SearchTemplateConstants.KEYWORD_TEMP
 import sk.hudak.prco.api.SearchTemplateConstants.PAGE_NUMBER_TEMP
 import sk.hudak.prco.exception.PrcoRuntimeException
+import java.util.*
 
 /****************************/
 /*            A             */
@@ -11,7 +12,8 @@ object AlzaEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
         "https://www.alza.sk",
         "https://www.alza.sk/search.htm?exps=" + KEYWORD_TEMP,
         "https://www.alza.sk/search-p" + PAGE_NUMBER_TEMP + ".htm?exps=" + KEYWORD_TEMP,
-        5, 12, 24
+        5, 12, 24,
+        notSupportedKeywords = Arrays.asList("nutrilon")
 )
 /****************************/
 /*            F             */
@@ -109,7 +111,8 @@ abstract class EshopConfiguration(
         val maxCountOfNewPages: Int,
         val olderThanInHours: Int,
         val maxCountOfProductOnPage: Int,
-        val countToWaitInSecond: Int = 3) {
+        val countToWaitInSecond: Int = 3,
+        val notSupportedKeywords: List<String> = emptyList()) {
 
     open fun buildSearchUrlForKeyWord(keyword: String, pageNumber: Int = 1): String {
         return ""
@@ -122,7 +125,8 @@ abstract class StaticEshopConfiguration(category: EshopCategory,
                                         searchTemplateUrlWithPageNumber: String,
                                         maxCountOfNewPages: Int,
                                         olderThanInHours: Int,
-                                        maxCountOfProductOnPage: Int)
+                                        maxCountOfProductOnPage: Int,
+                                        notSupportedKeywords: List<String> = emptyList())
     : EshopConfiguration(
         category,
         productStartUrl,
@@ -131,7 +135,8 @@ abstract class StaticEshopConfiguration(category: EshopCategory,
         searchTemplateUrlWithPageNumber,
         maxCountOfNewPages,
         olderThanInHours,
-        maxCountOfProductOnPage) {
+        maxCountOfProductOnPage,
+        notSupportedKeywords = notSupportedKeywords) {
 
     override fun buildSearchUrlForKeyWord(keyword: String, pageNumber: Int): String {
         throw PrcoRuntimeException("can't be called for static search url")

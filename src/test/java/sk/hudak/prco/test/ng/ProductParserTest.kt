@@ -22,12 +22,14 @@ fun main() {
 
     val test = ProductParserTest()
 
-    val urlList = test.parseUrlsOfProduct(EshopUuid.TESCO, "pampers")
-    println("count in list ${urlList.size}")
-    println("count in set ${HashSet(urlList).size}")
-    println(urlList);
-//
-//    println(test.parseProductNewData("https://www.pilulka24.sk/pampers-activebaby-giant-pack-2-mini-100"))
+//    val urlList = test.parseUrlsOfProduct(EshopUuid.TESCO, "pampers")
+//    println("count in list ${urlList.size}")
+//    println("count in set ${HashSet(urlList).size}")
+//    println(urlList);
+
+//    println(test.parseProductNewData("https://www.pilulka.sk/nutrilon-profutura-obilno-mliecna-kasa-7-cerealii-s-ovocim-225g"))
+    println(test.parseProductNewData("https://www.pilulka.sk/nutrilon-2-ha-prosyneo-6x800g"))
+
 //    println(test.parseProductUpdateData("https://www.feedo.sk/nutrilon-5-pronutra-800-g-dojcenske-mlieko/"))
 }
 

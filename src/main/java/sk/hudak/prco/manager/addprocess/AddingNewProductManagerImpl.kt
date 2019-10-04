@@ -2,7 +2,9 @@ package sk.hudak.prco.manager.addprocess
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import sk.hudak.prco.api.ErrorType
 import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.dto.ErrorCreateDto
 import sk.hudak.prco.dto.product.NewProductCreateDto
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
@@ -445,6 +447,37 @@ class AddProductsToEshopByKeywordFinishedEvent(eshopUuid: EshopUuid,
                 "errMsg=$errMsg, " +
                 "countOfFound=$countOfFound, " +
                 "countOfAdded=$countOfAdded)"
+    }
+}
+
+/**
+ * Ulozi chybu ak pri parsovani novych produktov sa pre dany eshop a dane klucove slovo nenasiel ani jeden produkt
+ */
+@Component
+class ErrorNoProductFoundByKeyWordObservable(prcoObservable: PrcoObservable,
+                                             private val internalTxService: InternalTxService) : PrcoObserver {
+
+    init {
+        prcoObservable.addObserver(this)
+    }
+
+    override fun update(source: Observable?, event: CoreEvent) {
+        when (event) {
+            is AddProductsToEshopByKeywordFinishedEvent -> {
+                processEshopKeywordFinishEvent(event)
+            }
+        }
+    }
+
+    private fun processEshopKeywordFinishEvent(event: AddProductsToEshopByKeywordFinishedEvent) {
+        if (event.countOfFound == 0) {
+            internalTxService.createError(ErrorCreateDto(
+                    event.eshopUuid,
+                    ErrorType.UNKNOWN, null,
+                    "no url found for eshop ${event.eshopUuid} and searchKeyWord ${event.keyword}",
+                    null, null,
+                    event.keyword))
+        }
     }
 }
 
