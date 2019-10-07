@@ -1,44 +1,43 @@
 
 -------------
-bug:
+bugs:
 PILULKA [6550] 04-10-2019 15:37:19 UNKNOWN status: null message: no url found for eshop PILULKA and searchKeyWord lovela url null
+LEKAREN_V_KOCKE [6524] 04-10-2019 15:35:14 UNKNOWN status: null message: no url found for eshop LEKAREN_V_KOCKE and searchKeyWord pampers url null
+LEKAREN_V_KOCKE [6532] 04-10-2019 15:36:05 UNKNOWN status: null message: no url found for eshop LEKAREN_V_KOCKE and searchKeyWord nutrilon url null
+
 -------------
 No bug
 PRVA_LEKAREN [6549] 04-10-2019 15:37:14 UNKNOWN status: null message: no url found for eshop PRVA_LEKAREN and searchKeyWord lovela url null
--------------
-
-TODO prest zoznam:
 PERINBABA [6547] 04-10-2019 15:37:08 UNKNOWN status: null message: no url found for eshop PERINBABA and searchKeyWord lovela url null
-METRO [6546] 04-10-2019 15:37:03 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord lovela url null
-MAXIKOVY_HRACKY [6545] 04-10-2019 15:37:01 UNKNOWN status: null message: no url found for eshop MAXIKOVY_HRACKY and searchKeyWord lovela url null
+PERINBABA [6536] 04-10-2019 15:36:16 UNKNOWN status: null message: no url found for eshop PERINBABA and searchKeyWord nutrilon url null
 LEKAREN_V_KOCKE [6544] 04-10-2019 15:36:57 UNKNOWN status: null message: no url found for eshop LEKAREN_V_KOCKE and searchKeyWord lovela url null
 LEKAREN_EXPRES [6543] 04-10-2019 15:36:56 UNKNOWN status: null message: no url found for eshop LEKAREN_EXPRES and searchKeyWord lovela url null
 LEKAREN_BELLA [6542] 04-10-2019 15:36:52 UNKNOWN status: null message: no url found for eshop LEKAREN_BELLA and searchKeyWord lovela url null
-INTERNETOVA_LEKAREN [6541] 04-10-2019 15:36:48 UNKNOWN status: null message: no url found for eshop INTERNETOVA_LEKAREN and searchKeyWord lovela url null
-GIGA_LEKAREN [6540] 04-10-2019 15:36:46 UNKNOWN status: null message: no url found for eshop GIGA_LEKAREN and searchKeyWord lovela url null
-FOUR_KIDS [6539] 04-10-2019 15:36:43 UNKNOWN status: null message: no url found for eshop FOUR_KIDS and searchKeyWord lovela url null
 DROGERKA [6538] 04-10-2019 15:36:36 UNKNOWN status: null message: no url found for eshop DROGERKA and searchKeyWord lovela url null
-BRENDON [6537] 04-10-2019 15:36:30 UNKNOWN status: null message: no url found for eshop BRENDON and searchKeyWord lovela url null
-PERINBABA [6536] 04-10-2019 15:36:16 UNKNOWN status: null message: no url found for eshop PERINBABA and searchKeyWord nutrilon url null
-METRO [6535] 04-10-2019 15:36:11 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord nutrilon url null
-MAXIKOVY_HRACKY [6534] 04-10-2019 15:36:09 UNKNOWN status: null message: no url found for eshop MAXIKOVY_HRACKY and searchKeyWord nutrilon url null
-MAGANO [6533] 04-10-2019 15:36:06 UNKNOWN status: null message: no url found for eshop MAGANO and searchKeyWord nutrilon url null
-LEKAREN_V_KOCKE [6532] 04-10-2019 15:36:05 UNKNOWN status: null message: no url found for eshop LEKAREN_V_KOCKE and searchKeyWord nutrilon url null
-FOUR_KIDS [6531] 04-10-2019 15:35:51 UNKNOWN status: null message: no url found for eshop FOUR_KIDS and searchKeyWord nutrilon url null
-FARBY [6530] 04-10-2019 15:35:48 UNKNOWN status: null message: no url found for eshop FARBY and searchKeyWord nutrilon url null
-ESO_DROGERIA [6529] 04-10-2019 15:35:46 UNKNOWN status: null message: no url found for eshop ESO_DROGERIA and searchKeyWord nutrilon url null
-DROGERKA [6528] 04-10-2019 15:35:44 UNKNOWN status: null message: no url found for eshop DROGERKA and searchKeyWord nutrilon url null
-BRENDON [6527] 04-10-2019 15:35:39 UNKNOWN status: null message: no url found for eshop BRENDON and searchKeyWord nutrilon url null
 ALZA [6526] 04-10-2019 15:35:34 UNKNOWN status: null message: no url found for eshop ALZA and searchKeyWord nutrilon url null
-METRO [6525] 04-10-2019 15:35:19 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord pampers url null
-LEKAREN_V_KOCKE [6524] 04-10-2019 15:35:14 UNKNOWN status: null message: no url found for eshop LEKAREN_V_KOCKE and searchKeyWord pampers url null
-DROGERIA_VMD [6523] 04-10-2019 15:35:07 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/pampers-sleep-play-5-junior-11-25-kg-42-ks-detske-plenkove-nohavicky/
+DROGERKA [6528] 04-10-2019 15:35:44 UNKNOWN status: null message: no url found for eshop DROGERKA and searchKeyWord nutrilon url null
+ESO_DROGERIA [6529] 04-10-2019 15:35:46 UNKNOWN status: null message: no url found for eshop ESO_DROGERIA and searchKeyWord nutrilon url null
+FARBY [6530] 04-10-2019 15:35:48 UNKNOWN status: null message: no url found for eshop FARBY and searchKeyWord nutrilon url null
+FOUR_KIDS [6539] 04-10-2019 15:36:43 UNKNOWN status: null message: no url found for eshop FOUR_KIDS and searchKeyWord lovela url null
+MAGANO [6533] 04-10-2019 15:36:06 UNKNOWN status: null message: no url found for eshop MAGANO and searchKeyWord nutrilon url null
+MAXIKOVY_HRACKY [6534] 04-10-2019 15:36:09 UNKNOWN status: null message: no url found for eshop MAXIKOVY_HRACKY and searchKeyWord nutrilon url null
+MAXIKOVY_HRACKY [6545] 04-10-2019 15:37:01 UNKNOWN status: null message: no url found for eshop MAXIKOVY_HRACKY and searchKeyWord lovela url null
+DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop DROGERKA and searchKeyWord lovela
+GIGA_LEKAREN [6540] 04-10-2019 15:36:46 UNKNOWN status: null message: no url found for eshop GIGA_LEKAREN and searchKeyWord lovela url null
+
+-------------
+TODO prest zoznam:
+
 BRENDON [6522] 04-10-2019 15:34:46 UNKNOWN status: null message: no url found for eshop BRENDON and searchKeyWord pampers url null
-DROGERIA_VMD [6492] 04-10-2019 15:08:31 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/pampers-giantpack-junior-5-11-16kg-64ks-9974/
-DROGERIA_VMD [6491] 04-10-2019 15:08:31 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/pampers-splashers-plen-kal-do-vody-3-4-6-11kg-12ks-8346/
-DROGERIA_VMD [6490] 04-10-2019 15:08:31 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/pampers-splashers-plen-kal-do-vody-4-5-9-15kg-11ks-8384/
-DROGERIA_VMD [6404] 04-10-2019 15:08:31 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/pampers-pure-protect-1-2-5kg-35ks-3120-1/
-DROGERIA_VMD [6403] 04-10-2019 15:08:31 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/pampers-vlhc-ubrousky-aqua-pure-3x48ks-3388/
+BRENDON [6537] 04-10-2019 15:36:30 UNKNOWN status: null message: no url found for eshop BRENDON and searchKeyWord lovela url null
+BRENDON [6527] 04-10-2019 15:35:39 UNKNOWN status: null message: no url found for eshop BRENDON and searchKeyWord nutrilon url null
+
+INTERNETOVA_LEKAREN [6541] 04-10-2019 15:36:48 UNKNOWN status: null message: no url found for eshop INTERNETOVA_LEKAREN and searchKeyWord lovela url null
+FOUR_KIDS [6531] 04-10-2019 15:35:51 UNKNOWN status: null message: no url found for eshop FOUR_KIDS and searchKeyWord nutrilon url null
+
+METRO [6546] 04-10-2019 15:37:03 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord lovela url null
+METRO [6525] 04-10-2019 15:35:19 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord pampers url null
+METRO [6535] 04-10-2019 15:36:11 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord nutrilon url null
 -----------
 DROGERIA_VMD [6548] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/canpol-dudlik-silikon-dynamic-lovi-indian-summer-0-3m-2ks-modre-8556/
 DROGERIA_VMD [6402] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/lovela-40dav-5kg-bile-pradlo-4300/

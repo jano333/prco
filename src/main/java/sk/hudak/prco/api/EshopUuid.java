@@ -158,12 +158,7 @@ public enum EshopUuid {
             5, 12, 24
     ),
 
-    LEKAREN_V_KOCKE(
-            PHARMACY,
-            "https://www.lekarenvkocke.sk",
-            "https://www.lekarenvkocke.sk/vyhladavanie?q=" + KEYWORD_TEMP,
-            "https://www.lekarenvkocke.sk/vyhladavanie:" + PAGE_NUMBER_TEMP + ":12:00/" + KEYWORD_TEMP,
-            5, 12, 12),
+    LEKAREN_V_KOCKE(LekareVKockeEshopConfiguration.INSTANCE),
 
     MAGANO(
             DRUGSTORE,

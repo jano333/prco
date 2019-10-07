@@ -11,6 +11,7 @@ import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ConvertUtils
+import sk.hudak.prco.utils.JsoupUtils
 import sk.hudak.prco.utils.UserAgentDataHolder
 import sk.hudak.prco.utils.href
 import java.math.BigDecimal
@@ -29,14 +30,25 @@ class LekarenVKockeProductParser(unitParser: UnitParser,
     override val timeout: Int = TIMEOUT_10_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
-        val size = documentList.select("nav > ul > li").size
-        return if (size == 0) {
-            1
-        } else size / 2
+
+        val first: Element? = documentList.select("div[class='content search'] > p").first()
+        first?.let {
+            val text = it.text()
+            if (text.isNotBlank()) {
+                val startIdx = text.indexOf("(")
+                val endIdx = text.indexOf(")")
+                if (startIdx != -1 && endIdx != -1) {
+                    val countOfProductStr = text.substring(startIdx + 1, endIdx)
+                    val valueOf = Integer.valueOf(countOfProductStr)
+                    return JsoupUtils.calculateCountOfPages(valueOf, eshopUuid.maxCountOfProductOnPage)
+                }
+            }
+        }
+        return 1
     }
 
     override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
-        return documentList.select("div[class='product col-xs-12 col-xs-offset-0 col-s-6 col-s-offset-0 col-sm-3 col-sm-offset-0'] > a")
+        return documentList.select("div[class='product col-xs-6 col-xs-offset-0 col-s-6 col-s-offset-0 col-sm-3 col-sm-offset-0'] > a")
                 .stream()
                 .map { it.href() }
                 .filter { StringUtils.isNotBlank(it) }
@@ -63,7 +75,7 @@ class LekarenVKockeProductParser(unitParser: UnitParser,
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
         var vypredane = false
         documentDetailProduct.select("td > strong > span[class='taxt-danger']")?.let {
-            if("Vypredané".equals(it.text())){
+            if ("Vypredané".equals(it.text())) {
                 vypredane = true
             }
         }

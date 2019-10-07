@@ -35,12 +35,6 @@ object KidMarketEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE
         5, 12, 32
 )
 
-//KID_MARKET(
-//NONE,
-//"https://kidmarket.sk/",
-//"https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query={keyword}&submit_search=",
-//"https://kidmarket.sk/vyhladavanie?controller=search&orderby=position&orderway=desc&search_query={keyword}&submit_search=&p={pageNumber}",
-//5, 12, 32),
 
 /****************************/
 /*            M             */
@@ -57,6 +51,17 @@ object MallEshopConfiguration : DynamicEshopConfiguration(EshopCategory.NONE,
         }
     }
 }
+
+/****************************/
+/*            L             */
+/****************************/
+object LekareVKockeEshopConfiguration : StaticEshopConfiguration(EshopCategory.PHARMACY,
+        "https://www.lekarenvkocke.sk",
+        "https://www.lekarenvkocke.sk/vyhladavanie?q=" + KEYWORD_TEMP,
+        "https://www.lekarenvkocke.sk/vyhladavanie:" + PAGE_NUMBER_TEMP + ":16:00/" + KEYWORD_TEMP,
+        5, 12, 16
+)
+
 /****************************/
 /*            P             */
 /****************************/
