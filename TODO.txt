@@ -86,12 +86,6 @@ TODO urobit update process pre new produkty(teda urobit reporocess data ale s de
 -------------
 //TODO urobit ked vyparsuje URL picture, tak na overenie zavolat danu URL ci pride http 200 aby sa toto nestavalo...
 -------------
-preco je nula???
-2019-09-26 13:45:38,015 DEBUG [LEKAREN_V_KOCKE-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:32] AddProductsToEshopByKeywordFinishedEvent(LEKAREN_V_KOCKE)
-2019-09-26 13:45:38,016 DEBUG [LEKAREN_V_KOCKE-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop LEKAREN_V_KOCKE and searchKeyWord pampers
-2019-09-26 13:45:38,016 DEBUG [LEKAREN_V_KOCKE-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:34] count of found: 0
-2019-09-26 13:45:38,016 DEBUG [LEKAREN_V_KOCKE-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:35] count of added: 0
----------
 TODO je bug lebo su tam produkty!!! to iste aj pre nutrilon nic nenajde...
 AddProductsToEshopByKeywordFinishedEvent(BRENDON) ani pampoers ani nutilon
 2019-09-26 13:45:11,315 DEBUG [BRENDON-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:33] err msg: no url found for eshop BRENDON and searchKeyWord pampers

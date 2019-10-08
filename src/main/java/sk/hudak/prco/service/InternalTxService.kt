@@ -8,8 +8,8 @@ interface InternalTxService :
         GroupService,
         GroupProductKeywordsService,
         ErrorService,
+        SearchKeywordService,
         WatchDogService {
-
 
     fun test()
 }

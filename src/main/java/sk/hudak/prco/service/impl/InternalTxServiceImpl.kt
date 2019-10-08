@@ -23,8 +23,22 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
                                  @param:Qualifier("groupService") private val groupService: GroupService,
                                  @param:Qualifier("watchDogService") private val watchDogService: WatchDogService,
                                  @param:Qualifier("errorService") private val errorService: ErrorService,
-                                 @param:Qualifier("groupProductKeywordsService") private val groupProductKeywordsService: GroupProductKeywordsService)
+                                 @param:Qualifier("groupProductKeywordsService") private val groupProductKeywordsService: GroupProductKeywordsService,
+                                 @param:Qualifier("searchKeywordService") private val searchKeywordService: SearchKeywordService)
     : InternalTxService {
+
+    @Transactional
+    override fun createSearchKeyword(createDto: SearchKeywordCreateDto): Long =
+            searchKeywordService.createSearchKeyword(createDto)
+
+    @Transactional
+    override fun updateSearchKeyword(updateDto: SearchKeywordUdateDto) {
+        searchKeywordService.updateSearchKeyword(updateDto)
+    }
+
+    @Transactional(readOnly = true)
+    override fun findAllSearchKeyword(): List<SearchKeywordListDto> =
+        searchKeywordService.findAllSearchKeyword()
 
     @Transactional
     override fun updateProductUrl(productId: Long, newProductUrl: String) {

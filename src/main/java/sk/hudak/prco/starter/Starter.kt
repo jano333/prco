@@ -211,6 +211,8 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
             }
         }
 
+        searchKeywords()
+
 //        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener)
         //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
@@ -224,7 +226,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         //        uiService.updateProductCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-                newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
+//                newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
 //                newProductManager.addNewProductsByKeywordForEshop(EshopUuid.METRO, "pampers");
         //        newProductManager.addNewProductsByUrl(
         //                  "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120575818",
@@ -302,6 +304,16 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         //                asList("pampers", "premiumcare", "2")));
 
     }
+
+    private fun searchKeywords(){
+        //id: 1
+        internalTxService.createSearchKeyword(SearchKeywordCreateDto("pampers"))
+        //id: 2
+        internalTxService.createSearchKeyword(SearchKeywordCreateDto("nutrilon"))
+        //id: 3
+        internalTxService.createSearchKeyword(SearchKeywordCreateDto("lovela"))
+    }
+
 
     private fun showGroupKeysWords() {
         var groupProductKeywordsByGroupId = internalTxService!!.getGroupProductKeywordsByGroupId(449L)
