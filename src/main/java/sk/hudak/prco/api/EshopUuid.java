@@ -185,34 +185,20 @@ public enum EshopUuid {
             "http://www.perinbaba.sk/catalogsearch/result/index/?limit=48&p={pageNumber}&q=" + KEYWORD_TEMP,
             5, 12, -1),
 
-    PRVA_LEKAREN(
-            PHARMACY,
-            "https://www.prva-lekaren.sk",
-            "https://www.prva-lekaren.sk/search?q=" + KEYWORD_TEMP,
-            "https://www.prva-lekaren.sk/search?lm=12&st=" + PAGE_NUMBER_TEMP + "&q=" + KEYWORD_TEMP,
-            5, 12, 12),
-
+    PRVA_LEKAREN(PrvaLekarenEshopConfiguration.INSTANCE),
     PILULKA(PilulkaEshopConfiguration.INSTANCE),
     PILULKA_24(Pilulka24EshopConfiguration.INSTANCE),
 
     TESCO(TescoEshopConfiguration.INSTANCE);
 
     private String productStartUrl;
-
     private String searchTemplateUrl;
-
     private String searchTemplateUrlWithPageNumber;
-
     private int maxCountOfNewPages;
-
     private int olderThanInHours;
-
     private int maxCountOfProductOnPage;
-
     private int countToWaitInSecond;
-
     private EshopCategory category;
-
     private EshopConfiguration config;
 
     EshopUuid(EshopConfiguration config) {

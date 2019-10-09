@@ -2,9 +2,6 @@ BRENDON:
 * problem lebo su 4 strany a mne dava stale akj pre 2 stranu produkty url z prvej strany teda mam 4 krat duplicitu a neveim preco
 -------------
 bugs:
-LEKAREN_V_KOCKE [6524] 04-10-2019 15:35:14 UNKNOWN status: null message: no url found for eshop LEKAREN_V_KOCKE and searchKeyWord pampers url null
-LEKAREN_V_KOCKE [6532] 04-10-2019 15:36:05 UNKNOWN status: null message: no url found for eshop LEKAREN_V_KOCKE and searchKeyWord nutrilon url null
-
 -------------
 No bug
 PRVA_LEKAREN [6549] 04-10-2019 15:37:14 UNKNOWN status: null message: no url found for eshop PRVA_LEKAREN and searchKeyWord lovela url null
@@ -27,14 +24,8 @@ GIGA_LEKAREN [6540] 04-10-2019 15:36:46 UNKNOWN status: null message: no url fou
 
 -------------
 TODO prest zoznam:
-
-BRENDON [6522] 04-10-2019 15:34:46 UNKNOWN status: null message: no url found for eshop BRENDON and searchKeyWord pampers url null
-BRENDON [6537] 04-10-2019 15:36:30 UNKNOWN status: null message: no url found for eshop BRENDON and searchKeyWord lovela url null
-BRENDON [6527] 04-10-2019 15:35:39 UNKNOWN status: null message: no url found for eshop BRENDON and searchKeyWord nutrilon url null
-
 INTERNETOVA_LEKAREN [6541] 04-10-2019 15:36:48 UNKNOWN status: null message: no url found for eshop INTERNETOVA_LEKAREN and searchKeyWord lovela url null
 FOUR_KIDS [6531] 04-10-2019 15:35:51 UNKNOWN status: null message: no url found for eshop FOUR_KIDS and searchKeyWord nutrilon url null
-
 METRO [6546] 04-10-2019 15:37:03 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord lovela url null
 METRO [6525] 04-10-2019 15:35:19 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord pampers url null
 METRO [6535] 04-10-2019 15:36:11 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord nutrilon url null

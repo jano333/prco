@@ -22,7 +22,7 @@ fun main() {
 
     val test = ProductParserTest()
 
-    val urlList = test.parseUrlsOfProduct(EshopUuid.PILULKA, "lovela")
+    val urlList = test.parseUrlsOfProduct(EshopUuid.LEKAREN_V_KOCKE, "nutrilon")
     println("count in list ${urlList.size}")
     println("count in set ${HashSet(urlList).size}")
     println(urlList);

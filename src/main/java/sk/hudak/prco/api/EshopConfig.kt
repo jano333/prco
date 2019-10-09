@@ -100,7 +100,8 @@ object LekareVKockeEshopConfiguration : StaticEshopConfiguration(EshopCategory.P
         "https://www.lekarenvkocke.sk",
         "https://www.lekarenvkocke.sk/vyhladavanie?q=" + KEYWORD_TEMP,
         "https://www.lekarenvkocke.sk/vyhladavanie:" + PAGE_NUMBER_TEMP + ":16:00/" + KEYWORD_TEMP,
-        5, 12, 16
+        5, 12, 16,
+        supportedSearchKeywordIds = Arrays.asList(PAMPERS_ID, NUTRILON_ID)
 )
 
 /****************************/
@@ -119,6 +120,14 @@ object PilulkaEshopConfiguration : DynamicEshopConfiguration(
         }
     }
 }
+
+object PrvaLekarenEshopConfiguration : StaticEshopConfiguration(EshopCategory.PHARMACY,
+        "https://www.prva-lekaren.sk",
+        "https://www.prva-lekaren.sk/search?q=" + KEYWORD_TEMP,
+        "https://www.prva-lekaren.sk/search?lm=12&st=" + PAGE_NUMBER_TEMP + "&q=" + KEYWORD_TEMP,
+        5, 12, 12,
+        supportedSearchKeywordIds = Arrays.asList(PAMPERS_ID, NUTRILON_ID)
+)
 
 object Pilulka24EshopConfiguration : DynamicEshopConfiguration(
         EshopCategory.PHARMACY,

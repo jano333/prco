@@ -211,7 +211,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
             }
         }
 
-        searchKeywords()
+//        searchKeywords()
 
 //        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener)
         //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
@@ -226,7 +226,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         //        uiService.updateProductCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-//                newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
+                newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
 //                newProductManager.addNewProductsByKeywordForEshop(EshopUuid.METRO, "pampers");
         //        newProductManager.addNewProductsByUrl(
         //                  "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120575818",
