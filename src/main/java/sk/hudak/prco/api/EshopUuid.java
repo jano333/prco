@@ -48,31 +48,10 @@ public enum EshopUuid {
     //TODO https://www.funkids.cz/pampers-active-baby-monthly-box-s4-174ks
     //TODO https://www.elixi.cz/jednorazove-pleny-2/pampers-active-baby-dry-3-midi-4-9kg--66ks/
 
-    // TODO ANDREA_SHOP -> neviem pagging ako...
-
-    //TODO pridat prvy parameter boolean ktory bude hovorit o tom ci je alebo nie je enablovany dany eshop
-
     ALZA(AlzaEshopConfiguration.INSTANCE),
+    AMD_DROGERIA(AmdDrogeriaEshopConfiguration.INSTANCE),
 
-    //TODO
-//    ANDREA_SHOP("https://www.andreashop.sk",
-//            "https://www.andreashop.sk/vyhladavanie?op=search&search={keyword}",
-//            "??",
-//            3, 12, -1),
-
-    AMD_DROGERIA(
-            DRUGSTORE,
-            "https://www.amddrogeria.sk",
-            "https://www.amddrogeria.sk/catalog/search/?q=" + KEYWORD_TEMP,
-            "https://www.amddrogeria.sk/catalog/search/?q=" + KEYWORD_TEMP + "&offset=" + OFFSET_TEMP,
-            5, 12, 24),
-
-    //TODO pre pampers nefunguje
-    BRENDON(NONE,
-            "https://www.brendon.sk",
-            "https://www.brendon.sk/search?q=" + KEYWORD_TEMP,
-            "https://www.brendon.sk/search?q=" + KEYWORD_TEMP + "&pagenumber=" + PAGE_NUMBER_TEMP,
-            5, 12, 30),
+    BRENDON(BrendonEshopConfiguration.INSTANCE),
 
     DR_MAX(
             PHARMACY,

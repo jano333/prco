@@ -10,6 +10,7 @@ import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ConvertUtils
+import sk.hudak.prco.utils.JsoupUtils
 import sk.hudak.prco.utils.UserAgentDataHolder
 import sk.hudak.prco.utils.href
 import java.math.BigDecimal
@@ -17,6 +18,9 @@ import java.util.*
 import java.util.Optional.ofNullable
 import kotlin.streams.toList
 
+/**
+ * problem lebo su 4 strany a mne dava stale akj pre 2 stranu produkty url z prvej strany teda mam 4 krat duplicitu a neveim preco
+ */
 @Component
 class BrendonProductParser(unitParser: UnitParser,
                            userAgentDataHolder: UserAgentDataHolder,
@@ -28,18 +32,24 @@ class BrendonProductParser(unitParser: UnitParser,
     override val timeout: Int = TIMEOUT_15_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
-        return ofNullable(documentList.select("ul[class='pagermenu'] li[class='bluelink'] span").first())
+        val first = documentList.select("span.allProductsReturned").first()
+        return ofNullable(first)
                 .map { it.text() }
                 .map { StringUtils.removeStart(it, "1 / ") }
                 .map { Integer.valueOf(it) }
+                .map { JsoupUtils.calculateCountOfPages(it, eshopUuid.maxCountOfProductOnPage) }
                 .orElse(1)
     }
 
     override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
-        return documentList.select("body > div.maincontent.clear > div > div.col700_container > div > div.middle-left_ > div > a")
+       log.debug("page number $pageNumber")
+        log.debug(documentList.location())
+        val toList = documentList.select("div.details > div.product-title.pb-2.flex-fill > h3 > a")
                 .stream()
-                .map { eshopUuid.productStartUrl + it.href()}
+                .map { eshopUuid.productStartUrl + it.href() }
                 .toList()
+        log.debug(toList.toString())
+        return toList
     }
 
     override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {

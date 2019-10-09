@@ -1,20 +1,62 @@
 package sk.hudak.prco.api
 
+import sk.hudak.prco.api.SearchKeyWordId.LOVELA_ID
+import sk.hudak.prco.api.SearchKeyWordId.NUTRILON_ID
+import sk.hudak.prco.api.SearchKeyWordId.PAMPERS_ID
 import sk.hudak.prco.api.SearchTemplateConstants.KEYWORD_TEMP
+import sk.hudak.prco.api.SearchTemplateConstants.OFFSET_TEMP
 import sk.hudak.prco.api.SearchTemplateConstants.PAGE_NUMBER_TEMP
 import sk.hudak.prco.exception.PrcoRuntimeException
 import java.util.*
+
+object SearchKeyWordId {
+    val PAMPERS_ID = 1L
+    val NUTRILON_ID = 2L
+    val LOVELA_ID = 3L
+}
 
 /****************************/
 /*            A             */
 /****************************/
 object AlzaEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
         "https://www.alza.sk",
-        "https://www.alza.sk/search.htm?exps=" + KEYWORD_TEMP,
-        "https://www.alza.sk/search-p" + PAGE_NUMBER_TEMP + ".htm?exps=" + KEYWORD_TEMP,
+        "https://www.alza.sk/search.htm?exps=$KEYWORD_TEMP",
+        "https://www.alza.sk/search-p$PAGE_NUMBER_TEMP.htm?exps=$KEYWORD_TEMP",
         5, 12, 24,
-        notSupportedKeywords = Arrays.asList("nutrilon")
+        supportedSearchKeywordIds = Arrays.asList(PAMPERS_ID, LOVELA_ID)
 )
+
+object AmdDrogeriaEshopConfiguration : StaticEshopConfiguration(EshopCategory.DRUGSTORE,
+        "https://www.amddrogeria.sk",
+        "https://www.amddrogeria.sk/catalog/search/?q=$KEYWORD_TEMP",
+        "https://www.amddrogeria.sk/catalog/search/?q=$KEYWORD_TEMP&offset=$OFFSET_TEMP",
+        5, 12, 24,
+        supportedSearchKeywordIds = Arrays.asList(PAMPERS_ID, NUTRILON_ID, LOVELA_ID)
+)
+//TODO ANDREA_SHOP -> neviem pagging ako...
+
+/****************************/
+/*            B             */
+/****************************/
+
+//BRENDON(NONE,
+//"https://www.brendon.sk",
+//"https://www.brendon.sk/search?q=" + KEYWORD_TEMP,
+//"https://www.brendon.sk/search?q=" + KEYWORD_TEMP + "&pagenumber=" + PAGE_NUMBER_TEMP,
+//5, 12, 30),
+
+object BrendonEshopConfiguration : DynamicEshopConfiguration(EshopCategory.NONE,
+        "https://www.brendon.sk",
+        5, 12, 30) {
+
+    override fun buildSearchUrlForKeyWord(keyword: String, pageNumber: Int): String =
+            when (keyword) {
+                "pampers",
+                "nutrilon" -> "https://www.brendon.sk/$keyword#/pageSize=30&orderBy=0&pageNumber=$pageNumber"
+                else -> "https://www.brendon.sk/search?q=$keyword&pagenumber=$pageNumber"
+            }
+}
+
 /****************************/
 /*            F             */
 /****************************/
@@ -43,13 +85,12 @@ object MallEshopConfiguration : DynamicEshopConfiguration(EshopCategory.NONE,
         "https://www.mall.sk",
         3, 12, -1) {
 
-    override fun buildSearchUrlForKeyWord(keyword: String, pageNumber: Int): String {
-        return when (keyword) {
-            "pampers",
-            "nutrilon" -> "https://www.mall.sk/znacka/$keyword?page=$pageNumber"
-            else -> "https://www.mall.sk/hladaj?page=$pageNumber&s=$keyword"
-        }
-    }
+    override fun buildSearchUrlForKeyWord(keyword: String, pageNumber: Int): String =
+            when (keyword) {
+                "pampers",
+                "nutrilon" -> "https://www.mall.sk/znacka/$keyword?page=$pageNumber"
+                else -> "https://www.mall.sk/hladaj?page=$pageNumber&s=$keyword"
+            }
 }
 
 /****************************/
@@ -74,7 +115,7 @@ object PilulkaEshopConfiguration : DynamicEshopConfiguration(
         return when (keyword) {
             "pampers" -> "https://www.pilulka.sk/detske-plienky/pampers?page=$pageNumber"
             "nutrilon" -> "https://www.pilulka.sk/nutrilon?page=$pageNumber"
-            else -> "https://www.pilulka.sk/hledat?q=$keyword&page=$pageNumber"
+            else -> "https://www.pilulka.sk/vyhladavanie?page=$pageNumber&q=$keyword"
         }
     }
 }
@@ -117,7 +158,7 @@ abstract class EshopConfiguration(
         val olderThanInHours: Int,
         val maxCountOfProductOnPage: Int,
         val countToWaitInSecond: Int = 3,
-        val notSupportedKeywords: List<String> = emptyList()) {
+        val supportedSearchKeywordIds: List<Long> = emptyList()) {
 
     open fun buildSearchUrlForKeyWord(keyword: String, pageNumber: Int = 1): String {
         return ""
@@ -131,7 +172,7 @@ abstract class StaticEshopConfiguration(category: EshopCategory,
                                         maxCountOfNewPages: Int,
                                         olderThanInHours: Int,
                                         maxCountOfProductOnPage: Int,
-                                        notSupportedKeywords: List<String> = emptyList())
+                                        supportedSearchKeywordIds: List<Long> = emptyList())
     : EshopConfiguration(
         category,
         productStartUrl,
@@ -141,7 +182,7 @@ abstract class StaticEshopConfiguration(category: EshopCategory,
         maxCountOfNewPages,
         olderThanInHours,
         maxCountOfProductOnPage,
-        notSupportedKeywords = notSupportedKeywords) {
+        supportedSearchKeywordIds = supportedSearchKeywordIds) {
 
     override fun buildSearchUrlForKeyWord(keyword: String, pageNumber: Int): String {
         throw PrcoRuntimeException("can't be called for static search url")

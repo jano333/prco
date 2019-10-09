@@ -1,7 +1,7 @@
-
+BRENDON:
+* problem lebo su 4 strany a mne dava stale akj pre 2 stranu produkty url z prvej strany teda mam 4 krat duplicitu a neveim preco
 -------------
 bugs:
-PILULKA [6550] 04-10-2019 15:37:19 UNKNOWN status: null message: no url found for eshop PILULKA and searchKeyWord lovela url null
 LEKAREN_V_KOCKE [6524] 04-10-2019 15:35:14 UNKNOWN status: null message: no url found for eshop LEKAREN_V_KOCKE and searchKeyWord pampers url null
 LEKAREN_V_KOCKE [6532] 04-10-2019 15:36:05 UNKNOWN status: null message: no url found for eshop LEKAREN_V_KOCKE and searchKeyWord nutrilon url null
 
