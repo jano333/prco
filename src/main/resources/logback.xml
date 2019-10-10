@@ -79,6 +79,20 @@
         <appender-ref ref="STDOUT" />
     </logger>
 
+   <!-- if we want to log sql query uncoment this one: -->
+   <!--
+   <logger name="org.hibernate.SQL" level="debug" additivity="false">
+        <appender-ref ref="FILE_DEBUG" />
+        <appender-ref ref="FILE_ERROR" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="org.hibernate.type.descriptor.sql" level="trace" additivity="false">
+        <appender-ref ref="FILE_DEBUG" />
+        <appender-ref ref="FILE_ERROR" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+    -->
+
     <root level="warn">
         <appender-ref ref="FILE_ERROR" />
         <appender-ref ref="STDOUT" />
