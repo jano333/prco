@@ -104,9 +104,26 @@ object LekareVKockeEshopConfiguration : StaticEshopConfiguration(EshopCategory.P
         supportedSearchKeywordIds = Arrays.asList(PAMPERS_ID, NUTRILON_ID)
 )
 
+object LekareExpresEshopConfiguration : StaticEshopConfiguration(EshopCategory.PHARMACY,
+        "https://www.lekarenexpres.sk",
+        "https://www.lekarenexpres.sk/search/?hledat=" + KEYWORD_TEMP,
+        "https://www.lekarenexpres.sk/search/?hledat=" + KEYWORD_TEMP + "&start=" + OFFSET_TEMP,
+        5, 12, 24,
+        supportedSearchKeywordIds = Arrays.asList(PAMPERS_ID, NUTRILON_ID)
+)
+
+
 /****************************/
 /*            P             */
 /****************************/
+object PerinbabaEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
+        "http://www.perinbaba.sk/",
+        "http://www.perinbaba.sk/catalogsearch/result/?limit=48&q=" + KEYWORD_TEMP,
+        "http://www.perinbaba.sk/catalogsearch/result/index/?limit=48&p={pageNumber}&q=" + KEYWORD_TEMP,
+        5, 12, -1,
+        supportedSearchKeywordIds = Arrays.asList(PAMPERS_ID)
+)
+
 object PilulkaEshopConfiguration : DynamicEshopConfiguration(
         EshopCategory.PHARMACY,
         "https://www.pilulka.sk",

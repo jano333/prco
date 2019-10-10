@@ -129,14 +129,7 @@ public enum EshopUuid {
             "https://www.lekaren-bella.sk/search:" + PAGE_NUMBER_TEMP + ":12/" + KEYWORD_TEMP,
             5, 12, 12),
 
-    LEKAREN_EXPRES(
-            PHARMACY,
-            "https://www.lekarenexpres.sk",
-            "https://www.lekarenexpres.sk/search/?hledat=" + KEYWORD_TEMP,
-            "https://www.lekarenexpres.sk/search/?hledat=" + KEYWORD_TEMP + "&start=" + OFFSET_TEMP,
-            5, 12, 24
-    ),
-
+    LEKAREN_EXPRES(LekareExpresEshopConfiguration.INSTANCE),
     LEKAREN_V_KOCKE(LekareVKockeEshopConfiguration.INSTANCE),
 
     MAGANO(
@@ -178,13 +171,7 @@ public enum EshopUuid {
             "https://www.obi.sk/search/{keyword}?page={pageNumber}",
             5, 12, -1),
 
-    PERINBABA(
-            NONE,
-            "http://www.perinbaba.sk/",
-            "http://www.perinbaba.sk/catalogsearch/result/?limit=48&q=" + KEYWORD_TEMP,
-            "http://www.perinbaba.sk/catalogsearch/result/index/?limit=48&p={pageNumber}&q=" + KEYWORD_TEMP,
-            5, 12, -1),
-
+    PERINBABA(PerinbabaEshopConfiguration.INSTANCE),
     PRVA_LEKAREN(PrvaLekarenEshopConfiguration.INSTANCE),
     PILULKA(PilulkaEshopConfiguration.INSTANCE),
     PILULKA_24(Pilulka24EshopConfiguration.INSTANCE),
