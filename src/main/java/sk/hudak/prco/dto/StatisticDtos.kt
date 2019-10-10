@@ -1,14 +1,28 @@
 package sk.hudak.prco.dto
 
 import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.kotlin.color
+import sk.hudak.prco.utils.ConsoleColor
 
 data class EshopProductInfoDto(
         val countOfNew: Long,
         val countOfInterested: Long,
         val countOfAlreadyUpdated: Long,
         val countOfNotInterested: Long,
-        val countOfAllProduct: Long
-) : DtoAble
+        val countOfAllProduct: Long,
+        val countOfProductMarkedAsUnavailable: Long
+) : DtoAble {
+
+    override fun toString(): String {
+        return "EshopProductInfoDto(" +
+                "countOfInterested=$countOfInterested, " +
+                "countOfAlreadyUpdated=$countOfAlreadyUpdated, " +
+                "countOfProductMarkedAsUnavailable=$countOfProductMarkedAsUnavailable, ".color(ConsoleColor.RED) +
+                "countOfNew=$countOfNew, " +
+                "countOfNotInterested=$countOfNotInterested, " +
+                "countOfAllProduct=$countOfAllProduct        )"
+    }
+}
 
 class ProductStatisticInfoDto {
     var countOfNewProducts: Long = 0

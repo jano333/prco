@@ -2,6 +2,7 @@ package sk.hudak.prco.dao.db.impl
 
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
+import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.ProductAction
@@ -16,13 +17,12 @@ import javax.persistence.EntityManager
 
 @Repository
 open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(em), ProductEntityDao {
-
     companion object {
-        val OLDER_THAN_IN_HOURS = 24
+
+        const val OLDER_THAN_IN_HOURS = 24
     }
 
-    override fun findById(id: Long): ProductEntity =
-            findById(ProductEntity::class.java, id)
+    override fun findById(id: Long): ProductEntity = findById(ProductEntity::class.java, id)
 
     override fun existWithUrl(url: String): Boolean =
             from(QProductEntity.productEntity)
@@ -126,9 +126,20 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
                 .fetchFirst())
     }
 
-
-    //FIXME move to DateUtils
-
-
+    override fun countOfProductMarkedAsUnavailable(eshopUuid: EshopUuid): Long {
+        val fetchCount = JPAQueryFactory(em)
+                .select(QProductEntity.productEntity.id)
+                .from(QProductEntity.productEntity)
+                .where(QProductEntity.productEntity.eshopUuid.eq(eshopUuid)
+                        .and(QProductEntity.productEntity.lastTimeDataUpdated.isNotNull)
+                        .and(QProductEntity.productEntity.lastTimeDataUpdated.gt(calculateDate(24)))
+                        .and(QProductEntity.productEntity.priceForOneItemInPackage.isNull)
+                        .and(QProductEntity.productEntity.priceForPackage.isNull)
+                        .and(QProductEntity.productEntity.priceForUnit.isNull)
+                        .and(QProductEntity.productEntity.productAction.isNull)
+                        .and(QProductEntity.productEntity.actionValidTo.isNull))
+                .fetchCount()
+        return fetchCount
+    }
 
 }

@@ -59,12 +59,16 @@ open class ProductCommonServiceImpl(private val newProductEntityDao: NewProductE
                 val countOfNew = newProductEntityDao.countOfAllProductInEshop(it)
                 val countOfInterested = productEntityDao.countOfAllProductInEshop(it)
                 val countOfNotInterested = notInterestedProductDbDao.countOfAllProductInEshop(it)
+                val countOfProductMarkedAsUnavailable = productEntityDao.countOfProductMarkedAsUnavailable(it)
+                // MAXIKOVY_HRACKY=EshopProductInfoDto(countOfInterested=4, countOfAlreadyUpdated=0, countOfAvailableProduct=4, countOfNew=0, countOfNotInterested=4, countOfAllProduct=8        )
+
                 eshopProductInfo[it] = EshopProductInfoDto(
                         countOfNew,
                         countOfInterested,
                         countOfAlreadyUpdated,
                         countOfNotInterested,
-                        countOfNew + countOfInterested + countOfNotInterested)
+                        countOfNew + countOfInterested + countOfNotInterested,
+                        countOfProductMarkedAsUnavailable)
             }
             result.eshopProductInfo = eshopProductInfo
 

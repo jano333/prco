@@ -10,6 +10,7 @@ import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.dto.ProductUpdateData
 import sk.hudak.prco.dto.UnitTypeValueCount
 import sk.hudak.prco.exception.*
+import sk.hudak.prco.kotlin.warnYellow
 import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ThreadUtils.sleepRandomSafeBetween
 import sk.hudak.prco.utils.UserAgentDataHolder
@@ -203,7 +204,7 @@ abstract class JSoupProductParser : EshopProductsParser {
             //TODO pridat ako osobitnu chybu, pripadne do osobitnej tabulku na vyhodnotenie ak je napr.
             // 5 produktov po sebe oznacenych za nedostupnych tak overit ci je to naozaj tak
             // ale toto musi byt o uroven vyssie
-            log.warn("product is unavailable: $realProductUrl")
+            log.warnYellow("product is unavailable: $realProductUrl")
             return ProductUpdateData.createUnavailable(realProductUrl, eshopUuid, redirect)
         }
 

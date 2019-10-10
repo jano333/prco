@@ -10,6 +10,8 @@ interface ProductEntityDao : BaseDao<ProductEntity> {
 
     fun existWithUrl(url: String): Boolean
 
+    fun findAll(): List<ProductEntity>
+
     /**
      * @param eshopUuid
      * @param olderThanInHours pocet v hodinach, kolko minimalne sa neupdatoval dany record
@@ -17,11 +19,13 @@ interface ProductEntityDao : BaseDao<ProductEntity> {
      */
     fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductEntity?
 
-    fun findAll(): List<ProductEntity>
-
     fun findByFilter(filter: ProductFilterUIDto): List<ProductEntity>
 
     fun findByUrl(productUrl: String): ProductEntity?
+
+    fun getProductWithUrl(productUrl: String, productIdToIgnore: Long?): Optional<Long>
+
+    fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<ProductEntity>
 
     val countOfAll: Long
 
@@ -33,7 +37,5 @@ interface ProductEntityDao : BaseDao<ProductEntity> {
 
     fun countOfProductsAlreadyUpdated(eshopUuid: EshopUuid, olderThanInHours: Int): Long
 
-    fun getProductWithUrl(productUrl: String, productIdToIgnore: Long?): Optional<Long>
-
-    fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<ProductEntity>
+    fun countOfProductMarkedAsUnavailable(eshopUuid: EshopUuid): Long
 }
