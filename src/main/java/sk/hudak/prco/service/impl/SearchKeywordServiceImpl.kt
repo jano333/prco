@@ -45,6 +45,10 @@ class SearchKeywordServiceImpl(private val searchKeywordDao: SearchKeywordDao)
     override fun findAllSearchKeyword(): List<SearchKeywordListDto> = searchKeywordDao.findAll()
             .map { it.toSearchKeywordListDto() }
             .toList()
+
+    override fun getSearchKeywordById(searchKeyWordId: Long): String =
+            searchKeywordDao.findById(searchKeyWordId).name
+
 }
 
 fun SearchKeywordCreateDto.toEntity(): SearchKeywordEntity {

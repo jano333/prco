@@ -27,6 +27,10 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
                                  @param:Qualifier("searchKeywordService") private val searchKeywordService: SearchKeywordService)
     : InternalTxService {
 
+    @Transactional(readOnly = true)
+    override fun getSearchKeywordById(searchKeyWordId: Long): String =
+            searchKeywordService.getSearchKeywordById(searchKeyWordId)
+
     @Transactional
     override fun createSearchKeyword(createDto: SearchKeywordCreateDto): Long =
             searchKeywordService.createSearchKeyword(createDto)
@@ -38,7 +42,7 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
 
     @Transactional(readOnly = true)
     override fun findAllSearchKeyword(): List<SearchKeywordListDto> =
-        searchKeywordService.findAllSearchKeyword()
+            searchKeywordService.findAllSearchKeyword()
 
     @Transactional
     override fun updateProductUrl(productId: Long, newProductUrl: String) {

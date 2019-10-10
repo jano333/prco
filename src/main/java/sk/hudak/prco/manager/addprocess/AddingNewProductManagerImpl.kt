@@ -19,6 +19,8 @@ import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.EshopTaskManager
 import sk.hudak.prco.task.ExceptionHandlingRunnable
 import sk.hudak.prco.task.SingleContext
+import sk.hudak.prco.utils.ConsoleColor
+import sk.hudak.prco.utils.ConsoleWithColor.wrapWithColor
 import sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe
 import sk.hudak.prco.utils.ThreadUtils.sleepSafe
 import sk.hudak.prco.utils.Validate.notEmpty
@@ -35,21 +37,19 @@ interface AddingNewProductManager {
      * Vyhlada produkty s danym klucovym slovom pre konkretny eshop a ulozi ich do tabulky NEW_PRODUCT.
      *
      * @param eshopUuid     eshop identifikator
-     * @param searchKeyWord search key word
+     * @param searchKeyWordId use SearchKeyWordId
      */
-    fun addNewProductsByKeywordForEshop(eshopUuid: EshopUuid, searchKeyWord: String)
+    fun addNewProductsByKeywordForEshop(eshopUuid: EshopUuid, searchKeyWordId: Long)
 
     /**
-     * Vyhlada produkty s danym klucovym slovom pre vsetky eshopy a ulozi ich do tabulky NEW_PRODUCT.
-     *
-     * @param searchKeyWord search key word
+     * Vyhlada produkty s danym klucovym slovom(id) pre vsetky eshopy a ulozi ich do tabulky NEW_PRODUCT.
      */
-    fun addNewProductsByKeywordForAllEshops(searchKeyWord: String)
+    fun addNewProductsByKeywordForAllEshops(searchKeyWordId: Long)
 
     /**
      * @param searchKeyWords search key words
      */
-    fun addNewProductsByKeywordsForAllEshops(vararg searchKeyWords: String)
+    fun addNewProductsByKeywordsForAllEshops(vararg searchKeyWordIds: Long)
 }
 
 @Component
@@ -87,36 +87,53 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         }
     }
 
-    override fun addNewProductsByKeywordsForAllEshops(vararg searchKeyWords: String) {
-        searchKeyWords.forEach {
+    override fun addNewProductsByKeywordsForAllEshops(vararg searchKeyWordIds: Long) {
+        searchKeyWordIds.forEach {
             addNewProductsByKeywordForAllEshops(it)
         }
     }
 
-    override fun addNewProductsByKeywordForAllEshops(searchKeyWord: String) {
-        notEmpty(searchKeyWord, "searchKeyWord")
-
+    override fun addNewProductsByKeywordForAllEshops(searchKeyWordId: Long) {
         EshopUuid.values()
                 .filter {
                     existParserForEshop(it)
                 }
                 .forEach {
                     // spusti parsovanie 'eshop -> searchKeyWord'
-                    addNewProductsByKeywordForEshop(it, searchKeyWord)
+                    addNewProductsByKeywordForEshop(it, searchKeyWordId)
                     // pre kazdy dalsi eshop pockaj so spustenim 2 sekundy
                     sleepSafe(2)
                 }
     }
 
-
-    override fun addNewProductsByKeywordForEshop(eshopUuid: EshopUuid, searchKeyWord: String) {
+    override fun addNewProductsByKeywordForEshop(eshopUuid: EshopUuid, searchKeyWordId: Long) {
         eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
 
             override fun doInRunnable(context: SingleContext) {
-                log.debug(">> addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWord $searchKeyWord")
+                log.debug(">> addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWordId $searchKeyWordId")
                 eshopTaskManager.markTaskAsRunning(eshopUuid)
                 context.addValue(CTX_ESHOP_UUID_KEY, eshopUuid)
+
+                // na zaklade id nacitam samotne klucove slovo
+                val searchKeyWord: String = internalTxService.getSearchKeywordById(searchKeyWordId)
+                log.debug("searchKeyWord $searchKeyWord")
                 context.addValue(CTX_SEARCH_KEYWORD_KEY, searchKeyWord)
+
+                // check ci je podporovane
+                val config = eshopUuid.config
+                if (config == null || config.supportedSearchKeywordIds == null || config.supportedSearchKeywordIds.isEmpty()) {
+                    log.warn(wrapWithColor("eshop config $eshopUuid has none supported keywords", ConsoleColor.RED))
+                } else {
+                    if (!config.supportedSearchKeywordIds.contains(searchKeyWordId)) {
+                        log.warn("searchKeyWord $searchKeyWord with id $searchKeyWordId is not supported for eshop $eshopUuid")
+                        //TODO refaktor metod doInRunnuble, prerobit nasledovne:
+                        // ak dana metoda skonci a nenastavila do kontextu fiishedWithError true tak skoncila ok a
+                        // ja mozem hore oznacit dany task za uspesne ukonceny... to je koli tomu aby tieto doInRunnable metody
+                        // nemuseli mat na starosti oznacenie tasku ze bezi a potom aj jeho ukoncenie !!!
+                        eshopTaskManager.markTaskAsFinished(eshopUuid, false)
+                        return
+                    }
+                }
 
                 // vyparsujem vsetky url-cky produktov, ktore sa najdu na strankach(prechadza aj pageovane stranky)
                 var urlList: List<String> = searchProductUrls(context, eshopUuid, searchKeyWord)
@@ -139,7 +156,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
             }
 
             override fun doInFinally(context: SingleContext) {
-                log.debug("<< addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWord $searchKeyWord")
+                log.debug("<< addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWordId $searchKeyWordId")
                 notifyFinishProcessingKeywordForEshop(context)
             }
         })
@@ -216,13 +233,14 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
     private fun notifyFinishProcessingKeywordForEshop(context: SingleContext) {
         //TODO impl v osobitnom thread-e
         try {
-            val any = context.values[CTX_COUNT_OF_PROCESSED]
+            val countOfFound = context.values[CTX_COUNT_OF_FOUND_PRODUCT_URLS_KEY]
+            val countOfProcessed = context.values[CTX_COUNT_OF_PROCESSED]
             prcoObservable.notify(AddProductsToEshopByKeywordFinishedEvent(eshopUuid = context.values[CTX_ESHOP_UUID_KEY] as EshopUuid,
                     keyword = context.values[CTX_SEARCH_KEYWORD_KEY] as String,
                     error = context.error,
                     errMsg = context.errMsg,
-                    countOfFound = context.values[CTX_COUNT_OF_FOUND_PRODUCT_URLS_KEY] as Int,
-                    countOfAdded = if (any is Int) any else 0))
+                    countOfFound = if (countOfFound is Int) countOfFound else 0,
+                    countOfAdded = if (countOfProcessed is Int) countOfProcessed else 0))
         } catch (e: Exception) {
             log.error("error while notifying observers", e)
         }

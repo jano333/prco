@@ -4,6 +4,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.SearchKeyWordId.LOVELA_ID
+import sk.hudak.prco.api.SearchKeyWordId.NUTRILON_ID
+import sk.hudak.prco.api.SearchKeyWordId.PAMPERS_ID
 import sk.hudak.prco.api.Unit
 import sk.hudak.prco.dto.*
 import sk.hudak.prco.dto.product.NotInterestedProductFindDto
@@ -226,7 +229,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         //        uiService.updateProductCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
-                newProductManager.addNewProductsByKeywordsForAllEshops("pampers", "nutrilon", "lovela");
+                newProductManager.addNewProductsByKeywordsForAllEshops(PAMPERS_ID, NUTRILON_ID, LOVELA_ID)
 //                newProductManager.addNewProductsByKeywordForEshop(EshopUuid.METRO, "pampers");
         //        newProductManager.addNewProductsByUrl(
         //                  "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120575818",

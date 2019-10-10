@@ -11,19 +11,20 @@ LEKAREN_V_KOCKE [6544] 04-10-2019 15:36:57 UNKNOWN status: null message: no url 
 LEKAREN_EXPRES [6543] 04-10-2019 15:36:56 UNKNOWN status: null message: no url found for eshop LEKAREN_EXPRES and searchKeyWord lovela url null
 LEKAREN_BELLA [6542] 04-10-2019 15:36:52 UNKNOWN status: null message: no url found for eshop LEKAREN_BELLA and searchKeyWord lovela url null
 DROGERKA [6538] 04-10-2019 15:36:36 UNKNOWN status: null message: no url found for eshop DROGERKA and searchKeyWord lovela url null
-ALZA [6526] 04-10-2019 15:35:34 UNKNOWN status: null message: no url found for eshop ALZA and searchKeyWord nutrilon url null
 DROGERKA [6528] 04-10-2019 15:35:44 UNKNOWN status: null message: no url found for eshop DROGERKA and searchKeyWord nutrilon url null
+ALZA [6526] 04-10-2019 15:35:34 UNKNOWN status: null message: no url found for eshop ALZA and searchKeyWord nutrilon url null
 ESO_DROGERIA [6529] 04-10-2019 15:35:46 UNKNOWN status: null message: no url found for eshop ESO_DROGERIA and searchKeyWord nutrilon url null
 FARBY [6530] 04-10-2019 15:35:48 UNKNOWN status: null message: no url found for eshop FARBY and searchKeyWord nutrilon url null
 FOUR_KIDS [6539] 04-10-2019 15:36:43 UNKNOWN status: null message: no url found for eshop FOUR_KIDS and searchKeyWord lovela url null
 MAGANO [6533] 04-10-2019 15:36:06 UNKNOWN status: null message: no url found for eshop MAGANO and searchKeyWord nutrilon url null
 MAXIKOVY_HRACKY [6534] 04-10-2019 15:36:09 UNKNOWN status: null message: no url found for eshop MAXIKOVY_HRACKY and searchKeyWord nutrilon url null
 MAXIKOVY_HRACKY [6545] 04-10-2019 15:37:01 UNKNOWN status: null message: no url found for eshop MAXIKOVY_HRACKY and searchKeyWord lovela url null
-DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop DROGERKA and searchKeyWord lovela
 GIGA_LEKAREN [6540] 04-10-2019 15:36:46 UNKNOWN status: null message: no url found for eshop GIGA_LEKAREN and searchKeyWord lovela url null
 
 -------------
 TODO prest zoznam:
+[FARBY-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop FARBY and searchKeyWord nutrilon
+[DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop DROGERKA and searchKeyWord nutrilon
 INTERNETOVA_LEKAREN [6541] 04-10-2019 15:36:48 UNKNOWN status: null message: no url found for eshop INTERNETOVA_LEKAREN and searchKeyWord lovela url null
 FOUR_KIDS [6531] 04-10-2019 15:35:51 UNKNOWN status: null message: no url found for eshop FOUR_KIDS and searchKeyWord nutrilon url null
 METRO [6546] 04-10-2019 15:37:03 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord lovela url null
