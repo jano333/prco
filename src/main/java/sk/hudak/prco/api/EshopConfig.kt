@@ -23,7 +23,7 @@ object AlzaEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
         "https://www.alza.sk/search.htm?exps=$KEYWORD_TEMP",
         "https://www.alza.sk/search-p$PAGE_NUMBER_TEMP.htm?exps=$KEYWORD_TEMP",
         5, 12, 24,
-        supportedSearchKeywordIds = Arrays.asList(PAMPERS_ID, LOVELA_ID)
+        supportedSearchKeywordIds = listOf(PAMPERS_ID, LOVELA_ID)
 )
 
 object AmdDrogeriaEshopConfiguration : StaticEshopConfiguration(EshopCategory.DRUGSTORE,
@@ -31,23 +31,17 @@ object AmdDrogeriaEshopConfiguration : StaticEshopConfiguration(EshopCategory.DR
         "https://www.amddrogeria.sk/catalog/search/?q=$KEYWORD_TEMP",
         "https://www.amddrogeria.sk/catalog/search/?q=$KEYWORD_TEMP&offset=$OFFSET_TEMP",
         5, 12, 24,
-        supportedSearchKeywordIds = Arrays.asList(PAMPERS_ID, NUTRILON_ID, LOVELA_ID)
+        supportedSearchKeywordIds = listOf(PAMPERS_ID, NUTRILON_ID, LOVELA_ID)
 )
 //TODO ANDREA_SHOP -> neviem pagging ako...
 
 /****************************/
 /*            B             */
 /****************************/
-
-//BRENDON(NONE,
-//"https://www.brendon.sk",
-//"https://www.brendon.sk/search?q=" + KEYWORD_TEMP,
-//"https://www.brendon.sk/search?q=" + KEYWORD_TEMP + "&pagenumber=" + PAGE_NUMBER_TEMP,
-//5, 12, 30),
-
 object BrendonEshopConfiguration : DynamicEshopConfiguration(EshopCategory.NONE,
         "https://www.brendon.sk",
-        5, 12, 30) {
+        5, 12, 30,
+        supportedSearchKeywordIds = listOf(PAMPERS_ID, NUTRILON_ID)) {
 
     override fun buildSearchUrlForKeyWord(keyword: String, pageNumber: Int): String =
             when (keyword) {
@@ -58,13 +52,26 @@ object BrendonEshopConfiguration : DynamicEshopConfiguration(EshopCategory.NONE,
 }
 
 /****************************/
+/*            D             */
+/****************************/
+object DrogerkaConfiguration : StaticEshopConfiguration(EshopCategory.DRUGSTORE,
+        "https://www.drogerka.sk",
+        "https://www.drogerka.sk/index.php?route=product/search&search=$KEYWORD_TEMP",
+        "https://www.drogerka.sk/vyhladavanie?search=$KEYWORD_TEMP&page=$PAGE_NUMBER_TEMP",
+        5, 12, 48,
+        supportedSearchKeywordIds = listOf(PAMPERS_ID)
+)
+
+
+/****************************/
 /*            F             */
 /****************************/
 object FeedoEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
         "https://www.feedo.sk",
         "https://www.feedo.sk/vysledky-hladania/$KEYWORD_TEMP/",
         "https://www.feedo.sk/vysledky-hladania/$KEYWORD_TEMP/?page=$PAGE_NUMBER_TEMP",
-        5, 12, 20
+        5, 12, 20,
+        supportedSearchKeywordIds = listOf(PAMPERS_ID, NUTRILON_ID, LOVELA_ID)
 )
 
 /****************************/
@@ -127,8 +134,6 @@ object MallEshopConfiguration : DynamicEshopConfiguration(EshopCategory.NONE,
                 else -> "https://www.mall.sk/hladaj?page=$pageNumber&s=$keyword"
             }
 }
-
-
 
 
 /****************************/
@@ -237,7 +242,8 @@ abstract class DynamicEshopConfiguration(category: EshopCategory,
                                          productStartUrl: String,
                                          maxCountOfNewPages: Int,
                                          olderThanInHours: Int,
-                                         maxCountOfProductOnPage: Int)
+                                         maxCountOfProductOnPage: Int,
+                                         supportedSearchKeywordIds: List<Long> = emptyList())
     : EshopConfiguration(
         category = category,
         productStartUrl = productStartUrl,
@@ -246,7 +252,8 @@ abstract class DynamicEshopConfiguration(category: EshopCategory,
         searchTemplateUrlWithPageNumber = null,
         maxCountOfNewPages = maxCountOfNewPages,
         olderThanInHours = olderThanInHours,
-        maxCountOfProductOnPage = maxCountOfProductOnPage) {
+        maxCountOfProductOnPage = maxCountOfProductOnPage,
+        supportedSearchKeywordIds = supportedSearchKeywordIds) {
 
     //TODO po preklopenie vsetkych eshop to odkomentovat
 //    override val searchTemplateUrl: String?

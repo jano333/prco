@@ -10,7 +10,6 @@ import static sk.hudak.prco.api.SearchTemplateConstants.PAGE_NUMBER_TEMP;
 public enum EshopUuid {
 
 //    diskontdrogerie.cz
-    // Drogerka
     // Demro
     // FunKids
     // Babyplace
@@ -67,12 +66,7 @@ public enum EshopUuid {
             "https://www.drogeria-vmd.sk/hladanie-stranka-{pageNumber}/?q=" + KEYWORD_TEMP,
             4, 12, 12),
 
-    DROGERKA(
-            DRUGSTORE,
-            "https://www.drogerka.sk",
-            "https://www.drogerka.sk/index.php?route=product/search&search=" + KEYWORD_TEMP,
-            "https://www.drogerka.sk/vyhladavanie?search=" + KEYWORD_TEMP + "&page=" + PAGE_NUMBER_TEMP,
-            5, 12, 48),
+    DROGERKA(DrogerkaConfiguration.INSTANCE),
 
     ESO_DROGERIA(
             DRUGSTORE,

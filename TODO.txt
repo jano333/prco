@@ -5,10 +5,6 @@ BRENDON:
 bugs:
 -------------
 No bug
-LEKAREN_BELLA [6542] 04-10-2019 15:36:52 UNKNOWN status: null message: no url found for eshop LEKAREN_BELLA and searchKeyWord lovela url null
-DROGERKA [6538] 04-10-2019 15:36:36 UNKNOWN status: null message: no url found for eshop DROGERKA and searchKeyWord lovela url null
-DROGERKA [6528] 04-10-2019 15:35:44 UNKNOWN status: null message: no url found for eshop DROGERKA and searchKeyWord nutrilon url null
-ALZA [6526] 04-10-2019 15:35:34 UNKNOWN status: null message: no url found for eshop ALZA and searchKeyWord nutrilon url null
 ESO_DROGERIA [6529] 04-10-2019 15:35:46 UNKNOWN status: null message: no url found for eshop ESO_DROGERIA and searchKeyWord nutrilon url null
 FARBY [6530] 04-10-2019 15:35:48 UNKNOWN status: null message: no url found for eshop FARBY and searchKeyWord nutrilon url null
 FOUR_KIDS [6539] 04-10-2019 15:36:43 UNKNOWN status: null message: no url found for eshop FOUR_KIDS and searchKeyWord lovela url null
