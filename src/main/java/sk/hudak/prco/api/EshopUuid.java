@@ -122,13 +122,7 @@ public enum EshopUuid {
 
     KID_MARKET(KidMarketEshopConfiguration.INSTANCE),
 
-    LEKAREN_BELLA(
-            PHARMACY,
-            "https://www.lekaren-bella.sk",
-            "https://www.lekaren-bella.sk/search/?query=" + KEYWORD_TEMP,
-            "https://www.lekaren-bella.sk/search:" + PAGE_NUMBER_TEMP + ":12/" + KEYWORD_TEMP,
-            5, 12, 12),
-
+    LEKAREN_BELLA(LekarenBellaEshopConfiguration.INSTANCE),
     LEKAREN_EXPRES(LekareExpresEshopConfiguration.INSTANCE),
     LEKAREN_V_KOCKE(LekareVKockeEshopConfiguration.INSTANCE),
 

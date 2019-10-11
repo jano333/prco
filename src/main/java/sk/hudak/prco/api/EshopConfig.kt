@@ -77,6 +77,41 @@ object KidMarketEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE
         5, 12, 32
 )
 
+/****************************/
+/*            L             */
+/****************************/
+object LekarenBellaEshopConfiguration : StaticEshopConfiguration(EshopCategory.PHARMACY,
+        "https://www.lekaren-bella.sk",
+        "https://www.lekaren-bella.sk/search/?query=" + KEYWORD_TEMP,
+        "https://www.lekaren-bella.sk/search:" + PAGE_NUMBER_TEMP + ":12/" + KEYWORD_TEMP,
+        5, 12, 12,
+        supportedSearchKeywordIds = Arrays.asList(PAMPERS_ID, NUTRILON_ID)
+)
+
+//LEKAREN_BELLA(
+//PHARMACY,
+//"",
+//",
+//"https://www.lekaren-bella.sk/search:" + PAGE_NUMBER_TEMP + ":12/" + KEYWORD_TEMP,
+//5, 12, 12),
+
+
+object LekareVKockeEshopConfiguration : StaticEshopConfiguration(EshopCategory.PHARMACY,
+        "https://www.lekarenvkocke.sk",
+        "https://www.lekarenvkocke.sk/vyhladavanie?q=" + KEYWORD_TEMP,
+        "https://www.lekarenvkocke.sk/vyhladavanie:" + PAGE_NUMBER_TEMP + ":16:00/" + KEYWORD_TEMP,
+        5, 12, 16,
+        supportedSearchKeywordIds = Arrays.asList(PAMPERS_ID, NUTRILON_ID)
+)
+
+object LekareExpresEshopConfiguration : StaticEshopConfiguration(EshopCategory.PHARMACY,
+        "https://www.lekarenexpres.sk",
+        "https://www.lekarenexpres.sk/search/?hledat=" + KEYWORD_TEMP,
+        "https://www.lekarenexpres.sk/search/?hledat=" + KEYWORD_TEMP + "&start=" + OFFSET_TEMP,
+        5, 12, 24,
+        supportedSearchKeywordIds = Arrays.asList(PAMPERS_ID, NUTRILON_ID)
+)
+
 
 /****************************/
 /*            M             */
@@ -93,24 +128,7 @@ object MallEshopConfiguration : DynamicEshopConfiguration(EshopCategory.NONE,
             }
 }
 
-/****************************/
-/*            L             */
-/****************************/
-object LekareVKockeEshopConfiguration : StaticEshopConfiguration(EshopCategory.PHARMACY,
-        "https://www.lekarenvkocke.sk",
-        "https://www.lekarenvkocke.sk/vyhladavanie?q=" + KEYWORD_TEMP,
-        "https://www.lekarenvkocke.sk/vyhladavanie:" + PAGE_NUMBER_TEMP + ":16:00/" + KEYWORD_TEMP,
-        5, 12, 16,
-        supportedSearchKeywordIds = Arrays.asList(PAMPERS_ID, NUTRILON_ID)
-)
 
-object LekareExpresEshopConfiguration : StaticEshopConfiguration(EshopCategory.PHARMACY,
-        "https://www.lekarenexpres.sk",
-        "https://www.lekarenexpres.sk/search/?hledat=" + KEYWORD_TEMP,
-        "https://www.lekarenexpres.sk/search/?hledat=" + KEYWORD_TEMP + "&start=" + OFFSET_TEMP,
-        5, 12, 24,
-        supportedSearchKeywordIds = Arrays.asList(PAMPERS_ID, NUTRILON_ID)
-)
 
 
 /****************************/

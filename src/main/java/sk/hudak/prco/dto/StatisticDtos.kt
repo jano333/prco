@@ -14,13 +14,32 @@ data class EshopProductInfoDto(
 ) : DtoAble {
 
     override fun toString(): String {
-        return "EshopProductInfoDto(" +
-                "countOfInterested=$countOfInterested, " +
-                "countOfAlreadyUpdated=$countOfAlreadyUpdated, " +
-                "countOfProductMarkedAsUnavailable=$countOfProductMarkedAsUnavailable, ".color(ConsoleColor.RED) +
-                "countOfNew=$countOfNew, " +
-                "countOfNotInterested=$countOfNotInterested, " +
-                "countOfAllProduct=$countOfAllProduct        )"
+        val toStringResult = StringBuilder();
+        toStringResult.append("EshopProductInfoDto(")
+
+        toStringResult.append("countOfInterested=")
+        if (countOfInterested == 0L) {
+            toStringResult.append("$countOfInterested".color(ConsoleColor.RED))
+        } else {
+            toStringResult.append("$countOfInterested".color(ConsoleColor.GREEN))
+        }
+        toStringResult.append(", countOfAlreadyUpdated=")
+        when {
+            countOfAlreadyUpdated == 0L -> toStringResult.append("$countOfAlreadyUpdated".color(ConsoleColor.RED))
+            (countOfInterested == countOfAlreadyUpdated) -> toStringResult.append("$countOfAlreadyUpdated".color(ConsoleColor.GREEN))
+            else -> toStringResult.append("$countOfAlreadyUpdated".color(ConsoleColor.YELLOW))
+        }
+        toStringResult.append(", countOfProductMarkedAsUnavailable=")
+        if (countOfProductMarkedAsUnavailable == 0L) {
+            toStringResult.append("$countOfProductMarkedAsUnavailable".color(ConsoleColor.GREEN))
+        } else {
+            toStringResult.append("$countOfProductMarkedAsUnavailable".color(ConsoleColor.YELLOW))
+        }
+        toStringResult.append(", countOfNew=").append("$countOfNotInterested")
+        toStringResult.append(", countOfAllProduct=").append("$countOfAllProduct".color(ConsoleColor.BLUE))
+
+        toStringResult.append(")")
+        return toStringResult.toString()
     }
 }
 

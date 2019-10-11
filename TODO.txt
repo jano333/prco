@@ -1,5 +1,3 @@
-chcem vediet ked prebehne update, kolko produktov v danom eshope je nedostupnych
-
 -------------
 BRENDON:
 * problem lebo su 4 strany a mne dava stale akj pre 2 stranu produkty url z prvej strany teda mam 4 krat duplicitu a neveim preco
