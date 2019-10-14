@@ -52,31 +52,13 @@ public enum EshopUuid {
 
     BRENDON(BrendonEshopConfiguration.INSTANCE),
 
-    DR_MAX(
-            PHARMACY,
-            "https://www.drmax.sk",
-            "https://www.drmax.sk/catalog/search/?q=" + KEYWORD_TEMP,
-            "https://www.drmax.sk/catalog/search/?q={keyword}&offset={offset}&limit={limit}",
-            4, 12, 24),
-
-    DROGERIA_VMD(
-            DRUGSTORE,
-            "https://www.drogeria-vmd.sk",
-            "https://www.drogeria-vmd.sk/hladanie/?q=" + KEYWORD_TEMP,
-            "https://www.drogeria-vmd.sk/hladanie-stranka-{pageNumber}/?q=" + KEYWORD_TEMP,
-            4, 12, 12),
-
+    DR_MAX(DrMaxConfiguration.INSTANCE),
+    DROGERIA_VMD(DrogeriaVmdConfiguration.INSTANCE),
     DROGERKA(DrogerkaConfiguration.INSTANCE),
 
     ESO_DROGERIA(EsoDrogeriaConfiguration.INSTANCE),
 
-    FARBY(
-            NONE,
-            "https://www.farby.sk",
-            "https://www.farby.sk/vyhladavanie?hladaj=" + KEYWORD_TEMP,
-            null,
-            1, 12, -1),
-
+    FARBY(FarbyConfiguration.INSTANCE),
     FEEDO(FeedoEshopConfiguration.INSTANCE),
 
     FOUR_KIDS(

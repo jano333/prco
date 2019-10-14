@@ -1,3 +1,12 @@
+zle vyhodnotilo:
+2019-10-14 09:35:24,145 WARN [LEKAREN_V_KOCKE-thread] [] s.h.p.p.e.JSoupProductParser [Extensions.kt:8] product is unavailable: https://www.lekarenvkocke.sk/zqcca7c9d69cc89a501513a05ef16592f4-nutricia-nutrilon-4-pronutra-800-g
+--------------
+zle vyhodnotilo:
+2019-10-14 09:32:14,149 WARN [METRO-thread] [] s.h.p.p.e.JSoupProductParser [Extensions.kt:8] product is unavailable: https://sortiment.metro.sk/sk/nutrilon-1-800g-/182541p/
+TODO error az zbehne update, a da vela produktov ako nedostupnych... dodefinovat postup ako to zistovat..., aby sme to skoro odhalili
+TODO pagging na pohlady potrebujem...
+TODO usr agentov urobit novych... z roznych browser a system.
+TODO page a  filter na vyhladavanie v groupe aj na zaklade klucoveho slova...
 -------------
 BRENDON:
 * problem lebo su 4 strany a mne dava stale akj pre 2 stranu produkty url z prvej strany teda mam 4 krat duplicitu a neveim preco

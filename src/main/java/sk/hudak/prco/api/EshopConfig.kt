@@ -61,6 +61,23 @@ object DrogerkaConfiguration : StaticEshopConfiguration(EshopCategory.DRUGSTORE,
         supportedSearchKeywordIds = listOf(PAMPERS_ID)
 )
 
+object DrMaxConfiguration : StaticEshopConfiguration(EshopCategory.PHARMACY,
+        "https://www.drmax.sk",
+        "https://www.drmax.sk/catalog/search/?q=$KEYWORD_TEMP",
+        "https://www.drmax.sk/catalog/search/?q={keyword}&offset={offset}&limit={limit}",
+        4, 12, 24,
+        supportedSearchKeywordIds = listOf(PAMPERS_ID, NUTRILON_ID)
+)
+
+object DrogeriaVmdConfiguration : StaticEshopConfiguration(EshopCategory.DRUGSTORE,
+        "https://www.drogeria-vmd.sk",
+        "https://www.drogeria-vmd.sk/hladanie/?q=" + KEYWORD_TEMP,
+        "https://www.drogeria-vmd.sk/hladanie-stranka-{pageNumber}/?q=" + KEYWORD_TEMP,
+        4, 12, 12,
+        supportedSearchKeywordIds = listOf(PAMPERS_ID, NUTRILON_ID, LOVELA_ID)
+)
+
+
 /****************************/
 /*            E             */
 /****************************/
@@ -76,6 +93,14 @@ object EsoDrogeriaConfiguration : StaticEshopConfiguration(EshopCategory.DRUGSTO
 /****************************/
 /*            F             */
 /****************************/
+object FarbyConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
+        "https://www.farby.sk",
+        "https://www.farby.sk/vyhladavanie?hladaj=$KEYWORD_TEMP",
+        "",
+        1, 12, -1,
+        supportedSearchKeywordIds = listOf(PAMPERS_ID, LOVELA_ID)
+)
+
 object FeedoEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
         "https://www.feedo.sk",
         "https://www.feedo.sk/vysledky-hladania/$KEYWORD_TEMP/",

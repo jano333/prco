@@ -213,7 +213,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
 
 //        searchKeywords()
 
-//        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener)
+        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener)
         //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
 //                updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.FEEDO, listener)
