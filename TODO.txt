@@ -5,7 +5,6 @@ BRENDON:
 bugs:
 -------------
 No bug
-ESO_DROGERIA [6529] 04-10-2019 15:35:46 UNKNOWN status: null message: no url found for eshop ESO_DROGERIA and searchKeyWord nutrilon url null
 FARBY [6530] 04-10-2019 15:35:48 UNKNOWN status: null message: no url found for eshop FARBY and searchKeyWord nutrilon url null
 FOUR_KIDS [6539] 04-10-2019 15:36:43 UNKNOWN status: null message: no url found for eshop FOUR_KIDS and searchKeyWord lovela url null
 MAGANO [6533] 04-10-2019 15:36:06 UNKNOWN status: null message: no url found for eshop MAGANO and searchKeyWord nutrilon url null
@@ -49,11 +48,6 @@ DROGERIA_VMD [6399] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null me
 2019-10-04 15:16:58,233 DEBUG [ESO_DROGERIA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop ESO_DROGERIA and searchKeyWord nutrilon
 2019-10-04 15:16:58,234 DEBUG [ESO_DROGERIA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:39] count of found: 0
 2019-10-04 15:16:58,234 DEBUG [ESO_DROGERIA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:40] count of added: 0
------------
-2019-10-04 15:16:56,366 DEBUG [DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:37] AddProductsToEshopByKeywordFinishedEvent(DROGERKA)
-2019-10-04 15:16:56,366 DEBUG [DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop DROGERKA and searchKeyWord nutrilon
-2019-10-04 15:16:56,366 DEBUG [DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:39] count of found: 0
-2019-10-04 15:16:56,366 DEBUG [DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:40] count of added: 0
 -------------------------------
 update processs urobit tak ze najprv nech ide po grupach pampers, potom nutrilon, lovela a potom ostatne grupy a potom to co ostalo
 akonahle skonci update danej grupy nech posle event s report ako to dopadlo... console debug report
@@ -322,26 +316,11 @@ Caused by: org.jsoup.HttpStatusException: HTTP error fetching URL
 	... 13 common frames omitted
 2019-09-13 15:58:28,368 ERROR [PERINBABA-thread] [] s.h.p.m.u.UpdateProductErrorHandlerImpl [UpdateProductErrorHandlerImpl.kt:37] http status: 404
 ------------------------------------------------------------------------------------------------------------------------
- brendon pre pampers nefunguje:
- 'https://www.brendon.sk/search?q=pampers':
-------------------------------------------------------------------------------------------------------------------------
 zle vypisy, preco 0/0 a na konci je << updateProductData eshop KID_MARKET, productForUpdateIds count 1
 2019-08-27 12:37:20,119 DEBUG [KID_MARKET-thread] [] s.h.p.s.Starter [Starter.java:242] >> eshop: KID_MARKET, updated/waiting: 0/0
 2019-08-27 12:37:20,119 DEBUG [KID_MARKET-thread] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:149] marking task for eshop KID_MARKET as FINISHED_OK
 2019-08-27 12:37:20,119 DEBUG [KID_MARKET-thread] [] s.h.p.m.u.NgUpdateProductDataManagerImpl [NgUpdateProductDataManagerImpl.kt:187] << updateProductData eshop KID_MARKET, productForUpdateIds count 1
 ------------------------------------------------------------------------------------------------------------------------
-toto nizsie nefunguje ani tak ako som popisal:
-dalo:
-2019-08-19 15:52:40,016 DEBUG [PILULKA_24-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:246]
-request URL: https://www.pilulka24.sk/lovela
-a ma byt:
-https://www.pilulka24.sk/vyhladavanie?q=lovela
-pre nutrilon to funguje ale pre lovela nie a potom
-https://www.pilulka24.sk/vyhladavanie?q=nutrilon
-vrati redirect na toto:
-https://www.pilulka24.sk/nutrilon
-takze vsetko urobit po novom
-------------
 ********************
 For KOTLIN remove Optional keyword, use ? instead
 *****************************************************************************************

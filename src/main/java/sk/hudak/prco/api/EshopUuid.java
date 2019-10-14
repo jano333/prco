@@ -68,13 +68,7 @@ public enum EshopUuid {
 
     DROGERKA(DrogerkaConfiguration.INSTANCE),
 
-    ESO_DROGERIA(
-            DRUGSTORE,
-            "https://www.esodrogeria.eu",
-            "https://www.esodrogeria.eu/search-engine.htm?slovo=" + KEYWORD_TEMP + "&search_submit=&hledatjak=2",
-            // pozor pagenumber 2 je vlastne az tretia stranka
-            "https://www.esodrogeria.eu/search-engine.htm?slovo=" + KEYWORD_TEMP + "&search_submit=&hledatjak=2&page=" + PAGE_NUMBER_TEMP + "&man=9",
-            5, 12, 21),
+    ESO_DROGERIA(EsoDrogeriaConfiguration.INSTANCE),
 
     FARBY(
             NONE,
