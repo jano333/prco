@@ -6,6 +6,7 @@ import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.Unit
 import sk.hudak.prco.dto.GroupIdNameDto
 import sk.hudak.prco.dto.product.ProductFullDto
+import sk.hudak.prco.kotlin.firstCharacterToUpperCase
 import sk.hudak.prco.service.InternalTxService
 import java.math.BigDecimal
 import java.text.DecimalFormat
@@ -131,7 +132,7 @@ class FacebookReporterImpl(private val internalTxService: InternalTxService)
     }
 
     private fun formatPriceForPackage(bigDecimal: BigDecimal): String {
-        val replace =  DecimalFormat("00.00").format(bigDecimal).replace(".", ",")
+        val replace = DecimalFormat("00.00").format(bigDecimal).replace(".", ",")
         return if (replace.first() == '0') {
             " ${replace.substring(1)}"
         } else {
@@ -147,12 +148,3 @@ interface FacebookReporter {
     fun doFullReport(): String
 }
 
-fun String.firstCharacterToUpperCase(): String {
-    return if (this.length >= 1) {
-        val firstCharacter = this.substring(0, 1)
-        val rest = this.substring(1);
-        firstCharacter.toUpperCase() + rest
-    } else {
-        this
-    }
-}

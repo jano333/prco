@@ -11,3 +11,13 @@ fun Logger.warnYellow(msg: String) {
 fun String.color(color: ConsoleColor): String {
     return ConsoleWithColor.wrapWithColor(this, color)
 }
+
+fun String.firstCharacterToUpperCase(): String {
+    return if (this.isNotEmpty()) {
+        val firstCharacter = this.substring(0, 1)
+        val rest = this.substring(1);
+        firstCharacter.toUpperCase() + rest
+    } else {
+        this
+    }
+}

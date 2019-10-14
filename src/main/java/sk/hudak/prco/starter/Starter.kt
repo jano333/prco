@@ -222,7 +222,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
 
         //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
         //        updateProductDataManager.updateProductData(3118L);
-//                uiService.resetUpdateDateForAllProductsInEshop(EshopUuid.FEEDO)
+//                uiService.resetUpdateDateForAllProductsInEshop(EshopUuid.LEKAREN_V_KOCKE)
         //        uiService.updateProductCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
