@@ -22,15 +22,15 @@ fun main() {
 
     val test = ProductParserTest()
 
-    val urlList = test.parseUrlsOfProduct(EshopUuid.LEKAREN_V_KOCKE, "nutrilon")
-    println("count in list ${urlList.size}")
-    println("count in set ${HashSet(urlList).size}")
-    println(urlList);
+//    val urlList = test.parseUrlsOfProduct(EshopUuid.LEKAREN_V_KOCKE, "nutrilon")
+//    println("count in list ${urlList.size}")
+//    println("count in set ${HashSet(urlList).size}")
+//    println(urlList);
 
 //    println(test.parseProductNewData("https://www.pilulka.sk/nutrilon-profutura-obilno-mliecna-kasa-7-cerealii-s-ovocim-225g"))
 //    println(test.parseProductNewData("https://www.pilulka.sk/nutrilon-2-ha-prosyneo-6x800g"))
 
-//    println(test.parseProductUpdateData("https://www.feedo.sk/nutrilon-5-pronutra-800-g-dojcenske-mlieko/"))
+    println(test.parseProductUpdateData("https://www.lekarenvkocke.sk/zqcca7c9d69cc89a501513a05ef16592f4-nutricia-nutrilon-4-pronutra-800-g"))
 }
 
 class ProductParserTest {

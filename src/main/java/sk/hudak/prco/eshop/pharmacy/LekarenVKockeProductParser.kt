@@ -79,8 +79,8 @@ class LekarenVKockeProductParser(unitParser: UnitParser,
                 vypredane = true
             }
         }
-        val existButton = documentDetailProduct.select("button[value='KOUPIT']").first() != null
-        return !vypredane && existButton
+        val available = !vypredane && documentDetailProduct.select("button[value='KOUPIT']").first() != null
+        return !available
     }
 
     override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {

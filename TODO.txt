@@ -1,5 +1,3 @@
-zle vyhodnotilo:
-2019-10-14 09:35:24,145 WARN [LEKAREN_V_KOCKE-thread] [] s.h.p.p.e.JSoupProductParser [Extensions.kt:8] product is unavailable: https://www.lekarenvkocke.sk/zqcca7c9d69cc89a501513a05ef16592f4-nutricia-nutrilon-4-pronutra-800-g
 --------------
 zle vyhodnotilo:
 2019-10-14 09:32:14,149 WARN [METRO-thread] [] s.h.p.p.e.JSoupProductParser [Extensions.kt:8] product is unavailable: https://sortiment.metro.sk/sk/nutrilon-1-800g-/182541p/
@@ -14,7 +12,6 @@ BRENDON:
 bugs:
 -------------
 No bug
-FARBY [6530] 04-10-2019 15:35:48 UNKNOWN status: null message: no url found for eshop FARBY and searchKeyWord nutrilon url null
 FOUR_KIDS [6539] 04-10-2019 15:36:43 UNKNOWN status: null message: no url found for eshop FOUR_KIDS and searchKeyWord lovela url null
 MAGANO [6533] 04-10-2019 15:36:06 UNKNOWN status: null message: no url found for eshop MAGANO and searchKeyWord nutrilon url null
 MAXIKOVY_HRACKY [6534] 04-10-2019 15:36:09 UNKNOWN status: null message: no url found for eshop MAXIKOVY_HRACKY and searchKeyWord nutrilon url null
@@ -23,7 +20,6 @@ GIGA_LEKAREN [6540] 04-10-2019 15:36:46 UNKNOWN status: null message: no url fou
 
 -------------
 TODO prest zoznam:
-[FARBY-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop FARBY and searchKeyWord nutrilon
 [DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop DROGERKA and searchKeyWord nutrilon
 INTERNETOVA_LEKAREN [6541] 04-10-2019 15:36:48 UNKNOWN status: null message: no url found for eshop INTERNETOVA_LEKAREN and searchKeyWord lovela url null
 FOUR_KIDS [6531] 04-10-2019 15:35:51 UNKNOWN status: null message: no url found for eshop FOUR_KIDS and searchKeyWord nutrilon url null
