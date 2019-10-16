@@ -15,7 +15,7 @@ class ProductAddingToGroupDto : DtoAble {
     var productPictureUrl: String? = null
     var groupId: Long? = null
 
-    constructor() {}
+    constructor()
 
     constructor(id: Long?, url: String, name: String, eshopUuid: EshopUuid, productPictureUrl: String, groupId: Long?) {
         this.id = id
@@ -75,26 +75,41 @@ data class ProductDetailInfo(val id: Long,
                              val url: String,
                              val eshopUuid: EshopUuid)
 
-
 //TODO data class
 class ProductFilterUIDto : DtoAble {
 
+    enum class ORDER_BY {
+        NAME, PRICE_FOR_UNIT
+    }
+
     var eshopUuid: EshopUuid? = null
     var onlyInAction: Boolean? = null
+    var orderBy: ORDER_BY = ORDER_BY.PRICE_FOR_UNIT
 
-    constructor() {}
+    companion object {
+        val EMPTY: ProductFilterUIDto = ProductFilterUIDto()
+        fun withEshopOnly(eshopUuid: EshopUuid): ProductFilterUIDto = ProductFilterUIDto(eshopUuid)
+        fun withActionOnly(): ProductFilterUIDto = ProductFilterUIDto(true)
+    }
 
-    constructor(onlyInAction: Boolean?) {
+    constructor()
+
+    private constructor(onlyInAction: Boolean?) {
         this.onlyInAction = onlyInAction
     }
 
-    constructor(eshopUuid: EshopUuid) {
+    private constructor(eshopUuid: EshopUuid) {
         this.eshopUuid = eshopUuid
     }
 
     constructor(eshopUuid: EshopUuid, onlyInAction: Boolean?) {
         this.eshopUuid = eshopUuid
         this.onlyInAction = onlyInAction
+    }
+
+    fun orderBy(orderBy: ORDER_BY): ProductFilterUIDto {
+        this.orderBy = orderBy
+        return this
     }
 
     override fun toString(): String {

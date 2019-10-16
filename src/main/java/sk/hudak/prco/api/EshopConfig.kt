@@ -109,6 +109,47 @@ object FeedoEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
         supportedSearchKeywordIds = listOf(PAMPERS_ID, NUTRILON_ID, LOVELA_ID)
 )
 
+object FourKidsEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
+        "https://www.4kids.sk",
+        "https://www.4kids.sk/vyhledavani?search=$KEYWORD_TEMP",
+        "https://www.4kids.sk/vyhledavani?page=$PAGE_NUMBER_TEMP&search=$KEYWORD_TEMP",
+        //TODO -1 dat ako konstantu a napisat doc ako to funguje...
+        5, 12, -1,
+        supportedSearchKeywordIds = listOf(PAMPERS_ID)
+)
+
+/****************************/
+/*            G             */
+/****************************/
+object GigaLekarenEshopConfiguration : StaticEshopConfiguration(EshopCategory.PHARMACY,
+        "https://www.gigalekaren.sk",
+        "https://www.gigalekaren.sk/vyhledavani/?phrase=$KEYWORD_TEMP",
+        "https://www.gigalekaren.sk/vyhledavani/?phrase=$KEYWORD_TEMP&strana=$PAGE_NUMBER_TEMP",
+        5, 12, 24,
+        supportedSearchKeywordIds = listOf(PAMPERS_ID, NUTRILON_ID)
+)
+
+/****************************/
+/*            H             */
+/****************************/
+object HornbachEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
+        "https://www.hornbach.sk/",
+        "https://www.hornbach.sk/shop/vyhladavanie/sortiment/{keyword}",
+        "TODO nie je to cez parameter v stranke...",
+        5, 12, -1,
+        supportedSearchKeywordIds = emptyList()
+)
+/****************************/
+/*            I             */
+/****************************/
+object InternetovaLekarenEshopConfiguration : StaticEshopConfiguration(EshopCategory.PHARMACY,
+        "http://www.internetovalekaren.eu",
+        "http://www.internetovalekaren.eu/catalog/search/?q=$KEYWORD_TEMP",
+        "http://www.internetovalekaren.eu/catalog/search/?q=$KEYWORD_TEMP&offset=$OFFSET_TEMP",
+        5, 12, 22,
+        supportedSearchKeywordIds = listOf(PAMPERS_ID, NUTRILON_ID)
+)
+
 /****************************/
 /*            K             */
 /****************************/
@@ -164,6 +205,48 @@ object MallEshopConfiguration : DynamicEshopConfiguration(EshopCategory.NONE,
             }
 }
 
+object MaganoEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
+        "https://www.magano.sk",
+        "https://www.magano.sk/produkty/search?term=$KEYWORD_TEMP",
+        "https://www.magano.sk/produkty/search/$PAGE_NUMBER_TEMP?term=$KEYWORD_TEMP",
+        5, 12, 12,
+        supportedSearchKeywordIds = listOf(PAMPERS_ID, LOVELA_ID)
+)
+
+object MaxikovyHrackyEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
+        "https://www.maxikovy-hracky.cz",
+        "https://www.maxikovy-hracky.cz/vyhledavani?search=$KEYWORD_TEMP",
+        "https://www.maxikovy-hracky.cz/vyhledavani?page=$PAGE_NUMBER_TEMP&search=$KEYWORD_TEMP",
+        3, 12, 60,
+        supportedSearchKeywordIds = listOf(PAMPERS_ID)
+)
+
+object MetroEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
+        "https://sortiment.metro.sk",
+        "https://sortiment.metro.sk/sk/search/?q={keyword}",
+        "https://sortiment.metro.sk/sk/search/?p={pageNumber}&search_by_price=dph_without&category_id=0&ownbrand=0&product_type_id=0&inaction=0&mysort=0&pcheck=0&local=0&orderby=wght&direction=asc&q={keyword}&extorder=0&onstock=0",
+        3, 12, -1,
+        supportedSearchKeywordIds = listOf(PAMPERS_ID, NUTRILON_ID, LOVELA_ID)
+)
+
+object MojaLekarenEshopConfiguration : StaticEshopConfiguration(EshopCategory.PHARMACY,
+        "https://www.mojalekaren.sk/",
+        "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}",
+        "https://www.mojalekaren.sk/vyhladavanie/?query={keyword}&strana={pageNumber}",
+        3, 12, -1,
+        supportedSearchKeywordIds = listOf(PAMPERS_ID, NUTRILON_ID, LOVELA_ID)
+)
+
+/****************************/
+/*            O             */
+/****************************/
+object ObiEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
+        "https://www.obi.sk",
+        "https://www.obi.sk/search/{keyword}/?isi=true",
+        "https://www.obi.sk/search/{keyword}?page={pageNumber}",
+        5, 12, -1,
+        supportedSearchKeywordIds = emptyList()
+)
 
 /****************************/
 /*            P             */

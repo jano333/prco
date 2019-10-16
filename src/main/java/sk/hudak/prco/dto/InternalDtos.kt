@@ -98,6 +98,7 @@ data class StatisticForUpdateForEshopDto(
         val countOfProductsWaitingToBeUpdated: Long,
         val countOfProductsAlreadyUpdated: Long) : InternalMarkerDto
 
+//TODO overit ? atributy a tie co su povinne odsranit ?
 data class ProductUpdateDataDto(var id: Long?,
                                 var url: String?,
                                 var name: String?,

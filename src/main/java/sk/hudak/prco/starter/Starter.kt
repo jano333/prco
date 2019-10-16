@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.Unit
+import sk.hudak.prco.console.PrcoConsole
 import sk.hudak.prco.dto.*
 import sk.hudak.prco.dto.product.NotInterestedProductFindDto
 import sk.hudak.prco.dto.product.ProductFilterUIDto
@@ -41,7 +42,8 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
               private val uiService: UIService,
               private val theadStatisticManager: EshopThreadStatisticManager,
               private val newProductManager: AddingNewProductManager,
-              private val facebookReporter: FacebookReporter) {
+              private val facebookReporter: FacebookReporter,
+              private val prcoConsole: PrcoConsole) {
 
     @Autowired
     private val dbExportImportManager: DbExportImportManager? = null
@@ -203,6 +205,8 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
 //                    updateStatusInfo.eshopUuid, updateStatusInfo.countOfProductsAlreadyUpdated, updateStatusInfo.countOfProductsWaitingToBeUpdated)
 //        }
 
+        prcoConsole.showInConsole()
+
         val listener: UpdateProductDataListener = object : UpdateProductDataListener {
             override fun onUpdateStatus(updateStatusInfo: UpdateStatusInfo) {
                 log.debug(">> eshop: {}, updated/waiting: {}/{}",
@@ -305,7 +309,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
 
     }
 
-    private fun searchKeywords(){
+    private fun searchKeywords() {
         //id: 1
         internalTxService.createSearchKeyword(SearchKeywordCreateDto("pampers"))
         //id: 2
@@ -363,12 +367,12 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
     }
 
     private fun showAllProductsInAllGroups(withPriceOnly: Boolean) {
-        uiService!!.findGroups(GroupFilterDto())
+        uiService.findGroups(GroupFilterDto())
                 .forEach { group -> group.id?.let { showProductsInGroup(it, withPriceOnly) } }
     }
 
     private fun showProductInActionAll() {
-        val products = uiService!!.findProducts(ProductFilterUIDto(java.lang.Boolean.TRUE))
+        val products = uiService.findProducts(ProductFilterUIDto.withActionOnly())
         println("Produkty v akcii:")
         for (product in products) {
             println("id " + product.id + ", "
@@ -433,7 +437,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
     private fun showProductsInEshop(eshopUuid: EshopUuid) {
         println("Eshop $eshopUuid")
 
-        val products = uiService!!.findProducts(ProductFilterUIDto(eshopUuid))
+        val products = uiService.findProducts(ProductFilterUIDto.withEshopOnly(eshopUuid))
         for (product in products) {
             println("id " + product.id + ", "
                     + formatPrice(product.priceForPackage) + "(" + formatValidTo(product.actionValidTo) + ") " + formatPrice(product.commonPrice)

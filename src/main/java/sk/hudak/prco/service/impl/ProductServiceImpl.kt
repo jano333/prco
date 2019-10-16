@@ -281,7 +281,7 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
     override fun resetUpdateDateForAllProductsInEshop(eshopUuid: EshopUuid) {
 
         //FIXME robit bulkovo po 25 ks, nie vsetky natiahnut naraz
-        val findByFilter = productEntityDao.findByFilter(ProductFilterUIDto(eshopUuid))
+        val findByFilter = productEntityDao.findByFilter(ProductFilterUIDto.withEshopOnly(eshopUuid))
         findByFilter.forEach { productEntity ->
             productEntity.lastTimeDataUpdated = null
             productEntityDao.update(productEntity)
@@ -407,7 +407,7 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
 
     override fun findDuplicityProductsByNameAndPriceInEshop(eshopUuid: EshopUuid): List<ProductFullDto> {
         val tmp = HashMap<String, MutableList<ProductEntity>>()
-        for (productEntity in productEntityDao.findByFilter(ProductFilterUIDto(eshopUuid))) {
+        for (productEntity in productEntityDao.findByFilter(ProductFilterUIDto.withEshopOnly(eshopUuid))) {
             var values: MutableList<ProductEntity>? = tmp[productEntity.name]
             if (values == null) {
                 values = ArrayList()
@@ -426,11 +426,10 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
         return mapper.mapAsList(result, ProductFullDto::class.java)
     }
 
-    override fun getProductWithUrl(productUrl: String, productIdToIgnore: Long?): Optional<Long> {
+    override fun findProductIdWithUrl(productUrl: String, productIdToIgnore: Long?): Long? {
         notEmpty(productUrl, "productUrl")
-        notNull(productIdToIgnore, "productIdToIgnore")
 
-        return productEntityDao.getProductWithUrl(productUrl, productIdToIgnore)
+        return productEntityDao.findProductIdWithUrl(productUrl, productIdToIgnore)
     }
 
     private fun internalLastTimeDataUpdated(productId: Long?, lastTimeDataUpdated: Date?) {
@@ -439,4 +438,54 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
         productDataUpdateEntityDao.update(updateEntity)
     }
 
+    override fun getProductById(productId: Long): ProductFullDto {
+        return productEntityDao.findById(productId).toProductFullDto()
+    }
+
+    override fun updateProductUnitPackageCount(productId: Long, unitPackageCount: Int) {
+        productEntityDao.findById(productId).apply {
+            this.unitPackageCount = unitPackageCount
+
+            // prices
+            val priceForOneItemInPackage = priceCalculator.calculatePriceForOneItemInPackage(
+                    this.priceForPackage!!,
+                    unitPackageCount
+            )
+            val priceForUnit = priceCalculator.calculatePriceForUnit(
+                    this.unit,
+                    this.unitValue,
+                    priceForOneItemInPackage
+            )
+            this.priceForOneItemInPackage = priceForOneItemInPackage
+            this.priceForUnit = priceForUnit
+
+            productEntityDao.update(this)
+            log.debug("product $productId unit package count was change to $unitPackageCount")
+        }
+    }
+}
+
+fun ProductEntity.toProductFullDto(): ProductFullDto {
+    val productFullDto = ProductFullDto()
+    productFullDto.id = this.id
+    productFullDto.created = this.created
+    productFullDto.updated = this.updated
+
+    productFullDto.url = this.url
+    productFullDto.name = this.name
+    productFullDto.eshopUuid = this.eshopUuid
+    productFullDto.unit = this.unit
+    productFullDto.unitValue = this.unitValue
+    productFullDto.unitPackageCount = this.unitPackageCount
+    productFullDto.priceForPackage = this.priceForPackage
+    productFullDto.priceForOneItemInPackage = this.priceForOneItemInPackage
+    productFullDto.priceForUnit = this.priceForUnit
+    productFullDto.commonPrice = this.commonPrice
+    productFullDto.lastTimeDataUpdated = this.lastTimeDataUpdated
+    productFullDto.productAction = this.productAction
+    productFullDto.actionValidTo = this.actionValidTo
+    productFullDto.productPictureUrl = this.productPictureUrl
+    //TODO
+    productFullDto.groupList = emptyList()
+    return productFullDto
 }

@@ -5,11 +5,7 @@ import sk.hudak.prco.dto.ProductUpdateDataDto
 import sk.hudak.prco.dto.StatisticForUpdateForEshopDto
 import sk.hudak.prco.dto.product.*
 import java.math.BigDecimal
-import java.util.*
 
-/**
- *
- */
 interface ProductService {
 
     //TODO niekde je delete a niekde remove na product ujednotit to ...
@@ -20,10 +16,62 @@ interface ProductService {
      */
     fun existProductWithUrl(productURL: String): Boolean
 
+    // ----------- GET -----------
+
+    fun getProductById(productId: Long): ProductFullDto
+
+    /**
+     * Product data for product with given id.
+     *
+     * @param productId product id
+     * @return product data
+     */
+    //TODO zrusit ? v  Long?
+    //TODO rename methody
+    fun getProduct(productId: Long?): ProductAddingToGroupDto
+
+    /**
+     * Eshop to which the product with given id belongs to.
+     *
+     * @param productId product id
+     * @return eshop unique identifier
+     */
+    fun getEshopForProductId(productId: Long): EshopUuid
+
+    /**
+     * @param eshopUuid        eshop unique identifier
+     * @param olderThanInHours
+     * @return
+     */
+    fun getStatisticForUpdateForEshop(eshopUuid: EshopUuid, olderThanInHours: Int): StatisticForUpdateForEshopDto
+
+    // ----------- FIND -----------
+
+    /**
+     * @param productId product id
+     * @return
+     */
+    fun findProductForUpdate(productId: Long): ProductDetailInfo
+
+
+    /**
+     * @param eshopUuid        eshop unique identifier
+     * @param olderThanInHours
+     * @return
+     */
+    fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductDetailInfo?
+
+
+    // ----------- UPDATE -----------
+
     /**
      * @param productUpdateDataDto
      */
     fun updateProduct(productUpdateDataDto: ProductUpdateDataDto)
+
+    fun updateProductUrl(productId: Long, newProductUrl: String)
+
+    fun updateProductUnitPackageCount(productId: Long, unitPackageCount: Int)
 
     /**
      * Update of 'common' price of product.
@@ -34,7 +82,7 @@ interface ProductService {
     fun updateProductCommonPrice(productId: Long, newCommonPrice: BigDecimal)
 
 
-    fun updateProductUrl(productId: Long, newProductUrl: String)
+    // -------- OTHERS --------
 
     /**
      * set field 'LastTimeDataUpdated' to null for product in given eshop
@@ -80,38 +128,6 @@ interface ProductService {
      */
     fun removeProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int
 
-    // ----------- GET -----------
-
-    /**
-     * Product data for product with given id.
-     *
-     * @param productId product id
-     * @return product data
-     */
-    //TODO zrusit ? v  Long?
-    fun getProduct(productId: Long?): ProductAddingToGroupDto
-
-    /**
-     * Eshop to which the product with given id belongs to.
-     *
-     * @param productId product id
-     * @return eshop unique identifier
-     */
-    fun getEshopForProductId(productId: Long): EshopUuid
-
-    /**
-     * @param eshopUuid        eshop unique identifier
-     * @param olderThanInHours
-     * @return
-     */
-    fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductDetailInfo?
-
-    /**
-     * @param productId product id
-     * @return
-     */
-    fun findProductForUpdate(productId: Long): ProductDetailInfo
-
 
     /**
      * vyhlada product na zaklade URL, pozor nemusi existovat...
@@ -119,12 +135,6 @@ interface ProductService {
     fun getProductForUpdateByUrl(productUrl: String): ProductDetailInfo?
 
 
-    /**
-     * @param eshopUuid        eshop unique identifier
-     * @param olderThanInHours
-     * @return
-     */
-    fun getStatisticForUpdateForEshop(eshopUuid: EshopUuid, olderThanInHours: Int): StatisticForUpdateForEshopDto
 
     // ----------- FIND -----------
 
@@ -175,9 +185,10 @@ interface ProductService {
      * @param productIdToIgnore product id which will be ignored during finding
      * @return product id if found, empty if not
      */
-    fun getProductWithUrl(productUrl: String, productIdToIgnore: Long?): Optional<Long>
+    fun findProductIdWithUrl(productUrl: String, productIdToIgnore: Long?): Long?
 
     fun findProductForUpdateInGroup(groupId: Long): Map<EshopUuid, List<Long>>
-
     fun findProductsForUpdateWhichAreNotInAnyGroup(): Map<EshopUuid, List<Long>>
+
+
 }

@@ -2,9 +2,9 @@ package sk.hudak.prco.events
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import sk.hudak.prco.kotlin.color
 import sk.hudak.prco.manager.addprocess.AddProductsToEshopByKeywordFinishedEvent
 import sk.hudak.prco.utils.ConsoleColor
-import sk.hudak.prco.utils.ConsoleWithColor
 import java.util.*
 
 @Component
@@ -34,14 +34,16 @@ class ConsoleDebugObservable(prcoObservable: PrcoObservable) : PrcoObserver {
             } else {
                 ConsoleColor.GREEN
             }
-            log.debug(ConsoleWithColor.wrapWithColor("${AddProductsToEshopByKeywordFinishedEvent::class.java.simpleName}(${event.eshopUuid})", color))
-            log.debug(ConsoleWithColor.wrapWithColor("err msg: ${event.errMsg}", color))
-            log.debug(ConsoleWithColor.wrapWithColor("count of found: ${event.countOfFound}", color))
-            log.debug(ConsoleWithColor.wrapWithColor("count of added: ${event.countOfAdded}", color))
+            log.debug("${AddProductsToEshopByKeywordFinishedEvent::class.java.simpleName}(${event.eshopUuid})".color(color))
+            log.debug("keyword: ${event.keyword.color(color)}")
+            log.debug("err msg: ${event.errMsg}".color(color))
+            log.debug("count of found: ${event.countOfFound}".color(color))
+            log.debug("count of added: ${event.countOfAdded}".color(color))
         } else {
-            log.debug(ConsoleWithColor.wrapWithColor("${AddProductsToEshopByKeywordFinishedEvent::class.java.simpleName}(${event.eshopUuid})", ConsoleColor.GREEN))
-            log.debug(ConsoleWithColor.wrapWithColor("count of found: ${event.countOfFound}", ConsoleColor.YELLOW))
-            log.debug(ConsoleWithColor.wrapWithColor("count of added: ${event.countOfAdded}", ConsoleColor.YELLOW))
+            log.debug("${AddProductsToEshopByKeywordFinishedEvent::class.java.simpleName}(${event.eshopUuid})".color(ConsoleColor.GREEN))
+            log.debug("keyword: " + event.keyword.color(ConsoleColor.GREEN))
+            log.debug("count of found: ${event.countOfFound}".color(ConsoleColor.YELLOW))
+            log.debug("count of added: ${event.countOfAdded}".color(ConsoleColor.YELLOW))
         }
     }
 

@@ -1,35 +1,40 @@
-kid market overit lebo sa mi zda ze su rovnake produktu ale ine URL.
-
---------------
-1 je zla !!!!
-pridat warning na take...
-Nutrilon 3 (32 produktov, 13 eshopov):
-1. 13,89€  2,894€/kg https://www.drmax.sk/nutrilon-3-pronutra/
-2. 25,50€ 14,167€/kg https://kidmarket.sk/mliecna-vyziva/250-nutrilon-3-pronutra-3x600g-8590340162510.html
-3. 71,94€ 14,988€/kg https://www.feedo.sk/6x-nutrilon-3-800g-dojcenske-mlieko/
-4. 71,94€ 14,988€/kg https://www.pilulka24.sk/nutrilon-3-batolacia-mliecna-vyziva-v-prasku-800g-5-1-zdarma
-5. 71,94€ 14,988€/kg https://www.mall.sk/detske-mlieka/nutrilon-pronutra-3-6x800g-kasa-4x225g
+TODO reporty robit po dokonceni procesu update
+-------------------
+2019-10-15 09:39:53,958 ERROR [METRO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:416] error while parsing eshop METRO products URLs for keyword pampers
+sk.hudak.prco.manager.addprocess.SearchProductUrlsException: error while parsing eshop METRO products URLs for keyword pampers
+	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.searchProductUrls(AddingNewProductManagerImpl.kt:338)
+	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$searchProductUrls(AddingNewProductManagerImpl.kt:56)
+	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:139)
+	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:219)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: sk.hudak.prco.exception.HttpStatusParserException: error creating document for url 'https://sortiment.metro.sk/sk/search/?q=pampers':  org.jsoup.HttpStatusException: HTTP error fetching URL. Status=503, URL=https://sortiment.metro.sk/sk/search/?q=pampers
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.convertToParserException(JSoupProductParser.kt:275)
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.retrieveDocument(JSoupProductParser.kt:264)
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.kt:121)
+	at sk.hudak.prco.parser.html.JsoupHtmlParserImpl.searchProductUrls(JsoupHtmlParserImpl.kt:24)
+	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.searchProductUrls(AddingNewProductManagerImpl.kt:335)
+	... 8 common frames omitted
+Caused by: org.jsoup.HttpStatusException: HTTP error fetching URL
+	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:682)
+	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:629)
+	at org.jsoup.helper.HttpConnection.execute(HttpConnection.java:261)
+	at org.jsoup.helper.HttpConnection.get(HttpConnection.java:250)
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.retrieveDocument(JSoupProductParser.kt:260)
+	... 11 common frames omitted
+2019-10-15 09:39:53,958 DEBUG [METRO-thread] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:153] marking task for eshop METRO as FINISHED_WITH_ERROR
+2019-10-15 09:39:53,974 DEBUG [METRO-thread] [] s.h.p.s.i.ErrorServiceImpl [ErrorServiceImpl.kt:103] create entity ErrorEntity with id 6843 msg: error while parsing eshop METRO products URLs for keyword pampers
 --------------
 zle vyhodnotilo:
 2019-10-14 09:32:14,149 WARN [METRO-thread] [] s.h.p.p.e.JSoupProductParser [Extensions.kt:8] product is unavailable: https://sortiment.metro.sk/sk/nutrilon-1-800g-/182541p/
-TODO error az zbehne update, a da vela produktov ako nedostupnych... dodefinovat postup ako to zistovat..., aby sme to skoro odhalili
-TODO pagging na pohlady potrebujem...
-TODO usr agentov urobit novych... z roznych browser a system.
-TODO page a  filter na vyhladavanie v groupe aj na zaklade klucoveho slova...
 -------------
 BRENDON:
 * problem lebo su 4 strany a mne dava stale akj pre 2 stranu produkty url z prvej strany teda mam 4 krat duplicitu a neveim preco
 -------------
 bugs:
--------------
-No bug
-FOUR_KIDS [6539] 04-10-2019 15:36:43 UNKNOWN status: null message: no url found for eshop FOUR_KIDS and searchKeyWord lovela url null
-MAGANO [6533] 04-10-2019 15:36:06 UNKNOWN status: null message: no url found for eshop MAGANO and searchKeyWord nutrilon url null
-MAXIKOVY_HRACKY [6534] 04-10-2019 15:36:09 UNKNOWN status: null message: no url found for eshop MAXIKOVY_HRACKY and searchKeyWord nutrilon url null
-MAXIKOVY_HRACKY [6545] 04-10-2019 15:37:01 UNKNOWN status: null message: no url found for eshop MAXIKOVY_HRACKY and searchKeyWord lovela url null
-GIGA_LEKAREN [6540] 04-10-2019 15:36:46 UNKNOWN status: null message: no url found for eshop GIGA_LEKAREN and searchKeyWord lovela url null
-
--------------
 TODO prest zoznam:
 [DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop DROGERKA and searchKeyWord nutrilon
 INTERNETOVA_LEKAREN [6541] 04-10-2019 15:36:48 UNKNOWN status: null message: no url found for eshop INTERNETOVA_LEKAREN and searchKeyWord lovela url null
@@ -54,26 +59,7 @@ DROGERIA_VMD [6399] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null me
 2019-10-04 15:17:03,900 DEBUG [FOUR_KIDS-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop FOUR_KIDS and searchKeyWord nutrilon
 2019-10-04 15:17:03,900 DEBUG [FOUR_KIDS-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:39] count of found: 0
 2019-10-04 15:17:03,900 DEBUG [FOUR_KIDS-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:40] count of added: 0
----------
-2019-10-04 15:17:00,517 DEBUG [FARBY-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:37] AddProductsToEshopByKeywordFinishedEvent(FARBY)
-2019-10-04 15:17:00,517 DEBUG [FARBY-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop FARBY and searchKeyWord nutrilon
-2019-10-04 15:17:00,517 DEBUG [FARBY-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:39] count of found: 0
-2019-10-04 15:17:00,517 DEBUG [FARBY-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:40] count of added: 0
---------------
-2019-10-04 15:16:58,233 DEBUG [ESO_DROGERIA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:37] AddProductsToEshopByKeywordFinishedEvent(ESO_DROGERIA)
-2019-10-04 15:16:58,233 DEBUG [ESO_DROGERIA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop ESO_DROGERIA and searchKeyWord nutrilon
-2019-10-04 15:16:58,234 DEBUG [ESO_DROGERIA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:39] count of found: 0
-2019-10-04 15:16:58,234 DEBUG [ESO_DROGERIA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:40] count of added: 0
--------------------------------
-update processs urobit tak ze najprv nech ide po grupach pampers, potom nutrilon, lovela a potom ostatne grupy a potom to co ostalo
-akonahle skonci update danej grupy nech posle event s report ako to dopadlo... console debug report
--------------------------------
-nie je tam 5 ale ze to je len jeden kus
-Nutrilon 4 batoľacia mliečna výživa v prášku 800g 5+1 zdarma
 -------------
-TODO urobit update process pre new produkty(teda urobit reporocess data ale s delay)
--------------
-//TODO urobit ked vyparsuje URL picture, tak na overenie zavolat danu URL ci pride http 200 aby sa toto nestavalo...
 ------------------
 nevie nacitat groupu
 Pampers New Baby-Dry 2-5kg veľ.1 43ks
@@ -299,9 +285,6 @@ Caused by: sk.hudak.prco.exception.RequiredParameterException: parameter name is
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.kt:155)
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:137)
 	... 8 common frames omitted
---------------------
-pre toto nerozpazna groupu pampers zelene 4+
-Pampers Active Baby 10-15kg veľ.4+ 70ks
 ----------------
 pocas update nech zobrazuje aj approximetly end time for current task for eshop
 ---------------
@@ -346,21 +329,6 @@ a dava
 PAMPERS_ZELENE_3
 TODO: urobit group keywordy aj pre pants vsetky velkosti a prest zoznam notinteresting s nazvom pampers
 *****************************************************************************************
-Pampers New Baby-Dry 3-6kg veľ.2 43ks
-pampers 2 zelene
-*********************************
-Pampers New Baby-Dry 2-5kg veľ.1 43ks
-pampes 1 zelene
-*********************************
-Pampers Active Baby Mini 4-8kg veľ.2 100ks
-pampers 2 zelene
-*********************************
-Pampers Active Baby 11-16kg veľ.5 64ks
-pridat ako grupa pampes 5 zelene
-*********************************
-Pampers Active Baby plienky Extra Large veľ.6 13-18kg 56ks
-pridat ako grupa pampers 4 zelene
-*********************************
 ----------------------------
 TODO overit ci sa dana chyba ulozi do DB
 2019-06-07 13:55:40,211 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.t.i.EshopTaskManagerImpl [EshopTaskManagerImpl.java:126] task status TaskContext(status=STOPPED, lastChanged=Fri Jun 07 13:55:18 CEST 2019)
@@ -397,22 +365,11 @@ Caused by: java.lang.NumberFormatException: null
 2019-06-07 13:55:40,952 WARN [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:178] redirecting:
 2019-06-07 13:55:40,952 WARN [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:179] from https://www.brendon.sk/Products/Details/118431
 -----------------------------------------------------------------------------------------------------------------------
-49:
------------------------------------------------------------------------------------------------------------------------
-22 BUG
 Je to toiste(prest vsetky eshopy a vypisat duplicity na zaklade nazvu) !!!
 4. 0.22500€/kus 14,40€/balenie https://kidmarket.sk/jednorazove-plienky/177-pampers-active-baby-5-giant-pack-64ks.html
 5. 0.22500€/kus 14,40€/balenie https://kidmarket.sk/active-baby/177-pampers-active-baby-5-giant-pack-64ks-8001090278067.html
 -----------------------------------------------------------------------------------------------------------------------
-21 BUG
 !!! do nutrilon groupy som pridal aj vanilku
------------------------------------------------------------------------------------------------------------------------
-46 FEATURE
-!!! ak ide o pridanie noveho produktu a produkt je nedostupny tak preskakovat dany produkt a ist na dalsi !!!
------------------------------------------------------------------------------------------------------------------------
-47 BUG MINOR
-Pampers Pampers Premium Care, Veľkosť 6, Plienka 38x
-nevie rozpoznat groupu
 -----------------------------------------------------------------------------------------------------------------------
 BUG: dvojite lomitka:
 https://www.mojalekaren.sk//pampers-active-baby-dry-5-junior-11-18kg-150-kusov/
@@ -421,10 +378,6 @@ BUG:
 https://www.mojalekaren.sk//nutrilon-comfort-1-400g/
 tento produkt neexistuje a vrati 302 na https://www.mojalekaren.sk/, potrebujem urobit to aby som to odchytil
 ------------------------------------------------------------------------------
-BUG:
-PAMPERS Plienky Active Baby-Dry Mega Quad S4
-ma na konci nieco co vyzera ako medzera ale nie je to medzera
------------------------------------------------------------------------------------------------------------------------
 BUG duplicita v grupe:
 eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2113, 'Pampers Active Baby 5 Megapack+ 11-16Kg 110ks', https://kidmarket.sk/jednorazove-plienky/1046-pampers-active-baby-5-megapack-11-16kg-110ks-8001090951762.html?search_query=pampers&results=44, last updated 03-01-2019 14:48:09
 eshop: KID_MARKET price for unit 0.25618, price for one item 28.18, id 2818, 'Pampers Active Baby 5 Megapack+ 11-16Kg 110ks', https://kidmarket.sk/jednorazove-plienky/1046-pampers-active-baby-5-megapack-11-16kg-110ks-8001090951762.html?search_query=pampers&results=39, last updated 03-01-2019 14:55:45

@@ -27,6 +27,16 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
                                  @param:Qualifier("searchKeywordService") private val searchKeywordService: SearchKeywordService)
     : InternalTxService {
 
+    @Transactional
+    override fun updateProductUnitPackageCount(productId: Long, unitPackageCount: Int) {
+        productService.updateProductUnitPackageCount(productId, unitPackageCount)
+    }
+
+    @Transactional(readOnly = true)
+    override fun getProductById(productId: Long): ProductFullDto =
+            productService.getProductById(productId)
+
+
     @Transactional(readOnly = true)
     override fun getSearchKeywordById(searchKeyWordId: Long): String =
             searchKeywordService.getSearchKeywordById(searchKeyWordId)
@@ -41,8 +51,7 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional(readOnly = true)
-    override fun findAllSearchKeyword(): List<SearchKeywordListDto> =
-            searchKeywordService.findAllSearchKeyword()
+    override fun findAllSearchKeyword(): List<SearchKeywordListDto> = searchKeywordService.findAllSearchKeyword()
 
     @Transactional
     override fun updateProductUrl(productId: Long, newProductUrl: String) {
@@ -397,8 +406,8 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional(readOnly = true)
-    override fun getProductWithUrl(productUrl: String, productIdToIgnore: Long?): Optional<Long> {
-        return productService.getProductWithUrl(productUrl, productIdToIgnore)
+    override fun findProductIdWithUrl(productUrl: String, productIdToIgnore: Long?): Long? {
+        return productService.findProductIdWithUrl(productUrl, productIdToIgnore)
     }
 
     @Transactional

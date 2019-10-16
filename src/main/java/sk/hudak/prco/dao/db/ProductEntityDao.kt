@@ -4,7 +4,6 @@ import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dao.BaseDao
 import sk.hudak.prco.dto.product.ProductFilterUIDto
 import sk.hudak.prco.model.ProductEntity
-import java.util.*
 
 interface ProductEntityDao : BaseDao<ProductEntity> {
 
@@ -23,7 +22,7 @@ interface ProductEntityDao : BaseDao<ProductEntity> {
 
     fun findByUrl(productUrl: String): ProductEntity?
 
-    fun getProductWithUrl(productUrl: String, productIdToIgnore: Long?): Optional<Long>
+    fun findProductIdWithUrl(productUrl: String, productIdToIgnore: Long?): Long?
 
     fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<ProductEntity>
 

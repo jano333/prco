@@ -11,8 +11,6 @@ import sk.hudak.prco.dto.product.ProductFilterUIDto
 import sk.hudak.prco.model.ProductEntity
 import sk.hudak.prco.model.QProductEntity
 import sk.hudak.prco.utils.DateUtils.calculateDate
-import java.util.*
-import java.util.Optional.ofNullable
 import javax.persistence.EntityManager
 
 @Repository
@@ -55,14 +53,17 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
 
         // EshopUuid
         if (filter.eshopUuid != null) {
-            query.where(QProductEntity.productEntity.eshopUuid.eq(filter.eshopUuid!!))
+            query.where(QProductEntity.productEntity.eshopUuid.eq(filter.eshopUuid))
         }
         // OnlyInAction
         if (java.lang.Boolean.TRUE == filter.onlyInAction) {
             query.where(QProductEntity.productEntity.productAction.eq(ProductAction.IN_ACTION))
         }
-
-        query.orderBy(OrderSpecifier(Order.ASC, QProductEntity.productEntity.priceForUnit))
+        // ordering
+        when (filter.orderBy) {
+            ProductFilterUIDto.ORDER_BY.NAME -> query.orderBy(OrderSpecifier(Order.ASC, QProductEntity.productEntity.name))
+            else -> query.orderBy(OrderSpecifier(Order.ASC, QProductEntity.productEntity.priceForUnit))
+        }
         return query.fetch()
     }
 
@@ -117,17 +118,20 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
         return countOfProductsAlreadyUpdated(eshopUuid, OLDER_THAN_IN_HOURS)
     }
 
-    override fun getProductWithUrl(productUrl: String, productIdToIgnore: Long?): Optional<Long> {
-        return ofNullable(queryFactory
+    override fun findProductIdWithUrl(productUrl: String, productIdToIgnore: Long?): Long? {
+        val query = JPAQueryFactory(em)
                 .select(QProductEntity.productEntity.id)
                 .from(QProductEntity.productEntity)
-                .where(QProductEntity.productEntity.url.eq(productUrl)
-                        .and(QProductEntity.productEntity.id.ne(productIdToIgnore!!)))
-                .fetchFirst())
+                .where(QProductEntity.productEntity.url.eq(productUrl))
+
+        if (productIdToIgnore != null) {
+            query.where(QProductEntity.productEntity.id.ne(productIdToIgnore))
+        }
+        return query.fetchFirst()
     }
 
     override fun countOfProductMarkedAsUnavailable(eshopUuid: EshopUuid): Long {
-        val fetchCount = JPAQueryFactory(em)
+        return JPAQueryFactory(em)
                 .select(QProductEntity.productEntity.id)
                 .from(QProductEntity.productEntity)
                 .where(QProductEntity.productEntity.eshopUuid.eq(eshopUuid)
@@ -139,7 +143,6 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
                         .and(QProductEntity.productEntity.productAction.isNull)
                         .and(QProductEntity.productEntity.actionValidTo.isNull))
                 .fetchCount()
-        return fetchCount
     }
 
 }

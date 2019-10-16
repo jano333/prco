@@ -1,3 +1,16 @@
+TODO urobit update process pre new produkty(teda urobit reporocess data ale s delay )
+-------------
+//TODO urobit ked vyparsuje URL picture, tak na overenie zavolat danu URL ci pride http 200 aby sa toto nestavalo...
+--------------
+update processs urobit tak ze najprv nech ide po grupach pampers, potom nutrilon, lovela a potom ostatne grupy a potom to co ostalo
+akonahle skonci update danej grupy nech posle event s report ako to dopadlo... console debug report
+-----------------------------------------------------------------------------------------------------------------------
+TODO error az zbehne update, a da vela produktov ako nedostupnych... dodefinovat postup ako to zistovat..., aby sme to skoro odhalili
+TODO pagging na pohlady potrebujem...
+TODO usr agentov urobit novych... z roznych browser a system.
+TODO page a  filter na vyhladavanie v groupe aj na zaklade klucoveho slova...
+-----------------------------------------------------------------------------------------------------------------------
+!!! ak ide o pridanie noveho produktu a produkt je nedostupny tak preskakovat dany produkt a ist na dalsi !!!
 ------------------------------------------------------------------------------------------------------------------------
 urobit osoibitnyu ui stranku na errorky aj s moznostoou odmazavania danej chyby
 ------------------------------------------------------------------------------------------------------------------------

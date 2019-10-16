@@ -2,6 +2,7 @@ package sk.hudak.prco.utils
 
 object ConsoleWithColor {
 
+    @Deprecated("pouzit to color metodu na stringu")
     fun wrapWithColor(text: String, fontColor: ConsoleColor): String {
         return when (fontColor) {
             ConsoleColor.RESET -> "" + ConsoleColor.RESET.colorName
