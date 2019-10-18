@@ -1,3 +1,16 @@
+------------
+pampers 7 zelene kategoria chyba
+------------
+pampers biele 6 kategoria chyba
+------------
+TODO nutrilon good sleep
+------------
+TODO pampers pants
+------------
+TODO nutrilon pro futura
+------------
+TODO reporty robit po dokonceni procesu update
+------------
 TODO urobit update process pre new produkty(teda urobit reporocess data ale s delay )
 -------------
 //TODO urobit ked vyparsuje URL picture, tak na overenie zavolat danu URL ci pride http 200 aby sa toto nestavalo...
@@ -6,8 +19,11 @@ update processs urobit tak ze najprv nech ide po grupach pampers, potom nutrilon
 akonahle skonci update danej grupy nech posle event s report ako to dopadlo... console debug report
 -----------------------------------------------------------------------------------------------------------------------
 TODO error az zbehne update, a da vela produktov ako nedostupnych... dodefinovat postup ako to zistovat..., aby sme to skoro odhalili
+------------
 TODO pagging na pohlady potrebujem...
+------------
 TODO usr agentov urobit novych... z roznych browser a system.
+------------
 TODO page a  filter na vyhladavanie v groupe aj na zaklade klucoveho slova...
 -----------------------------------------------------------------------------------------------------------------------
 !!! ak ide o pridanie noveho produktu a produkt je nedostupny tak preskakovat dany produkt a ist na dalsi !!!
@@ -33,9 +49,6 @@ ak je mesiac po sebe produkt nedostupny teda 404 tak ho odstranit...
 ------------------------------------------------------------------------------------------------------------------------
 newProduct page ked kliknem na obrazok tak nech sa zobrazi v novej stranke
 ------------------------------------------------------------------------------------------------------------------------
-toto je rovnaky produkt:(urobit servic, ktory vyhlada v danom esope produkty ktore maju rovnaky price for unit, pricie for one item a aj nazov, teda lisia sa len URL)
-eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 169, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-pronutra-800g-dojcenske-mlieko/
-eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 996, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-800g-dojcenske-mlieko/
 ------------------------------------------------------------------------------------------------------------------------
 pridat automaticke parsovanie default ceny z daneho eshopu pri vytvarani a nasledne aj aktualizaciu ....
 otazka znie ci potom ako budem mat ja potom default cenu, lebo napr. 14,99 nutrilon... nie vsade je to bezna cena pre nutrilon

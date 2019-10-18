@@ -4,9 +4,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.api.Unit
 import sk.hudak.prco.console.PrcoConsole
-import sk.hudak.prco.dto.*
+import sk.hudak.prco.dto.ErrorFindFilterDto
+import sk.hudak.prco.dto.GroupFilterDto
+import sk.hudak.prco.dto.SearchKeywordCreateDto
 import sk.hudak.prco.dto.product.NotInterestedProductFindDto
 import sk.hudak.prco.dto.product.ProductFilterUIDto
 import sk.hudak.prco.manager.EshopThreadStatisticManager
@@ -76,7 +77,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         //init ssl
         PrcoSslManager.init()
 
-        // start thred for showing statistics
+        // start thread for showing statistics
         theadStatisticManager.startShowingStatistics()
 
         //TODO
@@ -217,7 +218,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
 
 //        searchKeywords()
 
-        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener)
+//        updateProductDataManager.updateProductDataForEachProductInEachEshop(listener)
         //        updateProductDataManager.updateProductDataForEachProductNotInAnyGroup(listener);
 
 //                updateProductDataManager.updateProductDataForEachProductInEshop(EshopUuid.FEEDO, listener)
@@ -332,24 +333,6 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
 
     }
 
-    private fun showDuplicityProductsInEshops() {
-
-        //        internalTxService.removeProduct(2659L);
-
-        //        EshopUuid eshopUuid = EshopUuid.FEEDO;
-        for (eshopUuid in EshopUuid.values()) {
-            println("Duplicity for eshop: $eshopUuid")
-            val result = internalTxService!!.findDuplicityProductsByNameAndPriceInEshop(eshopUuid)
-            for (productFullDto in result) {
-                println(productFullDto.id.toString() + ", "
-                        + productFullDto.name + " "
-                        + productFullDto.priceForPackage + " "
-                        + productFullDto.url + " "
-                        + formatDate(productFullDto.created))
-            }
-            println()
-        }
-    }
 
     private fun deleteProductsFromNotInterested(eshopUuid: EshopUuid) {
         internalTxService!!.deleteNotInterestedProducts(eshopUuid)
@@ -385,41 +368,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         }
     }
 
-    private fun showProductsInEshopInAction(eshopUuid: EshopUuid) {
-        println()
-        println("Produkty v akcii pre eshop $eshopUuid:")
 
-        for (product in uiService!!.findProductsInAction(eshopUuid)) {
-            println("id " + product.id + ", "
-                    + formatPrice(product.priceForPackage) + "/"
-                    + formatPrice(product.commonPrice) + " "
-                    + formatPercentage(product.priceForPackage, product.commonPrice)
-                    + " '" + product.name + "', "
-                    + formatPrice(product.priceForOneItemInPackage, 2) + " " +
-                    "(" + formatValidTo(product.actionValidTo) + ") "
-                    + product.bestPriceInGroup + " "
-                    + product.url)
-        }
-    }
-
-    private fun showProductsInEshopWithBestPriceInGroupOnly(eshopUuid: EshopUuid) {
-        println()
-        println("Produkty v akcii a najlepsou cenou v groupe pre eshop $eshopUuid:")
-
-        val products = uiService!!.findProductsBestPriceInGroupDto(eshopUuid)
-        for (product in products) {
-            println("id " + product.id + ", "
-                    + formatPrice(product.priceForUnit, 2) + " "
-                    + formatPrice(product.priceForOneItemInPackage, 2) + " "
-                    + formatPrice(product.priceForPackage) + "/"
-                    + formatPrice(product.commonPrice) + " "
-                    + formatPercentage(product.priceForPackage, product.commonPrice) +
-                    "(" + formatValidTo(product.actionValidTo) + ") "
-                    + " '" + product.name + "', "
-                    + product.url)
-        }
-
-    }
 
     private fun formatPercentage(priceForPackage: BigDecimal?, commonPrice: BigDecimal?): String {
         return if (priceForPackage == null || commonPrice == null) {
@@ -434,18 +383,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         } else SimpleDateFormat("dd.MM.yyyy").format(date)
     }
 
-    private fun showProductsInEshop(eshopUuid: EshopUuid) {
-        println("Eshop $eshopUuid")
 
-        val products = uiService.findProducts(ProductFilterUIDto.withEshopOnly(eshopUuid))
-        for (product in products) {
-            println("id " + product.id + ", "
-                    + formatPrice(product.priceForPackage) + "(" + formatValidTo(product.actionValidTo) + ") " + formatPrice(product.commonPrice)
-                    + " '" + product.name + "', "
-                    + product.groupList + "  "
-                    + product.url)
-        }
-    }
 
     private fun formatPrice(bigDecimal: BigDecimal?, countOfDecimal: Int): String {
         var bigDecimal: BigDecimal? = bigDecimal ?: return "-"
@@ -470,23 +408,6 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         println("product with URL $productURL existuje: $existProductWithUrl")
     }
 
-    private fun showProductsNotInAnyGroup() {
-        println()
-        println("Products not in any group:")
-
-        val products = uiService!!.findProductsWitchAreNotInAnyGroup()
-        for (product in products) {
-            println("eshop " + product.eshopUuid + ", " +
-                    "id " + product.id + ", " +
-                    "name: " + product.name + ", " +
-                    "url: " + product.url + ", " +
-                    "unit: " + product.unitValue + " " + product.unit + " count: " + product.unitPackageCount)
-
-        }
-        if (products.isEmpty()) {
-            println("ziadny")
-        }
-    }
 
     private fun showProductsInGroup(groupId: Long, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid) {
         val group = uiService!!.getGroupById(groupId)
@@ -516,57 +437,5 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         } else SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(date)
     }
 
-    private fun showAllProducts() {
-        val products = uiService!!.findProducts(ProductFilterUIDto())
-        for (product in products) {
-            println("id " + product.id + ", name " + product.name + ", url " + product.url)
-        }
-    }
-
-    private fun showAllGroups() {
-        println("Zoznam groups:")
-        val groups = uiService!!.findAllGroupExtended()
-        for (group in groups) {
-            print(group.id.toString() + "/" + group.name + "(" + group.countOfProduct + ") ")
-            val countOfProductInEshop = group.countOfProductInEshop
-            if (!countOfProductInEshop.isEmpty()) {
-                for (eshopUuid in countOfProductInEshop.keys) {
-                    print(eshopUuid.toString() + "/" + countOfProductInEshop[eshopUuid] + ", ")
-                }
-            }
-            println()
-        }
-        println("---")
-    }
-
-
-    private fun updateGroupName(id: Long, name: String) {
-        uiService!!.updateGroup(GroupUpdateDto(id, name))
-    }
-
-    private fun createNewGroup(groupName: String) {
-        uiService!!.createGroup(GroupCreateDto(groupName))
-    }
-
-    fun UC_fixOneInvalidNewProduct() {
-        println("pocet neplatnych: " + internalTxService!!.countOfInvalidNewProduct)
-
-        val firstInvalidNewProductInfo = internalTxService.findFirstInvalidNewProduct()
-        if (firstInvalidNewProductInfo != null) {
-            println("je to null")
-            return
-        }
-        println(firstInvalidNewProductInfo)
-
-        //TODO z GUI vyplnit spravne data
-        internalTxService.repairInvalidUnitForNewProduct(
-                1185L,
-                UnitData(Unit.KUS, BigDecimal("1"), Integer.valueOf(1)))
-
-    }
-
-    fun UC_markAsNotInterested(newProductIds: Long?) {
-        internalTxService!!.markNewProductAsNotInterested(newProductIds!!)
-    }
 
 }

@@ -51,7 +51,7 @@ abstract class JSoupProductParser : EshopProductsParser {
     protected open val timeout: Int
         get() = DEFAULT_TIMEOUT_3_SECOND
 
-    protected open val cookie: Map<String, String>
+    protected open val requestCookie: Map<String, String>
         get() = emptyMap()
 
     /**
@@ -246,18 +246,22 @@ abstract class JSoupProductParser : EshopProductsParser {
      */
     protected open fun retrieveDocument(productUrl: String): Document {
         try {
-            log.debug("request URL: {}", productUrl)
-            log.debug("userAgent: {}", userAgent)
+            log.debug("request URL: $productUrl")
+            log.trace("request userAgent: $userAgent")
 
             val connection = Jsoup.connect(productUrl)
                     .userAgent(userAgent)
                     .timeout(timeout)
 
-            if (cookie.isNotEmpty()) {
-                connection.cookies(cookie)
+            if (requestCookie.isNotEmpty()) {
+                connection.cookies(requestCookie)
             }
 
-            return connection.get()
+            val response = connection.execute()
+
+            log.trace("response cookies: ${response.cookies()}")
+            // convert 'body' to 'document'
+            return response.parse()
 
 
         } catch (e: Exception) {

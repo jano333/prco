@@ -1,33 +1,9 @@
-TODO reporty robit po dokonceni procesu update
+Duplicity for eshop: MAXIKOVY_HRACKY
+5815, Pampers Active Baby Giant Pack S4+ 70ks null https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-s4-70ks?zmena_meny=EUR 25-09-2019 13:31:13
+5807, Pampers Active Baby Giant Pack S4+ 70ks 18.40000 https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-s4-70ks 24-09-2019 14:20:01
+5847, Pampers Active Baby Giant Pack 76 ks null https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-76-ks?zmena_meny=EUR 26-09-2019 12:21:47
+5806, Pampers Active Baby Giant Pack 76 ks 18.40000 https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-76-ks 24-09-2019 14:19:52
 -------------------
-2019-10-15 09:39:53,958 ERROR [METRO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:416] error while parsing eshop METRO products URLs for keyword pampers
-sk.hudak.prco.manager.addprocess.SearchProductUrlsException: error while parsing eshop METRO products URLs for keyword pampers
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.searchProductUrls(AddingNewProductManagerImpl.kt:338)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$searchProductUrls(AddingNewProductManagerImpl.kt:56)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:139)
-	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:219)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: sk.hudak.prco.exception.HttpStatusParserException: error creating document for url 'https://sortiment.metro.sk/sk/search/?q=pampers':  org.jsoup.HttpStatusException: HTTP error fetching URL. Status=503, URL=https://sortiment.metro.sk/sk/search/?q=pampers
-	at sk.hudak.prco.parser.eshop.JSoupProductParser.convertToParserException(JSoupProductParser.kt:275)
-	at sk.hudak.prco.parser.eshop.JSoupProductParser.retrieveDocument(JSoupProductParser.kt:264)
-	at sk.hudak.prco.parser.eshop.JSoupProductParser.parseUrlsOfProduct(JSoupProductParser.kt:121)
-	at sk.hudak.prco.parser.html.JsoupHtmlParserImpl.searchProductUrls(JsoupHtmlParserImpl.kt:24)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.searchProductUrls(AddingNewProductManagerImpl.kt:335)
-	... 8 common frames omitted
-Caused by: org.jsoup.HttpStatusException: HTTP error fetching URL
-	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:682)
-	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:629)
-	at org.jsoup.helper.HttpConnection.execute(HttpConnection.java:261)
-	at org.jsoup.helper.HttpConnection.get(HttpConnection.java:250)
-	at sk.hudak.prco.parser.eshop.JSoupProductParser.retrieveDocument(JSoupProductParser.kt:260)
-	... 11 common frames omitted
-2019-10-15 09:39:53,958 DEBUG [METRO-thread] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:153] marking task for eshop METRO as FINISHED_WITH_ERROR
-2019-10-15 09:39:53,974 DEBUG [METRO-thread] [] s.h.p.s.i.ErrorServiceImpl [ErrorServiceImpl.kt:103] create entity ErrorEntity with id 6843 msg: error while parsing eshop METRO products URLs for keyword pampers
---------------
 zle vyhodnotilo:
 2019-10-14 09:32:14,149 WARN [METRO-thread] [] s.h.p.p.e.JSoupProductParser [Extensions.kt:8] product is unavailable: https://sortiment.metro.sk/sk/nutrilon-1-800g-/182541p/
 -------------
@@ -36,9 +12,6 @@ BRENDON:
 -------------
 bugs:
 TODO prest zoznam:
-[DROGERKA-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop DROGERKA and searchKeyWord nutrilon
-INTERNETOVA_LEKAREN [6541] 04-10-2019 15:36:48 UNKNOWN status: null message: no url found for eshop INTERNETOVA_LEKAREN and searchKeyWord lovela url null
-FOUR_KIDS [6531] 04-10-2019 15:35:51 UNKNOWN status: null message: no url found for eshop FOUR_KIDS and searchKeyWord nutrilon url null
 METRO [6546] 04-10-2019 15:37:03 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord lovela url null
 METRO [6525] 04-10-2019 15:35:19 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord pampers url null
 METRO [6535] 04-10-2019 15:36:11 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord nutrilon url null
@@ -48,22 +21,7 @@ DROGERIA_VMD [6402] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null me
 DROGERIA_VMD [6401] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/lovela-26dav-3-25kg-bile-pradlo-1937/
 DROGERIA_VMD [6400] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/lovela-40dav-5kg-barevne-pradlo-4294/
 DROGERIA_VMD [6399] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/lovela-13dav-1-625kg-bile-pradlo-9071/
----------
-2019-10-04 15:17:18,292 DEBUG [MAGANO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:37] AddProductsToEshopByKeywordFinishedEvent(MAGANO)
-2019-10-04 15:17:18,292 DEBUG [MAGANO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop MAGANO and searchKeyWord nutrilon
-2019-10-04 15:17:18,293 DEBUG [MAGANO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:39] count of found: 0
-2019-10-04 15:17:18,293 DEBUG [MAGANO-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:40] count of added: 0
-2019-10-04 15:17:18,298 DEBUG [TESCO-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:365] product https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002016453922 already existing
---------
-2019-10-04 15:17:03,900 DEBUG [FOUR_KIDS-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:37] AddProductsToEshopByKeywordFinishedEvent(FOUR_KIDS)
-2019-10-04 15:17:03,900 DEBUG [FOUR_KIDS-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:38] err msg: no url found for eshop FOUR_KIDS and searchKeyWord nutrilon
-2019-10-04 15:17:03,900 DEBUG [FOUR_KIDS-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:39] count of found: 0
-2019-10-04 15:17:03,900 DEBUG [FOUR_KIDS-thread] [] s.h.p.e.ConsoleDebugObservable [ConsoleDebugObservable.kt:40] count of added: 0
 -------------
-------------------
-nevie nacitat groupu
-Pampers New Baby-Dry 2-5kg veľ.1 43ks
-----------------
 2019-09-25 14:55:29,532 DEBUG [DROGERIA_VMD-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:248] request URL: https://www.drogeria-vmd.sk/hladanie-stranka-3/?q=pampers
 2019-09-25 14:55:29,532 DEBUG [DROGERIA_VMD-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:249] userAgent: Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko
 2019-09-25 14:55:29,567 DEBUG [DROGERIA_VMD-thread] [] s.h.p.s.PrcoCustomHostnameVerifier [SSLHandling.kt:365] verify www.drogeria-vmd.sk
@@ -103,16 +61,13 @@ Caused by: java.lang.NumberFormatException: null
 	at sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal(ConvertUtils.kt:18)
 	... 16 common frames omitted
 ----------------------------
-
-pampers 7 zelene kategoria chyba
-pampers biele 6 kategoria chyba
-
+toto je rovnaky produkt:(urobit servic, ktory vyhlada v danom esope produkty ktore maju rovnaky price for unit, pricie for one item a aj nazov, teda lisia sa len URL)
+eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 169, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-pronutra-800g-dojcenske-mlieko/
+eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 996, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-800g-dojcenske-mlieko/
+---------
 TODO prest not interesting ktore maju slovo pampers ci tam nie je 7 alebo nieco zabudnute(len manualne staci, netreba UI)
 TODO dokoncit facebook pre grupu pamper zelene1-7(urobit kategorie aj pre 7) a biele0-5 a nutrilo 1-6
 TODO pampers 4 a 4+ davat spolu
-TODO nutrilon good sleep
-TODO pampers pants
-TODO nutrilon pro futura
 ---------------------
 remove lobmok from pom.xml, fist find ussage
 ---------------------------------------------------------------------------------------------

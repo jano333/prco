@@ -22,15 +22,15 @@ fun main() {
 
     val test = ProductParserTest()
 
-//    val urlList = test.parseUrlsOfProduct(EshopUuid.LEKAREN_V_KOCKE, "nutrilon")
+//    val urlList = test.parseUrlsOfProduct(EshopUuid.METRO, "pampers")
 //    println("count in list ${urlList.size}")
 //    println("count in set ${HashSet(urlList).size}")
-//    println(urlList);
+//    println(urlList)
 
-//    println(test.parseProductNewData("https://www.pilulka.sk/nutrilon-profutura-obilno-mliecna-kasa-7-cerealii-s-ovocim-225g"))
+    println(test.parseProductNewData("https://sortiment.metro.sk/sk/pampers-abd-mb-s3-208ks/241758p/"))
 //    println(test.parseProductNewData("https://www.pilulka.sk/nutrilon-2-ha-prosyneo-6x800g"))
 
-    println(test.parseProductUpdateData("https://www.lekarenvkocke.sk/zqcca7c9d69cc89a501513a05ef16592f4-nutricia-nutrilon-4-pronutra-800-g"))
+//    println(test.parseProductUpdateData("https://www.lekarenvkocke.sk/zqcca7c9d69cc89a501513a05ef16592f4-nutricia-nutrilon-4-pronutra-800-g"))
 }
 
 class ProductParserTest {
@@ -60,6 +60,7 @@ class ProductParserTest {
             // M
             EshopUuid.MALL -> MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.MAXIKOVY_HRACKY -> MaxikovyHrackyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            EshopUuid.METRO -> MetroProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.MOJA_LEKAREN -> MojaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // P
             EshopUuid.PILULKA -> PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)

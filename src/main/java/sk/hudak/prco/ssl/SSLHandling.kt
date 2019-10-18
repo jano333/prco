@@ -274,7 +274,7 @@ constructor() : X509TrustManager {
     override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
         this.serverCert = chain[0]
         val name = serverCert!!.subjectX500Principal.name
-        log.debug("server cert subject name $name")
+        log.trace("server cert subject name $name")
         // ak sa v subjecte certifikatu nachadza povoleny hostname, koncim
         // validaciu
         for (allowedHostName in PrcoSSLContants.ALLOWED_HOSTNAME) {
@@ -283,7 +283,7 @@ constructor() : X509TrustManager {
                 return
             }
         }
-        log.debug("delegating checking to java default trust manager")
+        log.trace("delegating checking to java default trust manager")
         this.javaDefaultTrustManager.checkServerTrusted(chain, authType)
     }
 

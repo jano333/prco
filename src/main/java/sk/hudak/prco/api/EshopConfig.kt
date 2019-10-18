@@ -223,8 +223,8 @@ object MaxikovyHrackyEshopConfiguration : StaticEshopConfiguration(EshopCategory
 
 object MetroEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
         "https://sortiment.metro.sk",
-        "https://sortiment.metro.sk/sk/search/?q={keyword}",
-        "https://sortiment.metro.sk/sk/search/?p={pageNumber}&search_by_price=dph_without&category_id=0&ownbrand=0&product_type_id=0&inaction=0&mysort=0&pcheck=0&local=0&orderby=wght&direction=asc&q={keyword}&extorder=0&onstock=0",
+        "https://sortiment.metro.sk/sk/search/?submitted=1&q=$KEYWORD_TEMP&type=&department_id=&mysort=&cip=",
+        "https://sortiment.metro.sk/sk/search/?submitted=1&q=$KEYWORD_TEMP&type=&department_id=&mysort=&cip=",
         3, 12, -1,
         supportedSearchKeywordIds = listOf(PAMPERS_ID, NUTRILON_ID, LOVELA_ID)
 )
