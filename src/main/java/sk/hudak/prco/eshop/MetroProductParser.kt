@@ -1,5 +1,7 @@
 package sk.hudak.prco.eshop
 
+import org.apache.commons.lang3.StringUtils
+import org.apache.commons.lang3.math.NumberUtils
 import org.jsoup.nodes.Document
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
@@ -11,10 +13,10 @@ import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal
-import sk.hudak.prco.utils.JsoupUtils.notExistElement
 import sk.hudak.prco.utils.UserAgentDataHolder
 import sk.hudak.prco.utils.href
 import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.*
 import kotlin.streams.toList
 
@@ -26,6 +28,7 @@ class MetroProductParser(unitParser: UnitParser,
 
     override val eshopUuid: EshopUuid = METRO
     override val timeout: Int = TIMEOUT_15_SECOND
+
     // 21 su Kosice pobocka
     override val requestCookie: Map<String, String> = Collections.singletonMap("storeId", "21")
 
@@ -41,28 +44,51 @@ class MetroProductParser(unitParser: UnitParser,
                 .toList()
     }
 
-    override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
-        //TODO
-        return notExistElement(documentDetailProduct, "div.x-row.product-stock-detail")
-    }
-
     override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
-        //TODO
-        val select = documentDetailProduct.select("div.product-detail.clearfix > h1").first() ?: return Optional.empty()
-        return Optional.ofNullable(select.text())
-    }
-
-    override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
-        //TODO
-        var text = documentDetailProduct.select("tr.price-package > td:nth-child(4)").text()
-        text = text.substring(0, text.length - 2)
-        return Optional.of(convertToBigDecimal(text))
+        return Optional.ofNullable(documentDetailProduct.select("h1.product-title").text())
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
-        //TODO
-        return Optional.ofNullable(documentDetailProduct.select("div[class=img-center] img").first())
-                .map { element -> element.attr("src") }
+        val href = documentDetailProduct.select("a.product-photo").href()
+        if (href.isBlank()) {
+            return Optional.empty()
+        }
+        return Optional.of(href)
+    }
+
+    override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
+        // https://sortiment.metro.sk/sk/pampers-abd-mb-s3-208ks/241758p/
+        val select = documentDetailProduct.select("div.product-nav-row.product-nav-info span:nth-child(2)")
+                .text()
+        if (select.isBlank()) {
+            return true
+        }
+        var remove = StringUtils.remove(select, "Na predajni: ")
+        remove = StringUtils.remove(remove, " bal.")
+        if (!NumberUtils.isDigits(remove)) {
+            return true
+        }
+        return false
+    }
+
+    override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
+        // prepocet DPH lebo je to cena bez DPH
+        val firstOrNull = documentDetailProduct.select("div.product-price-value > strong")
+                .map { it.text() }
+                .filter { it.isNotBlank() }
+                .map { StringUtils.remove(it, " €") }
+                .map { it.replace(",", ".") }
+                .filter { NumberUtils.isParsable(it) }
+                .map { convertToBigDecimal(it) }
+                .firstOrNull()
+
+        val let = firstOrNull?.let {
+            var result = it.plus(it.multiply(BigDecimal(0.2)))
+            result = result.setScale(2, RoundingMode.HALF_UP)
+            result
+        }
+
+        return Optional.ofNullable(let)
     }
 
     override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
