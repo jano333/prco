@@ -4,7 +4,7 @@ import sk.hudak.prco.model.core.DbEntity
 
 interface BaseDao<T : DbEntity> {
 
-    fun save(entity: T): Long?
+    fun save(entity: T): Long
 
     fun update(entity: T)
 

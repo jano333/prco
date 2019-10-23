@@ -2,24 +2,25 @@ package sk.hudak.prco.service
 
 import sk.hudak.prco.dto.GroupProductKeywordsCreateDto
 import sk.hudak.prco.dto.GroupProductKeywordsFullDto
-import java.util.*
 
 interface GroupProductKeywordsService {
 
     /**
-     * @param groupProductKeywordsCreateDto data from creating of new keyword for given group
+     * @param createDto data from creating of new keyword for given group
      * @return primary key id
      */
-    fun createGroupProductKeywords(groupProductKeywordsCreateDto: GroupProductKeywordsCreateDto): Long?
+    fun createGroupProductKeywords(createDto: GroupProductKeywordsCreateDto): Long
 
     /**
      * @param groupId group id
      * @return
      */
-    fun getGroupProductKeywordsByGroupId(groupId: Long?): Optional<GroupProductKeywordsFullDto>
+    fun getGroupProductKeywordsByGroupId(groupId: Long): GroupProductKeywordsFullDto?
 
     /**
      * @param groupId group id
      */
-    fun removeAllKeywordForGroupId(groupId: Long?)
+    fun removeAllKeywordForGroupId(groupId: Long)
+
+    fun findAllGroupProductKeywords(): List<GroupProductKeywordsFullDto>
 }

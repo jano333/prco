@@ -9,7 +9,6 @@ import sk.hudak.prco.dto.*
 import sk.hudak.prco.dto.product.*
 import sk.hudak.prco.service.*
 import java.math.BigDecimal
-import java.util.*
 import java.util.concurrent.Future
 
 /**
@@ -26,6 +25,10 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
                                  @param:Qualifier("groupProductKeywordsService") private val groupProductKeywordsService: GroupProductKeywordsService,
                                  @param:Qualifier("searchKeywordService") private val searchKeywordService: SearchKeywordService)
     : InternalTxService {
+
+    @Transactional(readOnly = true)
+    override fun findAllGroupProductKeywords(): List<GroupProductKeywordsFullDto> =
+            groupProductKeywordsService.findAllGroupProductKeywords()
 
     @Transactional
     override fun updateProductUnitPackageCount(productId: Long, unitPackageCount: Int) {
@@ -411,17 +414,17 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional
-    override fun createGroupProductKeywords(groupProductKeywordsCreateDto: GroupProductKeywordsCreateDto): Long? {
+    override fun createGroupProductKeywords(groupProductKeywordsCreateDto: GroupProductKeywordsCreateDto): Long {
         return groupProductKeywordsService.createGroupProductKeywords(groupProductKeywordsCreateDto)
     }
 
     @Transactional(readOnly = true)
-    override fun getGroupProductKeywordsByGroupId(groupId: Long?): Optional<GroupProductKeywordsFullDto> {
+    override fun getGroupProductKeywordsByGroupId(groupId: Long): GroupProductKeywordsFullDto? {
         return groupProductKeywordsService.getGroupProductKeywordsByGroupId(groupId)
     }
 
     @Transactional
-    override fun removeAllKeywordForGroupId(groupId: Long?) {
+    override fun removeAllKeywordForGroupId(groupId: Long) {
         groupProductKeywordsService.removeAllKeywordForGroupId(groupId)
     }
 

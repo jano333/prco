@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.servlet.ModelAndView
-import sk.hudak.prco.api.GroupProductKeywords
 import sk.hudak.prco.dto.GroupFilterDto
 import sk.hudak.prco.dto.product.ProductNotInAnyGroupDto
 import sk.hudak.prco.manager.GroupProductResolver
@@ -19,7 +18,9 @@ import sk.hudak.prco.ui.MvcConstants.VIEW_PRODUCT_ADD_TO_GROUP
 import java.util.*
 
 @Controller
-class ProductController(uiService: UIService, val groupProductResolver: GroupProductResolver) : BasicController(uiService) {
+class ProductController(uiService: UIService,
+                        val groupProductResolver: GroupProductResolver)
+    : BasicController(uiService) {
 
     /**
      * Zoznam produktov, ktore nie su v ziadne grupe
@@ -38,7 +39,9 @@ class ProductController(uiService: UIService, val groupProductResolver: GroupPro
             dto.name = product.name
             dto.url = product.url
             dto.id = product.id
-            dto.keywords = groupProductResolver.resolveGroup(product.name!!)
+            val resolveGroupId = groupProductResolver.resolveGroupId(product.name!!)
+            dto.groupName = resolveGroupId?.name
+            dto.groupId = resolveGroupId?.id
             products.add(dto)
         }
         val modelAndView = ModelAndView(VIEW_PRODUCTS_NOT_IN_ANY_GROUP, "productsNotIntAnyGroup", products)
@@ -56,12 +59,11 @@ class ProductController(uiService: UIService, val groupProductResolver: GroupPro
         return modelAndView
     }
 
-    @RequestMapping("/products/{productId}/addToGroupAutomaticaly/{keyword}")
-    fun addProductToGroupAutomaticalyView(
-            @PathVariable productId: Long?,
-            @PathVariable keyword: GroupProductKeywords): ModelAndView {
+    @RequestMapping("/products/{productId}/addToGroupAutomaticaly/{groupId}")
+    fun addProductToGroupAutomaticalyView(@PathVariable productId: Long?,
+                                          @PathVariable groupId: Long?): ModelAndView {
 
-        uiService.addProductsToGroup(keyword.groupId, productId!!)
+        uiService.addProductsToGroup(groupId!!, productId!!)
         return ModelAndView(REDIRECT_TO_VIEW_PRODUCTS_NOT_IN_ANY_GROUP)
     }
 
@@ -85,8 +87,8 @@ class ProductController(uiService: UIService, val groupProductResolver: GroupPro
 
     @RequestMapping("/products/groups/{groupId}")
     fun productInGroupView(@PathVariable groupId: Long): ModelAndView {
-        val productsInGroup = uiService.findProductsInGroup(groupId, true)
-        val modelAndView = ModelAndView(VIEW_PRODUCTS_IN_GROUP, "productsInGroup", productsInGroup)
+        val modelAndView = ModelAndView(VIEW_PRODUCTS_IN_GROUP, "productsInGroup",
+                uiService.findProductsInGroup(groupId, true))
         modelAndView.addObject("groupListDtos", uiService.findGroups(GroupFilterDto()))
         return modelAndView
     }

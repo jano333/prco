@@ -1,6 +1,8 @@
 package sk.hudak.prco.dto.product
 
-import sk.hudak.prco.api.*
+import sk.hudak.prco.api.BestPriceInGroup
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.ProductAction
 import sk.hudak.prco.api.Unit
 import sk.hudak.prco.dto.DtoAble
 import sk.hudak.prco.dto.GroupIdNameDto
@@ -211,5 +213,6 @@ data class ProductUnitDataDto(
         var unitPackageCount: Int? = null) : DtoAble
 
 class ProductNotInAnyGroupDto : ProductFullDto() {
-    var keywords: GroupProductKeywords? = null
+    var groupName: String? = null
+    var groupId: Long? = null
 }

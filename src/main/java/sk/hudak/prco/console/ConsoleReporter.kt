@@ -4,23 +4,42 @@ import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.Unit
 import sk.hudak.prco.dto.GroupCreateDto
+import sk.hudak.prco.dto.GroupProductKeywordsCreateDto
 import sk.hudak.prco.dto.GroupUpdateDto
 import sk.hudak.prco.dto.UnitData
 import sk.hudak.prco.dto.product.ProductFilterUIDto
 import sk.hudak.prco.dto.product.ProductFullDto
+import sk.hudak.prco.manager.GroupProductResolver
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.utils.CalculationUtils
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Arrays.asList
 
 @Component
-class PrcoConsole(val internalTxService: InternalTxService) {
+class PrcoConsole(val internalTxService: InternalTxService,
+                  val groupProductResolver: GroupProductResolver) {
 
     fun showInConsole() {
+        //Pampers Pure Value Pack S5 (11+kg) 24ks Junior
+//        val groupProductKeywords = groupProductResolver.resolveGroupId("Pampers Premium Care Veľkosť 6, Plienky x38, 13kg+")
 
-        showDuplicityProductsInEshops()
+//        createNewGroup("pampers 6 premium") // id: 609
+
+//        removeAllKeywordsForGroup(609L)
+        createGroupKeyWords()
+        showGroupKeysWords(449L)
+        showGroupKeysWords(450L)
+        showGroupKeysWords(451L)
+        showGroupKeysWords(452L)
+        showGroupKeysWords(453L)
+        showGroupKeysWords(481L)
+
+        showAllGroups()
+
+//        showDuplicityProductsInEshops()
 
 //        showProductPerEshop(EshopUuid.MOJA_LEKAREN)
 
@@ -28,6 +47,69 @@ class PrcoConsole(val internalTxService: InternalTxService) {
 //        showProductInfoById(3959L)
 //        updateProductUnitPackageCount(3959L, 1)
     }
+
+    private fun removeAllKeywordsForGroup(groupId: Long) {
+        internalTxService.removeAllKeywordForGroupId(groupId)
+    }
+
+    private fun showGroupKeysWords(groupId: Long) {
+        var groupProductKeywordsByGroupId = internalTxService.getGroupProductKeywordsByGroupId(groupId)
+        println(groupProductKeywordsByGroupId)
+//        groupProductKeywordsByGroupId = internalTxService.getGroupProductKeywordsByGroupId(450L)
+//        println(groupProductKeywordsByGroupId.get())
+        //        groupProductKeywordsByGroupId = internalTxService.getGroupProductKeywordsByGroupId(451L);
+        //        System.out.println(groupProductKeywordsByGroupId.get());
+        //        groupProductKeywordsByGroupId = internalTxService.getGroupProductKeywordsByGroupId(452L);
+        //        System.out.println(groupProductKeywordsByGroupId.get());
+
+
+    }
+
+    private fun createGroupKeyWords() {
+        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
+                481L,
+                asList("pampers", "premium", "junior", "5")))
+        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
+                481L,
+                asList("pampers", "premium", "care", "junior", "5")))
+        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
+                481L,
+                asList("pampers", "premiumcare", "5")))
+        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
+                481L,
+                asList("pampers", "premium", "care", "5")))
+        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
+                481L,
+                asList("pampers", "premium", "care", "5,")))
+        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
+                481L,
+                asList("pampers", "premium", "care", "junior", "(5)")))
+        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
+                481L,
+                asList("pampers", "premium", "care", "(junior)", "5")))
+        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
+                481L,
+                asList("pampers", "premium", "s5")))
+    }
+
+
+    // --- GROUPY --
+    //        createNewGroup("nutrilon 1");
+    //        createNewGroup("nutrilon 2");
+    //        createNewGroup("nutrilon 3");
+    //        createNewGroup("pampers 5 premium");
+    //        updateGroupName(1L, "pampers 4 zelene");
+    //nutrilon 4
+    //        uiService.addProductsToGroup(33L, 1697L);
+    //nutrilon 5
+    //        uiService.addProductsToGroup(257L, 1700L);
+    // pampers zelene 4
+    //        uiService.addProductsToGroup(1L, 1669L, 1668L, 1667L, 1666L, 1665L);
+    // pampers zelene 5
+    //        uiService.addProductsToGroup(321L,1698L, 1699L);
+
+    //        showAllGroups();
+    //        uiService.removeProductsFromGroup(1L, 994L, 1226L);
 
     private fun showProductPerEshop(eshopUuid: EshopUuid) {
         println("product for eshop $eshopUuid")
@@ -127,6 +209,7 @@ class PrcoConsole(val internalTxService: InternalTxService) {
     fun UC_markAsNotInterested(newProductIds: Long?) {
         internalTxService.markNewProductAsNotInterested(newProductIds!!)
     }
+
     private fun showProductsNotInAnyGroup() {
         println()
         println("Products not in any group:")
@@ -166,9 +249,9 @@ class PrcoConsole(val internalTxService: InternalTxService) {
     }
 
     private fun formatPrice(bigDecimal: BigDecimal?, countOfDecimal: Int): String {
-        var bigDecimal: BigDecimal? = bigDecimal ?: return "-"
-        bigDecimal = bigDecimal!!.setScale(countOfDecimal, RoundingMode.HALF_UP)
-        return formatPrice(bigDecimal)
+        var priceValue: BigDecimal? = bigDecimal ?: return "-"
+        priceValue = priceValue!!.setScale(countOfDecimal, RoundingMode.HALF_UP)
+        return formatPrice(priceValue)
     }
 
     private fun formatPrice(bigDecimal: BigDecimal?): String {

@@ -59,13 +59,11 @@ class GroupListExtendedDto : DtoAble {
     }
 }
 
-data class GroupProductKeywordsCreateDto(
-        var groupId: Long,
-        var keyWords: List<String>) : DtoAble
+data class GroupProductKeywordsCreateDto(var groupId: Long,
+                                         var keyWords: List<String>) : DtoAble
 
-class GroupProductKeywordsFullDto : DtoAble {
-    var groupIdNameDto: GroupIdNameDto? = null
-    var keyWords: List<Array<String>>? = null
+data class GroupProductKeywordsFullDto(var groupIdNameDto: GroupIdNameDto,
+                                       var keyWords: List<Array<String>>) : DtoAble {
 
     override fun toString(): String {
         val sb = StringBuilder()

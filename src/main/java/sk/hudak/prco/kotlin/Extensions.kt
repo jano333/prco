@@ -21,3 +21,4 @@ fun String.firstCharacterToUpperCase(): String {
         this
     }
 }
+

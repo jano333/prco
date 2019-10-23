@@ -1,7 +1,6 @@
 package sk.hudak.prco.service.impl
 
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.util.CollectionUtils
 import sk.hudak.prco.dao.db.GroupEntityDao
@@ -9,69 +8,81 @@ import sk.hudak.prco.dao.db.GroupProductKeywordsDao
 import sk.hudak.prco.dto.GroupIdNameDto
 import sk.hudak.prco.dto.GroupProductKeywordsCreateDto
 import sk.hudak.prco.dto.GroupProductKeywordsFullDto
+import sk.hudak.prco.exception.PrcoRuntimeException
 import sk.hudak.prco.mapper.PrcoOrikaMapper
+import sk.hudak.prco.model.GroupEntity
 import sk.hudak.prco.model.GroupProductKeywordsEntity
 import sk.hudak.prco.service.GroupProductKeywordsService
-import sk.hudak.prco.utils.Validate.notNull
 import sk.hudak.prco.utils.Validate.notNullNotEmpty
-import java.util.*
-import java.util.Optional.empty
 import java.util.stream.Collectors
 
 @Service("groupProductKeywordsService")
-class GroupProductKeywordsServiceImpl : GroupProductKeywordsService {
-
-    @Autowired
-    private val groupProductKeywordsDao: GroupProductKeywordsDao? = null
-
-    @Autowired
-    private val groupEntityDao: GroupEntityDao? = null
-
-    @Autowired
-    private val mapper: PrcoOrikaMapper? = null
+class GroupProductKeywordsServiceImpl(private val groupEntityDao: GroupEntityDao,
+                                      private val groupProductKeywordsDao: GroupProductKeywordsDao,
+                                      private val mapper: PrcoOrikaMapper)
+    : GroupProductKeywordsService {
 
     companion object {
-        val log = LoggerFactory.getLogger(GroupProductKeywordsServiceImpl::class.java)!!
+        val LOG = LoggerFactory.getLogger(GroupProductKeywordsServiceImpl::class.java)!!
     }
 
-    override fun createGroupProductKeywords(groupProductKeywordsCreateDto: GroupProductKeywordsCreateDto): Long? {
-        notNull(groupProductKeywordsCreateDto, "groupProductKeywordsCreateDto")
-        notNull(groupProductKeywordsCreateDto.groupId, "groupId")
-        notNullNotEmpty(groupProductKeywordsCreateDto.keyWords, "keyWords")
+    override fun findAllGroupProductKeywords(): List<GroupProductKeywordsFullDto> {
+        val result: MutableList<GroupProductKeywordsFullDto> = ArrayList()
+        groupProductKeywordsDao.findGroupsl().forEach {
+            result.add(GroupProductKeywordsFullDto(
+                    it.toGroupIdNameDto(),
+                    groupProductKeywordsDao.findKeywordsForGroupId(it.id)))
+        }
+        return result
+    }
 
-        val entity = GroupProductKeywordsEntity()
-        entity.group = groupEntityDao!!.findById(groupProductKeywordsCreateDto.groupId)
-        entity.keyWords = groupProductKeywordsCreateDto.keyWords.stream()
+    private fun GroupEntity.toGroupIdNameDto(): GroupIdNameDto {
+        val groupIdNameDto = GroupIdNameDto()
+        groupIdNameDto.id = this.id
+        groupIdNameDto.name = this.name
+        return groupIdNameDto
+    }
+
+    override fun createGroupProductKeywords(createDto: GroupProductKeywordsCreateDto): Long {
+        notNullNotEmpty(createDto.keyWords, "keyWords")
+
+        val keywords = createDto.keyWords.stream()
                 .collect(Collectors.joining("|"))
 
-        val id = groupProductKeywordsDao!!.save(entity)
-        log.debug("create new entity {} with id {}", entity.javaClass.simpleName, entity.id)
+        if (existGivenGroupWithKeywords(createDto.groupId, keywords)) {
+            throw PrcoRuntimeException("Group with id ${createDto.groupId} and keywords $keywords already exist.")
+        }
+
+        val entity = GroupProductKeywordsEntity()
+        entity.group = groupEntityDao.findById(createDto.groupId)
+        entity.keyWords = keywords
+
+        val id = groupProductKeywordsDao.save(entity)
+        LOG.debug("create new entity ${entity.javaClass.simpleName} with id ${entity.id}")
         return id
     }
 
-    override fun getGroupProductKeywordsByGroupId(groupId: Long?): Optional<GroupProductKeywordsFullDto> {
-        notNull(groupId, "groupId")
+    private fun existGivenGroupWithKeywords(groupId: Long, keywords: String): Boolean =
+            groupProductKeywordsDao.existGroupWithKeywords(groupId, keywords)
 
-        val entityList = groupProductKeywordsDao!!.findByGroupId(groupId)
+    override fun getGroupProductKeywordsByGroupId(groupId: Long): GroupProductKeywordsFullDto? {
+        val entityList = groupProductKeywordsDao.findByGroupId(groupId)
         if (CollectionUtils.isEmpty(entityList)) {
-            return empty()
+            return null
         }
-
-        val dto = GroupProductKeywordsFullDto()
-        dto.groupIdNameDto = mapper!!.map(groupEntityDao!!.findById(groupId!!), GroupIdNameDto::class.java)
-        dto.keyWords = entityList.stream()
-                .map { it.keyWords }
-                .map { str -> str!!.split("\\|".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray() }
-                .collect(Collectors.toList())
-        return Optional.of(dto)
+        return GroupProductKeywordsFullDto(
+                groupIdNameDto = mapper.map(groupEntityDao.findById(groupId), GroupIdNameDto::class.java),
+                keyWords = entityList.stream()
+                        .map { it.keyWords }
+                        .map { str -> str!!.split("\\|".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray() }
+                        .collect(Collectors.toList())
+        )
     }
 
-    override fun removeAllKeywordForGroupId(groupId: Long?) {
-        notNull(groupId, "groupId")
+    override fun removeAllKeywordForGroupId(groupId: Long) {
+        groupProductKeywordsDao.findByGroupId(groupId)
+                .forEach { groupProductKeywordsDao.delete(it) }
 
-        groupProductKeywordsDao!!.findByGroupId(groupId)
-                .forEach { entity -> groupProductKeywordsDao.delete(entity) }
-
-        log.debug("all keywords for group id {}", groupId)
+        LOG.debug("all keywords for group id $groupId were removed")
     }
 }

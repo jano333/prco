@@ -91,7 +91,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
 
         //        System.out.println(">> --------");
 
-        //        Optional<GroupProductKeywords> groupProductKeywords = groupProductResolver.resolveGroup("Pampers Plienky S4P Active Baby mesačné balenie");
+
 
         //        System.out.println("");
 
@@ -132,23 +132,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         //                BigDecimal.valueOf(4.99));
         //        watchDogManager.collectAllUpdateAndSendEmail();
 
-        // --- GROUPY --
-        //        createNewGroup("nutrilon 1");
-        //        createNewGroup("nutrilon 2");
-        //        createNewGroup("nutrilon 3");
-        //        createNewGroup("pampers 5 premium");
-        //        updateGroupName(1L, "pampers 4 zelene");
-        //nutrilon 4
-        //        uiService.addProductsToGroup(33L, 1697L);
-        //nutrilon 5
-        //        uiService.addProductsToGroup(257L, 1700L);
-        // pampers zelene 4
-        //        uiService.addProductsToGroup(1L, 1669L, 1668L, 1667L, 1666L, 1665L);
-        // pampers zelene 5
-        //        uiService.addProductsToGroup(321L,1698L, 1699L);
 
-        //        showAllGroups();
-        //        uiService.removeProductsFromGroup(1L, 994L, 1226L);
 
 
         //        uiService.deleteProducts(169L, 802L);
@@ -197,8 +181,6 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         internalTxService.findErrorsByFilter(errorFindFilterDto)
                 .forEach { println(it.customToString()) }
 
-        createGroupKeyWords()
-        showGroupKeysWords()
 
         // --- UPDATE PRICE DATA ---
 //        val listener: UpdateProductDataListener = object : UpdateProductDataListener { updateStatusInfo: UpdateStatusInfo ->
@@ -274,41 +256,6 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
 
     }
 
-    private fun createGroupKeyWords() {
-        //        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
-        //                452L,
-        //                asList("pampers", "pro", "care", "s2")));
-        //        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
-        //                452L,
-        //                asList("pampers", "premium", "2")));
-        //        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
-        //                452L,
-        //                asList("pampers", "premium", "care", "2")));
-        //
-        //        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
-        //                452L,
-        //                asList("pampers", "premium", "care", "2,")));
-        //        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
-        //                452L,
-        //                asList("pampers", "premium", "care", "s2")));
-        //        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
-        //                452L,
-        //                asList("pampers", "premium", "care", "newborn", "(2)")));
-        //        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
-        //                452L,
-        //                asList("pampers", "premium", "pack", "s2")));
-        //
-        //        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
-        //                452L,
-        //                asList("pampers", "premium", "newborn", "2")));
-        //        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
-        //                452L,
-        //                asList("pampers", "premium", "procare", "2")));
-        //        internalTxService.createGroupProductKeywords(new GroupProductKeywordsCreateDto(
-        //                452L,
-        //                asList("pampers", "premiumcare", "2")));
-
-    }
 
     private fun searchKeywords() {
         //id: 1
@@ -320,18 +267,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
     }
 
 
-    private fun showGroupKeysWords() {
-        var groupProductKeywordsByGroupId = internalTxService!!.getGroupProductKeywordsByGroupId(449L)
-        println(groupProductKeywordsByGroupId.get())
-        groupProductKeywordsByGroupId = internalTxService.getGroupProductKeywordsByGroupId(450L)
-        println(groupProductKeywordsByGroupId.get())
-        //        groupProductKeywordsByGroupId = internalTxService.getGroupProductKeywordsByGroupId(451L);
-        //        System.out.println(groupProductKeywordsByGroupId.get());
-        //        groupProductKeywordsByGroupId = internalTxService.getGroupProductKeywordsByGroupId(452L);
-        //        System.out.println(groupProductKeywordsByGroupId.get());
 
-
-    }
 
 
     private fun deleteProductsFromNotInterested(eshopUuid: EshopUuid) {

@@ -1,3 +1,13 @@
+--------------
+sk.hudak.prco.dto.GroupProductKeywordsFullDto[
+ groupIdNameDto=[IdNameDto(id=609, name=pampers 6 premium)]
+ keyWords=[
+   [pampers, premium, care, 6]
+   [pampers, premium, care, 6,]
+   [pampers, premium, care, 6]
+   [pampers, premium, care, 6,]
+ ]
+--------------
 Duplicity for eshop: MAXIKOVY_HRACKY
 5815, Pampers Active Baby Giant Pack S4+ 70ks null https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-s4-70ks?zmena_meny=EUR 25-09-2019 13:31:13
 5807, Pampers Active Baby Giant Pack S4+ 70ks 18.40000 https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-s4-70ks 24-09-2019 14:20:01

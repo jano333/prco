@@ -27,10 +27,10 @@ fun main() {
 //    println("count in set ${HashSet(urlList).size}")
 //    println(urlList)
 
-    println(test.parseProductNewData("https://sortiment.metro.sk/sk/pampers-abd-mb-s3-208ks/241758p/"))
+//    println(test.parseProductNewData("https://sortiment.metro.sk/sk/pampers-abd-mb-s3-208ks/241758p/"))
 //    println(test.parseProductNewData("https://www.pilulka.sk/nutrilon-2-ha-prosyneo-6x800g"))
 
-//    println(test.parseProductUpdateData("https://www.lekarenvkocke.sk/zqcca7c9d69cc89a501513a05ef16592f4-nutricia-nutrilon-4-pronutra-800-g"))
+    println(test.parseProductUpdateData("https://sortiment.metro.sk/sk/pampers-abd-mb-s3-208ks/241758p/"))
 }
 
 class ProductParserTest {

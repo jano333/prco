@@ -49,10 +49,10 @@
                     <a th:href="'/products/'+${product.id}+'/addToGroup'" th:text="${'Add to group'}"></a>
                     <br/>
                     <br/>
-                    <span th:text="${product.keywords!=null} ? ${product.keywords.name()} : 'none'"></span>
+                    <span th:text="${product.groupId!=null} ? ${product.groupName} : 'none'"></span>
                     <br/>
-                    <a th:href="'/products/'+${product.id}+'/addToGroupAutomaticaly/'+${product.keywords}" th:text="${'Add automaticaly'}"
-                        th:if="${product.keywords!=null}">
+                    <a th:href="'/products/'+${product.id}+'/addToGroupAutomaticaly/'+${product.groupId}" th:text="${'Add automaticaly'}"
+                        th:if="${product.groupId!=null}">
                     </a>
                     <br/>
                     <a th:href="${'/product/'+product.id+'/notInterested'}">Not interested</a>
