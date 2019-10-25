@@ -85,10 +85,6 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
 
         val statisticsOfProducts = uiService.statisticsOfProducts
         println(statisticsOfProducts.toString())
-
-
-        //        removeEshopManager.removeAllForEshop(EshopUuid.MAMA_A_JA);
-
         //        System.out.println(">> --------");
 
 
@@ -214,7 +210,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
 
         // --- ADD NEW PRODUCTS ---
 //                newProductManager.addNewProductsByKeywordsForAllEshops(PAMPERS_ID, NUTRILON_ID, LOVELA_ID)
-//                newProductManager.addNewProductsByKeywordForEshop(EshopUuid.METRO, "pampers");
+//                newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, PAMPERS_ID)
         //        newProductManager.addNewProductsByUrl(
         //                  "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120575818",
         //                  "https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120307521",
@@ -271,11 +267,11 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
 
 
     private fun deleteProductsFromNotInterested(eshopUuid: EshopUuid) {
-        internalTxService!!.deleteNotInterestedProducts(eshopUuid)
+        internalTxService.deleteNotInterestedProducts(eshopUuid)
     }
 
     private fun showProductNotInterested(eshopUuid: EshopUuid) {
-        val notInterestedProducts = internalTxService!!.findNotInterestedProducts(NotInterestedProductFindDto(eshopUuid))
+        val notInterestedProducts = internalTxService.findNotInterestedProducts(NotInterestedProductFindDto(eshopUuid))
         println("Not interested product for eshop: $eshopUuid")
         for (product in notInterestedProducts) {
             println("id " + product.id + ", "
@@ -340,13 +336,13 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
     }
 
     private fun existProduct(productURL: String) {
-        val existProductWithUrl = uiService!!.existProductWithUrl(productURL)
+        val existProductWithUrl = uiService.existProductWithUrl(productURL)
         println("product with URL $productURL existuje: $existProductWithUrl")
     }
 
 
     private fun showProductsInGroup(groupId: Long, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid) {
-        val group = uiService!!.getGroupById(groupId)
+        val group = uiService.getGroupById(groupId)
         val productsInGroup = uiService.findProductsInGroup(groupId, withPriceOnly, *eshopsToSkip)
 
         // vypis

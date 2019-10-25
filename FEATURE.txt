@@ -1,3 +1,4 @@
+pocas update nech zobrazuje aj approximetly end time for current task for eshop
 ------------
 pampers 7 zelene kategoria chyba
 ------------
@@ -48,7 +49,6 @@ vymysielt asi conting alebo datumovo ak je produkt viac ako 10x mysli sa tym 10 
 ak je mesiac po sebe produkt nedostupny teda 404 tak ho odstranit...
 ------------------------------------------------------------------------------------------------------------------------
 newProduct page ked kliknem na obrazok tak nech sa zobrazi v novej stranke
-------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
 pridat automaticke parsovanie default ceny z daneho eshopu pri vytvarani a nasledne aj aktualizaciu ....
 otazka znie ci potom ako budem mat ja potom default cenu, lebo napr. 14,99 nutrilon... nie vsade je to bezna cena pre nutrilon

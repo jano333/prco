@@ -213,14 +213,6 @@ object MaganoEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
         supportedSearchKeywordIds = listOf(PAMPERS_ID, LOVELA_ID)
 )
 
-object MaxikovyHrackyEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
-        "https://www.maxikovy-hracky.cz",
-        "https://www.maxikovy-hracky.cz/vyhledavani?search=$KEYWORD_TEMP",
-        "https://www.maxikovy-hracky.cz/vyhledavani?page=$PAGE_NUMBER_TEMP&search=$KEYWORD_TEMP",
-        3, 12, 60,
-        supportedSearchKeywordIds = listOf(PAMPERS_ID)
-)
-
 object MetroEshopConfiguration : StaticEshopConfiguration(EshopCategory.NONE,
         "https://sortiment.metro.sk",
         "https://sortiment.metro.sk/sk/search/?submitted=1&q=$KEYWORD_TEMP&type=&department_id=&mysort=&cip=",

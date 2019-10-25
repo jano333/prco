@@ -22,15 +22,14 @@ fun main() {
 
     val test = ProductParserTest()
 
-//    val urlList = test.parseUrlsOfProduct(EshopUuid.METRO, "pampers")
+//    val urlList = test.parseUrlsOfProduct(EshopUuid.MAXIKOVY_HRACKY, "pampers")
 //    println("count in list ${urlList.size}")
 //    println("count in set ${HashSet(urlList).size}")
 //    println(urlList)
 
-//    println(test.parseProductNewData("https://sortiment.metro.sk/sk/pampers-abd-mb-s3-208ks/241758p/"))
-//    println(test.parseProductNewData("https://www.pilulka.sk/nutrilon-2-ha-prosyneo-6x800g"))
+//    println(test.parseProductNewData("https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-76-ks?zmena_meny=EUR"))
 
-    println(test.parseProductUpdateData("https://sortiment.metro.sk/sk/pampers-abd-mb-s3-208ks/241758p/"))
+    println(test.parseProductUpdateData("https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-76-ks"))
 }
 
 class ProductParserTest {
@@ -59,7 +58,7 @@ class ProductParserTest {
             EshopUuid.LEKAREN_V_KOCKE -> LekarenVKockeProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // M
             EshopUuid.MALL -> MallProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-            EshopUuid.MAXIKOVY_HRACKY -> MaxikovyHrackyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+//            EshopUuid.MAXIKOVY_HRACKY -> MaxikovyHrackyProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.METRO -> MetroProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.MOJA_LEKAREN -> MojaLekarenProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             // P

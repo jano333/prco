@@ -1,31 +1,7 @@
---------------
-sk.hudak.prco.dto.GroupProductKeywordsFullDto[
- groupIdNameDto=[IdNameDto(id=609, name=pampers 6 premium)]
- keyWords=[
-   [pampers, premium, care, 6]
-   [pampers, premium, care, 6,]
-   [pampers, premium, care, 6]
-   [pampers, premium, care, 6,]
- ]
---------------
-Duplicity for eshop: MAXIKOVY_HRACKY
-5815, Pampers Active Baby Giant Pack S4+ 70ks null https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-s4-70ks?zmena_meny=EUR 25-09-2019 13:31:13
-5807, Pampers Active Baby Giant Pack S4+ 70ks 18.40000 https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-s4-70ks 24-09-2019 14:20:01
-5847, Pampers Active Baby Giant Pack 76 ks null https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-76-ks?zmena_meny=EUR 26-09-2019 12:21:47
-5806, Pampers Active Baby Giant Pack 76 ks 18.40000 https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-76-ks 24-09-2019 14:19:52
 -------------------
-zle vyhodnotilo:
-2019-10-14 09:32:14,149 WARN [METRO-thread] [] s.h.p.p.e.JSoupProductParser [Extensions.kt:8] product is unavailable: https://sortiment.metro.sk/sk/nutrilon-1-800g-/182541p/
--------------
 BRENDON:
 * problem lebo su 4 strany a mne dava stale akj pre 2 stranu produkty url z prvej strany teda mam 4 krat duplicitu a neveim preco
 -------------
-bugs:
-TODO prest zoznam:
-METRO [6546] 04-10-2019 15:37:03 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord lovela url null
-METRO [6525] 04-10-2019 15:35:19 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord pampers url null
-METRO [6535] 04-10-2019 15:36:11 UNKNOWN status: null message: no url found for eshop METRO and searchKeyWord nutrilon url null
------------
 DROGERIA_VMD [6548] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/canpol-dudlik-silikon-dynamic-lovi-indian-summer-0-3m-2ks-modre-8556/
 DROGERIA_VMD [6402] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/lovela-40dav-5kg-bile-pradlo-4300/
 DROGERIA_VMD [6401] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null message: duplicity product url found url https://www.drogeria-vmd.sk/lovela-26dav-3-25kg-bile-pradlo-1937/
@@ -44,33 +20,6 @@ DROGERIA_VMD [6399] 04-10-2019 15:37:09 PARSING_PRODUCT_NEW_DATA status: null me
 2019-09-25 14:55:30,298 DEBUG [DROGERIA_VMD-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:126] count of products URL after duplicity check 33
 2019-09-25 14:55:30,309 DEBUG [DROGERIA_VMD-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:367] product https://www.drogeria-vmd.sk/pampers-det-ubr-natur-clean-4x64ks-7059/ already existing
 ----------------
-2019-09-25 11:05:12,161 DEBUG [MAXIKOVY_HRACKY-thread] [] s.h.p.s.PrcoCustomTrustManager [SSLHandling.kt:286] delegating checking to java default trust manager
-2019-09-25 11:05:12,408 ERROR [MAXIKOVY_HRACKY-thread] [] s.h.p.m.u.UpdateProductErrorHandlerImpl [UpdateProductErrorHandlerImpl.kt:22] error while parsing product update data for product https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-76-ks
-sk.hudak.prco.exception.StringToNumberConvertPrcoException: error while converting value 469 Kč to java.math.BigDecimal
-	at sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal(ConvertUtils.kt:21)
-	at sk.hudak.prco.eshop.MaxikovyHrackyProductParser$parseProductPriceForPackage$3.apply(MaxikovyHrackyProductParser.kt:89)
-	at sk.hudak.prco.eshop.MaxikovyHrackyProductParser$parseProductPriceForPackage$3.apply(MaxikovyHrackyProductParser.kt:24)
-	at java.util.Optional.map(Optional.java:215)
-	at sk.hudak.prco.eshop.MaxikovyHrackyProductParser.parseProductPriceForPackage(MaxikovyHrackyProductParser.kt:89)
-	at sk.hudak.prco.parser.eshop.JSoupProductParser.parseProductUpdateData(JSoupProductParser.kt:215)
-	at sk.hudak.prco.parser.html.JsoupHtmlParserImpl.parseProductUpdateData(JsoupHtmlParserImpl.kt:35)
-	at sk.hudak.prco.manager.updateprocess.UpdateProductDataManagerImpl.updateProductData(UpdateProductDataManagerImpl.kt:252)
-	at sk.hudak.prco.manager.updateprocess.UpdateProductDataManagerImpl.updateProductDataErrorWrapper(UpdateProductDataManagerImpl.kt:235)
-	at sk.hudak.prco.manager.updateprocess.UpdateProductDataManagerImpl.access$updateProductDataErrorWrapper(UpdateProductDataManagerImpl.kt:26)
-	at sk.hudak.prco.manager.updateprocess.UpdateProductDataManagerImpl$updateProductDataForEachProductInEshop$1.doInRunnable(UpdateProductDataManagerImpl.kt:120)
-	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:219)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.NumberFormatException: null
-	at java.math.BigDecimal.<init>(BigDecimal.java:494)
-	at java.math.BigDecimal.<init>(BigDecimal.java:383)
-	at java.math.BigDecimal.<init>(BigDecimal.java:806)
-	at sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal(ConvertUtils.kt:18)
-	... 16 common frames omitted
-----------------------------
 toto je rovnaky produkt:(urobit servic, ktory vyhlada v danom esope produkty ktore maju rovnaky price for unit, pricie for one item a aj nazov, teda lisia sa len URL)
 eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 169, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-pronutra-800g-dojcenske-mlieko/
 eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 996, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-800g-dojcenske-mlieko/
@@ -81,147 +30,8 @@ TODO pampers 4 a 4+ davat spolu
 ---------------------
 remove lobmok from pom.xml, fist find ussage
 ---------------------------------------------------------------------------------------------
-GIGA lekaren tam dat asi dlzie casy medzi jednotlivymi requestami lebo ma blokuju....
-2019-09-20 13:15:03,484 DEBUG [GIGA_LEKAREN-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:249] starting 21 of 39
-2019-09-20 13:15:03,484 DEBUG [GIGA_LEKAREN-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:243] request URL: https://www.gigalekaren.sk/produkt/nutrilon-3-vanilka-800g/
-2019-09-20 13:15:03,484 DEBUG [GIGA_LEKAREN-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:244] userAgent: Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko
-2019-09-20 13:15:03,518 DEBUG [GIGA_LEKAREN-thread] [] s.h.p.s.PrcoCustomHostnameVerifier [SSLHandling.kt:365] verify www.gigalekaren.sk
-2019-09-20 13:15:03,565 WARN [GIGA_LEKAREN-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:349] property productName is blank for product url https://www.gigalekaren.sk/produkt/nutrilon-3-vanilka-800g/
-2019-09-20 13:15:03,565 WARN [GIGA_LEKAREN-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:343] property pictureUrl is null for product url https://www.gigalekaren.sk/produkt/nutrilon-3-vanilka-800g/
-2019-09-20 13:15:03,565 DEBUG [GIGA_LEKAREN-thread] [] s.h.p.s.i.ErrorServiceImpl [ErrorServiceImpl.kt:80] update entity ErrorEntity with id 6257, type PARSING_PRODUCT_NAME_FOR_NEW_PRODUCT, msg 'null'
-
-------------------------------
-2019-09-12 14:49:10,502 DEBUG [KID_MARKET-thread] [] s.h.p.p.u.UnitParserImpl [UnitParserImpl.kt:30] parsing product name to retrieve unit info: Pampers Sleep&Play 4 Maxi 50ks
-2019-09-12 14:49:10,504 ERROR [KID_MARKET-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:337] error while creating new product from URL for eshop KID_MARKET
-sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop KID_MARKET
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:167)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:26)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:89)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:74)
-	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:193)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: sk.hudak.prco.exception.PrcoRuntimeException: Product with URL https://kidmarket.sk/jednorazove-plienky/187-pampers-sleepplay-maxi-50ks.html already exist.
-	at sk.hudak.prco.service.impl.NewProductServiceImpl.createNewProduct(NewProductServiceImpl.kt:60)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl.createNewProduct(InternalTxServiceImpl.kt:83)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$FastClassBySpringCGLIB$$6a8a885c.invoke(<generated>)
-	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:204)
-	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:746)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:294)
-	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:98)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$EnhancerBySpringCGLIB$$7ea3e331.createNewProduct(<generated>)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.processNewProductUrl(AddingNewProductManagerImpl.kt:236)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.kt:182)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:164)
-	... 9 common frames omitted
-2019-09-12 14:49:10,504 DEBUG [KID_MARKET-thread] [] s.h.p.t.EshopTaskManagerImpl [EshopTask.kt:150] marking task for eshop KID_MARKET as FINISHED_WITH_ERROR
------------------------------------------------------------
 TODO EshopThreadStatisticManagerImpl urobit nech sa sam zastavi ked je finished alebo running 0 proste nech sa vypne ked uz nic nebezi...
 -----------------------------------------------------------
-2019-09-09 13:44:18,841 DEBUG [GIGA_LEKAREN-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:153] starting 17 of 19
-2019-09-09 13:44:18,841 DEBUG [GIGA_LEKAREN-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:241] request URL: https://www.gigalekaren.sk/produkt/nutrilon-kase-pronutra-ml-kr-s-piskoty-6m-225g/
-2019-09-09 13:44:18,946 WARN [GIGA_LEKAREN-thread] [] s.h.p.p.e.JSoupProductParser [JSoupProductParser.kt:344] property pictureUrl is null for product url https://www.gigalekaren.sk/produkt/nutrilon-kase-pronutra-ml-kr-s-piskoty-6m-225g/
-2019-09-09 13:44:18,946 DEBUG [GIGA_LEKAREN-thread] [] s.h.p.p.u.UnitParserImpl [UnitParserImpl.kt:30] parsing product name to retrieve unit info:
-2019-09-09 13:44:18,947 WARN [GIGA_LEKAREN-thread] [] s.h.p.p.u.UnitParserImpl [UnitParserImpl.kt:332] unit info not found for ''
-2019-09-09 13:44:18,950 ERROR [GIGA_LEKAREN-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:295] error while creating new product from URL for eshop GIGA_LEKAREN
-sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop GIGA_LEKAREN
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:140)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:22)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:72)
-	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:187)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: sk.hudak.prco.exception.RequiredParameterException: parameter name is null/empty
-	at sk.hudak.prco.utils.Validate.notNullNotEmpty(Validate.kt:33)
-	at sk.hudak.prco.service.impl.NewProductServiceImpl.createNewProduct(NewProductServiceImpl.kt:56)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl.createNewProduct(InternalTxServiceImpl.kt:83)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$FastClassBySpringCGLIB$$6a8a885c.invoke(<generated>)
-	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:204)
-	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:746)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:294)
-	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:98)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$EnhancerBySpringCGLIB$$769830d7.createNewProduct(<generated>)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.processNewProductUrl(AddingNewProductManagerImpl.kt:194)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.kt:155)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:137)
-	... 8 common frames omitted
-------------------------------
-nevie staihnut obrazok pre
-https://www.pilulka24.sk/pampers-sleep-play-4-9-14-kg-68-ks
---------------
-2019-09-05 14:58:22,173 ERROR [LEKAREN_BELLA-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:295] error while creating new product from URL for eshop LEKAREN_BELLA
-sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop LEKAREN_BELLA
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:140)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:22)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:72)
-	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:187)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: org.springframework.transaction.CannotCreateTransactionException: Could not open JPA EntityManager for transaction; nested exception is java.lang.IllegalStateException: EntityManagerFactory is closed
-	at org.springframework.orm.jpa.JpaTransactionManager.doBegin(JpaTransactionManager.java:450)
-	at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:378)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.createTransactionIfNecessary(TransactionAspectSupport.java:474)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:289)
-	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:98)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$EnhancerBySpringCGLIB$$bdb457b3.createNewProduct(<generated>)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.processNewProductUrl(AddingNewProductManagerImpl.kt:194)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.kt:155)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:137)
-	... 8 common frames omitted
-Caused by: java.lang.IllegalStateException: EntityManagerFactory is closed
-	at org.hibernate.internal.SessionFactoryImpl.validateNotClosed(SessionFactoryImpl.java:498)
-	at org.hibernate.internal.SessionFactoryImpl.buildEntityManager(SessionFactoryImpl.java:573)
-	at org.hibernate.internal.SessionFactoryImpl.createEntityManager(SessionFactoryImpl.java:569)
-	at org.hibernate.internal.SessionFactoryImpl.createEntityManager(SessionFactoryImpl.java:155)
-	at org.springframework.orm.jpa.JpaTransactionManager.createEntityManagerForTransaction(JpaTransactionManager.java:468)
-	at org.springframework.orm.jpa.JpaTransactionManager.doBegin(JpaTransactionManager.java:389)
-	... 18 common frames omitted
-------------------------------
-2019-09-05 14:55:05,353 ERROR [KID_MARKET-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:295] error while creating new product from URL for eshop KID_MARKET
-sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop KID_MARKET
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:140)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:22)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:72)
-	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:187)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: sk.hudak.prco.exception.PrcoRuntimeException: Product with URL https://kidmarket.sk/pants/172-pampers-pants-3-midi-72ks-6-11kg-8001090694577.html already exist.
-	at sk.hudak.prco.service.impl.NewProductServiceImpl.createNewProduct(NewProductServiceImpl.kt:60)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl.createNewProduct(InternalTxServiceImpl.kt:83)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$FastClassBySpringCGLIB$$6a8a885c.invoke(<generated>)
-	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:204)
-	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:746)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:294)
-	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:98)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688)
-	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$EnhancerBySpringCGLIB$$bdb457b3.createNewProduct(<generated>)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.processNewProductUrl(AddingNewProductManagerImpl.kt:194)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.kt:155)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:137)
-	... 8 common frames omitted
--------------------------------------
 2019-09-05 14:54:55,311 ERROR [GIGA_LEKAREN-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:295] error while creating new product from URL for eshop GIGA_LEKAREN
 sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop GIGA_LEKAREN
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:140)
@@ -251,8 +61,6 @@ Caused by: sk.hudak.prco.exception.RequiredParameterException: parameter name is
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:137)
 	... 8 common frames omitted
 ----------------
-pocas update nech zobrazuje aj approximetly end time for current task for eshop
----------------
 zmenint na warning nie error:
 2019-09-13 15:58:28,367 ERROR [PERINBABA-thread] [] s.h.p.m.u.UpdateProductErrorHandlerImpl [UpdateProductErrorHandlerImpl.kt:21] error while parsing product update data for product http://www.perinbaba.sk/plienky-new-baby-dry-2-mini-3-6kg-giant-pack-100ks.html
 sk.hudak.prco.exception.ProductPageNotFoundHttpParserException: error creating document for url 'http://www.perinbaba.sk/plienky-new-baby-dry-2-mini-3-6kg-giant-pack-100ks.html':  org.jsoup.HttpStatusException: HTTP error fetching URL. Status=404, URL=http://www.perinbaba.sk/plienky-new-baby-dry-2-mini-3-6kg-giant-pack-100ks.html
@@ -295,41 +103,6 @@ PAMPERS_ZELENE_3
 TODO: urobit group keywordy aj pre pants vsetky velkosti a prest zoznam notinteresting s nazvom pampers
 *****************************************************************************************
 ----------------------------
-TODO overit ci sa dana chyba ulozi do DB
-2019-06-07 13:55:40,211 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.t.i.EshopTaskManagerImpl [EshopTaskManagerImpl.java:126] task status TaskContext(status=STOPPED, lastChanged=Fri Jun 07 13:55:18 CEST 2019)
-2019-06-07 13:55:40,211 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.t.i.EshopTaskManagerImpl [EshopTaskManagerImpl.java:90] marking task for eshop MAXIKOVY_HRACKY as RUNNING
-2019-06-07 13:55:40,215 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.s.Starter [Starter.java:231] >> eshop: MAXIKOVY_HRACKY, updated/waiting: 0/17
-2019-06-07 13:55:40,215 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:227] request URL: https://www.maxikovy-hracky.cz/pampers-active-baby-monthly-box-s4-152ks
-2019-06-07 13:55:40,216 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:230] userAgent: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko
-2019-06-07 13:55:40,289 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.s.PrcoCustomTrustManager [PrcoCustomTrustManager.java:53] delegating checking to java default trust manager
-2019-06-07 13:55:40,541 ERROR [MAXIKOVY_HRACKY] [] s.h.p.m.i.ErrorHandlerImpl [ErrorHandlerImpl.java:31] error while parsing product data for product https://www.maxikovy-hracky.cz/pampers-active-baby-monthly-box-s4-152ks
-sk.hudak.prco.exception.PrcoRuntimeException: error while converting value 999 Kč to java.math.BigDecimal
-	at sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal(ConvertUtils.java:23)
-	at java.util.Optional.map(Optional.java:215)
-	at sk.hudak.prco.eshop.MaxikovyHrackyProductParser.parseProductPriceForPackage(MaxikovyHrackyProductParser.java:102)
-	at sk.hudak.prco.parser.eshop.JSoupProductParser.parseProductUpdateData(JSoupProductParser.java:197)
-	at sk.hudak.prco.parser.impl.JsoupHtmlParser.parseProductUpdateData(JsoupHtmlParser.java:58)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.parseOneProductUpdateData(UpdateProductDataManagerImpl.java:171)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.internalParseAndUpdate(UpdateProductDataManagerImpl.java:163)
-	at sk.hudak.prco.manager.impl.UpdateProductDataManagerImpl.lambda$updateProductDataForEachProductInEshop$9(UpdateProductDataManagerImpl.java:98)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.NumberFormatException: null
-	at java.math.BigDecimal.<init>(BigDecimal.java:494)
-	at java.math.BigDecimal.<init>(BigDecimal.java:383)
-	at java.math.BigDecimal.<init>(BigDecimal.java:806)
-	at sk.hudak.prco.utils.ConvertUtils.convertToBigDecimal(ConvertUtils.java:20)
-	... 12 common frames omitted
-2019-06-07 13:55:40,541 DEBUG [MAXIKOVY_HRACKY] [] s.h.p.t.i.EshopTaskManagerImpl [EshopTaskManagerImpl.java:96] marking task for eshop MAXIKOVY_HRACKY as FINISHED_WITH_ERROR
-2019-06-07 13:55:40,547 DEBUG [BRENDON] [] s.h.p.s.Starter [Starter.java:231] >> eshop: BRENDON, updated/waiting: 1/8
-2019-06-07 13:55:40,548 DEBUG [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:227] request URL: https://www.brendon.sk/Products/Details/118431
-2019-06-07 13:55:40,548 DEBUG [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:230] userAgent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1
-2019-06-07 13:55:40,952 WARN [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:178] redirecting:
-2019-06-07 13:55:40,952 WARN [BRENDON] [] s.h.p.p.i.JSoupProductParser [JSoupProductParser.java:179] from https://www.brendon.sk/Products/Details/118431
------------------------------------------------------------------------------------------------------------------------
 Je to toiste(prest vsetky eshopy a vypisat duplicity na zaklade nazvu) !!!
 4. 0.22500€/kus 14,40€/balenie https://kidmarket.sk/jednorazove-plienky/177-pampers-active-baby-5-giant-pack-64ks.html
 5. 0.22500€/kus 14,40€/balenie https://kidmarket.sk/active-baby/177-pampers-active-baby-5-giant-pack-64ks-8001090278067.html

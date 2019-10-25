@@ -71,7 +71,6 @@ public enum EshopUuid {
 
     MAGANO(MaganoEshopConfiguration.INSTANCE),
     MALL(MallEshopConfiguration.INSTANCE),
-    MAXIKOVY_HRACKY(MaxikovyHrackyEshopConfiguration.INSTANCE),
     METRO(MetroEshopConfiguration.INSTANCE),
     MOJA_LEKAREN(MojaLekarenEshopConfiguration.INSTANCE),
 

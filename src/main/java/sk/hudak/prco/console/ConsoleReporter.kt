@@ -23,19 +23,28 @@ class PrcoConsole(val internalTxService: InternalTxService,
                   val groupProductResolver: GroupProductResolver) {
 
     fun showInConsole() {
+
+
         //Pampers Pure Value Pack S5 (11+kg) 24ks Junior
 //        val groupProductKeywords = groupProductResolver.resolveGroupId("Pampers Premium Care Veľkosť 6, Plienky x38, 13kg+")
 
 //        createNewGroup("pampers 6 premium") // id: 609
 
 //        removeAllKeywordsForGroup(609L)
-        createGroupKeyWords()
+//        createGroupKeyWords()
         showGroupKeysWords(449L)
         showGroupKeysWords(450L)
         showGroupKeysWords(451L)
         showGroupKeysWords(452L)
         showGroupKeysWords(453L)
         showGroupKeysWords(481L)
+
+        showGroupKeysWords(545L)
+        showGroupKeysWords(546L)
+        showGroupKeysWords(547L)
+        showGroupKeysWords(1L)
+        showGroupKeysWords(321L)
+        showGroupKeysWords(513L)
 
         showAllGroups()
 
@@ -67,29 +76,65 @@ class PrcoConsole(val internalTxService: InternalTxService,
 
     private fun createGroupKeyWords() {
         internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                481L,
-                asList("pampers", "premium", "junior", "5")))
+                513L,
+                asList("pampers", "active", "baby", "6")))
         internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                481L,
-                asList("pampers", "premium", "care", "junior", "5")))
+                513L,
+
+                asList("pampers", "active", "baby", "6,")))
         internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                481L,
-                asList("pampers", "premiumcare", "5")))
+                513L,
+
+                asList("pampers", "active", "baby", "6+")))
         internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                481L,
-                asList("pampers", "premium", "care", "5")))
+                513L,
+
+                asList("pampers", "active", "baby", "6+,")))
         internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                481L,
-                asList("pampers", "premium", "care", "5,")))
+                513L,
+
+                asList("pampers", "active", "baby", "s6")))
         internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                481L,
-                asList("pampers", "premium", "care", "junior", "(5)")))
+                513L,
+
+                asList("pampers", "active", "baby", "s6+")))
         internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                481L,
-                asList("pampers", "premium", "care", "(junior)", "5")))
+                513L,
+
+                asList("pampers", "active", "baby", "s6p")))
         internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                481L,
-                asList("pampers", "premium", "s5")))
+                513L,
+
+                asList("pampers", "active", "baby-dry", "6+")))
+        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
+                513L,
+
+                asList("pampers", "activebaby", "6+")))
+        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
+                513L,
+
+                asList("pampers", "new", "baby-dry", "6")))
+        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
+                513L,
+
+                asList("pampers", "active", "baby-dry", "6")))
+        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
+                513L,
+
+                asList("pampers", "pure", "protection", "6")))
+        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
+                513L,
+
+                asList("pampers", "pure", "protection", "s6")))
+        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
+                513L,
+
+                asList("pampers", "pure", "protection", "s6,")))
+        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
+                513L,
+
+                asList("pampers", "giant", "pack", "maxi", "6")))
+
     }
 
 
