@@ -43,7 +43,7 @@ class AlzaProductParser(unitParser: UnitParser,
         return Integer.valueOf(element.text())
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
         val select1 = documentList.select("a[class='name browsinglink']")
         val urls = ArrayList<String>(select1.size)
         for (element in select1) {

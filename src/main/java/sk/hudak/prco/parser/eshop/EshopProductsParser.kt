@@ -1,5 +1,6 @@
 package sk.hudak.prco.parser.eshop
 
+import org.jsoup.nodes.Document
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.dto.ProductUpdateData
@@ -35,4 +36,13 @@ interface EshopProductsParser {
      * @throws ProductNameNotFoundException, ProductPriceNotFoundException
      */
     fun parseProductUpdateData(productUrl: String): ProductUpdateData
+
+    // neve API
+    fun retrieveDocument(productUrl: String): Document
+
+    //TODO toto nema byt htlm parser ???
+    fun parseCountOfPages(document: Document): Int
+
+    fun parsePageForProductUrls(document: Document, pageNumber: Int): List<String>
+
 }

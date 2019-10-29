@@ -48,7 +48,7 @@ class EsoDrogeriaProductParser(unitParser: UnitParser,
         return super.parseNextPage(searchKeyWord, currentPageNumber - 1)
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("div[class='product tab_img160 image_first one-preview-image in-stock-y'] div[class='productBody'] div[class='img_box'] a")
                 .stream()
                 .map { element -> element.attr("href") }

@@ -40,7 +40,7 @@ class AmdDrogeriaProductParser(unitParser: UnitParser,
         return Integer.valueOf(text)
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("div.product-sm__name > h2 > a").stream()
                 .map { element -> element.attr("href") }
                 .filter { StringUtils.isNotBlank(it) }

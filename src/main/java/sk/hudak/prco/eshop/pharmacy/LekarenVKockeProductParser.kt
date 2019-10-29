@@ -47,7 +47,7 @@ class LekarenVKockeProductParser(unitParser: UnitParser,
         return 1
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("div[class='product col-xs-6 col-xs-offset-0 col-s-6 col-s-offset-0 col-sm-3 col-sm-offset-0'] > a")
                 .stream()
                 .map { it.href() }

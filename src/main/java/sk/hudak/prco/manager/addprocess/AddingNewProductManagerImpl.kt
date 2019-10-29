@@ -50,6 +50,8 @@ interface AddingNewProductManager {
      * @param searchKeyWords search key words
      */
     fun addNewProductsByKeywordsForAllEshops(vararg searchKeyWordIds: Long)
+
+    fun addNewProductsByConfiguredKeywordsForAllEshops()
 }
 
 @Component
@@ -64,7 +66,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
     : AddingNewProductManager, PrcoObserver {
 
     companion object {
-        val log = LoggerFactory.getLogger(AddingNewProductManagerImpl::class.java)!!
+        val LOG = LoggerFactory.getLogger(AddingNewProductManagerImpl::class.java)!!
 
         private const val CTX_ESHOP_UUID_KEY = "eshopUuid"
         private const val CTX_SEARCH_KEYWORD_KEY = "searchKeyWord"
@@ -99,8 +101,23 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                     existParserForEshop(it)
                 }
                 .forEach {
-                    // spusti parsovanie 'eshop -> searchKeyWord'
+                    // spusti parsovanie 'eshop -> searchKeyWordId'
                     addNewProductsByKeywordForEshop(it, searchKeyWordId)
+                    // pre kazdy dalsi eshop pockaj so spustenim 2 sekundy
+                    sleepSafe(2)
+                }
+    }
+
+    override fun addNewProductsByConfiguredKeywordsForAllEshops() {
+        EshopUuid.values()
+                .filter { existParserForEshop(it) }
+                .forEach {
+                    val supportedSearchKeywordIds = it.config.supportedSearchKeywordIds
+                    LOG.debug("eshop $it has configured ${supportedSearchKeywordIds.size} search keywords")
+                    supportedSearchKeywordIds.forEach { searchKeywordId ->
+                        // spusti parsovanie 'eshop -> searchKeyWordId'
+                        addNewProductsByKeywordForEshop(it, searchKeywordId);
+                    }
                     // pre kazdy dalsi eshop pockaj so spustenim 2 sekundy
                     sleepSafe(2)
                 }
@@ -110,22 +127,22 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
 
             override fun doInRunnable(context: SingleContext) {
-                log.debug(">> addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWordId $searchKeyWordId")
+                LOG.debug(">> addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWordId $searchKeyWordId")
                 eshopTaskManager.markTaskAsRunning(eshopUuid)
                 context.addValue(CTX_ESHOP_UUID_KEY, eshopUuid)
 
                 // na zaklade id nacitam samotne klucove slovo
                 val searchKeyWord: String = internalTxService.getSearchKeywordById(searchKeyWordId)
-                log.debug("searchKeyWord $searchKeyWord")
+                LOG.debug("searchKeyWord $searchKeyWord")
                 context.addValue(CTX_SEARCH_KEYWORD_KEY, searchKeyWord)
 
                 // check ci je podporovane
                 val config = eshopUuid.config
                 if (config == null || config.supportedSearchKeywordIds == null || config.supportedSearchKeywordIds.isEmpty()) {
-                    log.warn(wrapWithColor("eshop config $eshopUuid has none supported keywords", ConsoleColor.RED))
+                    LOG.warn(wrapWithColor("eshop config $eshopUuid has none supported keywords", ConsoleColor.RED))
                 } else {
                     if (!config.supportedSearchKeywordIds.contains(searchKeyWordId)) {
-                        log.warn("searchKeyWord $searchKeyWord with id $searchKeyWordId is not supported for eshop $eshopUuid")
+                        LOG.warn("searchKeyWord $searchKeyWord with id $searchKeyWordId is not supported for eshop $eshopUuid")
                         //TODO refaktor metod doInRunnuble, prerobit nasledovne:
                         // ak dana metoda skonci a nenastavila do kontextu fiishedWithError true tak skoncila ok a
                         // ja mozem hore oznacit dany task za uspesne ukonceny... to je koli tomu aby tieto doInRunnable metody
@@ -137,14 +154,14 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
                 // vyparsujem vsetky url-cky produktov, ktore sa najdu na strankach(prechadza aj pageovane stranky)
                 var urlList: List<String> = searchProductUrls(context, eshopUuid, searchKeyWord)
-                log.debug("count of products URL ${urlList.size}")
+                LOG.debug("count of products URL ${urlList.size}")
 
                 urlList = filterDuplicity(context, eshopUuid, searchKeyWord, urlList)
-                log.debug("count of products URL after duplicity check ${urlList.size}")
+                LOG.debug("count of products URL after duplicity check ${urlList.size}")
 
                 // filter only non existing
                 val notExistingProducts = filterOnlyNotExistingWithException(context, urlList, eshopUuid)
-                log.debug("count of non existing products URL  ${notExistingProducts.size}")
+                LOG.debug("count of non existing products URL  ${notExistingProducts.size}")
 
                 createNewProductsErrorWrapper(context, eshopUuid, notExistingProducts)
 
@@ -156,7 +173,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
             }
 
             override fun doInFinally(context: SingleContext) {
-                log.debug("<< addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWordId $searchKeyWordId")
+                LOG.debug("<< addNewProductsByKeywordForEshop eshop $eshopUuid, searchKeyWordId $searchKeyWordId")
                 notifyFinishProcessingKeywordForEshop(context)
             }
         })
@@ -164,12 +181,12 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
     override fun addNewProductsByUrl(productsUrl: List<String>) {
         notEmpty(productsUrl, "productsUrl")
-        log.debug(">> addNewProductsByUrl count of URLs: ${productsUrl.size}")
+        LOG.debug(">> addNewProductsByUrl count of URLs: ${productsUrl.size}")
 
         // filtrujem len tie ktore este neexistuju
         val notExistingProducts = filterOnlyNotExisting(productsUrl)
         if (notExistingProducts.isNullOrEmpty()) {
-            log.debug("<< addNewProductsByUrl count of URLs: ${productsUrl.size}")
+            LOG.debug("<< addNewProductsByUrl count of URLs: ${productsUrl.size}")
             return
         }
 
@@ -180,7 +197,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
             eshopTaskManager.submitTask(eshopUuid, object : ExceptionHandlingRunnable() {
 
                 override fun doInRunnable(context: SingleContext) {
-                    log.debug(">> addNewProductsByUrlsForEshop eshop $eshopUuid")
+                    LOG.debug(">> addNewProductsByUrlsForEshop eshop $eshopUuid")
                     eshopTaskManager.markTaskAsRunning(eshopUuid)
 
                     createNewProductsErrorWrapper(context, eshopUuid, productUrlList!!)
@@ -193,14 +210,14 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                 }
 
                 override fun doInFinally(context: SingleContext) {
-                    log.debug("<< addNewProductsByUrlsForEshop eshop $eshopUuid")
+                    LOG.debug("<< addNewProductsByUrlsForEshop eshop $eshopUuid")
                     //TODO notify
                 }
             })
             // kazdy dalsi spusti s 2 sekundovym oneskorenim
             sleepSafe(2)
         }
-        log.debug("<< addNewProductsByUrl count of URLs: ${productsUrl.size}")
+        LOG.debug("<< addNewProductsByUrl count of URLs: ${productsUrl.size}")
     }
 
 
@@ -219,7 +236,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
         result.forEach { (key, value) ->
             if (value != 1) {
-                log.error("product with URL $key is more than one, count: $value")
+                LOG.error("product with URL $key is more than one, count: $value")
                 errorLogManager.logErrorDuplicityDuringfindinUrlOfProducts(eshopUuid, searchKeyWord, key)
             }
         }
@@ -242,7 +259,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
                     countOfFound = if (countOfFound is Int) countOfFound else 0,
                     countOfAdded = if (countOfProcessed is Int) countOfProcessed else 0))
         } catch (e: Exception) {
-            log.error("error while notifying observers", e)
+            LOG.error("error while notifying observers", e)
         }
     }
 
@@ -264,7 +281,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
     private fun createNewProducts(context: SingleContext, eshopUuid: EshopUuid, urlList: List<String>) {
         loop@
         for (currentUrlIndex in urlList.indices) {
-            log.debug("starting {} of {}", currentUrlIndex + 1, urlList.size)
+            LOG.debug("starting {} of {}", currentUrlIndex + 1, urlList.size)
 
             val processNewProductUrl = processNewProductUrl(eshopUuid, urlList[currentUrlIndex])
 
@@ -299,7 +316,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
             htmlParser.parseProductNewData(productUrl)
 
         } catch (e: Exception) {
-            log.error(e.message, e)
+            LOG.error(e.message, e)
             errorLogManager.logErrorParsingProductNewData(eshopUuid, e)
             return when (e) {
                 is EshopNotFoundParserException,
@@ -320,7 +337,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
         if (null == productNewData.name) {
             errorLogManager.logErrorParsingProductNameForNewProduct(eshopUuid, productUrl)
-            log.warn("new product not contains name, skipping to next product")
+            LOG.warn("new product not contains name, skipping to next product")
             return ContinueStatus.CONTINUE_TO_NEXT_ONE_ERROR
         }
 
@@ -339,7 +356,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         }
         context.addValue("countOfFoundProductUrls", urlList.size)
         if (urlList.isEmpty()) {
-            log.debug("none url found for eshop $eshopUuid and keyword $searchKeyWord")
+            LOG.debug("none url found for eshop $eshopUuid and keyword $searchKeyWord")
             throw NoProductUrlsFoundFondForKeywordException(eshopUuid, searchKeyWord)
         }
         return urlList
@@ -360,7 +377,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
     private fun filterOnlyNotExisting(productsUrl: List<String>): List<String> {
         val notExistingProducts = internalFilterOnlyNonExistingUrls(productsUrl)
-        log.debug("count of non existing URLs ${notExistingProducts.size}")
+        LOG.debug("count of non existing URLs ${notExistingProducts.size}")
         return notExistingProducts
     }
 
@@ -382,13 +399,13 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
         val notExistingProducts = productsUrl.filter {
             val exist = internalTxService.existProductWithURL(it)
             if (exist) {
-                log.debug("product $it already existing")
+                LOG.debug("product $it already existing")
             }
             !exist
         }
 
         if (notExistingProducts.isEmpty()) {
-            log.debug("count of non existing products URL is zero")
+            LOG.debug("count of non existing products URL is zero")
         }
         return notExistingProducts
     }
@@ -398,7 +415,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
             eshopUuid == it.eshopUuid
         }
         if (parser == null) {
-            log.warn("for eshop $eshopUuid none parser found")
+            LOG.warn("for eshop $eshopUuid none parser found")
             return false
         }
         return true
@@ -413,29 +430,29 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 //            }
 
             is SearchProductUrlsException -> {
-                log.error(e.message, e)
+                LOG.error(e.message, e)
                 eshopTaskManager.markTaskAsFinished(e.eshopUuid, true)
                 errorLogManager.logErrorParsingProductUrls(e.eshopUuid, e.searchKeyWord, e)
             }
 
             is NoProductUrlsFoundFondForKeywordException -> {
-                log.info(e.message)
+                LOG.info(e.message)
                 eshopTaskManager.markTaskAsFinished(e.eshopUuid, false)
             }
 
             is AllProductsWithGivenUrlsAlreadyExistingException -> {
-                log.info(e.message)
+                LOG.info(e.message)
                 eshopTaskManager.markTaskAsFinished(e.eshopUuid, false)
             }
 
             is CreateNewProductsForUrlsException -> {
-                log.error(e.message, e)
+                LOG.error(e.message, e)
                 eshopTaskManager.markTaskAsFinished(e.eshopUuid, true)
                 errorLogManager.logErrorParsingProductNewData(e.eshopUuid, e)
             }
 
             else -> {
-                log.error(e.message, e)
+                LOG.error(e.message, e)
                 eshopTaskManager.markTaskAsFinished(eshopUuid, true)
             }
         }

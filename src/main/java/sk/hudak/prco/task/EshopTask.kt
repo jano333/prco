@@ -25,15 +25,17 @@ data class TaskContext constructor(
 
 interface EshopTaskManager {
 
-    fun dajmiho(eshopUuid: EshopUuid): Executor
+//    fun dajmiho(eshopUuid: EshopUuid): Executor
 
     val tasks: Map<EshopUuid, TaskContext>
 
     val isAnyTaskRunning: Boolean
 
+    fun scheduleTask(eshopUuid: EshopUuid, task: Runnable): Future<*>
+
     fun submitTask(eshopUuid: EshopUuid, task: Runnable): Future<*>
 
-    fun <T> submitTask(eshopUuid: EshopUuid, task: Callable<T>): Future<T>
+//    fun <T> submitTask(eshopUuid: EshopUuid, task: Callable<T>): Future<T>
 
     fun isTaskRunning(eshopUuid: EshopUuid): Boolean
 
@@ -58,18 +60,15 @@ interface EshopTaskManager {
 class EshopTaskManagerImpl : EshopTaskManager {
 
     companion object {
-        val log = LoggerFactory.getLogger(EshopTaskManagerImpl::class.java)!!
+        val LOG = LoggerFactory.getLogger(EshopTaskManagerImpl::class.java)!!
     }
 
-    private val executors = EnumMap<EshopUuid, ExecutorService>(EshopUuid::class.java)
+    private val executors = EnumMap<EshopUuid, ScheduledExecutorService>(EshopUuid::class.java)
     private val internalTask = ConcurrentHashMap<EshopUuid, TaskContext>(EshopUuid.values().size)
 
     //FIXME KT ci sa neda neako inak aby nebola internalTask(pozri povodnu java o co islo)
     //TODO skusit init {} pozri PrcoCustomHostnameVerifier a porovnaj java -> kotlin
-    override val tasks: Map<EshopUuid, TaskContext>
-        get() {
-            return internalTask
-        }
+    override val tasks: Map<EshopUuid, TaskContext> = internalTask
 
     override val isAnyTaskRunning: Boolean
         get() {
@@ -96,30 +95,36 @@ class EshopTaskManagerImpl : EshopTaskManager {
         }
     }
 
-    private fun createExecutorServiceForEshop(eshopUuid: EshopUuid): ExecutorService {
-
-        return Executors.newSingleThreadExecutor {
+    private fun createExecutorServiceForEshop(eshopUuid: EshopUuid): ScheduledExecutorService {
+        return Executors.newSingleThreadScheduledExecutor {
             val thread = Thread(it, "${eshopUuid.name}-thread")
             thread.uncaughtExceptionHandler = PrcoUncaughtExceptionHandler(eshopUuid)
-
             thread
         }
     }
 
-    // TODO to co za nazov
-    override fun dajmiho(eshopUuid: EshopUuid): Executor {
-        return executors[eshopUuid]!!
-    }
-
-
     override fun submitTask(eshopUuid: EshopUuid, task: Runnable): Future<*> {
-        log.debug("submitting new task for eshop $eshopUuid")
+        LOG.debug("submitting new task for eshop $eshopUuid")
         return executors[eshopUuid]!!.submit(task)
     }
 
-    override fun <T> submitTask(eshopUuid: EshopUuid, task: Callable<T>): Future<T> {
-        return executors[eshopUuid]!!.submit(task)
+    override fun scheduleTask(eshopUuid: EshopUuid, task: Runnable): Future<*> {
+//        return executors[eshopUuid]!!.submit(task)
+        val scheduledAfterSec = ThreadUtils.generateRandomSecondInInterval(5, 20).toLong()
+
+        LOG.debug("scheduling new task for eshop $eshopUuid to start at ")
+
+        return executors[eshopUuid]!!.schedule(task, scheduledAfterSec, TimeUnit.SECONDS)
     }
+
+    // TODO to co za nazov
+//    override fun dajmiho(eshopUuid: EshopUuid): Executor {
+//        return executors[eshopUuid]!!
+//    }
+
+//    override fun <T> submitTask(eshopUuid: EshopUuid, task: Callable<T>): Future<T> {
+//        return executors[eshopUuid]!!.submit(task)
+//    }
 
 
     override fun isTaskRunning(eshopUuid: EshopUuid): Boolean {
@@ -144,18 +149,18 @@ class EshopTaskManagerImpl : EshopTaskManager {
     }
 
     override fun markTaskAsRunning(eshopUuid: EshopUuid) {
-        log.debug("marking task for eshop $eshopUuid as ${TaskStatus.RUNNING}")
+        LOG.debug("marking task for eshop $eshopUuid as ${TaskStatus.RUNNING}")
         internalTask[eshopUuid] = TaskContext(TaskStatus.RUNNING)
     }
 
     override fun markTaskAsFinished(eshopUuid: EshopUuid, finishedWithError: Boolean) {
         val newTaskStatus = if (finishedWithError) TaskStatus.FINISHED_WITH_ERROR else TaskStatus.FINISHED_OK
-        log.debug("marking task for eshop $eshopUuid as $newTaskStatus")
+        LOG.debug("marking task for eshop $eshopUuid as $newTaskStatus")
         internalTask[eshopUuid] = TaskContext(newTaskStatus)
     }
 
     override fun markTaskAsStopped(eshopUuid: EshopUuid) {
-        log.debug("marking task for eshop $eshopUuid as ${TaskStatus.STOPPED}")
+        LOG.debug("marking task for eshop $eshopUuid as ${TaskStatus.STOPPED}")
         internalTask[eshopUuid] = TaskContext(TaskStatus.STOPPED)
     }
 
@@ -163,7 +168,7 @@ class EshopTaskManagerImpl : EshopTaskManager {
         val currentContext = internalTask[eshopUuid]!!
         val currentStatus = currentContext.status
 
-        log.debug("task status $currentContext")
+        LOG.debug("task status $currentContext")
         if (TaskStatus.STOPPED == currentStatus) {
             return
         }
@@ -188,10 +193,10 @@ data class PrcoUncaughtExceptionHandler(val eshopUuid: EshopUuid)
     : Thread.UncaughtExceptionHandler {
 
     companion object {
-        val log = LoggerFactory.getLogger(PrcoUncaughtExceptionHandler::class.java)!!
+        val LOG = LoggerFactory.getLogger(PrcoUncaughtExceptionHandler::class.java)!!
     }
     override fun uncaughtException(t: Thread?, e: Throwable?) {
-        log.error("eshop: $eshopUuid", e)
+        LOG.error("eshop: $eshopUuid", e)
     }
 }
 

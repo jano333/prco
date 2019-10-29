@@ -41,7 +41,7 @@ class BrendonProductParser(unitParser: UnitParser,
                 .orElse(1)
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
        log.debug("page number $pageNumber")
         log.debug(documentList.location())
         val toList = documentList.select("div.details > div.product-title.pb-2.flex-fill > h3 > a")

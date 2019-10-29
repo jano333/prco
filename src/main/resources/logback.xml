@@ -2,7 +2,7 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-                <pattern>%date %level [%thread] [%X{eshopUuid}] %logger{10} [%file:%line] %msg%n</pattern>
+                <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -20,7 +20,7 @@
         </rollingPolicy>
 
         <encoder>
-            <pattern>%date %level [%thread] [%X{eshopUuid}] %logger{10} [%file:%line] %msg%n</pattern>
+            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -34,7 +34,7 @@
         </rollingPolicy>
 
         <encoder>
-            <pattern>%date %level [%thread] [%X{eshopUuid}] %logger{10} [%file:%line] %msg%n
+            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n
             </pattern>
         </encoder>
     </appender>

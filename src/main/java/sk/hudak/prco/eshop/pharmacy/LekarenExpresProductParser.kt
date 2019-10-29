@@ -40,7 +40,7 @@ class LekarenExpresProductParser(unitParser: UnitParser, userAgentDataHolder: Us
         } else size
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("div[class='product'] h3 a").stream()
                 .map { it.attr("href") }
                 .filter { StringUtils.isNotBlank(it) }

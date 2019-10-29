@@ -36,7 +36,7 @@ class GigaLekarenProductParser(unitParser: UnitParser,
         } else i
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("div[class=top_left] p[class=product_title] a").stream()
                 .map { element -> element.attr("href") }
                 .filter { StringUtils.isNotBlank(it) }

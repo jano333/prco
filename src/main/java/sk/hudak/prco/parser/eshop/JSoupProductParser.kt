@@ -61,10 +61,10 @@ abstract class JSoupProductParser : EshopProductsParser {
      * <br></br>Volana 1 v poradi.
      * <br></br> vynimky vyhadzovane touto metodu su odchytovane vyssie
      *
-     * @param documentList
+     * @param document
      * @return
      */
-    protected abstract fun parseCountOfPages(documentList: Document): Int
+    abstract override fun parseCountOfPages(document: Document): Int
 
     /**
      * Volana 2 v poradi.<br></br>
@@ -74,7 +74,7 @@ abstract class JSoupProductParser : EshopProductsParser {
      * @param pageNumber   poradove cislo stranky(z pagingu)
      * @return zoznam URL produktov
      */
-    protected abstract fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>?
+    abstract override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>
 
     /**
      * Volane pri aktualizacii udajov, overuje sa ci je product dostupny
@@ -244,7 +244,7 @@ abstract class JSoupProductParser : EshopProductsParser {
     /**
      * TODO spisat ake vynimky moze vyhadzovat
      */
-    protected open fun retrieveDocument(productUrl: String): Document {
+    override fun retrieveDocument(productUrl: String): Document {
         try {
             log.debug("request URL: $productUrl")
             log.trace("request userAgent: $userAgent")

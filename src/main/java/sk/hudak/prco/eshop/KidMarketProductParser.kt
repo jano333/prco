@@ -39,7 +39,7 @@ class KidMarketProductParser(unitParser: UnitParser,
         return JsoupUtils.calculateCountOfPages(countOfProducts, eshopUuid.maxCountOfProductOnPage)
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
         //FIXME prepisat cez strem
         val first = documentList.select("#product_list").first() ?: return emptyList()
 

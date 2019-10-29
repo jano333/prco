@@ -31,7 +31,7 @@ class FarbyProductParser(unitParser: UnitParser,
         return 1
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("ol[class='product-items row'] li div div div strong a").stream()
                 .map { it.href() }
                 .filter { StringUtils.isNotEmpty(it) }

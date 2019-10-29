@@ -58,7 +58,7 @@ class MallProductParser(unitParser: UnitParser,
         } else 1
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
         //TODO preromit forEach na map{}.toList()
         val result = ArrayList<String>(MAX_COUNT_OF_PRODUCT_PRE_PAGE)
         documentList.select("h3[class=lst-product-item-title]")

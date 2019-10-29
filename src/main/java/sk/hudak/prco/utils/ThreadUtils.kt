@@ -22,8 +22,6 @@ object ThreadUtils {
         sleepSafe(second)
     }
 
-    @JvmStatic
-    @JvmOverloads
     fun generateRandomSecondInInterval(min: Int = 5, max: Int = 20): Int {
         return Random().nextInt(max - min + 1) + min
     }

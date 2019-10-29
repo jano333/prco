@@ -209,6 +209,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         //        uiService.updateProductCommonPrice(449L, BigDecimal.valueOf(0.59));
 
         // --- ADD NEW PRODUCTS ---
+//        newProductManager.addNewProductsByConfiguredKeywordsForAllEshops()
 //                newProductManager.addNewProductsByKeywordsForAllEshops(PAMPERS_ID, NUTRILON_ID, LOVELA_ID)
 //                newProductManager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, PAMPERS_ID)
         //        newProductManager.addNewProductsByUrl(

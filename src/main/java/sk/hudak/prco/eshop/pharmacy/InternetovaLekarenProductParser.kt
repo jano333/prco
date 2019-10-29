@@ -34,7 +34,7 @@ class InternetovaLekarenProductParser(unitParser: UnitParser, userAgentDataHolde
         } else i
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("#products > div > div > a").stream()
                 .map { it.attr("href") }
                 .filter { StringUtils.isNotBlank(it) }

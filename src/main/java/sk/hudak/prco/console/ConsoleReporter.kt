@@ -2,6 +2,7 @@ package sk.hudak.prco.console
 
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.SearchKeyWordId
 import sk.hudak.prco.api.Unit
 import sk.hudak.prco.dto.GroupCreateDto
 import sk.hudak.prco.dto.GroupProductKeywordsCreateDto
@@ -11,6 +12,8 @@ import sk.hudak.prco.dto.product.ProductFilterUIDto
 import sk.hudak.prco.dto.product.ProductFullDto
 import sk.hudak.prco.manager.GroupProductResolver
 import sk.hudak.prco.service.InternalTxService
+import sk.hudak.prco.task.ng.AddImpl
+import sk.hudak.prco.task.ng.AddImplNg
 import sk.hudak.prco.utils.CalculationUtils
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -20,11 +23,14 @@ import java.util.Arrays.asList
 
 @Component
 class PrcoConsole(val internalTxService: InternalTxService,
-                  val groupProductResolver: GroupProductResolver) {
+                  val groupProductResolver: GroupProductResolver,
+                  val addImpl: AddImpl,
+                  val addImplNg: AddImplNg) {
 
     fun showInConsole() {
 
-
+//        addImpl.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
+        addImplNg.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
         //Pampers Pure Value Pack S5 (11+kg) 24ks Junior
 //        val groupProductKeywords = groupProductResolver.resolveGroupId("Pampers Premium Care Veľkosť 6, Plienky x38, 13kg+")
 
@@ -32,21 +38,21 @@ class PrcoConsole(val internalTxService: InternalTxService,
 
 //        removeAllKeywordsForGroup(609L)
 //        createGroupKeyWords()
-        showGroupKeysWords(449L)
-        showGroupKeysWords(450L)
-        showGroupKeysWords(451L)
-        showGroupKeysWords(452L)
-        showGroupKeysWords(453L)
-        showGroupKeysWords(481L)
-
-        showGroupKeysWords(545L)
-        showGroupKeysWords(546L)
-        showGroupKeysWords(547L)
-        showGroupKeysWords(1L)
-        showGroupKeysWords(321L)
-        showGroupKeysWords(513L)
-
-        showAllGroups()
+//        showGroupKeysWords(449L)
+//        showGroupKeysWords(450L)
+//        showGroupKeysWords(451L)
+//        showGroupKeysWords(452L)
+//        showGroupKeysWords(453L)
+//        showGroupKeysWords(481L)
+//
+//        showGroupKeysWords(545L)
+//        showGroupKeysWords(546L)
+//        showGroupKeysWords(547L)
+//        showGroupKeysWords(1L)
+//        showGroupKeysWords(321L)
+//        showGroupKeysWords(513L)
+//
+//        showAllGroups()
 
 //        showDuplicityProductsInEshops()
 

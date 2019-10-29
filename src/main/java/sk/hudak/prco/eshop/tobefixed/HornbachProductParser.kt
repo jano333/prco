@@ -116,7 +116,7 @@ class HornbachProductParser(unitParser: UnitParser, userAgentDataHolder: UserAge
         return 0
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
         // TODO impl
         return emptyList()
     }

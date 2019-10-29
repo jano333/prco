@@ -39,7 +39,7 @@ class PilulkaProductParser(unitParser: UnitParser,
         return JsoupUtils.calculateCountOfPages(pocetProduktov, eshopUuid.maxCountOfProductOnPage)
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>? {
+    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("div[class='col-6 col-sm-4 col-lg-3 p-0 product-card__border'] > div > a")
                 .map { it.href() }
                 .filter { it.isNotBlank() }
