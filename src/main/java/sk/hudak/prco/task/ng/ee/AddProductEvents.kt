@@ -11,8 +11,8 @@ import sk.hudak.prco.parser.eshop.EshopProductsParser
 data class NewKeyWordIdEvent(val eshopUuid: EshopUuid,
                              val searchKeyWordId: Long) : CoreEvent()
 
-data class NewKeyWordIdErrorEvent(val event: NewKeyWordIdEvent,
-                                  val error: Throwable) : CoreEvent()
+data class RetrieveKeywordBaseOnKeywordIdErrorEvent(val event: NewKeyWordIdEvent,
+                                                    val error: Throwable) : CoreEvent()
 // -----------
 
 /**
@@ -22,8 +22,8 @@ data class NewKeyWordEvent(val eshopUuid: EshopUuid,
                            val searchKeyWordId: Long,
                            val searchKeyWord: String) : CoreEvent()
 
-data class NewKeyWordErrorEvent(val event: NewKeyWordEvent,
-                                val error: Throwable) : CoreEvent()
+data class BuildSearchUrlForKeywordErrorEvent(val event: NewKeyWordEvent,
+                                              val error: Throwable) : CoreEvent()
 
 // -----------
 
@@ -34,8 +34,8 @@ data class NewKeyWordUrlEvent(val eshopUuid: EshopUuid,
                               val searchKeyWord: String,
                               val searchUrl: String) : CoreEvent()
 
-data class NewKeyWordUrlErrorEvent(val event: NewKeyWordUrlEvent,
-                                   val error: Throwable) : CoreEvent()
+data class RetrieveDocumentForSearchUrlErrorEvent(val event: NewKeyWordUrlEvent,
+                                                  val error: Throwable) : CoreEvent()
 
 // -------------
 /**
@@ -44,14 +44,16 @@ data class NewKeyWordUrlErrorEvent(val event: NewKeyWordUrlEvent,
  * 4.b Document -> firstPageProductURLs[]
  */
 data class FirstDocumentEvent(val document: Document,
+                              val searchKeyWord: String,
                               val searchUrl: String,
                               val eshopParser: EshopProductsParser) : CoreEvent()
 
-data class FirstDocumentCountOfPageErrorEvent(val event: FirstDocumentEvent,
-                                              val error: Throwable) : CoreEvent()
+data class ParseCountOfPagesErrorEvent(val event: FirstDocumentEvent,
+                                       val error: Throwable) : CoreEvent()
 
-data class FirstDocumentPageProductUrlsErrorEvent(val event: FirstDocumentEvent,
-                                                  val error: Throwable) : CoreEvent()
+data class ParseProductListURLsErrorEvent(val event: FirstDocumentEvent,
+                                          val pageNumber: Int,
+                                          val error: Throwable) : CoreEvent()
 
 data class CountOfPagesEvent(val countOfPages: Int,
                              val document: Document,
@@ -59,5 +61,24 @@ data class CountOfPagesEvent(val countOfPages: Int,
 
 data class FirstPageProductURLsEvent(val pageProductURLs: List<String>,
                                      val document: Document,
+                                     val eshopUuid: EshopUuid,
+                                     val searchKeyWord: String,
                                      val searchUrl: String) : CoreEvent()
+
 // -------------
+data class NewProductUrlEvent(val newProductUrl: String,
+                              val eshopUuid: EshopUuid) : CoreEvent()
+
+data class FilterDuplicityErrorEvent(val event: FirstPageProductURLsEvent,
+                                     val error: Throwable) : CoreEvent()
+
+data class FilterNotExistingErrorEvent(val event: FirstPageProductURLsEvent,
+                                       val error: Throwable) : CoreEvent()
+// -------
+data class ProductDocumentEvent(val document: Document,
+                                val newProductUrl: String,
+                                val eshopParser: EshopProductsParser) : CoreEvent()
+
+data class RetrieveDocumentForUrlErrorEvent(val event: NewProductUrlEvent,
+                                            val error: Throwable) : CoreEvent()
+

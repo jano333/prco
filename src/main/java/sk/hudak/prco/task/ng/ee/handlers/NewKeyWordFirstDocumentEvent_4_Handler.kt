@@ -1,4 +1,4 @@
-package sk.hudak.prco.task.ng.ee
+package sk.hudak.prco.task.ng.ee.handlers
 
 import org.jsoup.nodes.Document
 import org.slf4j.LoggerFactory
@@ -7,6 +7,7 @@ import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.events.PrcoObserver
 import sk.hudak.prco.parser.eshop.EshopProductsParser
+import sk.hudak.prco.task.ng.ee.*
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
@@ -30,7 +31,7 @@ class NewKeyWordFirstDocumentEvent_4_Handler(private val prcoObservable: PrcoObs
      * 4.b Document -> firstPageProductURLs[]
      */
     private fun handle(event: FirstDocumentEvent) {
-        LOG.debug("handle ${event.javaClass.simpleName}")
+        LOG.trace("handle ${event.javaClass.simpleName}")
 
         // 4.a Document -> countOfPages
         parseCountOfPages(event.eshopParser, event.document, event.searchUrl)
@@ -38,17 +39,18 @@ class NewKeyWordFirstDocumentEvent_4_Handler(private val prcoObservable: PrcoObs
                     if (exception == null) {
                         prcoObservable.notify(CountOfPagesEvent(countOfPages, event.document, event.searchUrl))
                     } else {
-                        prcoObservable.notify(FirstDocumentCountOfPageErrorEvent(event, exception))
+                        prcoObservable.notify(ParseCountOfPagesErrorEvent(event, exception))
                     }
                 }
 
         // 4.b Document -> firstPageProductURLs[]
-        parseProductListURLs(event.eshopParser, event.document, 1)
+        val currentPageNumber = 1
+        parseProductListURLs(event.eshopParser, event.document, currentPageNumber)
                 .handle { pageProductURLs, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(FirstPageProductURLsEvent(pageProductURLs, event.document, event.searchUrl))
+                        prcoObservable.notify(FirstPageProductURLsEvent(pageProductURLs, event.document, event.eshopParser.eshopUuid, event.searchKeyWord, event.searchUrl))
                     } else {
-                        prcoObservable.notify(FirstDocumentPageProductUrlsErrorEvent(event, exception))
+                        prcoObservable.notify(ParseProductListURLsErrorEvent(event, currentPageNumber, exception))
                     }
                 }
     }
@@ -78,7 +80,7 @@ class NewKeyWordFirstDocumentEvent_4_Handler(private val prcoObservable: PrcoObs
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is FirstDocumentEvent -> handle(event)
+            is FirstDocumentEvent -> executors.handlerTaskExecutor.submit { handle(event) }
         }
     }
 

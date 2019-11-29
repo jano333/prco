@@ -40,7 +40,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
 
     override fun update(source: Observable?, event: CoreEvent) {
         //TODO vypis?
-        log.debug("updateObservable.update ${source?.javaClass?.simpleName} - event $event")
+//        log.debug("updateObservable.update ${source?.javaClass?.simpleName} - event $event")
     }
 
     override fun updateProductDataForEachProductInEachEshop(listener: UpdateProductDataListener) {

@@ -11,9 +11,10 @@ import java.util.concurrent.*
 @Component
 class Executors {
 
+    val handlerTaskExecutor: ExecutorService = createInternalThreadExecutor("handler-task", 10)
     val internalServiceExecutor: ExecutorService = createInternalThreadExecutor("db-service", 20)
     val searchUrlBuilderExecutor: ExecutorService = createInternalThreadExecutor("search-url", 2)
-    val eshopDocumentExecutor = EnumMap<EshopUuid, ScheduledExecutorService>(EshopUuid::class.java)
+    private val eshopDocumentExecutor = EnumMap<EshopUuid, ScheduledExecutorService>(EshopUuid::class.java)
     val htmlParserExecutor: ExecutorService = createInternalThreadExecutor("html-parser", 10)
 
     init {
@@ -21,7 +22,6 @@ class Executors {
         EshopUuid.values().forEach {
             eshopDocumentExecutor[it] = createEshopThreadExecutor(it)
         }
-
     }
 
     fun getEshopExecutor(eshopUuid: EshopUuid): ScheduledExecutorService {

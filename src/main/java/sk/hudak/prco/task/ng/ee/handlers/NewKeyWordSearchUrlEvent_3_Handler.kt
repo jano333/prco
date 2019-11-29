@@ -1,4 +1,4 @@
-package sk.hudak.prco.task.ng.ee
+package sk.hudak.prco.task.ng.ee.handlers
 
 import org.jsoup.nodes.Document
 import org.slf4j.LoggerFactory
@@ -9,6 +9,10 @@ import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.events.PrcoObserver
 import sk.hudak.prco.exception.EshopParserNotFoundException
 import sk.hudak.prco.parser.eshop.EshopProductsParser
+import sk.hudak.prco.task.ng.ee.Executors
+import sk.hudak.prco.task.ng.ee.FirstDocumentEvent
+import sk.hudak.prco.task.ng.ee.NewKeyWordUrlEvent
+import sk.hudak.prco.task.ng.ee.RetrieveDocumentForSearchUrlErrorEvent
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ScheduledExecutorService
@@ -36,16 +40,16 @@ class NewKeyWordSearchUrlEvent_3_Handler(private val prcoObservable: PrcoObserva
      * searchKeywordURL -> Document
      */
     private fun handle(event: NewKeyWordUrlEvent) {
-        LOG.debug("handle ${event.javaClass.simpleName}")
+        LOG.trace("handle ${event.javaClass.simpleName}")
         val eshopParser = findParserForEshop(event.eshopUuid)
         val eshopExecutor: ScheduledExecutorService = executors.getEshopExecutor(event.eshopUuid)
 
         retrieveDocumentForSearchUrl(event.searchUrl, eshopParser, eshopExecutor)
                 .handle { document, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(FirstDocumentEvent(document, event.searchUrl, eshopParser))
+                        prcoObservable.notify(FirstDocumentEvent(document, event.searchKeyWord, event.searchUrl, eshopParser))
                     } else {
-                        prcoObservable.notify(NewKeyWordUrlErrorEvent(event, exception))
+                        prcoObservable.notify(RetrieveDocumentForSearchUrlErrorEvent(event, exception))
                     }
                 }
     }
@@ -62,7 +66,7 @@ class NewKeyWordSearchUrlEvent_3_Handler(private val prcoObservable: PrcoObserva
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is NewKeyWordUrlEvent -> handle(event)
+            is NewKeyWordUrlEvent -> executors.handlerTaskExecutor.submit { handle(event) }
         }
     }
 
