@@ -22,6 +22,7 @@ import java.util.function.Function
 import java.util.function.Supplier
 
 
+@Deprecated("use NG version")
 @Component
 class AddImpl(private val internalTxService: InternalTxService,
               private val htmlParser: HtmlParser,
@@ -265,31 +266,39 @@ class EshopScheduledExecutor(val eshopUuid: EshopUuid, threadFactory: ThreadFact
         val LOG = LoggerFactory.getLogger(EshopScheduledExecutor::class.java)!!
     }
 
-    var lastRunDate: Date? = null
+    private var myLock: Int = 0
+
+    private var lastRunDate: Date? = null
 
     override fun execute(command: Runnable) {
-        var dateTimeToRun: Date?
-        if (lastRunDate == null) {
-            dateTimeToRun = Date()
-            // spusti to hned
-            LOG.debug("scheduling command for $eshopUuid to be run now")
-            val schedule = super.execute(command)
+        var countOfSecond: Long? = null
+
+        synchronized(myLock) {
+            if (lastRunDate == null) {
+                // spusti to hned
+                LOG.debug("scheduling command for $eshopUuid to be run now")
+                // nastavim novy cas...
+                lastRunDate =  Date()
+            } else {
+                // vygenerum interval medzi <5,20> v sekundach
+                val randomSecInterval = ThreadUtils.generateRandomSecondInInterval(5, 20).toLong()
+
+                var dateTimeToRun = calculateDateTimeToRun(lastRunDate!!, randomSecInterval)
+                countOfSecond = ChronoUnit.SECONDS.between(
+                        Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(),
+                        dateTimeToRun.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
+
+                LOG.debug("scheduling command for $eshopUuid to be run after $countOfSecond at $dateTimeToRun")
+                // nastavim novy cas...
+                lastRunDate = dateTimeToRun
+            }
+        }
+        if (countOfSecond != null) {
+            val schedule = super.schedule(command, countOfSecond!!, TimeUnit.SECONDS)
 
         } else {
-            // vygenerum interval medzi <5,20> v sekundach
-            val randomSecInterval = ThreadUtils.generateRandomSecondInInterval(5, 20).toLong()
-
-            dateTimeToRun = calculateDateTimeToRun(lastRunDate!!, randomSecInterval)
-            val countOfSecond = ChronoUnit.SECONDS.between(
-                    Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(),
-                    dateTimeToRun.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
-
-            LOG.debug("scheduling command for $eshopUuid to be run after $countOfSecond at $dateTimeToRun")
-            val schedule = super.schedule(command, countOfSecond, TimeUnit.SECONDS)
+            super.execute(command)
         }
-
-        // nastavim novy cas...
-        lastRunDate = dateTimeToRun
     }
 
     private fun calculateDateTimeToRun(lastRunDate: Date, countOfSecondToRun: Long): Date {

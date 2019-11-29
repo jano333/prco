@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.builder.SearchUrlBuilder
+import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.exception.EshopParserNotFoundException
 import sk.hudak.prco.parser.eshop.EshopProductsParser
 import sk.hudak.prco.parser.html.HtmlParser
@@ -27,15 +28,16 @@ class AddImplNg(private val internalTxService: InternalTxService,
         val LOG = LoggerFactory.getLogger(AddImplNg::class.java)!!
     }
 
-    private val internalDbServiceExecutor: ExecutorService = createInternalThreadExecutor("db-service", 20)
-    private val internalSearchUrlBuilderExecutor: ExecutorService = createInternalThreadExecutor("search-url", 2)
-    private val internalEshopParserExecutor: ExecutorService = createInternalThreadExecutor("eshop-parser", 10)
-    private val eshopExecutor = EnumMap<EshopUuid, ScheduledExecutorService>(EshopUuid::class.java)
+    private val internalServiceExecutor: ExecutorService = createInternalThreadExecutor("db-service", 20)
+    private val searchUrlBuilderExecutor: ExecutorService = createInternalThreadExecutor("search-url", 2)
+    private val htmlParserExecutor: ExecutorService = createInternalThreadExecutor("html-parser", 10)
+    private val otherTaskExecutor: ExecutorService = createInternalThreadExecutor("other-task", 10)
+    private val eshopDocumentExecutor = EnumMap<EshopUuid, ScheduledExecutorService>(EshopUuid::class.java)
 
     init {
         //TODO should down of executor
         EshopUuid.values().forEach {
-            eshopExecutor[it] = createEshopThreadExecutor(it)
+            eshopDocumentExecutor[it] = createEshopThreadExecutor(it)
         }
     }
 
@@ -54,38 +56,54 @@ class AddImplNg(private val internalTxService: InternalTxService,
     }
 
     private fun getEshopExecutor(eshopUuid: EshopUuid): ScheduledExecutorService {
-        return eshopExecutor[eshopUuid]!!
+        return eshopDocumentExecutor[eshopUuid]!!
     }
 
 
     fun addNewProductsByKeywordForAllEshops(eshopUuid: EshopUuid, searchKeyWordId: Long) {
+        //TODO tato metoda uz predpoklada ze dane eshop urcite podporuje dane id( pozri eshopUuid.config.supportedSearchKeywordIds)
         val eshopExecutor: ScheduledExecutorService = getEshopExecutor(eshopUuid)
         val eshopParser = findParserForEshop(eshopUuid)
 
+        val countOfPagesFuture: CompletableFuture<DocumentWithPageCountData>
         try {
-            // 1. searchKeywordId -> searchKeyword
-            val resultOfAll = retrieveKeywordBaseOnKeywordId(searchKeyWordId)
-                    // 2. searchKeyword ->  searchKeywordRL
-                    .thenComposeAsync { searchKeyword ->
-                        buildSearchUrlForKeyword(eshopUuid, searchKeyword)
-                    }
-                    // 3. zavolam preklopenie URL na Document
-                    .thenComposeAsync { searchUrlWithKeywordData ->
-                        retrieveDocumentForSearchUrl(eshopParser, eshopExecutor, searchUrlWithKeywordData)
-                    }
-                    // 4. vyparsujem pocet stranok z Document-u
-                    .thenComposeAsync { documentData ->
-                        retrieveCountOfPages(eshopParser, documentData)
-                    }
-                    //5. pustim paralelne tolko vlakien kolko je stranok
-                    .thenAcceptAsync(processEachDocumentWithPageNumber(eshopParser, eshopExecutor), internalDbServiceExecutor)
+            countOfPagesFuture =
+                    // 1. searchKeywordId -> searchKeyword
+                    retrieveKeywordBaseOnKeywordId(searchKeyWordId)
+                            // 2. searchKeyword ->  searchKeywordRL
+                            .thenComposeAsync { searchKeyword ->
+                                buildSearchUrlForKeyword(eshopUuid, searchKeyword)
+                            }
+                            // 3. zavolam preklopenie URL na Document
+                            .thenComposeAsync { searchUrlWithKeywordData ->
+                                retrieveDocumentForSearchUrl(searchUrlWithKeywordData, eshopParser, eshopExecutor)
+                            }
+                            // 4. vyparsujem pocet stranok z Document-u
+                            .thenComposeAsync { documentData ->
+                                parseCountOfPages(eshopParser, documentData)
+                            }
 
 
         } catch (e: Exception) {
-            LOG.error("error type ${e.javaClass.simpleName}")
-            LOG.error("error", e)
+            //TODO error processing
+            LOG.error("error while retrieving count of product, error type class: ${e.javaClass.simpleName}", e)
+            //TODO close executors...
             return
         }
+
+        try {
+            // 5. spustim procesovanie dokumentu ktory obsahuje pocet stran
+            val resultOfAll = countOfPagesFuture.thenAcceptAsync(
+                    processDocumentWithPageNumber(eshopParser, eshopExecutor), otherTaskExecutor)
+
+        } catch (e: Exception) {
+            //TODO error processing
+            LOG.error("error while processing, error type class: ${e.javaClass.simpleName}")
+            LOG.error("error", e)
+            //TODO close executors...
+            return
+        }
+
     }
 
     private fun findParserForEshop(eshopUuid: EshopUuid): EshopProductsParser {
@@ -99,7 +117,7 @@ class AddImplNg(private val internalTxService: InternalTxService,
         return CompletableFuture.supplyAsync(Supplier {
             LOG.trace("retrieveKeywordBaseOnKeywordId")
             internalTxService.getSearchKeywordById(searchKeyWordId)
-        }, internalDbServiceExecutor)
+        }, internalServiceExecutor)
     }
 
     private fun buildSearchUrlForKeyword(eshopUuid: EshopUuid, searchKeyword: String): CompletableFuture<SearchUrlWithKeywordData> {
@@ -109,12 +127,12 @@ class AddImplNg(private val internalTxService: InternalTxService,
             val searchUrl = searchUrlBuilder.buildSearchUrl(eshopUuid, searchKeyword)
             LOG.debug("build url for keyword $searchKeyword : $searchUrl")
             SearchUrlWithKeywordData(eshopUuid, searchKeyword, searchUrl)
-        }, internalSearchUrlBuilderExecutor)
+        }, searchUrlBuilderExecutor)
     }
 
-    private fun retrieveDocumentForSearchUrl(eshopParser: EshopProductsParser,
-                                             eshopExecutor: ScheduledExecutorService,
-                                             searchUrlWithKeywordData: SearchUrlWithKeywordData): CompletableFuture<DocumentData> {
+    private fun retrieveDocumentForSearchUrl(searchUrlWithKeywordData: SearchUrlWithKeywordData,
+                                             eshopParser: EshopProductsParser,
+                                             eshopExecutor: ScheduledExecutorService): CompletableFuture<DocumentData> {
         return CompletableFuture.supplyAsync(Supplier {
             LOG.trace("retrieveDocumentForUrl")
 
@@ -126,7 +144,7 @@ class AddImplNg(private val internalTxService: InternalTxService,
 
     }
 
-    private fun retrieveCountOfPages(eshopParser: EshopProductsParser, documentData: DocumentData): CompletionStage<DocumentWithPageCountData> {
+    private fun parseCountOfPages(eshopParser: EshopProductsParser, documentData: DocumentData): CompletionStage<DocumentWithPageCountData> {
         return CompletableFuture.supplyAsync(Supplier {
             LOG.trace("retrieveCountOfPages")
 
@@ -136,82 +154,115 @@ class AddImplNg(private val internalTxService: InternalTxService,
                     documentData.searchKeyword,
                     documentData.document,
                     countOfPages)
-        }, internalEshopParserExecutor)
+        }, htmlParserExecutor)
     }
 
-    private fun processEachDocumentWithPageNumber(eshopParser: EshopProductsParser, eshopExecutor: ScheduledExecutorService)
+    private fun processDocumentWithPageNumber(eshopParser: EshopProductsParser, eshopExecutor: ScheduledExecutorService)
             : Consumer<in DocumentWithPageCountData> {
 
         return Consumer { documentWithPageCountData ->
             LOG.trace("parseDocumentPages")
+            val countOfPages = documentWithPageCountData.countOfPages
 
-            //TODO pozor ak bude len 1 ako to funguje?
-            for (currentPageNumber in 2..documentWithPageCountData.countOfPages) {
-                processDocumentWithPageNumber(eshopParser, eshopExecutor, documentWithPageCountData, currentPageNumber)
+            // parse current document(1 page)
+            // 1. Document -> productURLs[]
+            parseProductListURLs(eshopParser, documentWithPageCountData.document, 1)
+                    // 2. process productURLs[]
+                    .thenAcceptAsync(processPageUrls(documentWithPageCountData.document.location()), otherTaskExecutor)
 
+            // ak mame viac ako jednu stranku tak spusti processing dalsich stranok
+            if (countOfPages != 1) {
+                for (currentPageNumber in 2..countOfPages) {
+                    processNextPage(eshopParser, eshopExecutor, documentWithPageCountData.searchKeyword, currentPageNumber)
+                }
             }
         }
     }
 
-    private fun processDocumentWithPageNumber(eshopParser: EshopProductsParser,
-                                              eshopExecutor: ScheduledExecutorService,
-                                              documentWithPageCountData: DocumentWithPageCountData,
-                                              currentPageNumber: Int) {
+    private fun processPageUrls(baseUrl: String): Consumer<in List<String>> {
+        return Consumer { productUrls ->
+            val countOfAll = productUrls.size
+            var currentIndex = 0
+            for (productUrl in productUrls) {
+                currentIndex++
+                LOG.debug("starting $currentIndex/$countOfAll for base URL $baseUrl")
+                LOG.debug("processing URL $productUrl")
+
+                try {
+                    processProductUrl(productUrl)
+
+                } catch (e: Exception) {
+                    LOG.error("error while parsing product URL $productUrl", e)
+                    //TODO logiku ci pokracovat s parsovanim dalsieho alebo nie...
+                    break
+                }
+
+            } // end of for loop
+
+        }
+    }
+
+    private fun processProductUrl(productUrl: String) {
+        val supplyAsync = CompletableFuture.supplyAsync(
+                Supplier {
+                    LOG.trace("processProductUrl")
+                    val existProductWithGivenURL = existProductWithGivenURL(productUrl)
+
+                    existProductWithGivenURL.thenAccept { exist ->
+                        if (exist) {
+                            LOG.debug("product $productUrl already existing")
+                        } else {
+                            // 2 na zaklade danej URL vyparsujem ProductNewData
+                            CompletableFuture.supplyAsync(parseProductNewData(productUrl), htmlParserExecutor)
+                                    .handle { result, exception ->
+                                        if (exception == null) {
+                                            processProductNewData(result)
+                                        } else {
+                                            processExceptionDuringParsingProductNewData(exception)
+                                        }
+                                    }
+                        }
+                    }
+                },
+                otherTaskExecutor)
+    }
+
+    private fun processProductNewData(result: ProductNewData) {
+        LOG.debug("processing new product ${result.name} url ${result.url}")
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+    }
+
+    private fun processExceptionDuringParsingProductNewData(exception: Throwable?) {
+        LOG.error("processExceptionDuringParsingProductNewData", exception)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun processNextPage(eshopParser: EshopProductsParser,
+                                eshopExecutor: ScheduledExecutorService,
+                                searchKeyword: String,
+                                currentPageNumber: Int) {
         LOG.debug("start processing page $currentPageNumber")
 
         // 1. currentPageNumber -> searchUrlWithPageNumber
-        val resultOfAll = buildSearchUrlForGivenPageNumber(eshopParser, documentWithPageCountData.searchKeyword, currentPageNumber)
-                // 2. searchUrlWithPageNumber -> DocumentForPageNumber
+        val productUrlListFuture = buildSearchUrlForGivenPageNumber(eshopParser, searchKeyword, currentPageNumber)
+                // 2. searchUrlWithPageNumber -> Document
                 .thenComposeAsync { searchUrlWithPageNumber ->
                     retrieveDocumentForSearchUrlWithPageNumber(eshopParser, eshopExecutor, searchUrlWithPageNumber)
                 }
-                // 3. DocumentForPageNumber -> productURLs[]
+                // 3. Document -> productURLs[]
                 .thenComposeAsync { document ->
                     parseProductListURLs(eshopParser, document, currentPageNumber)
                 }
-                // 4. spracuj kazdu URL produktu
-                .thenAcceptAsync(processPageUrls(eshopParser, eshopExecutor), internalDbServiceExecutor)
 
+        // 4. spracuj kazdu URL produktu
+        productUrlListFuture.thenAcceptAsync(processPageUrls("FIXME"), otherTaskExecutor)
 
-    }
+        // dalsi callback(ak by sme chceli este nieco robit s tym vysledkom)
+        productUrlListFuture.thenAcceptAsync(Consumer { productUrls ->
+            // FIXME
 
-    private fun processPageUrls(eshopParser: EshopProductsParser, eshopExecutor: ScheduledExecutorService): Consumer<in List<String>> {
-        return Consumer { productUrls ->
-
-            productUrls.forEach { productUrl ->
-                LOG.debug("processing product with URL $productUrl")
-
-                // 1. vyskladam search url pre danu currentPageNumber
-//                val alreadyExistGivenProductFuture: CompletableFuture<Boolean> = CompletableFuture.supplyAsync(
-//                        existProductWithGivenURL(productUrl), internalExecutor)
-//
-//                alreadyExistGivenProductFuture.thenAcceptAsync(Consumer { exist ->
-//                    if (exist) {
-//                        LOG.debug("product $productUrl already existing")
-//                    } else {
-//
-//                        // 2 na zaklade danej URL vyparsujem ProductNewData
-//                        val productNewDataFuture = CompletableFuture.supplyAsync(parseProductNewData(productUrl), eshopExecutor)
-//                        productNewDataFuture.handle { result, exception ->
-//                            if (exception != null) {
-//                                processExceptionDuringParsingProductNewData(exception)
-//                                null
-//                            } else {
-//                                processProductNewData(result)
-//                            }
-//                        }
-//
-//
-//                    }
-//                }, internalExecutor)
-//
-//
-//            }
-
-
-            }
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
+        }, otherTaskExecutor)
     }
 
     private fun buildSearchUrlForGivenPageNumber(eshopParser: EshopProductsParser,
@@ -223,7 +274,24 @@ class AddImplNg(private val internalTxService: InternalTxService,
             LOG.debug("search URL for page $currentPageNumber : $buildSearchUrl")
 
             buildSearchUrl
-        }, internalDbServiceExecutor)
+        }, searchUrlBuilderExecutor)
+    }
+
+    private fun parseProductNewData(productUrl: String): Supplier<ProductNewData> {
+        //TODO je zle.... toto ma ist v eshop thead... nie takto
+        // teda najprv daj mi dokument
+        // a potom vyparsuj nove data
+        //
+
+        return Supplier {
+            htmlParser.parseProductNewData(productUrl)
+        }
+    }
+
+    private fun existProductWithGivenURL(productURL: String): CompletableFuture<Boolean> {
+        return CompletableFuture.supplyAsync(Supplier {
+            internalTxService.existProductWithURL(productURL)
+        }, internalServiceExecutor)
     }
 
     private fun retrieveDocumentForSearchUrlWithPageNumber(eshopParser: EshopProductsParser,
@@ -238,14 +306,16 @@ class AddImplNg(private val internalTxService: InternalTxService,
     }
 
     private fun parseProductListURLs(eshopParser: EshopProductsParser, document: Document, currentPageNumber: Int): CompletableFuture<List<String>> {
-        LOG.trace(object : Any() {}.javaClass.enclosingMethod.name)
+//        LOG.trace(object : Any() {}.javaClass.enclosingMethod.name)
 
-        return CompletableFuture.supplyAsync(Supplier {
-            LOG.trace("parseProductListURLs")
-            val parsePageForProductUrls = eshopParser.parsePageForProductUrls(document, currentPageNumber)
-            LOG.debug("page: $currentPageNumber, count of products: ${parsePageForProductUrls.size}")
-            parsePageForProductUrls
-        }, internalEshopParserExecutor)
+        return CompletableFuture.supplyAsync(
+                Supplier {
+                    LOG.trace("parseProductListURLs")
+                    val parsePageForProductUrls = eshopParser.parsePageForProductUrls(document, currentPageNumber)
+                    LOG.debug("page: $currentPageNumber, count of products: ${parsePageForProductUrls.size}")
+                    parsePageForProductUrls
+                },
+                htmlParserExecutor)
 
     }
 

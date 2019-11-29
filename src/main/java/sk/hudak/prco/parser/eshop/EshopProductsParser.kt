@@ -37,7 +37,7 @@ interface EshopProductsParser {
      */
     fun parseProductUpdateData(productUrl: String): ProductUpdateData
 
-    // neve API
+    // --- nove API ---
     fun retrieveDocument(productUrl: String): Document
 
     //TODO toto nema byt htlm parser ???

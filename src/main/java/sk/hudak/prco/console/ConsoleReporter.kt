@@ -14,6 +14,7 @@ import sk.hudak.prco.manager.GroupProductResolver
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.ng.AddImpl
 import sk.hudak.prco.task.ng.AddImplNg
+import sk.hudak.prco.task.ng.ee.AddProductImpl
 import sk.hudak.prco.utils.CalculationUtils
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -25,12 +26,17 @@ import java.util.Arrays.asList
 class PrcoConsole(val internalTxService: InternalTxService,
                   val groupProductResolver: GroupProductResolver,
                   val addImpl: AddImpl,
-                  val addImplNg: AddImplNg) {
+                  val addImplNg: AddImplNg,
+                val addEe: AddProductImpl) {
 
     fun showInConsole() {
 
+//        addImplNg.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
+        addEe.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
+
+
+
 //        addImpl.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
-        addImplNg.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
         //Pampers Pure Value Pack S5 (11+kg) 24ks Junior
 //        val groupProductKeywords = groupProductResolver.resolveGroupId("Pampers Premium Care Veľkosť 6, Plienky x38, 13kg+")
 
