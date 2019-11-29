@@ -155,6 +155,11 @@ abstract class JSoupProductParser : EshopProductsParser {
         val document = retrieveDocument(productUrl)
         //TODO porozmyslat ci tu nerobit alebo logovat redirect... tak ako je pre update proces
 
+       return parseProductNewData(document, productUrl)
+    }
+
+    override fun parseProductNewData(document: Document, productUrl: String): ProductNewData {
+
         val result = ProductNewData(eshopUuid, productUrl)
 
         val productNameOpt = parseProductNameFromDetail(document)
@@ -268,6 +273,7 @@ abstract class JSoupProductParser : EshopProductsParser {
             throw convertToParserException(productUrl, e)
         }
     }
+
 
     protected open fun convertToParserException(productUrl: String, e: Exception): PrcoRuntimeException {
         val errMsg = "error creating document for url '$productUrl': "

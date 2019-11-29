@@ -57,10 +57,12 @@ class NewKeyWordSearchUrlEvent_3_Handler(private val prcoObservable: PrcoObserva
     private fun retrieveDocumentForSearchUrl(searchUrl: String,
                                              eshopParser: EshopProductsParser,
                                              eshopExecutor: ScheduledExecutorService): CompletableFuture<Document> {
-        return CompletableFuture.supplyAsync(Supplier {
-            LOG.trace("retrieveDocumentForUrl")
-            eshopParser.retrieveDocument(searchUrl)
-        }, eshopExecutor)
+        return CompletableFuture.supplyAsync(
+                Supplier {
+                    LOG.trace("retrieveDocumentForUrl")
+                    eshopParser.retrieveDocument(searchUrl)
+                },
+                eshopExecutor)
 
     }
 

@@ -28,6 +28,7 @@ interface EshopProductsParser {
      * @return
      * @throws TODO
      */
+    @Deprecated("use fun parseProductNewData(document: Document, productUrl: String): ProductNewData")
     fun parseProductNewData(productUrl: String): ProductNewData
 
     /**
@@ -44,5 +45,7 @@ interface EshopProductsParser {
     fun parseCountOfPages(document: Document): Int
 
     fun parsePageForProductUrls(document: Document, pageNumber: Int): List<String>
+
+    fun parseProductNewData(document: Document, productUrl: String): ProductNewData
 
 }

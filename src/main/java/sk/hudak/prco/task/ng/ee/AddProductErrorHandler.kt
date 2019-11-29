@@ -29,7 +29,31 @@ class AddProductErrorHandler(prcoObservable: PrcoObservable,
             is ParseCountOfPagesErrorEvent -> handle_FirstDocumentCountOfPageErrorEvent(event)
             is ParseProductListURLsErrorEvent -> handle_FirstDocumentPageProductUrlsErrorEvent(event)
             is FilterDuplicityErrorEvent -> handle_DuplicityCheckErrorEvent(event)
+            is FilterNotExistingErrorEvent -> handle_FilterNotExistingErrorEvent(event)
+            is RetrieveDocumentForUrlErrorEvent -> handle_RetrieveDocumentForUrlErrorEvent(event)
+            is ParseProductNewDataErrorEvent -> handle_ParseProductNewDataErrorEvent(event)
+            is SaveProductNewDataErrorEvent -> handle_SaveProductNewDataErrorEvent(event)
         }
+    }
+
+    private fun handle_SaveProductNewDataErrorEvent(errorEvent: SaveProductNewDataErrorEvent) {
+        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun handle_RetrieveDocumentForUrlErrorEvent(errorEvent: RetrieveDocumentForUrlErrorEvent) {
+        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun handle_ParseProductNewDataErrorEvent(errorEvent: ParseProductNewDataErrorEvent) {
+        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun handle_FilterNotExistingErrorEvent(errorEvent: FilterNotExistingErrorEvent) {
+        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun handle_DuplicityCheckErrorEvent(errorEvent: FilterDuplicityErrorEvent) {

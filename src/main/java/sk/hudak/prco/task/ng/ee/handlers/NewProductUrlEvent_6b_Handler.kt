@@ -2,6 +2,7 @@ package sk.hudak.prco.task.ng.ee.handlers
 
 import org.jsoup.nodes.Document
 import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
@@ -9,28 +10,28 @@ import sk.hudak.prco.events.PrcoObserver
 import sk.hudak.prco.exception.EshopParserNotFoundException
 import sk.hudak.prco.parser.eshop.EshopProductsParser
 import sk.hudak.prco.task.ng.ee.Executors
+import sk.hudak.prco.task.ng.ee.NewProductDocumentEvent
 import sk.hudak.prco.task.ng.ee.NewProductUrlEvent
-import sk.hudak.prco.task.ng.ee.ProductDocumentEvent
 import sk.hudak.prco.task.ng.ee.RetrieveDocumentForUrlErrorEvent
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ScheduledExecutorService
 import java.util.function.Supplier
 
-class NewProductUrlEvent_6_Handler(private val prcoObservable: PrcoObservable,
-                                   private val productParsers: List<EshopProductsParser>,
-                                   private val executors: Executors)
+@Component
+class NewProductUrlEvent_6b_Handler(private val prcoObservable: PrcoObservable,
+                                    private val productParsers: List<EshopProductsParser>,
+                                    private val executors: Executors)
     : PrcoObserver {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(NewProductUrlEvent_6_Handler::class.java)!!
+        private val LOG = LoggerFactory.getLogger(NewProductUrlEvent_6b_Handler::class.java)!!
     }
 
     // registering itself as observer
     init {
         prcoObservable.addObserver(this)
     }
-
 
     private fun handle(event: NewProductUrlEvent) {
         LOG.trace("handle ${event.javaClass.simpleName}")
@@ -43,7 +44,7 @@ class NewProductUrlEvent_6_Handler(private val prcoObservable: PrcoObservable,
         retrieveDocumentForUrl(event.newProductUrl, eshopParser, eshopExecutor)
                 .handle { document, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(ProductDocumentEvent(document, event.newProductUrl, eshopParser))
+                        prcoObservable.notify(NewProductDocumentEvent(document, event.newProductUrl, eshopParser))
                     } else {
                         prcoObservable.notify(RetrieveDocumentForUrlErrorEvent(event, exception))
                     }

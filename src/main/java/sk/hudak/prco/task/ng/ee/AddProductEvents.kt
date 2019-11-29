@@ -2,8 +2,11 @@ package sk.hudak.prco.task.ng.ee
 
 import org.jsoup.nodes.Document
 import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.parser.eshop.EshopProductsParser
+
+//TODO pre error eventy bazovu class alebo marker interface
 
 /**
  *  1. searchKeywordId -> searchKeyword
@@ -74,11 +77,21 @@ data class FilterDuplicityErrorEvent(val event: FirstPageProductURLsEvent,
 
 data class FilterNotExistingErrorEvent(val event: FirstPageProductURLsEvent,
                                        val error: Throwable) : CoreEvent()
+
 // -------
-data class ProductDocumentEvent(val document: Document,
-                                val newProductUrl: String,
-                                val eshopParser: EshopProductsParser) : CoreEvent()
+data class NewProductDocumentEvent(val document: Document,
+                                   val newProductUrl: String,
+                                   val eshopParser: EshopProductsParser) : CoreEvent()
 
 data class RetrieveDocumentForUrlErrorEvent(val event: NewProductUrlEvent,
                                             val error: Throwable) : CoreEvent()
+
+// ---------
+data class ProductNewDataEvent(val productNewData: ProductNewData) : CoreEvent()
+
+data class ParseProductNewDataErrorEvent(val event: NewProductDocumentEvent,
+                                         val error: Throwable) : CoreEvent()
+
+data class SaveProductNewDataErrorEvent(val event: ProductNewDataEvent,
+                                        val error: Throwable) : CoreEvent()
 
