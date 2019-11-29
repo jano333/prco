@@ -138,7 +138,7 @@ class AddingNewProductManagerImpl(private val internalTxService: InternalTxServi
 
                 // check ci je podporovane
                 val config = eshopUuid.config
-                if (config == null || config.supportedSearchKeywordIds == null || config.supportedSearchKeywordIds.isEmpty()) {
+                if (config.supportedSearchKeywordIds.isEmpty()) {
                     LOG.warn(wrapWithColor("eshop config $eshopUuid has none supported keywords", ConsoleColor.RED))
                 } else {
                     if (!config.supportedSearchKeywordIds.contains(searchKeyWordId)) {

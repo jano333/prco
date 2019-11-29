@@ -84,51 +84,10 @@ public enum EshopUuid {
 
     TESCO(TescoEshopConfiguration.INSTANCE);
 
-    private String productStartUrl;
-    private String searchTemplateUrl;
-    private String searchTemplateUrlWithPageNumber;
-    private int maxCountOfNewPages;
-    private int olderThanInHours;
-    private int maxCountOfProductOnPage;
-    private int countToWaitInSecond;
-    private EshopCategory category;
     private EshopConfiguration config;
 
     EshopUuid(EshopConfiguration config) {
         this.config = config;
-        //TODO zrusit tie premenenne a nahladit imploementociou pre dynamik
-        this.category = config.getCategory();
-        this.productStartUrl = config.getProductStartUrl();
-        this.searchTemplateUrl = config.getSearchTemplateUrl();
-        this.searchTemplateUrlWithPageNumber = config.getSearchTemplateUrlWithPageNumber();
-        this.maxCountOfNewPages = config.getMaxCountOfNewPages();
-        this.olderThanInHours = config.getOlderThanInHours();
-        this.maxCountOfProductOnPage = config.getMaxCountOfProductOnPage();
-        this.countToWaitInSecond = 3;
-    }
-
-    /**
-     * use config constructor instead
-     *
-     * @param category
-     * @param productStartUrl
-     * @param searchTemplateUrl
-     * @param searchTemplateUrlWithPageNumber
-     * @param maxCountOfNewPages
-     * @param olderThanInHours
-     * @param maxCountOfProductOnPage
-     */
-    @Deprecated
-    EshopUuid(EshopCategory category, String productStartUrl, String searchTemplateUrl, String searchTemplateUrlWithPageNumber,
-              int maxCountOfNewPages, int olderThanInHours, int maxCountOfProductOnPage) {
-        this.category = category;
-        this.productStartUrl = productStartUrl;
-        this.searchTemplateUrl = searchTemplateUrl;
-        this.searchTemplateUrlWithPageNumber = searchTemplateUrlWithPageNumber;
-        this.maxCountOfNewPages = maxCountOfNewPages;
-        this.olderThanInHours = olderThanInHours;
-        this.maxCountOfProductOnPage = maxCountOfProductOnPage;
-        this.countToWaitInSecond = 3;
     }
 
     public EshopConfiguration getConfig() {
@@ -142,25 +101,25 @@ public enum EshopUuid {
      * @return
      */
     public String getProductStartUrl() {
-        return productStartUrl;
+        return config.getProductStartUrl();
     }
 
     public EshopCategory getCategory() {
-        return category;
+        return config.getCategory();
     }
 
     /**
      * @return URL, ktora sa pouzije pre vyhladavanie bez pagging atributov ako su pageNumber, offset, limit, ...
      */
     public String getSearchTemplateUrl() {
-        return searchTemplateUrl;
+        return config.getSearchTemplateUrl();
     }
 
     /**
      * @return URL, ktora sa pouzije pre vyhladavanie spolu s paggin atributmy ako ako su pageNumber, offset, limit, ...
      */
     public String getSearchTemplateUrlWithPageNumber() {
-        return searchTemplateUrlWithPageNumber;
+        return config.getSearchTemplateUrlWithPageNumber();
     }
 
     /**
@@ -170,7 +129,7 @@ public enum EshopUuid {
      * @return
      */
     public int getMaxCountOfNewPages() {
-        return maxCountOfNewPages;
+        return config.getMaxCountOfNewPages();
     }
 
     /**
@@ -179,7 +138,7 @@ public enum EshopUuid {
      * @return
      */
     public int getOlderThanInHours() {
-        return olderThanInHours;
+        return config.getOlderThanInHours();
     }
 
     /**
@@ -190,10 +149,10 @@ public enum EshopUuid {
      * @return
      */
     public int getMaxCountOfProductOnPage() {
-        return maxCountOfProductOnPage;
+        return config.getMaxCountOfProductOnPage();
     }
 
     public int getCountToWaitInSecond() {
-        return countToWaitInSecond;
+        return config.getCountToWaitInSecond();
     }
 }
