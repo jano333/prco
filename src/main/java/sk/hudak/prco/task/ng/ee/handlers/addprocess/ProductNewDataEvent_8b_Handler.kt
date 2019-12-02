@@ -1,14 +1,13 @@
-package sk.hudak.prco.task.ng.ee.handlers
+package sk.hudak.prco.task.ng.ee.handlers.addprocess
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
-import sk.hudak.prco.events.PrcoObserver
 import sk.hudak.prco.manager.error.ErrorLogManager
 import sk.hudak.prco.service.InternalTxService
-import sk.hudak.prco.task.ng.ee.Executors
+import sk.hudak.prco.task.ng.ee.AddProductExecutors
 import sk.hudak.prco.task.ng.ee.ProductNewDataEvent
 import sk.hudak.prco.task.ng.ee.SaveProductNewDataErrorEvent
 import sk.hudak.prco.task.ng.toNewProductCreateDto
@@ -17,19 +16,15 @@ import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
 
 @Component
-class ProductNewDataEvent_8b_Handler(private val prcoObservable: PrcoObservable,
-                                     private val executors: Executors,
+class ProductNewDataEvent_8b_Handler(prcoObservable: PrcoObservable,
+                                     addProductExecutors: AddProductExecutors,
                                      private val errorLogManager: ErrorLogManager,
                                      private val internalTxService: InternalTxService)
-    : PrcoObserver {
+
+    : AddProcessHandler(prcoObservable, addProductExecutors) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(ProductNewDataEvent_8b_Handler::class.java)!!
-    }
-
-    // registering itself as observer
-    init {
-        prcoObservable.addObserver(this)
     }
 
     private fun handle(event: ProductNewDataEvent) {
@@ -57,12 +52,12 @@ class ProductNewDataEvent_8b_Handler(private val prcoObservable: PrcoObservable,
                     // preklopim a pridavam do DB
                     internalTxService.createNewProduct(productNewData.toNewProductCreateDto())
                 },
-                executors.internalServiceExecutor)
+                addProductExecutors.internalServiceExecutor)
     }
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is ProductNewDataEvent -> executors.handlerTaskExecutor.submit { handle(event) }
+            is ProductNewDataEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
         }
     }
 

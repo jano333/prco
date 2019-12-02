@@ -1,29 +1,24 @@
-package sk.hudak.prco.task.ng.ee.handlers
+package sk.hudak.prco.task.ng.ee.handlers.addprocess
 
 import org.jsoup.nodes.Document
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
-import sk.hudak.prco.events.PrcoObserver
-import sk.hudak.prco.parser.eshop.EshopProductsParser
 import sk.hudak.prco.task.ng.ee.*
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
 
 @Component
-class NewKeyWordFirstDocumentEvent_4_Handler(private val prcoObservable: PrcoObservable,
-                                             private val executors: Executors)
-    : PrcoObserver {
+class NewKeyWordFirstDocumentEvent_4_Handler(prcoObservable: PrcoObservable,
+                                             addProductExecutors: AddProductExecutors,
+                                             private val eshopProductsParserHelper: EshopProductsParserHelper)
+    : AddProcessHandler(prcoObservable, addProductExecutors) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(NewKeyWordFirstDocumentEvent_4_Handler::class.java)!!
-    }
-
-    // registering itself as observer
-    init {
-        prcoObservable.addObserver(this)
     }
 
     /**
@@ -34,10 +29,10 @@ class NewKeyWordFirstDocumentEvent_4_Handler(private val prcoObservable: PrcoObs
         LOG.trace("handle ${event.javaClass.simpleName}")
 
         // 4.a Document -> countOfPages
-        parseCountOfPages(event.eshopParser, event.document, event.searchUrl)
+        parseCountOfPages(event.eshopUuid, event.document, event.searchUrl)
                 .handle { countOfPages, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(CountOfPagesEvent(countOfPages, event.document, event.searchUrl))
+                        prcoObservable.notify(CountOfPagesEvent(countOfPages, event.searchKeyWord, event.eshopUuid))
                     } else {
                         prcoObservable.notify(ParseCountOfPagesErrorEvent(event, exception))
                     }
@@ -45,42 +40,44 @@ class NewKeyWordFirstDocumentEvent_4_Handler(private val prcoObservable: PrcoObs
 
         // 4.b Document -> firstPageProductURLs[]
         val currentPageNumber = 1
-        parseProductListURLs(event.eshopParser, event.document, currentPageNumber)
+        parseProductListURLs(event.eshopUuid, event.document, currentPageNumber)
                 .handle { pageProductURLs, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(FirstPageProductURLsEvent(pageProductURLs, event.document, event.eshopParser.eshopUuid, event.searchKeyWord, event.searchUrl))
+                        prcoObservable.notify(FirstPageProductURLsEvent(pageProductURLs, event.document, event.eshopUuid, event.searchKeyWord, event.searchUrl))
                     } else {
                         prcoObservable.notify(ParseProductListURLsErrorEvent(event, currentPageNumber, exception))
                     }
                 }
     }
 
-    private fun parseCountOfPages(eshopParser: EshopProductsParser, document: Document, searchUrl: String): CompletableFuture<Int> {
+    private fun parseCountOfPages(eshopUuid: EshopUuid, document: Document, searchUrl: String): CompletableFuture<Int> {
         return CompletableFuture.supplyAsync(
                 Supplier {
                     LOG.trace("parseCountOfPages")
-                    val countOfPages = eshopParser.parseCountOfPages(document)
+                    val parserForEshop = eshopProductsParserHelper.findParserForEshop(eshopUuid)
+                    val countOfPages = parserForEshop.parseCountOfPages(document)
                     LOG.debug("count of pages is $countOfPages for URL $searchUrl ")
                     countOfPages
                 },
-                executors.htmlParserExecutor)
+                addProductExecutors.htmlParserExecutor)
     }
 
-    // FIXME toto je spolocna metoda do neakej pomocnej...
-    private fun parseProductListURLs(eshopParser: EshopProductsParser, document: Document, currentPageNumber: Int): CompletableFuture<List<String>> {
+    // FIXME toto je spolocna metoda[TODO kde este] do neakej pomocnej...
+    private fun parseProductListURLs(eshopUuid: EshopUuid, document: Document, currentPageNumber: Int): CompletableFuture<List<String>> {
         return CompletableFuture.supplyAsync(
                 Supplier {
                     LOG.trace("parseProductListURLs")
-                    val parsePageForProductUrls = eshopParser.parsePageForProductUrls(document, currentPageNumber)
+                    val parserForEshop = eshopProductsParserHelper.findParserForEshop(eshopUuid)
+                    val parsePageForProductUrls = parserForEshop.parsePageForProductUrls(document, currentPageNumber)
                     LOG.debug("page: $currentPageNumber, count of products: ${parsePageForProductUrls.size}")
                     parsePageForProductUrls
                 },
-                executors.htmlParserExecutor)
+                addProductExecutors.htmlParserExecutor)
     }
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is FirstDocumentEvent -> executors.handlerTaskExecutor.submit { handle(event) }
+            is FirstDocumentEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
         }
     }
 

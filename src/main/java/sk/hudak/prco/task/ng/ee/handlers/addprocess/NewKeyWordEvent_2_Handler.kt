@@ -1,4 +1,4 @@
-package sk.hudak.prco.task.ng.ee.handlers
+package sk.hudak.prco.task.ng.ee.handlers.addprocess
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -6,9 +6,8 @@ import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
-import sk.hudak.prco.events.PrcoObserver
+import sk.hudak.prco.task.ng.ee.AddProductExecutors
 import sk.hudak.prco.task.ng.ee.BuildSearchUrlForKeywordErrorEvent
-import sk.hudak.prco.task.ng.ee.Executors
 import sk.hudak.prco.task.ng.ee.NewKeyWordEvent
 import sk.hudak.prco.task.ng.ee.NewKeyWordUrlEvent
 import java.util.*
@@ -19,18 +18,14 @@ import java.util.function.Supplier
  * searchKeyword -> searchKeywordURL
  */
 @Component
-class NewKeyWordEvent_2_Handler(private val prcoObservable: PrcoObservable,
-                                private var searchUrlBuilder: SearchUrlBuilder,
-                                private val executors: Executors)
-    : PrcoObserver {
+class NewKeyWordEvent_2_Handler(prcoObservable: PrcoObservable,
+                                addProductExecutors: AddProductExecutors,
+                                private var searchUrlBuilder: SearchUrlBuilder)
+
+    : AddProcessHandler(prcoObservable, addProductExecutors) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(NewKeyWordEvent_2_Handler::class.java)!!
-    }
-
-    // registering itself as observer
-    init {
-        prcoObservable.addObserver(this)
     }
 
     /**
@@ -41,7 +36,7 @@ class NewKeyWordEvent_2_Handler(private val prcoObservable: PrcoObservable,
         buildSearchUrlForKeyword(event.eshopUuid, event.searchKeyWord)
                 .handle { searchUrl, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(NewKeyWordUrlEvent(event.eshopUuid, event.searchKeyWord, searchUrl))
+                        prcoObservable.notify(NewKeyWordUrlEvent(searchUrl, event.eshopUuid, event.searchKeyWord))
                     } else {
                         prcoObservable.notify(BuildSearchUrlForKeywordErrorEvent(event, exception))
                     }
@@ -49,17 +44,19 @@ class NewKeyWordEvent_2_Handler(private val prcoObservable: PrcoObservable,
     }
 
     private fun buildSearchUrlForKeyword(eshopUuid: EshopUuid, searchKeyword: String): CompletableFuture<String> {
-        return CompletableFuture.supplyAsync(Supplier {
-            LOG.trace("buildSearchUrlForKeyword")
-            val searchUrl = searchUrlBuilder.buildSearchUrl(eshopUuid, searchKeyword)
-            LOG.debug("build url for keyword $searchKeyword : $searchUrl")
-            searchUrl
-        }, executors.searchUrlBuilderExecutor)
+        return CompletableFuture.supplyAsync(
+                Supplier {
+                    LOG.trace("buildSearchUrlForKeyword")
+                    val searchUrl = searchUrlBuilder.buildSearchUrl(eshopUuid, searchKeyword)
+                    LOG.debug("build url for keyword $searchKeyword : $searchUrl")
+                    searchUrl
+                },
+                addProductExecutors.searchUrlBuilderExecutor)
     }
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is NewKeyWordEvent -> executors.handlerTaskExecutor.submit { handle(event) }
+            is NewKeyWordEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
         }
     }
 

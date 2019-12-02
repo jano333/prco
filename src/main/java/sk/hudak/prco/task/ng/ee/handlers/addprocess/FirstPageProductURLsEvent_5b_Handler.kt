@@ -1,11 +1,10 @@
-package sk.hudak.prco.task.ng.ee.handlers
+package sk.hudak.prco.task.ng.ee.handlers.addprocess
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
-import sk.hudak.prco.events.PrcoObserver
 import sk.hudak.prco.manager.error.ErrorLogManager
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.ng.ee.*
@@ -14,19 +13,14 @@ import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
 
 @Component
-class FirstPageProductURLsEvent_5b_Handler(private val prcoObservable: PrcoObservable,
-                                           private val executors: Executors,
+class FirstPageProductURLsEvent_5b_Handler(prcoObservable: PrcoObservable,
+                                          addProductExecutors: AddProductExecutors,
                                            private val errorLogManager: ErrorLogManager,
                                            private val internalTxService: InternalTxService)
-    : PrcoObserver {
+    : AddProcessHandler(prcoObservable, addProductExecutors) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(FirstPageProductURLsEvent_5b_Handler::class.java)!!
-    }
-
-    // registering itself as observer
-    init {
-        prcoObservable.addObserver(this)
     }
 
     private fun handle(event: FirstPageProductURLsEvent) {
@@ -100,7 +94,7 @@ class FirstPageProductURLsEvent_5b_Handler(private val prcoObservable: PrcoObser
                     }
                     notExistingProducts
                 },
-                executors.internalServiceExecutor)
+                addProductExecutors.internalServiceExecutor)
     }
 
     private fun handleFilterNotExistingResult(notExistingProducts: List<String>, event: FirstPageProductURLsEvent) {
@@ -116,7 +110,7 @@ class FirstPageProductURLsEvent_5b_Handler(private val prcoObservable: PrcoObser
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is FirstPageProductURLsEvent -> executors.handlerTaskExecutor.submit { handle(event) }
+            is FirstPageProductURLsEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
         }
     }
 }

@@ -9,7 +9,7 @@ import java.util.*
 
 @Component
 class AddProductErrorHandler(prcoObservable: PrcoObservable,
-                             private val executors: Executors)
+                             private val addProductExecutors: AddProductExecutors)
     : PrcoObserver {
 
     companion object {
@@ -36,6 +36,27 @@ class AddProductErrorHandler(prcoObservable: PrcoObservable,
         }
     }
 
+    private fun handle_NewKeyWordIdErrorEvent(errorEvent: RetrieveKeywordBaseOnKeywordIdErrorEvent) {
+        logErrorEvent(errorEvent)
+        addProductExecutors.shutdownNowAllExecutors()
+    }
+
+    private fun handle_NewKeyWordErrorEvent(errorEvent: BuildSearchUrlForKeywordErrorEvent) {
+        logErrorEvent(errorEvent)
+        addProductExecutors.shutdownNowAllExecutors()
+    }
+
+    private fun logErrorEvent(errorEvent: BasicErrorEvent){
+        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}")
+        LOG.error("source event ${errorEvent.event}")
+        LOG.error("${errorEvent.error.message}", errorEvent.error)
+    }
+
+    private fun handle_NewKeyWordUrlErrorEvent(errorEvent: RetrieveDocumentForSearchUrlErrorEvent) {
+        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     private fun handle_SaveProductNewDataErrorEvent(errorEvent: SaveProductNewDataErrorEvent) {
         LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -57,22 +78,6 @@ class AddProductErrorHandler(prcoObservable: PrcoObservable,
     }
 
     private fun handle_DuplicityCheckErrorEvent(errorEvent: FilterDuplicityErrorEvent) {
-        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    private fun handle_NewKeyWordIdErrorEvent(errorEvent: RetrieveKeywordBaseOnKeywordIdErrorEvent) {
-        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        //TODO  stopnut ale co vsetko???
-    }
-
-    private fun handle_NewKeyWordErrorEvent(errorEvent: BuildSearchUrlForKeywordErrorEvent) {
-        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    private fun handle_NewKeyWordUrlErrorEvent(errorEvent: RetrieveDocumentForSearchUrlErrorEvent) {
         LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
