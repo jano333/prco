@@ -13,17 +13,17 @@ import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
 
 @Component
-class FirstPageProductURLsEvent_5b_Handler(prcoObservable: PrcoObservable,
-                                          addProductExecutors: AddProductExecutors,
-                                           private val errorLogManager: ErrorLogManager,
-                                           private val internalTxService: InternalTxService)
+class NewProductUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
+                                     addProductExecutors: AddProductExecutors,
+                                     private val errorLogManager: ErrorLogManager,
+                                     private val internalTxService: InternalTxService)
     : AddProcessHandler(prcoObservable, addProductExecutors) {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(FirstPageProductURLsEvent_5b_Handler::class.java)!!
+        private val LOG = LoggerFactory.getLogger(NewProductUrlsEvent_5b_Handler::class.java)!!
     }
 
-    private fun handle(event: FirstPageProductURLsEvent) {
+    private fun handle(event: NewProductUrlsEvent) {
         LOG.trace("handle ${event.javaClass.simpleName}")
 
         LOG.debug("count of products URL before duplicity check  ${event.pageProductURLs.size}")
@@ -64,7 +64,7 @@ class FirstPageProductURLsEvent_5b_Handler(prcoObservable: PrcoObservable,
         }
     }
 
-    private fun handleDuplicityCheckResult(pageProductURLsAfterDuplicity: List<String>, event: FirstPageProductURLsEvent) {
+    private fun handleDuplicityCheckResult(pageProductURLsAfterDuplicity: List<String>, event: NewProductUrlsEvent) {
         if (pageProductURLsAfterDuplicity.isEmpty()) {
             LOG.debug("count of products URL after duplicity check iz zero")
             return
@@ -97,7 +97,7 @@ class FirstPageProductURLsEvent_5b_Handler(prcoObservable: PrcoObservable,
                 addProductExecutors.internalServiceExecutor)
     }
 
-    private fun handleFilterNotExistingResult(notExistingProducts: List<String>, event: FirstPageProductURLsEvent) {
+    private fun handleFilterNotExistingResult(notExistingProducts: List<String>, event: NewProductUrlsEvent) {
         if (notExistingProducts.isEmpty()) {
             LOG.debug("count of non existing products URL is zero")
             return
@@ -110,7 +110,7 @@ class FirstPageProductURLsEvent_5b_Handler(prcoObservable: PrcoObservable,
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is FirstPageProductURLsEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
+            is NewProductUrlsEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
         }
     }
 }

@@ -23,7 +23,7 @@ class AddProductImpl(private val prcoObservable: PrcoObservable) {
      */
     fun addNewProductsByKeywordForAllEshops(eshopUuid: EshopUuid, searchKeyWordId: Long) {
         try {
-            prcoObservable.notify(NewKeyWordIdEvent(eshopUuid, searchKeyWordId))
+            prcoObservable.notify(NewKeywordIdEvent(eshopUuid, searchKeyWordId))
 
         } catch (e: Exception) {
             LOG.error("tu", e)

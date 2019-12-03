@@ -1,34 +1,32 @@
 NewKeyWordIdEvent => NewKeyWordEvent
                   =# RetrieveKeywordBaseOnKeywordIdErrorEvent
 
-NewKeyWordEvent => NewKeyWordUrlEvent
+NewKeyWordEvent => SearchKeywordUrlEvent
                 =# BuildSearchUrlForKeywordErrorEvent
 
-NewKeyWordUrlEvent => FirstDocumentEvent
-                   =# RetrieveDocumentForSearchUrlErrorEvent
+SearchKeywordUrlEvent => SearchPageDocumentEvent
+                      =# RetrieveDocumentForSearchUrlErrorEvent
 
-FirstDocumentEvent => CountOfPagesEvent
-                   => FirstPageProductURLsEvent
-                   =# ParseCountOfPagesErrorEvent
-                   =# ParseProductListURLsErrorEvent
+SearchPageDocumentEvent =?> CountOfPagesEvent if( pageNumber is 1)
+                        => NewProductURLsEvent
+                        =# ParseCountOfPagesErrorEvent
+                        =# ParseProductListURLsErrorEvent
 
-FirstPageProductURLsEvent => NewProductUrlEvent
-                          =# FilterDuplicityErrorEvent
-                          =# FilterNotExistingErrorEvent
+NewProductURLsEvent => NewProductUrlEvent
+                    =# FilterDuplicityErrorEvent
+                    =# FilterNotExistingErrorEvent
 
-CountOfPagesEvent => [*]BuildNextSearchPageUrl
+CountOfPagesEvent => [*]BuildNextSearchPageUrlEvent
                   =# nothing
 
 NewProductUrlEvent => NewProductDocumentEvent
                    =# RetrieveDocumentForUrlErrorEvent
 
-BuildNextSearchPageUrl => TODO
-                       =# TODO
+BuildNextSearchPageUrlEvent => SearchKeywordUrlEvent
+                            =# BuildNextPageSearchUrlErrorEvent
 
 NewProductDocumentEvent => ProductNewDataEvent
                         =# ParseProductNewDataErrorEvent
 
 ProductNewDataEvent => END
                     =# SaveProductNewDataErrorEvent
-
-

@@ -4,7 +4,11 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
-import sk.hudak.prco.task.ng.ee.*
+import sk.hudak.prco.task.ng.ee.AddProductExecutors
+import sk.hudak.prco.task.ng.ee.NewProductDocumentEvent
+import sk.hudak.prco.task.ng.ee.NewProductUrlEvent
+import sk.hudak.prco.task.ng.ee.RetrieveDocumentForUrlErrorEvent
+import sk.hudak.prco.task.ng.ee.helper.DocumentHelper
 import java.util.*
 
 @Component

@@ -8,8 +8,8 @@ import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.task.ng.ee.AddProductExecutors
 import sk.hudak.prco.task.ng.ee.BuildSearchUrlForKeywordErrorEvent
-import sk.hudak.prco.task.ng.ee.NewKeyWordEvent
-import sk.hudak.prco.task.ng.ee.NewKeyWordUrlEvent
+import sk.hudak.prco.task.ng.ee.NewKeywordEvent
+import sk.hudak.prco.task.ng.ee.SearchKeywordUrlEvent
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
@@ -31,12 +31,12 @@ class NewKeyWordEvent_2_Handler(prcoObservable: PrcoObservable,
     /**
      * searchKeyword -> searchKeywordRL
      */
-    private fun handle(event: NewKeyWordEvent) {
+    private fun handle(event: NewKeywordEvent) {
         LOG.trace("handle ${event.javaClass.simpleName}")
-        buildSearchUrlForKeyword(event.eshopUuid, event.searchKeyWord)
+        buildSearchUrlForKeyword(event.eshopUuid, event.searchKeyword)
                 .handle { searchUrl, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(NewKeyWordUrlEvent(searchUrl, event.eshopUuid, event.searchKeyWord))
+                        prcoObservable.notify(SearchKeywordUrlEvent(searchUrl, 1, event.searchKeyword, event.eshopUuid))
                     } else {
                         prcoObservable.notify(BuildSearchUrlForKeywordErrorEvent(event, exception))
                     }
@@ -56,7 +56,7 @@ class NewKeyWordEvent_2_Handler(prcoObservable: PrcoObservable,
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is NewKeyWordEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
+            is NewKeywordEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
         }
     }
 

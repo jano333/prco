@@ -4,33 +4,37 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
-import sk.hudak.prco.task.ng.ee.*
+import sk.hudak.prco.task.ng.ee.AddProductExecutors
+import sk.hudak.prco.task.ng.ee.RetrieveDocumentForSearchUrlErrorEvent
+import sk.hudak.prco.task.ng.ee.SearchKeywordUrlEvent
+import sk.hudak.prco.task.ng.ee.SearchPageDocumentEvent
+import sk.hudak.prco.task.ng.ee.helper.DocumentHelper
 import java.util.*
 
 /**
  * searchKeywordURL -> Document
  */
 @Component
-class NewKeyWordSearchUrlEvent_3_Handler(prcoObservable: PrcoObservable,
-                                         addProductExecutors: AddProductExecutors,
-                                         private val documentHelper: DocumentHelper)
+class SearchKeywordUrlEvent_3_Handler(prcoObservable: PrcoObservable,
+                                      addProductExecutors: AddProductExecutors,
+                                      private val documentHelper: DocumentHelper)
 
     : AddProcessHandler(prcoObservable, addProductExecutors) {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(NewKeyWordSearchUrlEvent_3_Handler::class.java)!!
+        private val LOG = LoggerFactory.getLogger(SearchKeywordUrlEvent_3_Handler::class.java)!!
     }
 
     /**
      * searchKeywordURL -> Document
      */
-    private fun handle(event: NewKeyWordUrlEvent) {
+    private fun handle(event: SearchKeywordUrlEvent) {
         LOG.trace("handle ${event.javaClass.simpleName}")
 
         documentHelper.retrieveDocumentForUrl(event.searchUrl, event.eshopUuid)
                 .handle { document, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(FirstDocumentEvent(document, event.eshopUuid, event.searchKeyWord, event.searchUrl))
+                        prcoObservable.notify(SearchPageDocumentEvent(document, event.pageNumber, event.eshopUuid, event.searchKeyword, event.searchUrl))
                     } else {
                         prcoObservable.notify(RetrieveDocumentForSearchUrlErrorEvent(event, exception))
                     }
@@ -39,7 +43,7 @@ class NewKeyWordSearchUrlEvent_3_Handler(prcoObservable: PrcoObservable,
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is NewKeyWordUrlEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
+            is SearchKeywordUrlEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
         }
     }
 

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component
 import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
+import sk.hudak.prco.exception.PrcoRuntimeException
 import sk.hudak.prco.manager.error.ErrorLogManager
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.ng.ee.AddProductExecutors
@@ -47,6 +48,7 @@ class ProductNewDataEvent_8b_Handler(prcoObservable: PrcoObservable,
                     if (null == productNewData.name) {
                         //FIXME make as event
                         errorLogManager.logErrorParsingProductNameForNewProduct(productNewData.eshopUuid, productNewData.url)
+                        throw PrcoRuntimeException("New product ${productNewData.url} has none name")
                     }
 
                     // preklopim a pridavam do DB

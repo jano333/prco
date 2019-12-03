@@ -5,8 +5,6 @@ import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.events.CoreEvent
 
-//TODO pre error eventy bazovu class alebo marker interface
-
 /**
  * basic error event
  */
@@ -18,27 +16,27 @@ interface BasicErrorEvent {
 /**
  *  1. searchKeywordId -> searchKeyword
  */
-data class NewKeyWordIdEvent(val eshopUuid: EshopUuid,
-                             val searchKeyWordId: Long) : CoreEvent()
+data class NewKeywordIdEvent(val eshopUuid: EshopUuid,
+                             val searchKeywordId: Long) : CoreEvent()
 
 /**
  * Error while retrieving 'keyword' base on it's id.
  */
-data class RetrieveKeywordBaseOnKeywordIdErrorEvent(override val event: NewKeyWordIdEvent,
+data class RetrieveKeywordBaseOnKeywordIdErrorEvent(override val event: NewKeywordIdEvent,
                                                     override val error: Throwable) : CoreEvent(), BasicErrorEvent
 // -----------
 
 /**
  * 2. searchKeyword -> searchKeywordURL
  */
-data class NewKeyWordEvent(val searchKeyWord: String,
+data class NewKeywordEvent(val searchKeyword: String,
                            val eshopUuid: EshopUuid,
-                           val searchKeyWordId: Long) : CoreEvent()
+                           val searchKeywordId: Long) : CoreEvent()
 
 /**
  * Error while building search url base on 'searchKeyword' for given eshop.
  */
-data class BuildSearchUrlForKeywordErrorEvent(override val event: NewKeyWordEvent,
+data class BuildSearchUrlForKeywordErrorEvent(override val event: NewKeywordEvent,
                                               override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
 // -----------
@@ -46,11 +44,12 @@ data class BuildSearchUrlForKeywordErrorEvent(override val event: NewKeyWordEven
 /**
  * 3. searchKeywordURL -> Document
  */
-data class NewKeyWordUrlEvent(val searchUrl: String,
-                              val eshopUuid: EshopUuid,
-                              val searchKeyWord: String) : CoreEvent()
+data class SearchKeywordUrlEvent(val searchUrl: String,
+                                 val pageNumber: Int,
+                                 val searchKeyword: String,
+                                 val eshopUuid: EshopUuid) : CoreEvent()
 
-data class RetrieveDocumentForSearchUrlErrorEvent(override val event: NewKeyWordUrlEvent,
+data class RetrieveDocumentForSearchUrlErrorEvent(override val event: SearchKeywordUrlEvent,
                                                   override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
 // -------------
@@ -59,15 +58,16 @@ data class RetrieveDocumentForSearchUrlErrorEvent(override val event: NewKeyWord
  * 4.a Document -> countOfPages
  * 4.b Document -> firstPageProductURLs[]
  */
-data class FirstDocumentEvent(val document: Document,
-                              val eshopUuid: EshopUuid,
-                              val searchKeyWord: String,
-                              val searchUrl: String) : CoreEvent()
+data class SearchPageDocumentEvent(val searchDocument: Document,
+                                   val pageNumber: Int,
+                                   val eshopUuid: EshopUuid,
+                                   val searchKeyWord: String,
+                                   val searchUrl: String) : CoreEvent()
 
-data class ParseCountOfPagesErrorEvent(override val event: FirstDocumentEvent,
+data class ParseCountOfPagesErrorEvent(override val event: SearchPageDocumentEvent,
                                        override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
-data class ParseProductListURLsErrorEvent(override val event: FirstDocumentEvent,
+data class ParseProductListURLsErrorEvent(override val event: SearchPageDocumentEvent,
                                           val pageNumber: Int,
                                           override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
@@ -75,20 +75,21 @@ data class CountOfPagesEvent(val countOfPages: Int,
                              val searchKeyWord: String,
                              val eshopUuid: EshopUuid) : CoreEvent()
 
-data class FirstPageProductURLsEvent(val pageProductURLs: List<String>,
-                                     val document: Document,
-                                     val eshopUuid: EshopUuid,
-                                     val searchKeyWord: String,
-                                     val searchUrl: String) : CoreEvent()
+data class NewProductUrlsEvent(val pageProductURLs: List<String>,
+                               val searchPageDocument: Document,
+                               val pageNumber: Int,
+                               val eshopUuid: EshopUuid,
+                               val searchKeyWord: String,
+                               val searchUrl: String) : CoreEvent()
 
 // -------------
 data class NewProductUrlEvent(val newProductUrl: String,
                               val eshopUuid: EshopUuid) : CoreEvent()
 
-data class FilterDuplicityErrorEvent(override val event: FirstPageProductURLsEvent,
+data class FilterDuplicityErrorEvent(override val event: NewProductUrlsEvent,
                                      override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
-data class FilterNotExistingErrorEvent(override val event: FirstPageProductURLsEvent,
+data class FilterNotExistingErrorEvent(override val event: NewProductUrlsEvent,
                                        override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
 // -------
@@ -98,6 +99,7 @@ data class NewProductDocumentEvent(val document: Document,
 
 data class RetrieveDocumentForUrlErrorEvent(override val event: NewProductUrlEvent,
                                             override val error: Throwable) : CoreEvent(), BasicErrorEvent
+
 
 // ---------
 data class ProductNewDataEvent(val productNewData: ProductNewData) : CoreEvent()
@@ -109,6 +111,10 @@ data class SaveProductNewDataErrorEvent(override val event: ProductNewDataEvent,
                                         override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
 // --------
-data class BuildNextSearchPageUrl(val currentPageNumber: Int,
-                                  val searchKeyWord: String,
-                                  val eshopUuid: EshopUuid) : CoreEvent()
+data class BuildNextSearchPageUrlEvent(val currentPageNumber: Int,
+                                       val searchKeyWord: String,
+                                       val eshopUuid: EshopUuid) : CoreEvent()
+
+data class BuildNextPageSearchUrlErrorEvent(override val event: BuildNextSearchPageUrlEvent,
+                                            override val error: Throwable) : CoreEvent(), BasicErrorEvent
+

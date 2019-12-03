@@ -1,4 +1,4 @@
-package sk.hudak.prco.task.ng.ee
+package sk.hudak.prco.task.ng.ee.helper
 
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid

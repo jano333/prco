@@ -7,7 +7,11 @@ import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
-import sk.hudak.prco.task.ng.ee.*
+import sk.hudak.prco.task.ng.ee.AddProductExecutors
+import sk.hudak.prco.task.ng.ee.NewProductDocumentEvent
+import sk.hudak.prco.task.ng.ee.ParseProductNewDataErrorEvent
+import sk.hudak.prco.task.ng.ee.ProductNewDataEvent
+import sk.hudak.prco.task.ng.ee.helper.EshopProductsParserHelper
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
@@ -34,7 +38,6 @@ class NewProductDocumentEvent_7b_Handler(prcoObservable: PrcoObservable,
                     }
                 }
     }
-
 
     private fun parseProductNewData(document: Document, newProductUrl: String, eshopUuid: EshopUuid): CompletableFuture<ProductNewData> {
         return CompletableFuture.supplyAsync(

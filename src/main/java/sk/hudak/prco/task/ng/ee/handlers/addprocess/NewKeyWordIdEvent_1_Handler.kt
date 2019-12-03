@@ -6,8 +6,8 @@ import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.ng.ee.AddProductExecutors
-import sk.hudak.prco.task.ng.ee.NewKeyWordEvent
-import sk.hudak.prco.task.ng.ee.NewKeyWordIdEvent
+import sk.hudak.prco.task.ng.ee.NewKeywordEvent
+import sk.hudak.prco.task.ng.ee.NewKeywordIdEvent
 import sk.hudak.prco.task.ng.ee.RetrieveKeywordBaseOnKeywordIdErrorEvent
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -30,12 +30,12 @@ class NewKeyWordIdEvent_1_Handler(prcoObservable: PrcoObservable,
     /**
      * searchKeywordId -> searchKeyword
      */
-    private fun handle(event: NewKeyWordIdEvent) {
+    private fun handle(event: NewKeywordIdEvent) {
         LOG.trace("handle ${event.javaClass.simpleName}")
-        retrieveKeywordBaseOnKeywordId(event.searchKeyWordId)
+        retrieveKeywordBaseOnKeywordId(event.searchKeywordId)
                 .handle { keyword, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(NewKeyWordEvent(keyword, event.eshopUuid, event.searchKeyWordId))
+                        prcoObservable.notify(NewKeywordEvent(keyword, event.eshopUuid, event.searchKeywordId))
                     } else {
                         prcoObservable.notify(RetrieveKeywordBaseOnKeywordIdErrorEvent(event, exception))
                     }
@@ -53,7 +53,7 @@ class NewKeyWordIdEvent_1_Handler(prcoObservable: PrcoObservable,
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is NewKeyWordIdEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
+            is NewKeywordIdEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
         }
     }
 }
