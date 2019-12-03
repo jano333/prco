@@ -22,6 +22,9 @@ class AddProductErrorHandler(prcoObservable: PrcoObservable,
     }
 
     override fun update(source: Observable?, event: CoreEvent) {
+        if (event !is BasicErrorEvent) {
+            return
+        }
         when (event) {
             is RetrieveKeywordBaseOnKeywordIdErrorEvent -> handle_NewKeyWordIdErrorEvent(event)
             is BuildSearchUrlForKeywordErrorEvent -> handle_NewKeyWordErrorEvent(event)
@@ -33,6 +36,11 @@ class AddProductErrorHandler(prcoObservable: PrcoObservable,
             is RetrieveDocumentForUrlErrorEvent -> handle_RetrieveDocumentForUrlErrorEvent(event)
             is ParseProductNewDataErrorEvent -> handle_ParseProductNewDataErrorEvent(event)
             is SaveProductNewDataErrorEvent -> handle_SaveProductNewDataErrorEvent(event)
+            is BuildNextPageSearchUrlErrorEvent -> handle_BuildNextPageSearchUrlErrorEvent(event)
+            else -> {
+                //TODO
+                logErrorEvent(event as BasicErrorEvent)
+            }
         }
     }
 
@@ -46,49 +54,54 @@ class AddProductErrorHandler(prcoObservable: PrcoObservable,
         addProductExecutors.shutdownNowAllExecutors()
     }
 
-    private fun logErrorEvent(errorEvent: BasicErrorEvent){
+    private fun logErrorEvent(errorEvent: BasicErrorEvent) {
         LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}")
         LOG.error("source event ${errorEvent.event}")
         LOG.error("${errorEvent.error.message}", errorEvent.error)
     }
 
+    private fun handle_BuildNextPageSearchUrlErrorEvent(errorEvent: BuildNextPageSearchUrlErrorEvent) {
+        logErrorEvent(errorEvent)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     private fun handle_NewKeyWordUrlErrorEvent(errorEvent: RetrieveDocumentForSearchUrlErrorEvent) {
-        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
+        logErrorEvent(errorEvent)
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun handle_SaveProductNewDataErrorEvent(errorEvent: SaveProductNewDataErrorEvent) {
-        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
+        logErrorEvent(errorEvent)
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun handle_RetrieveDocumentForUrlErrorEvent(errorEvent: RetrieveDocumentForUrlErrorEvent) {
-        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
+        logErrorEvent(errorEvent)
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun handle_ParseProductNewDataErrorEvent(errorEvent: ParseProductNewDataErrorEvent) {
-        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
+        logErrorEvent(errorEvent)
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun handle_FilterNotExistingErrorEvent(errorEvent: FilterNotExistingErrorEvent) {
-        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
+        logErrorEvent(errorEvent)
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun handle_DuplicityCheckErrorEvent(errorEvent: FilterDuplicityErrorEvent) {
-        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
+        logErrorEvent(errorEvent)
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun handle_FirstDocumentCountOfPageErrorEvent(errorEvent: ParseCountOfPagesErrorEvent) {
-        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
+        logErrorEvent(errorEvent)
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun handle_FirstDocumentPageProductUrlsErrorEvent(errorEvent: ParseProductListURLsErrorEvent) {
-        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}", errorEvent.error)
+        logErrorEvent(errorEvent)
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

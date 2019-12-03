@@ -32,7 +32,9 @@ class PrcoConsole(val internalTxService: InternalTxService,
     fun showInConsole() {
 
 //        addImplNg.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
-        addEe.addNewProductsByKeywordForAllEshops(EshopUuid.FEEDO, SearchKeyWordId.PAMPERS_ID)
+//        addEe.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, SearchKeyWordId.PAMPERS_ID)
+
+        addEe.addNewProductsByKeywordForAllEshops(SearchKeyWordId.PAMPERS_ID)
 
 
 

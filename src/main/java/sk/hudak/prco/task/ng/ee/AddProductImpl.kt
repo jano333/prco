@@ -12,21 +12,19 @@ class AddProductImpl(private val prcoObservable: PrcoObservable) {
         val LOG = LoggerFactory.getLogger(AddProductImpl::class.java)!!
     }
 
-
     /**
-     * NewKeyWordIdEvent ->
-     * NewKeyWordEvent ->
-     * NewKeyWordUrlEvent ->
-     * NewKeyWordFirstDocumentEvent ->
+     * Vyhlada produkty s danym klucovym slovom pre konkretny eshop a ulozi ich do tabulky NEW_PRODUCT.
      *
-     *
+     * @param eshopUuid     eshop identifikator
+     * @param searchKeyWordId use SearchKeyWordId
      */
-    fun addNewProductsByKeywordForAllEshops(eshopUuid: EshopUuid, searchKeyWordId: Long) {
-        try {
-            prcoObservable.notify(NewKeywordIdEvent(eshopUuid, searchKeyWordId))
-
-        } catch (e: Exception) {
-            LOG.error("tu", e)
-        }
+    fun addNewProductsByKeywordForEshop(eshopUuid: EshopUuid, searchKeyWordId: Long) {
+        prcoObservable.notify(NewEshopKeywordIdEvent(eshopUuid, searchKeyWordId))
     }
+
+    fun addNewProductsByKeywordForAllEshops(searchKeyWordId: Long) {
+        prcoObservable.notify(NewKeywordIdEvent(searchKeyWordId))
+    }
+
 }
+

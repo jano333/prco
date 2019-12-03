@@ -20,4 +20,7 @@ class EshopProductsParserHelper(productParsers: List<EshopProductsParser>) {
     fun findParserForEshop(eshopUuid: EshopUuid): EshopProductsParser {
         return registeredParsers[eshopUuid] ?: throw EshopParserNotFoundException(eshopUuid)
     }
+
+    fun getRegisteredEshopWithParser(): Set<EshopUuid> = registeredParsers.keys
+
 }

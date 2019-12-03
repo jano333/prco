@@ -16,13 +16,13 @@ interface BasicErrorEvent {
 /**
  *  1. searchKeywordId -> searchKeyword
  */
-data class NewKeywordIdEvent(val eshopUuid: EshopUuid,
-                             val searchKeywordId: Long) : CoreEvent()
+data class NewEshopKeywordIdEvent(val eshopUuid: EshopUuid,
+                                  val searchKeywordId: Long) : CoreEvent()
 
 /**
  * Error while retrieving 'keyword' base on it's id.
  */
-data class RetrieveKeywordBaseOnKeywordIdErrorEvent(override val event: NewKeywordIdEvent,
+data class RetrieveKeywordBaseOnKeywordIdErrorEvent(override val event: NewEshopKeywordIdEvent,
                                                     override val error: Throwable) : CoreEvent(), BasicErrorEvent
 // -----------
 
@@ -118,3 +118,5 @@ data class BuildNextSearchPageUrlEvent(val currentPageNumber: Int,
 data class BuildNextPageSearchUrlErrorEvent(override val event: BuildNextSearchPageUrlEvent,
                                             override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
+// **************
+data class NewKeywordIdEvent(val searchKeyWordId: Long) : CoreEvent()

@@ -6,8 +6,8 @@ import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.ng.ee.AddProductExecutors
+import sk.hudak.prco.task.ng.ee.NewEshopKeywordIdEvent
 import sk.hudak.prco.task.ng.ee.NewKeywordEvent
-import sk.hudak.prco.task.ng.ee.NewKeywordIdEvent
 import sk.hudak.prco.task.ng.ee.RetrieveKeywordBaseOnKeywordIdErrorEvent
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -17,21 +17,28 @@ import java.util.function.Supplier
  * searchKeywordId -> searchKeyword
  */
 @Component
-class NewKeyWordIdEvent_1_Handler(prcoObservable: PrcoObservable,
-                                  addProductExecutors: AddProductExecutors,
-                                  private val internalTxService: InternalTxService)
+class NewEshopKeywordIdEvent_1_Handler(prcoObservable: PrcoObservable,
+                                       addProductExecutors: AddProductExecutors,
+                                       private val internalTxService: InternalTxService)
 
     : AddProcessHandler(prcoObservable, addProductExecutors) {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(NewKeyWordIdEvent_1_Handler::class.java)!!
+        private val LOG = LoggerFactory.getLogger(NewEshopKeywordIdEvent_1_Handler::class.java)!!
     }
 
     /**
      * searchKeywordId -> searchKeyword
      */
-    private fun handle(event: NewKeywordIdEvent) {
+    private fun handle(event: NewEshopKeywordIdEvent) {
         LOG.trace("handle ${event.javaClass.simpleName}")
+
+        // kontrola ci dane klucove slovo podporovane eshopom
+        if (!event.eshopUuid.config.supportedSearchKeywordIds.contains(event.searchKeywordId)) {
+            LOG.warn("searchKeyWordId ${event.searchKeywordId} is not supported for eshop $event.eshopUuid")
+            return
+        }
+
         retrieveKeywordBaseOnKeywordId(event.searchKeywordId)
                 .handle { keyword, exception ->
                     if (exception == null) {
@@ -53,7 +60,7 @@ class NewKeyWordIdEvent_1_Handler(prcoObservable: PrcoObservable,
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is NewKeywordIdEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
+            is NewEshopKeywordIdEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
         }
     }
 }

@@ -18,6 +18,7 @@ import java.util.function.Consumer
 import java.util.function.Supplier
 
 
+@Deprecated("use diffrent version")
 @Component
 class AddImplNg(private val internalTxService: InternalTxService,
                 private val htmlParser: HtmlParser,

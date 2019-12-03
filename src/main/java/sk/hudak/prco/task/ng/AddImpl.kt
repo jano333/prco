@@ -22,7 +22,7 @@ import java.util.function.Function
 import java.util.function.Supplier
 
 
-@Deprecated("use NG version")
+@Deprecated("use diffrent version")
 @Component
 class AddImpl(private val internalTxService: InternalTxService,
               private val htmlParser: HtmlParser,
