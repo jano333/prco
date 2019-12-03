@@ -1,6 +1,7 @@
 package sk.hudak.prco.task.ng.ee.handlers.addprocess
 
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.events.CoreEvent
@@ -8,6 +9,7 @@ import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.manager.error.ErrorLogManager
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.ng.ee.*
+import sk.hudak.prco.task.ng.ee.handlers.EshopLogSupplier
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
@@ -38,6 +40,7 @@ class NewProductUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
     }
 
     private fun filterDuplicityAsync(eshopUuid: EshopUuid, searchKeyWord: String, urlList: List<String>): CompletableFuture<List<String>> {
+        //TODO eshop log suplier
         return CompletableFuture.supplyAsync {
             // key: productUrl, value: count of duplicity
             var result = mutableMapOf<String, Int>()
@@ -72,7 +75,7 @@ class NewProductUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
         LOG.debug("count of products URL after duplicity check ${pageProductURLsAfterDuplicity.size}")
 
         // filter only non existing
-        filterNotExistingAsync(pageProductURLsAfterDuplicity)
+        filterNotExistingAsync(event.eshopUuid, pageProductURLsAfterDuplicity)
                 .handle { notExistingProducts, exception ->
                     if (exception == null) {
                         handleFilterNotExistingResult(notExistingProducts, event)
@@ -82,8 +85,8 @@ class NewProductUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
                 }
     }
 
-    private fun filterNotExistingAsync(productsUrl: List<String>): CompletableFuture<List<String>> {
-        return CompletableFuture.supplyAsync(
+    private fun filterNotExistingAsync(eshopUuid: EshopUuid, productsUrl: List<String>): CompletableFuture<List<String>> {
+        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid,
                 Supplier {
                     val notExistingProducts = productsUrl.filter {
                         val exist = internalTxService.existProductWithURL(it)
@@ -93,7 +96,7 @@ class NewProductUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
                         !exist
                     }
                     notExistingProducts
-                },
+                }),
                 addProductExecutors.internalServiceExecutor)
     }
 
@@ -110,7 +113,11 @@ class NewProductUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is NewProductUrlsEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
+            is NewProductUrlsEvent -> addProductExecutors.handlerTaskExecutor.submit {
+                MDC.put("eshop", event.eshopUuid.toString())
+                handle(event)
+                MDC.remove("eshop")
+            }
         }
     }
 }

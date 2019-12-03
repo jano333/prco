@@ -1,7 +1,9 @@
 package sk.hudak.prco.task.ng.ee.handlers.addprocess
 
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.stereotype.Component
+import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.service.InternalTxService
@@ -9,6 +11,7 @@ import sk.hudak.prco.task.ng.ee.AddProductExecutors
 import sk.hudak.prco.task.ng.ee.NewEshopKeywordIdEvent
 import sk.hudak.prco.task.ng.ee.NewKeywordEvent
 import sk.hudak.prco.task.ng.ee.RetrieveKeywordBaseOnKeywordIdErrorEvent
+import sk.hudak.prco.task.ng.ee.handlers.EshopLogSupplier
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
@@ -39,7 +42,7 @@ class NewEshopKeywordIdEvent_1_Handler(prcoObservable: PrcoObservable,
             return
         }
 
-        retrieveKeywordBaseOnKeywordId(event.searchKeywordId)
+        retrieveKeywordBaseOnKeywordId(event.eshopUuid, event.searchKeywordId)
                 .handle { keyword, exception ->
                     if (exception == null) {
                         prcoObservable.notify(NewKeywordEvent(keyword, event.eshopUuid, event.searchKeywordId))
@@ -49,18 +52,22 @@ class NewEshopKeywordIdEvent_1_Handler(prcoObservable: PrcoObservable,
                 }
     }
 
-    private fun retrieveKeywordBaseOnKeywordId(searchKeyWordId: Long): CompletableFuture<String> {
-        return CompletableFuture.supplyAsync(
+    private fun retrieveKeywordBaseOnKeywordId(eshopUuid: EshopUuid, searchKeywordId: Long): CompletableFuture<String> {
+        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid,
                 Supplier {
                     LOG.trace("retrieveKeywordBaseOnKeywordId")
-                    internalTxService.getSearchKeywordById(searchKeyWordId)
-                },
+                    internalTxService.getSearchKeywordById(searchKeywordId)
+                }),
                 addProductExecutors.internalServiceExecutor)
     }
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is NewEshopKeywordIdEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
+            is NewEshopKeywordIdEvent -> addProductExecutors.handlerTaskExecutor.submit {
+                MDC.put("eshop", event.eshopUuid.toString())
+                handle(event)
+                MDC.remove("eshop")
+            }
         }
     }
 }

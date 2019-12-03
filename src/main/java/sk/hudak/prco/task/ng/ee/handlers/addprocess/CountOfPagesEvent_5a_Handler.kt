@@ -1,6 +1,7 @@
 package sk.hudak.prco.task.ng.ee.handlers.addprocess
 
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.stereotype.Component
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
@@ -33,7 +34,11 @@ class CountOfPagesEvent_5a_Handler(prcoObservable: PrcoObservable,
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is CountOfPagesEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
+            is CountOfPagesEvent -> addProductExecutors.handlerTaskExecutor.submit {
+                MDC.put("eshop", event.eshopUuid.toString())
+                handle(event)
+                MDC.remove("eshop")
+            }
         }
     }
 }

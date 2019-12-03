@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.task.ng.ee.AddProductExecutors
+import sk.hudak.prco.task.ng.ee.handlers.EshopLogSupplier
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
 
@@ -17,11 +18,11 @@ class DocumentHelper(private val eshopProductsParserHelper: EshopProductsParserH
     }
 
     fun retrieveDocumentForUrl(productUrl: String, eshopUuid: EshopUuid): CompletableFuture<Document> {
-        return CompletableFuture.supplyAsync(
+        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid,
                 Supplier {
                     LOG.trace("retrieveDocumentForUrl")
                     eshopProductsParserHelper.findParserForEshop(eshopUuid).retrieveDocument(productUrl)
-                },
+                }),
                 addProductExecutors.getEshopExecutor(eshopUuid))
     }
 }

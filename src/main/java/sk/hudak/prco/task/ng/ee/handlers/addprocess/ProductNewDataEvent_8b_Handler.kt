@@ -1,6 +1,7 @@
 package sk.hudak.prco.task.ng.ee.handlers.addprocess
 
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.stereotype.Component
 import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.events.CoreEvent
@@ -11,6 +12,7 @@ import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.ng.ee.AddProductExecutors
 import sk.hudak.prco.task.ng.ee.ProductNewDataEvent
 import sk.hudak.prco.task.ng.ee.SaveProductNewDataErrorEvent
+import sk.hudak.prco.task.ng.ee.handlers.EshopLogSupplier
 import sk.hudak.prco.task.ng.toNewProductCreateDto
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -42,7 +44,7 @@ class ProductNewDataEvent_8b_Handler(prcoObservable: PrcoObservable,
     }
 
     private fun saveProductNewData(productNewData: ProductNewData): CompletableFuture<Long> {
-        return CompletableFuture.supplyAsync(
+        return CompletableFuture.supplyAsync(EshopLogSupplier(productNewData.eshopUuid,
                 Supplier {
                     LOG.trace("saveProductNewData")
                     if (null == productNewData.name) {
@@ -53,13 +55,17 @@ class ProductNewDataEvent_8b_Handler(prcoObservable: PrcoObservable,
 
                     // preklopim a pridavam do DB
                     internalTxService.createNewProduct(productNewData.toNewProductCreateDto())
-                },
+                }),
                 addProductExecutors.internalServiceExecutor)
     }
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is ProductNewDataEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
+            is ProductNewDataEvent -> addProductExecutors.handlerTaskExecutor.submit {
+                MDC.put("eshop", event.productNewData.eshopUuid.toString())
+                handle(event)
+                MDC.remove("eshop")
+            }
         }
     }
 

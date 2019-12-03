@@ -2,10 +2,9 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-                <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+                <pattern>%date %level [%X{eshop}] [%thread] %logger{10} [%file:%line] %msg%n</pattern>
         </encoder>
     </appender>
-
 
     <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>/dev/prco/logs/prco-error.log</file>
@@ -20,7 +19,7 @@
         </rollingPolicy>
 
         <encoder>
-            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+            <pattern>%date %level [%X{eshop}] [%thread] %logger{10} [%file:%line] %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -34,7 +33,7 @@
         </rollingPolicy>
 
         <encoder>
-            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n
+            <pattern>%date %level [%X{eshop}] [%thread] %logger{10} [%file:%line] %msg%n
             </pattern>
         </encoder>
     </appender>
@@ -58,7 +57,7 @@
          <appender-ref ref="FILE_SLOW_SQL" />
      </logger>-->
 
-    <logger name="sk.hudak" level="debug" additivity="true">
+    <logger name="sk.hudak" level="trace" additivity="true">
         <appender-ref ref="FILE_DEBUG" />
         <!--<appender-ref ref="STDOUT" />-->
     </logger>

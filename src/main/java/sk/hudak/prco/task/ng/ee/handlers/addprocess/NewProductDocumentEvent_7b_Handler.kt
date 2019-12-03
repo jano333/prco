@@ -2,6 +2,7 @@ package sk.hudak.prco.task.ng.ee.handlers.addprocess
 
 import org.jsoup.nodes.Document
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ProductNewData
@@ -11,6 +12,7 @@ import sk.hudak.prco.task.ng.ee.AddProductExecutors
 import sk.hudak.prco.task.ng.ee.NewProductDocumentEvent
 import sk.hudak.prco.task.ng.ee.ParseProductNewDataErrorEvent
 import sk.hudak.prco.task.ng.ee.ProductNewDataEvent
+import sk.hudak.prco.task.ng.ee.handlers.EshopLogSupplier
 import sk.hudak.prco.task.ng.ee.helper.EshopProductsParserHelper
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -40,17 +42,22 @@ class NewProductDocumentEvent_7b_Handler(prcoObservable: PrcoObservable,
     }
 
     private fun parseProductNewData(document: Document, newProductUrl: String, eshopUuid: EshopUuid): CompletableFuture<ProductNewData> {
-        return CompletableFuture.supplyAsync(
+        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid,
                 Supplier {
                     LOG.trace("parseProductNewData")
                     eshopProductsParserHelper.findParserForEshop(eshopUuid).parseProductNewData(document, newProductUrl)
-                },
+                }),
                 addProductExecutors.htmlParserExecutor)
     }
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is NewProductDocumentEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
+            is NewProductDocumentEvent -> addProductExecutors.handlerTaskExecutor.submit {
+                MDC.put("eshop", event.eshopUuid.toString())
+                handle(event)
+                MDC.remove("eshop")
+
+            }
         }
     }
 }
