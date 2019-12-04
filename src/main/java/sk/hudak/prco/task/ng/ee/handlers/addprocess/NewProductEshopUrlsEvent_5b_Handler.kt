@@ -15,17 +15,17 @@ import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
 
 @Component
-class NewProductUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
-                                     addProductExecutors: AddProductExecutors,
-                                     private val errorLogManager: ErrorLogManager,
-                                     private val internalTxService: InternalTxService)
+class NewProductEshopUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
+                                          addProductExecutors: AddProductExecutors,
+                                          private val errorLogManager: ErrorLogManager,
+                                          private val internalTxService: InternalTxService)
     : AddProcessHandler(prcoObservable, addProductExecutors) {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(NewProductUrlsEvent_5b_Handler::class.java)!!
+        private val LOG = LoggerFactory.getLogger(NewProductEshopUrlsEvent_5b_Handler::class.java)!!
     }
 
-    private fun handle(event: NewProductUrlsEvent) {
+    private fun handle(event: NewProductEshopUrlsEvent) {
         LOG.trace("handle ${event.javaClass.simpleName}")
 
         LOG.debug("count of products URL before duplicity check  ${event.pageProductURLs.size}")
@@ -67,7 +67,7 @@ class NewProductUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
         }
     }
 
-    private fun handleDuplicityCheckResult(pageProductURLsAfterDuplicity: List<String>, event: NewProductUrlsEvent) {
+    private fun handleDuplicityCheckResult(pageProductURLsAfterDuplicity: List<String>, event: NewProductEshopUrlsEvent) {
         if (pageProductURLsAfterDuplicity.isEmpty()) {
             LOG.debug("count of products URL after duplicity check iz zero")
             return
@@ -91,7 +91,7 @@ class NewProductUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
                     val notExistingProducts = productsUrl.filter {
                         val exist = internalTxService.existProductWithURL(it)
                         if (exist) {
-                            LOG.debug("product $it already existing")
+                            LOG.info("product $it already existing")
                         }
                         !exist
                     }
@@ -100,20 +100,20 @@ class NewProductUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
                 addProductExecutors.internalServiceExecutor)
     }
 
-    private fun handleFilterNotExistingResult(notExistingProducts: List<String>, event: NewProductUrlsEvent) {
+    private fun handleFilterNotExistingResult(notExistingProducts: List<String>, event: NewProductEshopUrlsEvent) {
         if (notExistingProducts.isEmpty()) {
-            LOG.debug("count of non existing products URL is zero")
+            LOG.info("count of non existing products URL is zero")
             return
         }
-        LOG.debug("count of non existing products URL  ${notExistingProducts.size}")
+        LOG.info("count of non existing products URL  ${notExistingProducts.size}")
         notExistingProducts.forEach {
-            prcoObservable.notify(NewProductUrlEvent(it, event.eshopUuid))
+            prcoObservable.notify(NewProductUrlWithEshopEvent(it, event.eshopUuid))
         }
     }
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is NewProductUrlsEvent -> addProductExecutors.handlerTaskExecutor.submit {
+            is NewProductEshopUrlsEvent -> addProductExecutors.handlerTaskExecutor.submit {
                 MDC.put("eshop", event.eshopUuid.toString())
                 handle(event)
                 MDC.remove("eshop")

@@ -75,21 +75,21 @@ data class CountOfPagesEvent(val countOfPages: Int,
                              val searchKeyWord: String,
                              val eshopUuid: EshopUuid) : CoreEvent()
 
-data class NewProductUrlsEvent(val pageProductURLs: List<String>,
-                               val searchPageDocument: Document,
-                               val pageNumber: Int,
-                               val eshopUuid: EshopUuid,
-                               val searchKeyWord: String,
-                               val searchUrl: String) : CoreEvent()
+data class NewProductEshopUrlsEvent(val pageProductURLs: List<String>,
+                                    val searchPageDocument: Document,
+                                    val pageNumber: Int,
+                                    val eshopUuid: EshopUuid,
+                                    val searchKeyWord: String,
+                                    val searchUrl: String) : CoreEvent()
 
 // -------------
-data class NewProductUrlEvent(val newProductUrl: String,
-                              val eshopUuid: EshopUuid) : CoreEvent()
+data class NewProductUrlWithEshopEvent(val newProductUrl: String,
+                                       val eshopUuid: EshopUuid) : CoreEvent()
 
-data class FilterDuplicityErrorEvent(override val event: NewProductUrlsEvent,
+data class FilterDuplicityErrorEvent(override val event: NewProductEshopUrlsEvent,
                                      override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
-data class FilterNotExistingErrorEvent(override val event: NewProductUrlsEvent,
+data class FilterNotExistingErrorEvent(override val event: NewProductEshopUrlsEvent,
                                        override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
 // -------
@@ -97,7 +97,7 @@ data class NewProductDocumentEvent(val document: Document,
                                    val newProductUrl: String,
                                    val eshopUuid: EshopUuid) : CoreEvent()
 
-data class RetrieveDocumentForUrlErrorEvent(override val event: NewProductUrlEvent,
+data class RetrieveDocumentForUrlErrorEvent(override val event: NewProductUrlWithEshopEvent,
                                             override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
 
@@ -120,3 +120,15 @@ data class BuildNextPageSearchUrlErrorEvent(override val event: BuildNextSearchP
 
 // **************
 data class NewKeywordIdEvent(val searchKeyWordId: Long) : CoreEvent()
+
+// ************
+data class NewProductUrlsEvent(val pageProductURLs: Set<String>) : CoreEvent()
+
+data class NewProductUrlEvent(val productUrl: String) : CoreEvent()
+
+data class FilterNotExistingProductErrorEvent(override val event: NewProductUrlsEvent,
+                                              override val error: Throwable) : CoreEvent(), BasicErrorEvent
+
+data class ParseEshopUuidErrorEvent(override val event: NewProductUrlEvent,
+                                    override val error: Throwable) : CoreEvent(), BasicErrorEvent
+

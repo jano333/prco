@@ -8,18 +8,18 @@ SearchKeywordUrlEvent => SearchPageDocumentEvent
                       =# RetrieveDocumentForSearchUrlErrorEvent
 
 SearchPageDocumentEvent =?> CountOfPagesEvent if( pageNumber is 1)
-                        => NewProductURLsEvent
+                        => NewProductEshopUrlsEvent
                         =# ParseCountOfPagesErrorEvent
                         =# ParseProductListURLsErrorEvent
 
-NewProductURLsEvent => NewProductUrlEvent
+NewProductEshopUrlsEvent => NewProductUrlWithEshopEvent
                     =# FilterDuplicityErrorEvent
                     =# FilterNotExistingErrorEvent
 
 CountOfPagesEvent => [*]BuildNextSearchPageUrlEvent
                   =# nothing
 
-NewProductUrlEvent => NewProductDocumentEvent
+NewProductUrlWithEshopEvent => NewProductDocumentEvent
                    =# RetrieveDocumentForUrlErrorEvent
 
 BuildNextSearchPageUrlEvent => SearchKeywordUrlEvent
@@ -30,3 +30,10 @@ NewProductDocumentEvent => ProductNewDataEvent
 
 ProductNewDataEvent => END
                     =# SaveProductNewDataErrorEvent
+
+**************************************************************************************
+NewProductUrlsEvent => NewProductUrlEvent
+                    =# FilterNotExistingProductErrorEvent
+
+NewProductUrlEvent => NewProductUrlWithEshopEvent
+                   =# TODO

@@ -37,11 +37,18 @@ class AddProductErrorHandler(prcoObservable: PrcoObservable,
             is ParseProductNewDataErrorEvent -> handle_ParseProductNewDataErrorEvent(event)
             is SaveProductNewDataErrorEvent -> handle_SaveProductNewDataErrorEvent(event)
             is BuildNextPageSearchUrlErrorEvent -> handle_BuildNextPageSearchUrlErrorEvent(event)
+            is FilterNotExistingProductErrorEvent -> handle_FilterNotExistingProductErrorEvent(event)
+            is ParseEshopUuidErrorEvent -> handle_ParseEshopUuidErrorEvent(event)
             else -> {
                 //TODO
                 logErrorEvent(event as BasicErrorEvent)
             }
         }
+    }
+
+    private fun handle_ParseEshopUuidErrorEvent(errorEvent: ParseEshopUuidErrorEvent) {
+        logErrorEvent(errorEvent)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun handle_NewKeyWordIdErrorEvent(errorEvent: RetrieveKeywordBaseOnKeywordIdErrorEvent) {
@@ -58,6 +65,11 @@ class AddProductErrorHandler(prcoObservable: PrcoObservable,
         LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}")
         LOG.error("source event ${errorEvent.event}")
         LOG.error("${errorEvent.error.message}", errorEvent.error)
+    }
+
+    private fun handle_FilterNotExistingProductErrorEvent(errorEvent: FilterNotExistingProductErrorEvent) {
+        logErrorEvent(errorEvent)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun handle_BuildNextPageSearchUrlErrorEvent(errorEvent: BuildNextPageSearchUrlErrorEvent) {

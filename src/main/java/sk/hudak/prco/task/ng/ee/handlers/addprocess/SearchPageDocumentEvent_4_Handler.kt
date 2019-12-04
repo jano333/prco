@@ -49,7 +49,7 @@ class SearchPageDocumentEvent_4_Handler(prcoObservable: PrcoObservable,
         parseProductListURLs(event.eshopUuid, event.searchDocument, currentPageNumber)
                 .handle { pageProductURLs, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(NewProductUrlsEvent(pageProductURLs, event.searchDocument, currentPageNumber, event.eshopUuid, event.searchKeyWord, event.searchUrl))
+                        prcoObservable.notify(NewProductEshopUrlsEvent(pageProductURLs, event.searchDocument, currentPageNumber, event.eshopUuid, event.searchKeyWord, event.searchUrl))
                     } else {
                         prcoObservable.notify(ParseProductListURLsErrorEvent(event, currentPageNumber, exception))
                     }

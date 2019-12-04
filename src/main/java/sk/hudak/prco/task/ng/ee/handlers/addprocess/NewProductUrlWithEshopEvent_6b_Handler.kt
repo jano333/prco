@@ -7,22 +7,22 @@ import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.task.ng.ee.AddProductExecutors
 import sk.hudak.prco.task.ng.ee.NewProductDocumentEvent
-import sk.hudak.prco.task.ng.ee.NewProductUrlEvent
+import sk.hudak.prco.task.ng.ee.NewProductUrlWithEshopEvent
 import sk.hudak.prco.task.ng.ee.RetrieveDocumentForUrlErrorEvent
 import sk.hudak.prco.task.ng.ee.helper.DocumentHelper
 import java.util.*
 
 @Component
-class NewProductUrlEvent_6b_Handler(prcoObservable: PrcoObservable,
-                                    addProductExecutors: AddProductExecutors,
-                                    private val documentHelper: DocumentHelper)
+class NewProductUrlWithEshopEvent_6b_Handler(prcoObservable: PrcoObservable,
+                                             addProductExecutors: AddProductExecutors,
+                                             private val documentHelper: DocumentHelper)
     : AddProcessHandler(prcoObservable, addProductExecutors) {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(NewProductUrlEvent_6b_Handler::class.java)!!
+        private val LOG = LoggerFactory.getLogger(NewProductUrlWithEshopEvent_6b_Handler::class.java)!!
     }
 
-    private fun handle(event: NewProductUrlEvent) {
+    private fun handle(event: NewProductUrlWithEshopEvent) {
         LOG.trace("handle ${event.javaClass.simpleName}")
 
         // productURL -> Document
@@ -38,7 +38,7 @@ class NewProductUrlEvent_6b_Handler(prcoObservable: PrcoObservable,
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is NewProductUrlEvent -> addProductExecutors.handlerTaskExecutor.submit {
+            is NewProductUrlWithEshopEvent -> addProductExecutors.handlerTaskExecutor.submit {
                 MDC.put("eshop", event.eshopUuid.toString())
                 handle(event)
                 MDC.remove("eshop")

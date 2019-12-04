@@ -14,10 +14,11 @@ import javax.annotation.PreDestroy
 class AddProductExecutors {
 
     val handlerTaskExecutor: ExecutorService = createInternalThreadExecutor("add-handler-task", 10)
-    val searchUrlBuilderExecutor: ExecutorService = createInternalThreadExecutor("add-search-url", 2)
-    val internalServiceExecutor: ExecutorService = createInternalThreadExecutor("add-db-service", 20)
+    val searchUrlBuilderExecutor: ExecutorService = createInternalThreadExecutor("add-search-url", 5)
+    val internalServiceExecutor: ExecutorService = createInternalThreadExecutor("add-internal-service", 20)
     private val eshopDocumentExecutor = EnumMap<EshopUuid, ScheduledExecutorService>(EshopUuid::class.java)
     val htmlParserExecutor: ExecutorService = createInternalThreadExecutor("add-html-parser", 10)
+    val eshopUuidParserExecutor: ExecutorService = createInternalThreadExecutor("add-eshop-uuid-parser", 5)
 
     companion object {
         private val LOG = LoggerFactory.getLogger(AddProductExecutors::class.java)!!
@@ -40,6 +41,7 @@ class AddProductExecutors {
         eshopDocumentExecutor.values.forEach {
             it.shutdownNow()
         }
+        eshopUuidParserExecutor.shutdownNow()
         LOG.debug("shutting down of all executors completed")
     }
 
