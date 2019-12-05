@@ -34,8 +34,7 @@ class NewKeyWordEvent_2_Handler(prcoObservable: PrcoObservable,
      * searchKeyword -> searchKeywordRL
      */
     private fun handle(event: NewKeywordEvent) {
-        LOG.trace("handle ${event.javaClass.simpleName}")
-
+        LOG.trace("handle $event")
 
         buildSearchUrlForKeyword(event.eshopUuid, event.searchKeyword)
                 .handle { searchUrl, exception ->

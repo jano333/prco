@@ -62,7 +62,16 @@ data class SearchPageDocumentEvent(val searchDocument: Document,
                                    val pageNumber: Int,
                                    val eshopUuid: EshopUuid,
                                    val searchKeyWord: String,
-                                   val searchUrl: String) : CoreEvent()
+                                   val searchUrl: String) : CoreEvent(){
+    override fun toString(): String {
+        return "SearchPageDocumentEvent(" +
+                    "searchDocument=${searchDocument.location()}, " +
+                    "pageNumber=$pageNumber, " +
+                    "eshopUuid=$eshopUuid, " +
+                    "searchKeyWord='$searchKeyWord', " +
+                    "searchUrl='$searchUrl')"
+    }
+}
 
 data class ParseCountOfPagesErrorEvent(override val event: SearchPageDocumentEvent,
                                        override val error: Throwable) : CoreEvent(), BasicErrorEvent

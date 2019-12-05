@@ -29,7 +29,7 @@ class SearchPageDocumentEvent_4_Handler(prcoObservable: PrcoObservable,
      * 4.b Document -> pageProductURLs[]
      */
     private fun handle(event: SearchPageDocumentEvent) {
-        LOG.trace("handle ${event.javaClass.simpleName}")
+        LOG.trace("handle $event")
 
         val currentPageNumber = event.pageNumber
 

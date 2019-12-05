@@ -13,14 +13,14 @@ SearchPageDocumentEvent =?> CountOfPagesEvent if( pageNumber is 1)
                         =# ParseProductListURLsErrorEvent
 
 NewProductEshopUrlsEvent => NewProductUrlWithEshopEvent
-                    =# FilterDuplicityErrorEvent
-                    =# FilterNotExistingErrorEvent
+                         =# FilterDuplicityErrorEvent
+                         =# FilterNotExistingErrorEvent
 
 CountOfPagesEvent => [*]BuildNextSearchPageUrlEvent
                   =# nothing
 
 NewProductUrlWithEshopEvent => NewProductDocumentEvent
-                   =# RetrieveDocumentForUrlErrorEvent
+                            =# RetrieveDocumentForUrlErrorEvent
 
 BuildNextSearchPageUrlEvent => SearchKeywordUrlEvent
                             =# BuildNextPageSearchUrlErrorEvent
@@ -36,4 +36,5 @@ NewProductUrlsEvent => NewProductUrlEvent
                     =# FilterNotExistingProductErrorEvent
 
 NewProductUrlEvent => NewProductUrlWithEshopEvent
-                   =# TODO
+                   =# ParseEshopUuidErrorEvent
+**************************************************************************************

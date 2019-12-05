@@ -30,7 +30,7 @@ class SearchKeywordUrlEvent_3_Handler(prcoObservable: PrcoObservable,
      * searchKeywordURL -> Document
      */
     private fun handle(event: SearchKeywordUrlEvent) {
-        LOG.trace("handle ${event.javaClass.simpleName}")
+        LOG.trace("handle $event")
 
         documentHelper.retrieveDocumentForUrl(event.searchUrl, event.eshopUuid)
                 .handle { document, exception ->

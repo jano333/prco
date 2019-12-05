@@ -2,7 +2,6 @@ package sk.hudak.prco.console
 
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.api.SearchKeyWordId
 import sk.hudak.prco.api.Unit
 import sk.hudak.prco.dto.GroupCreateDto
 import sk.hudak.prco.dto.GroupProductKeywordsCreateDto
@@ -34,9 +33,9 @@ class PrcoConsole(val internalTxService: InternalTxService,
 //        addImplNg.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
 //        addEe.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, SearchKeyWordId.PAMPERS_ID)
 
-        addEe.addNewProductsByKeywordForAllEshops(SearchKeyWordId.PAMPERS_ID)
+//        addEe.addNewProductsByKeywordForAllEshops(SearchKeyWordId.PAMPERS_ID)
 
-
+            addEe.addNewProductsByConfiguredKeywordsForAllEshops()
 
 //        addImpl.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
         //Pampers Pure Value Pack S5 (11+kg) 24ks Junior
