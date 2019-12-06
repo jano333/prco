@@ -16,20 +16,24 @@ abstract class BasicHandler(val prcoObservable: PrcoObservable)
 
 }
 
-class EshopLogSupplier<T>(val eshopUuid: EshopUuid, private val original: Supplier<T>) : Supplier<T> {
+class EshopLogSupplier<T>(val eshopUuid: EshopUuid, private val identifier: String, private val original: Supplier<T>) : Supplier<T> {
     override fun get(): T {
         MDC.put("eshop", eshopUuid.toString())
+        MDC.put("identifier", identifier)
         val result = original.get()
         MDC.remove("eshop")
+        MDC.remove("identifier")
         return result
     }
 }
 
-class NoEshopLogSupplier<T>(private val original: Supplier<T>) : Supplier<T> {
+class NoEshopLogSupplier<T>(private val identifier: String, private val original: Supplier<T>) : Supplier<T> {
     override fun get(): T {
         MDC.put("eshop", "not-defined")
+        MDC.put("identifier", identifier)
         val result = original.get()
         MDC.remove("eshop")
+        MDC.remove("identifier")
         return result
     }
 }

@@ -38,22 +38,22 @@ class NewEshopKeywordIdEvent_1_Handler(prcoObservable: PrcoObservable,
 
         // kontrola ci dane klucove slovo podporovane eshopom
         if (!event.eshopUuid.config.supportedSearchKeywordIds.contains(event.searchKeywordId)) {
-            LOG.warn("searchKeyWordId ${event.searchKeywordId} is not supported for eshop $event.eshopUuid")
+            LOG.warn("searchKeyWordId ${event.searchKeywordId} is not supported for eshop ${event.eshopUuid}")
             return
         }
 
-        retrieveKeywordBaseOnKeywordId(event.eshopUuid, event.searchKeywordId)
+        retrieveKeywordBaseOnKeywordId(event.eshopUuid, event.searchKeywordId, event.identifier)
                 .handle { keyword, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(NewKeywordEvent(keyword, event.eshopUuid, event.searchKeywordId))
+                        prcoObservable.notify(NewKeywordEvent(keyword, event.eshopUuid, event.searchKeywordId, event.identifier))
                     } else {
                         prcoObservable.notify(RetrieveKeywordBaseOnKeywordIdErrorEvent(event, exception))
                     }
                 }
     }
 
-    private fun retrieveKeywordBaseOnKeywordId(eshopUuid: EshopUuid, searchKeywordId: Long): CompletableFuture<String> {
-        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid,
+    private fun retrieveKeywordBaseOnKeywordId(eshopUuid: EshopUuid, searchKeywordId: Long, identifier: String): CompletableFuture<String> {
+        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid, identifier,
                 Supplier {
                     LOG.trace("retrieveKeywordBaseOnKeywordId")
                     internalTxService.getSearchKeywordById(searchKeywordId)
@@ -65,8 +65,12 @@ class NewEshopKeywordIdEvent_1_Handler(prcoObservable: PrcoObservable,
         when (event) {
             is NewEshopKeywordIdEvent -> addProductExecutors.handlerTaskExecutor.submit {
                 MDC.put("eshop", event.eshopUuid.toString())
+                MDC.put("identifier", event.identifier)
+
                 handle(event)
+
                 MDC.remove("eshop")
+                MDC.remove("identifier")
             }
         }
     }

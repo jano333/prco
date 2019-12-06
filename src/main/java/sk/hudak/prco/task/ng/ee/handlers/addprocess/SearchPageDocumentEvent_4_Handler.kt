@@ -35,10 +35,10 @@ class SearchPageDocumentEvent_4_Handler(prcoObservable: PrcoObservable,
 
         if (currentPageNumber == 1) {
             // 4.a Document -> countOfPages
-            parseCountOfPages(event.eshopUuid, event.searchDocument, event.searchUrl)
+            parseCountOfPages(event.eshopUuid, event.searchDocument, event.searchUrl, event.identifier)
                     .handle { countOfPages, exception ->
                         if (exception == null) {
-                            prcoObservable.notify(CountOfPagesEvent(countOfPages, event.searchKeyWord, event.eshopUuid))
+                            prcoObservable.notify(CountOfPagesEvent(countOfPages, event.searchKeyWord, event.eshopUuid, event.identifier))
                         } else {
                             prcoObservable.notify(ParseCountOfPagesErrorEvent(event, exception))
                         }
@@ -46,18 +46,19 @@ class SearchPageDocumentEvent_4_Handler(prcoObservable: PrcoObservable,
         }
 
         // 4.b Document -> pageProductURLs[]
-        parseProductListURLs(event.eshopUuid, event.searchDocument, currentPageNumber)
+        parseProductListURLs(event.eshopUuid, event.searchDocument, currentPageNumber, event.identifier)
                 .handle { pageProductURLs, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(NewProductEshopUrlsEvent(pageProductURLs, event.searchDocument, currentPageNumber, event.eshopUuid, event.searchKeyWord, event.searchUrl))
+                        prcoObservable.notify(NewProductEshopUrlsEvent(pageProductURLs, event.searchDocument, currentPageNumber,
+                                event.eshopUuid, event.searchKeyWord, event.searchUrl, event.identifier))
                     } else {
                         prcoObservable.notify(ParseProductListURLsErrorEvent(event, currentPageNumber, exception))
                     }
                 }
     }
 
-    private fun parseCountOfPages(eshopUuid: EshopUuid, document: Document, searchUrl: String): CompletableFuture<Int> {
-        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid,
+    private fun parseCountOfPages(eshopUuid: EshopUuid, document: Document, searchUrl: String, identifier: String): CompletableFuture<Int> {
+        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid, identifier,
                 Supplier {
                     LOG.trace("parseCountOfPages")
                     val parserForEshop = eshopProductsParserHelper.findParserForEshop(eshopUuid)
@@ -69,8 +70,8 @@ class SearchPageDocumentEvent_4_Handler(prcoObservable: PrcoObservable,
     }
 
     // FIXME toto je spolocna metoda[TODO kde este] do neakej pomocnej...
-    private fun parseProductListURLs(eshopUuid: EshopUuid, document: Document, currentPageNumber: Int): CompletableFuture<List<String>> {
-        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid,
+    private fun parseProductListURLs(eshopUuid: EshopUuid, document: Document, currentPageNumber: Int, identifier: String): CompletableFuture<List<String>> {
+        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid, identifier,
                 Supplier {
                     LOG.trace("parseProductListURLs")
                     val parserForEshop = eshopProductsParserHelper.findParserForEshop(eshopUuid)
@@ -85,8 +86,10 @@ class SearchPageDocumentEvent_4_Handler(prcoObservable: PrcoObservable,
         when (event) {
             is SearchPageDocumentEvent -> addProductExecutors.handlerTaskExecutor.submit {
                 MDC.put("eshop", event.eshopUuid.toString())
+                MDC.put("identifier", event.identifier)
                 handle(event)
                 MDC.remove("eshop")
+                MDC.remove("identifier")
             }
         }
     }

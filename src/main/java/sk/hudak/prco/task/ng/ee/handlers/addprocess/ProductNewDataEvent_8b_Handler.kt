@@ -31,9 +31,9 @@ class ProductNewDataEvent_8b_Handler(prcoObservable: PrcoObservable,
     }
 
     private fun handle(event: ProductNewDataEvent) {
-        LOG.trace("handle ${event.javaClass.simpleName}")
+        LOG.trace("handle $event")
 
-        saveProductNewData(event.productNewData)
+        saveProductNewData(event.productNewData, event.identifier)
                 .handle { newProductId, exception ->
                     if (exception == null) {
                         LOG.debug("new product add with id $newProductId")
@@ -43,8 +43,8 @@ class ProductNewDataEvent_8b_Handler(prcoObservable: PrcoObservable,
                 }
     }
 
-    private fun saveProductNewData(productNewData: ProductNewData): CompletableFuture<Long> {
-        return CompletableFuture.supplyAsync(EshopLogSupplier(productNewData.eshopUuid,
+    private fun saveProductNewData(productNewData: ProductNewData, identifier: String): CompletableFuture<Long> {
+        return CompletableFuture.supplyAsync(EshopLogSupplier(productNewData.eshopUuid, identifier,
                 Supplier {
                     LOG.trace("saveProductNewData")
                     if (null == productNewData.name) {
@@ -63,8 +63,10 @@ class ProductNewDataEvent_8b_Handler(prcoObservable: PrcoObservable,
         when (event) {
             is ProductNewDataEvent -> addProductExecutors.handlerTaskExecutor.submit {
                 MDC.put("eshop", event.productNewData.eshopUuid.toString())
+                MDC.put("identifier", event.identifier)
                 handle(event)
                 MDC.remove("eshop")
+                MDC.remove("identifier")
             }
         }
     }

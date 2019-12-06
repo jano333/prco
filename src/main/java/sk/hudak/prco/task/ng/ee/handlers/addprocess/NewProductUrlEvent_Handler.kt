@@ -27,20 +27,20 @@ class NewProductUrlEvent_Handler(prcoObservable: PrcoObservable,
     }
 
     private fun handle(event: NewProductUrlEvent) {
-        LOG.trace("handle ${event.javaClass.simpleName}")
+        LOG.trace("handle $event")
 
-        parseEshopUuid(event.productUrl)
+        parseEshopUuid(event.productUrl, event.identifier)
                 .handle { eshopUuid, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(NewProductUrlWithEshopEvent(event.productUrl, eshopUuid))
+                        prcoObservable.notify(NewProductUrlWithEshopEvent(event.productUrl, eshopUuid, event.identifier))
                     } else {
                         prcoObservable.notify(ParseEshopUuidErrorEvent(event, exception))
                     }
                 }
     }
 
-    private fun parseEshopUuid(productUrl: String): CompletableFuture<EshopUuid> {
-        return CompletableFuture.supplyAsync(NoEshopLogSupplier(
+    private fun parseEshopUuid(productUrl: String, identifier: String): CompletableFuture<EshopUuid> {
+        return CompletableFuture.supplyAsync(NoEshopLogSupplier(identifier,
                 Supplier {
                     eshopUuidParser.parseEshopUuid(productUrl)
                 }),
@@ -51,8 +51,10 @@ class NewProductUrlEvent_Handler(prcoObservable: PrcoObservable,
         when (event) {
             is NewProductUrlEvent -> addProductExecutors.handlerTaskExecutor.submit {
                 MDC.put("eshop", "not-defined")
+                MDC.put("identifier", event.identifier)
                 handle(event)
                 MDC.remove("eshop")
+                MDC.remove("identifier")
             }
         }
     }

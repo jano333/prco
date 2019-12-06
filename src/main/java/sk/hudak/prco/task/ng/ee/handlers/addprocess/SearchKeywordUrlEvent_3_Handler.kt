@@ -32,10 +32,11 @@ class SearchKeywordUrlEvent_3_Handler(prcoObservable: PrcoObservable,
     private fun handle(event: SearchKeywordUrlEvent) {
         LOG.trace("handle $event")
 
-        documentHelper.retrieveDocumentForUrl(event.searchUrl, event.eshopUuid)
+        documentHelper.retrieveDocumentForUrl(event.searchUrl, event.eshopUuid, event.identifier)
                 .handle { document, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(SearchPageDocumentEvent(document, event.pageNumber, event.eshopUuid, event.searchKeyword, event.searchUrl))
+                        prcoObservable.notify(SearchPageDocumentEvent(document, event.pageNumber, event.eshopUuid,
+                                event.searchKeyword, event.searchUrl, event.identifier))
                     } else {
                         prcoObservable.notify(RetrieveDocumentForSearchUrlErrorEvent(event, exception))
                     }
@@ -46,8 +47,10 @@ class SearchKeywordUrlEvent_3_Handler(prcoObservable: PrcoObservable,
         when (event) {
             is SearchKeywordUrlEvent -> addProductExecutors.handlerTaskExecutor.submit {
                 MDC.put("eshop", event.eshopUuid.toString())
+                MDC.put("identifier", event.identifier.toString())
                 handle(event)
                 MDC.remove("eshop")
+                MDC.remove("identifier")
             }
         }
     }

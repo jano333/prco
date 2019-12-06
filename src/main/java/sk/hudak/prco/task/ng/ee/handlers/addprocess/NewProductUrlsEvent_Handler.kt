@@ -26,7 +26,8 @@ class NewProductUrlsEvent_Handler(prcoObservable: PrcoObservable,
     }
 
     private fun handle(event: NewProductUrlsEvent) {
-        LOG.trace("handle ${event.javaClass.simpleName}")
+        LOG.trace("handle $event")
+
         if (event.pageProductURLs.isEmpty()) {
             LOG.info("count of products URL iz zero")
             return
@@ -34,29 +35,32 @@ class NewProductUrlsEvent_Handler(prcoObservable: PrcoObservable,
         LOG.debug("count of products URL ${event.pageProductURLs.size}")
 
         // filter only non existing
-        filterNotExistingAsync(event.pageProductURLs)
+        filterNotExistingAsync(event.pageProductURLs, event.identifier)
                 .handle { notExistingProducts, exception ->
                     if (exception == null) {
-                        handleFilterNotExistingResult(notExistingProducts)
+                        handleFilterNotExistingResult(notExistingProducts, event.identifier)
                     } else {
                         prcoObservable.notify(FilterNotExistingProductErrorEvent(event, exception))
                     }
                 }
     }
 
-    private fun handleFilterNotExistingResult(notExistingProducts: List<String>) {
+    private fun handleFilterNotExistingResult(notExistingProducts: List<String>, identifier: String) {
         if (notExistingProducts.isEmpty()) {
             LOG.info("count of non existing products URL is zero")
             return
         }
         LOG.info("count of non existing products URL  ${notExistingProducts.size}")
+        var index = 1
         notExistingProducts.forEach {
-            prcoObservable.notify(NewProductUrlEvent(it))
+            val newIdentifier = identifier + "_$index"
+            index++
+            prcoObservable.notify(NewProductUrlEvent(it, newIdentifier))
         }
     }
 
-    private fun filterNotExistingAsync(productsUrl: Set<String>): CompletableFuture<List<String>> {
-        return CompletableFuture.supplyAsync(NoEshopLogSupplier(
+    private fun filterNotExistingAsync(productsUrl: Set<String>, identifier: String): CompletableFuture<List<String>> {
+        return CompletableFuture.supplyAsync(NoEshopLogSupplier(identifier,
                 Supplier {
                     val notExistingProducts = productsUrl.filter {
                         val exist = internalTxService.existProductWithURL(it)
@@ -74,8 +78,10 @@ class NewProductUrlsEvent_Handler(prcoObservable: PrcoObservable,
         when (event) {
             is NewProductUrlsEvent -> addProductExecutors.handlerTaskExecutor.submit {
                 MDC.put("eshop", "not-defined")
+                MDC.put("identifier", event.identifier)
                 handle(event)
                 MDC.remove("eshop")
+                MDC.remove("identifier")
             }
         }
     }

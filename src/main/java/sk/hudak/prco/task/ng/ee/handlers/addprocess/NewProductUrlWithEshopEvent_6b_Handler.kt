@@ -26,10 +26,10 @@ class NewProductUrlWithEshopEvent_6b_Handler(prcoObservable: PrcoObservable,
         LOG.trace("handle ${event.javaClass.simpleName}")
 
         // productURL -> Document
-        documentHelper.retrieveDocumentForUrl(event.newProductUrl, event.eshopUuid)
+        documentHelper.retrieveDocumentForUrl(event.newProductUrl, event.eshopUuid, event.identifier)
                 .handle { document, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(NewProductDocumentEvent(document, event.newProductUrl, event.eshopUuid))
+                        prcoObservable.notify(NewProductDocumentEvent(document, event.newProductUrl, event.eshopUuid, event.identifier))
                     } else {
                         prcoObservable.notify(RetrieveDocumentForUrlErrorEvent(event, exception))
                     }
@@ -40,8 +40,10 @@ class NewProductUrlWithEshopEvent_6b_Handler(prcoObservable: PrcoObservable,
         when (event) {
             is NewProductUrlWithEshopEvent -> addProductExecutors.handlerTaskExecutor.submit {
                 MDC.put("eshop", event.eshopUuid.toString())
+                MDC.put("identifier", event.identifier)
                 handle(event)
                 MDC.remove("eshop")
+                MDC.remove("identifier")
             }
         }
     }

@@ -29,20 +29,20 @@ class NewProductDocumentEvent_7b_Handler(prcoObservable: PrcoObservable,
     }
 
     private fun handle(event: NewProductDocumentEvent) {
-        LOG.trace("handle ${event.javaClass.simpleName}")
+        LOG.trace("handle $event")
 
-        parseProductNewData(event.document, event.newProductUrl, event.eshopUuid)
+        parseProductNewData(event.document, event.newProductUrl, event.eshopUuid, event.identifier)
                 .handle { productNewData, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(ProductNewDataEvent(productNewData))
+                        prcoObservable.notify(ProductNewDataEvent(productNewData,event.identifier))
                     } else {
                         prcoObservable.notify(ParseProductNewDataErrorEvent(event, exception))
                     }
                 }
     }
 
-    private fun parseProductNewData(document: Document, newProductUrl: String, eshopUuid: EshopUuid): CompletableFuture<ProductNewData> {
-        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid,
+    private fun parseProductNewData(document: Document, newProductUrl: String, eshopUuid: EshopUuid, identifier: String): CompletableFuture<ProductNewData> {
+        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid, identifier,
                 Supplier {
                     LOG.trace("parseProductNewData")
                     eshopProductsParserHelper.findParserForEshop(eshopUuid).parseProductNewData(document, newProductUrl)
@@ -54,8 +54,10 @@ class NewProductDocumentEvent_7b_Handler(prcoObservable: PrcoObservable,
         when (event) {
             is NewProductDocumentEvent -> addProductExecutors.handlerTaskExecutor.submit {
                 MDC.put("eshop", event.eshopUuid.toString())
+                MDC.put("identifier", event.identifier)
                 handle(event)
                 MDC.remove("eshop")
+                MDC.remove("identifier")
 
             }
         }

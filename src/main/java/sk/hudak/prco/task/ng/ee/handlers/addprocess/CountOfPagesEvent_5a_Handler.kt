@@ -21,14 +21,18 @@ class CountOfPagesEvent_5a_Handler(prcoObservable: PrcoObservable,
     }
 
     private fun handle(event: CountOfPagesEvent) {
-        LOG.trace("handle ${event.javaClass.simpleName}")
-        LOG.debug(event.countOfPages.toString())
+        LOG.trace("handle $event")
+
         if (event.countOfPages <= 1) {
+            //TODO log ze je to tak?
             return
         }
+        var index = 1
         for (currentPageNumber in 2..event.countOfPages) {
+            val identifier = event.identifier + "_$index"
+            index++
             // currentPageNumber -> searchUrlWithPageNumber
-            prcoObservable.notify(BuildNextSearchPageUrlEvent(currentPageNumber, event.searchKeyWord, event.eshopUuid))
+            prcoObservable.notify(BuildNextSearchPageUrlEvent(currentPageNumber, event.searchKeyWord, event.eshopUuid, identifier))
         }
     }
 
@@ -36,8 +40,10 @@ class CountOfPagesEvent_5a_Handler(prcoObservable: PrcoObservable,
         when (event) {
             is CountOfPagesEvent -> addProductExecutors.handlerTaskExecutor.submit {
                 MDC.put("eshop", event.eshopUuid.toString())
+                MDC.put("identifier", event.identifier)
                 handle(event)
                 MDC.remove("eshop")
+                MDC.remove("identifier")
             }
         }
     }

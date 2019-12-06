@@ -16,11 +16,11 @@ class AddProductImpl(private val prcoObservable: PrcoObservable) {
     fun addNewProductsByConfiguredKeywordsForAllEshops() {
         LOG.trace(">> addNewProductsByConfiguredKeywordsForAllEshops")
 
-        EshopUuid.values().forEach { eshopUuid ->
+        EnumSet.of(EshopUuid.FEEDO).forEach { eshopUuid ->
+//        EshopUuid.values().forEach { eshopUuid ->
             eshopUuid.config.supportedSearchKeywordIds.forEach { searchKeyWordId ->
                 prcoObservable.notify(NewEshopKeywordIdEvent(eshopUuid, searchKeyWordId))
             }
-            return
         }
 
         LOG.trace("<< addNewProductsByConfiguredKeywordsForAllEshops")

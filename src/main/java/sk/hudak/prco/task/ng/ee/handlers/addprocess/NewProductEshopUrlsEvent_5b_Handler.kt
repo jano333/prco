@@ -26,10 +26,10 @@ class NewProductEshopUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
     }
 
     private fun handle(event: NewProductEshopUrlsEvent) {
-        LOG.trace("handle ${event.javaClass.simpleName}")
+        LOG.trace("handle $event")
 
         LOG.debug("count of products URL before duplicity check  ${event.pageProductURLs.size}")
-        filterDuplicityAsync(event.eshopUuid, event.searchKeyWord, event.pageProductURLs)
+        filterDuplicityAsync(event.eshopUuid, event.searchKeyWord, event.pageProductURLs, event.identifier)
                 .handle { pageProductURLsAfterDuplicity, exception ->
                     if (exception == null) {
                         handleDuplicityCheckResult(pageProductURLsAfterDuplicity, event)
@@ -39,32 +39,33 @@ class NewProductEshopUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
                 }
     }
 
-    private fun filterDuplicityAsync(eshopUuid: EshopUuid, searchKeyWord: String, urlList: List<String>): CompletableFuture<List<String>> {
-        //TODO eshop log suplier
-        return CompletableFuture.supplyAsync {
-            // key: productUrl, value: count of duplicity
-            var result = mutableMapOf<String, Int>()
-            urlList.forEach {
-                var entry = result[it]
-                if (entry == null) {
-                    result[it] = 1
-                } else {
-                    entry++
-                    result[it] = entry
-                }
-            }
+    private fun filterDuplicityAsync(eshopUuid: EshopUuid, searchKeyWord: String, urlList: List<String>, identifier: String): CompletableFuture<List<String>> {
+        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid, identifier,
+                Supplier {
+                    // key: productUrl, value: count of duplicity
+                    var result = mutableMapOf<String, Int>()
+                    urlList.forEach {
+                        var entry = result[it]
+                        if (entry == null) {
+                            result[it] = 1
+                        } else {
+                            entry++
+                            result[it] = entry
+                        }
+                    }
 
-            result.forEach { (key, value) ->
-                if (value != 1) {
-                    LOG.error("product with URL $key is more than one, count: $value")
-                    //FIXME prerobit na event
-                    errorLogManager.logErrorDuplicityDuringfindinUrlOfProducts(eshopUuid, searchKeyWord, key)
-                }
-            }
+                    result.forEach { (key, value) ->
+                        if (value != 1) {
+                            LOG.error("product with URL $key is more than one, count: $value")
+                            //FIXME prerobit na event
+                            errorLogManager.logErrorDuplicityDuringfindinUrlOfProducts(eshopUuid, searchKeyWord, key)
+                        }
+                    }
 
-            val toList = result.keys.toList()
-            toList
-        }
+                    val toList = result.keys.toList()
+                    toList
+                }))
+        //TODO nechyba tu executor ???? preverit preco som nedal...
     }
 
     private fun handleDuplicityCheckResult(pageProductURLsAfterDuplicity: List<String>, event: NewProductEshopUrlsEvent) {
@@ -75,7 +76,7 @@ class NewProductEshopUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
         LOG.debug("count of products URL after duplicity check ${pageProductURLsAfterDuplicity.size}")
 
         // filter only non existing
-        filterNotExistingAsync(event.eshopUuid, pageProductURLsAfterDuplicity)
+        filterNotExistingAsync(event.eshopUuid, pageProductURLsAfterDuplicity, event.identifier)
                 .handle { notExistingProducts, exception ->
                     if (exception == null) {
                         handleFilterNotExistingResult(notExistingProducts, event)
@@ -85,8 +86,8 @@ class NewProductEshopUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
                 }
     }
 
-    private fun filterNotExistingAsync(eshopUuid: EshopUuid, productsUrl: List<String>): CompletableFuture<List<String>> {
-        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid,
+    private fun filterNotExistingAsync(eshopUuid: EshopUuid, productsUrl: List<String>, identifier: String): CompletableFuture<List<String>> {
+        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid, identifier,
                 Supplier {
                     val notExistingProducts = productsUrl.filter {
                         val exist = internalTxService.existProductWithURL(it)
@@ -106,8 +107,11 @@ class NewProductEshopUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
             return
         }
         LOG.info("count of non existing products URL  ${notExistingProducts.size}")
+        var index = 1
         notExistingProducts.forEach {
-            prcoObservable.notify(NewProductUrlWithEshopEvent(it, event.eshopUuid))
+            val identifier = event.identifier + "_$index"
+            index++
+            prcoObservable.notify(NewProductUrlWithEshopEvent(it, event.eshopUuid, identifier))
         }
     }
 
@@ -115,8 +119,10 @@ class NewProductEshopUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
         when (event) {
             is NewProductEshopUrlsEvent -> addProductExecutors.handlerTaskExecutor.submit {
                 MDC.put("eshop", event.eshopUuid.toString())
+                MDC.put("identifier", event.identifier)
                 handle(event)
                 MDC.remove("eshop")
+                MDC.remove("identifier")
             }
         }
     }

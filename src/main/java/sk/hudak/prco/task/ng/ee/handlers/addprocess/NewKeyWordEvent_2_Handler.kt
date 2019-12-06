@@ -36,18 +36,18 @@ class NewKeyWordEvent_2_Handler(prcoObservable: PrcoObservable,
     private fun handle(event: NewKeywordEvent) {
         LOG.trace("handle $event")
 
-        buildSearchUrlForKeyword(event.eshopUuid, event.searchKeyword)
+        buildSearchUrlForKeyword(event.eshopUuid, event.searchKeyword, event.identifier)
                 .handle { searchUrl, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(SearchKeywordUrlEvent(searchUrl, 1, event.searchKeyword, event.eshopUuid))
+                        prcoObservable.notify(SearchKeywordUrlEvent(searchUrl, 1, event.searchKeyword, event.eshopUuid, event.identifier))
                     } else {
                         prcoObservable.notify(BuildSearchUrlForKeywordErrorEvent(event, exception))
                     }
                 }
     }
 
-    private fun buildSearchUrlForKeyword(eshopUuid: EshopUuid, searchKeyword: String): CompletableFuture<String> {
-        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid,
+    private fun buildSearchUrlForKeyword(eshopUuid: EshopUuid, searchKeyword: String, identifier: String): CompletableFuture<String> {
+        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid, identifier,
                 Supplier {
                     LOG.trace("buildSearchUrlForKeyword")
                     val searchUrl = searchUrlBuilder.buildSearchUrl(eshopUuid, searchKeyword)
@@ -61,8 +61,11 @@ class NewKeyWordEvent_2_Handler(prcoObservable: PrcoObservable,
         when (event) {
             is NewKeywordEvent -> addProductExecutors.handlerTaskExecutor.submit {
                 MDC.put("eshop", event.eshopUuid.toString())
+                MDC.put("identifier", event.identifier)
+
                 handle(event)
                 MDC.remove("eshop")
+                MDC.remove("identifier")
             }
         }
     }

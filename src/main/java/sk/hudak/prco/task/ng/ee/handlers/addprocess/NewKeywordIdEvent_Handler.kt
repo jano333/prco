@@ -22,7 +22,7 @@ class NewKeywordIdEvent_Handler(prcoObservable: PrcoObservable,
     }
 
     private fun handle(event: NewKeywordIdEvent) {
-        LOG.trace("handle ${event.javaClass.simpleName}")
+        LOG.trace("handle $event")
 
         eshopProductsParserHelper.getRegisteredEshopWithParser().forEach {
             prcoObservable.notify(NewEshopKeywordIdEvent(it, event.searchKeyWordId))
@@ -31,7 +31,9 @@ class NewKeywordIdEvent_Handler(prcoObservable: PrcoObservable,
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is NewKeywordIdEvent -> addProductExecutors.handlerTaskExecutor.submit { handle(event) }
+            is NewKeywordIdEvent -> addProductExecutors.handlerTaskExecutor.submit {
+                handle(event)
+            }
         }
     }
 

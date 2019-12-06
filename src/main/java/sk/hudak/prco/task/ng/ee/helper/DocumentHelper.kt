@@ -17,8 +17,8 @@ class DocumentHelper(private val eshopProductsParserHelper: EshopProductsParserH
         private val LOG = LoggerFactory.getLogger(DocumentHelper::class.java)!!
     }
 
-    fun retrieveDocumentForUrl(productUrl: String, eshopUuid: EshopUuid): CompletableFuture<Document> {
-        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid,
+    fun retrieveDocumentForUrl(productUrl: String, eshopUuid: EshopUuid, identifier: String): CompletableFuture<Document> {
+        return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid, identifier,
                 Supplier {
                     LOG.trace("retrieveDocumentForUrl")
                     eshopProductsParserHelper.findParserForEshop(eshopUuid).retrieveDocument(productUrl)

@@ -17,6 +17,7 @@ import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.*
+import java.util.concurrent.locks.ReentrantLock
 import java.util.function.Consumer
 import java.util.function.Function
 import java.util.function.Supplier
@@ -266,14 +267,17 @@ class EshopScheduledExecutor(val eshopUuid: EshopUuid, threadFactory: ThreadFact
         val LOG = LoggerFactory.getLogger(EshopScheduledExecutor::class.java)!!
     }
 
-    private var myLock: Int = 0
+    private val myLock = ReentrantLock()
 
     private var lastRunDate: Date? = null
 
     override fun execute(command: Runnable) {
         var countOfSecond: Long? = null
 
-        synchronized(myLock) {
+        LOG.debug("-> requesting lock")
+        myLock.lock()
+        LOG.debug("<- received lock")
+        try {
             if (lastRunDate == null) {
                 // spusti to hned
                 LOG.debug("scheduling command for $eshopUuid to be run now")
@@ -292,12 +296,21 @@ class EshopScheduledExecutor(val eshopUuid: EshopUuid, threadFactory: ThreadFact
                 // nastavim novy cas...
                 lastRunDate = dateTimeToRun
             }
+        } finally {
+            LOG.debug("-> requesting unlock")
+            myLock.unlock()
+            LOG.debug("<- received unlock")
         }
+
         if (countOfSecond != null) {
+            LOG.debug("-> scheduling command")
             val schedule = super.schedule(command, countOfSecond!!, TimeUnit.SECONDS)
+            LOG.debug("<- scheduling command")
 
         } else {
+            LOG.debug("-> running command")
             super.execute(command)
+            LOG.debug("<- running command")
         }
     }
 
