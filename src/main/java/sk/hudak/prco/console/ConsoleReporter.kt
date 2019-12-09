@@ -35,7 +35,7 @@ class PrcoConsole(val internalTxService: InternalTxService,
 
 //        addEe.addNewProductsByKeywordForAllEshops(SearchKeyWordId.PAMPERS_ID)
 
-            addEe.addNewProductsByConfiguredKeywordsForAllEshops()
+//            addEe.addNewProductsByConfiguredKeywordsForAllEshops()
 
 //        addImpl.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
         //Pampers Pure Value Pack S5 (11+kg) 24ks Junior

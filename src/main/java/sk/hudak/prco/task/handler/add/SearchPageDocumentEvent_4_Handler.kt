@@ -38,7 +38,7 @@ class SearchPageDocumentEvent_4_Handler(prcoObservable: PrcoObservable,
             parseCountOfPages(event.eshopUuid, event.searchDocument, event.searchUrl, event.identifier)
                     .handle { countOfPages, exception ->
                         if (exception == null) {
-                            prcoObservable.notify(CountOfPagesEvent(countOfPages, event.searchKeyWord, event.eshopUuid, event.identifier))
+                            prcoObservable.notify(CountOfPagesEvent(countOfPages, event.searchUrl, event.searchKeyWord, event.eshopUuid, event.identifier))
                         } else {
                             prcoObservable.notify(ParseCountOfPagesErrorEvent(event, exception))
                         }

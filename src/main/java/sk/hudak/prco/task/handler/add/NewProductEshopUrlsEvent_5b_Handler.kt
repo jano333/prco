@@ -101,6 +101,7 @@ class NewProductEshopUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
                 addProductExecutors.internalServiceExecutor)
     }
 
+    //FIXME urobit danu metodu ako osobitny handler
     private fun handleFilterNotExistingResult(notExistingProducts: List<String>, event: NewProductEshopUrlsEvent) {
         if (notExistingProducts.isEmpty()) {
             LOG.info("count of non existing products URL is zero")

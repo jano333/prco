@@ -1,3 +1,35 @@
+2019-12-09 15:04:32,771 DEBUG [add-internal-service-pool-7-thread-14] s.h.p.s.i.ErrorServiceImpl[ErrorServiceImpl.kt:103][BRENDON-6857cd1a-a35e-4aa2-82fa-38251823eba3_2_1] create entity ErrorEntity with id 7273 msg: sk.hudak.prco.exception.PrcoRuntimeException: New product https://www.brendon.sk/pampers-premium-care-smallpack-s2-23-pcs-jednorazove-plienky-12386002 has none name
+2019-12-09 15:04:32,772 WARN [add-internal-service-pool-7-thread-14] o.h.e.j.s.SqlExceptionHelper[SqlExceptionHelper.java:129][BRENDON-6857cd1a-a35e-4aa2-82fa-38251823eba3_2_1] SQL Error: 22001, SQLState: 22001
+2019-12-09 15:04:32,772 ERROR [add-internal-service-pool-7-thread-14] o.h.e.j.s.SqlExceptionHelper[SqlExceptionHelper.java:131][BRENDON-6857cd1a-a35e-4aa2-82fa-38251823eba3_2_1] Value too long for column "ADDITIONAL_INFO VARCHAR(255)": "'ProductNewDataEvent(productNewData=ProductNewData(eshopUuid=BRENDON, url=https://www.brendon.sk/pampers-premium-care-smallpack-... (430)"; SQL statement:
+insert into error (created, updated, additional_info, error_type, eshop_uuid, full_msg, message, status_code, url, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) [22001-196]
+2019-12-09 15:04:32,772 ERROR [add-internal-service-pool-7-thread-14] o.h.i.ExceptionMapperStandardImpl[ExceptionMapperStandardImpl.java:39][BRENDON-6857cd1a-a35e-4aa2-82fa-38251823eba3_2_1] HHH000346: Error during managed flush [org.hibernate.exception.DataException: could not execute statement]
+-----------------------
+2019-12-09 14:25:40,815 ERROR [PERINBABA-add-process-thread] s.h.p.t.h.a.AddProductErrorHandler[AddProductErrorHandler.kt:68][PERINBABA-b84d4dbc-d1d0-4414-8451-aa159021c2d1] sk.hudak.prco.exception.CoreParserException: error creating document for url 'http://www.perinbaba.sk/catalogsearch/result/?limit=48&q=pampers':
+java.util.concurrent.CompletionException: sk.hudak.prco.exception.CoreParserException: error creating document for url 'http://www.perinbaba.sk/catalogsearch/result/?limit=48&q=pampers':
+	at java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:273)
+	at java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:280)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1592)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: sk.hudak.prco.exception.CoreParserException: error creating document for url 'http://www.perinbaba.sk/catalogsearch/result/?limit=48&q=pampers':
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.convertToParserException(JSoupProductParser.kt:292)
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.retrieveDocument(JSoupProductParser.kt:273)
+	at sk.hudak.prco.task.add.DocumentHelper$retrieveDocumentForUrl$1.get(DocumentHelper.kt:24)
+	at sk.hudak.prco.task.add.DocumentHelper$retrieveDocumentForUrl$1.get(DocumentHelper.kt:13)
+	at sk.hudak.prco.task.handler.EshopLogSupplier.get(BasicHandler.kt:23)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1590)
+	... 7 common frames omitted
+Caused by: javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+-------------------
+chyba transactionId
+2019-12-09 13:11:55,505 DEBUG [add-handler-task-pool-5-thread-1] s.h.p.t.h.a.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:31][FARBY-00b91dfe-8539-4b30-9e6f-1e4a58d2e9f2] count of products URL before duplicity check  13
+2019-12-09 13:11:55,505 DEBUG [ForkJoinPool.commonPool-worker-1] s.h.p.t.h.a.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:76][-] count of products URL after duplicity check 13
 -------------------
 vsetky maju problem
 Caused by: sk.hudak.prco.exception.PrcoRuntimeException: New product https://www.brendon.sk/pampers-premium-care-smallpack-s2-23-pcs-jednorazove-plienky-12386002 has none name

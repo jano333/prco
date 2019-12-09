@@ -19,13 +19,13 @@ class AddProductImpl(private val prcoObservable: PrcoObservable) {
     fun addNewProductsByConfiguredKeywordsForAllEshops() {
         LOG.trace(">> addNewProductsByConfiguredKeywordsForAllEshops")
 
-        EnumSet.of(EshopUuid.DR_MAX, EshopUuid.DROGERIA_VMD,EshopUuid.DROGERKA)
+//        EnumSet.of(EshopUuid.TESCO)
+        EshopUuid.values()
                 .forEach { eshopUuid ->
-            //        EshopUuid.values().forEach { eshopUuid ->
-            eshopUuid.config.supportedSearchKeywordIds.forEach { searchKeyWordId ->
-                prcoObservable.notify(NewEshopKeywordIdEvent(eshopUuid, searchKeyWordId))
-            }
-        }
+                    eshopUuid.config.supportedSearchKeywordIds.forEach { searchKeyWordId ->
+                        prcoObservable.notify(NewEshopKeywordIdEvent(eshopUuid, searchKeyWordId))
+                    }
+                }
 
         LOG.trace("<< addNewProductsByConfiguredKeywordsForAllEshops")
     }

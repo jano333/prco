@@ -1,0 +1,1 @@
+alter table ERROR alter column ADDITIONAL_INFO VARCHAR(1000);

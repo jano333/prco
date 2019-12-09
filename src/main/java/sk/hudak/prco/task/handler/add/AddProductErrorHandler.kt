@@ -1,16 +1,22 @@
 package sk.hudak.prco.task.handler.add
 
+import org.apache.commons.lang3.exception.ExceptionUtils
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import sk.hudak.prco.api.ErrorType
+import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.dto.ErrorCreateDto
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.events.PrcoObserver
+import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.add.*
 import java.util.*
 
 @Component
 class AddProductErrorHandler(prcoObservable: PrcoObservable,
-                             private val addProductExecutors: AddProductExecutors)
+                             private val addProductExecutors: AddProductExecutors,
+                             private val internalTxService: InternalTxService)
     : PrcoObserver {
 
     companion object {
@@ -27,12 +33,12 @@ class AddProductErrorHandler(prcoObservable: PrcoObservable,
             return
         }
         when (event) {
-            is RetrieveKeywordBaseOnKeywordIdErrorEvent -> handle_NewKeyWordIdErrorEvent(event)
-            is BuildSearchUrlForKeywordErrorEvent -> handle_NewKeyWordErrorEvent(event)
-            is RetrieveDocumentForSearchUrlErrorEvent -> handle_NewKeyWordUrlErrorEvent(event)
-            is ParseCountOfPagesErrorEvent -> handle_FirstDocumentCountOfPageErrorEvent(event)
-            is ParseProductListURLsErrorEvent -> handle_FirstDocumentPageProductUrlsErrorEvent(event)
-            is FilterDuplicityErrorEvent -> handle_DuplicityCheckErrorEvent(event)
+            is RetrieveKeywordBaseOnKeywordIdErrorEvent -> handle_RetrieveKeywordBaseOnKeywordIdErrorEvent(event)
+            is BuildSearchUrlForKeywordErrorEvent -> handle_BuildSearchUrlForKeywordErrorEvent(event)
+            is RetrieveDocumentForSearchUrlErrorEvent -> handle_RetrieveDocumentForSearchUrlErrorEvent(event)
+            is ParseCountOfPagesErrorEvent -> handle_ParseCountOfPagesErrorEvent(event)
+            is ParseProductListURLsErrorEvent -> handle_ParseProductListURLsErrorEvent(event)
+            is FilterDuplicityErrorEvent -> handle_FilterDuplicityErrorEvent(event)
             is FilterNotExistingErrorEvent -> handle_FilterNotExistingErrorEvent(event)
             is RetrieveDocumentForUrlErrorEvent -> handle_RetrieveDocumentForUrlErrorEvent(event)
             is ParseProductNewDataErrorEvent -> handle_ParseProductNewDataErrorEvent(event)
@@ -49,15 +55,22 @@ class AddProductErrorHandler(prcoObservable: PrcoObservable,
 
     private fun handle_ParseEshopUuidErrorEvent(errorEvent: ParseEshopUuidErrorEvent) {
         logErrorEvent(errorEvent)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        internalTxService.createError(ErrorCreateDto(
+                //TODO eshop je poviiny ale tu ho nemame...
+                EshopUuid.OBI,
+                ErrorType.UNKNOWN, null,
+                errorEvent.error.message,
+                ExceptionUtils.getStackTrace(errorEvent.error),
+                errorEvent.event.productUrl,
+                errorEvent.event.toString()))
     }
 
-    private fun handle_NewKeyWordIdErrorEvent(errorEvent: RetrieveKeywordBaseOnKeywordIdErrorEvent) {
+    private fun handle_RetrieveKeywordBaseOnKeywordIdErrorEvent(errorEvent: RetrieveKeywordBaseOnKeywordIdErrorEvent) {
         logErrorEvent(errorEvent)
         addProductExecutors.shutdownNowAllExecutors()
     }
 
-    private fun handle_NewKeyWordErrorEvent(errorEvent: BuildSearchUrlForKeywordErrorEvent) {
+    private fun handle_BuildSearchUrlForKeywordErrorEvent(errorEvent: BuildSearchUrlForKeywordErrorEvent) {
         logErrorEvent(errorEvent)
         addProductExecutors.shutdownNowAllExecutors()
     }
@@ -70,52 +83,115 @@ class AddProductErrorHandler(prcoObservable: PrcoObservable,
 
     private fun handle_FilterNotExistingProductErrorEvent(errorEvent: FilterNotExistingProductErrorEvent) {
         logErrorEvent(errorEvent)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        internalTxService.createError(ErrorCreateDto(
+                //TODO eshop je poviiny ale tu ho nemame...
+                EshopUuid.OBI,
+                ErrorType.UNKNOWN, null,
+                errorEvent.error.message,
+                ExceptionUtils.getStackTrace(errorEvent.error),
+                null,
+                errorEvent.event.toString()))
     }
 
     private fun handle_BuildNextPageSearchUrlErrorEvent(errorEvent: BuildNextPageSearchUrlErrorEvent) {
         logErrorEvent(errorEvent)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        internalTxService.createError(ErrorCreateDto(
+                errorEvent.event.eshopUuid,
+                ErrorType.UNKNOWN, null,
+                errorEvent.error.message,
+                ExceptionUtils.getStackTrace(errorEvent.error),
+                null,
+                errorEvent.event.toString()))
     }
 
-    private fun handle_NewKeyWordUrlErrorEvent(errorEvent: RetrieveDocumentForSearchUrlErrorEvent) {
+    private fun handle_RetrieveDocumentForSearchUrlErrorEvent(errorEvent: RetrieveDocumentForSearchUrlErrorEvent) {
         logErrorEvent(errorEvent)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        internalTxService.createError(ErrorCreateDto(
+                errorEvent.event.eshopUuid,
+                ErrorType.PARSING_PRODUCT_NEW_DATA, null,
+                errorEvent.error.message,
+                ExceptionUtils.getStackTrace(errorEvent.error),
+                errorEvent.event.searchUrl,
+                errorEvent.event.toString()))
     }
 
     private fun handle_SaveProductNewDataErrorEvent(errorEvent: SaveProductNewDataErrorEvent) {
         logErrorEvent(errorEvent)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        internalTxService.createError(ErrorCreateDto(
+                errorEvent.event.productNewData.eshopUuid,
+                ErrorType.UNKNOWN, null,
+                errorEvent.error.message,
+                ExceptionUtils.getStackTrace(errorEvent.error),
+                null,
+                errorEvent.event.toString()))
     }
 
     private fun handle_RetrieveDocumentForUrlErrorEvent(errorEvent: RetrieveDocumentForUrlErrorEvent) {
         logErrorEvent(errorEvent)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        internalTxService.createError(ErrorCreateDto(
+                errorEvent.event.eshopUuid,
+                ErrorType.UNKNOWN, null,
+                errorEvent.error.message,
+                ExceptionUtils.getStackTrace(errorEvent.error),
+                null,
+                errorEvent.event.toString()))
     }
 
     private fun handle_ParseProductNewDataErrorEvent(errorEvent: ParseProductNewDataErrorEvent) {
         logErrorEvent(errorEvent)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+        internalTxService.createError(ErrorCreateDto(
+                errorEvent.event.eshopUuid,
+                ErrorType.PARSING_PRODUCT_NEW_DATA, null,
+                errorEvent.error.message,
+                ExceptionUtils.getStackTrace(errorEvent.error),
+                errorEvent.event.newProductUrl,
+                errorEvent.event.toString()))
     }
 
     private fun handle_FilterNotExistingErrorEvent(errorEvent: FilterNotExistingErrorEvent) {
         logErrorEvent(errorEvent)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+        internalTxService.createError(ErrorCreateDto(
+                errorEvent.event.eshopUuid,
+                ErrorType.UNKNOWN, null,
+                errorEvent.error.message,
+                ExceptionUtils.getStackTrace(errorEvent.error),
+                null,
+                errorEvent.event.toString()))
     }
 
-    private fun handle_DuplicityCheckErrorEvent(errorEvent: FilterDuplicityErrorEvent) {
+    private fun handle_FilterDuplicityErrorEvent(errorEvent: FilterDuplicityErrorEvent) {
         logErrorEvent(errorEvent)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        internalTxService.createError(ErrorCreateDto(
+                errorEvent.event.eshopUuid,
+                ErrorType.UNKNOWN, null,
+                errorEvent.error.message,
+                ExceptionUtils.getStackTrace(errorEvent.error),
+                null,
+                errorEvent.event.toString()))
     }
 
-    private fun handle_FirstDocumentCountOfPageErrorEvent(errorEvent: ParseCountOfPagesErrorEvent) {
+    private fun handle_ParseCountOfPagesErrorEvent(errorEvent: ParseCountOfPagesErrorEvent) {
         logErrorEvent(errorEvent)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        internalTxService.createError(ErrorCreateDto(
+                errorEvent.event.eshopUuid,
+                ErrorType.UNKNOWN, null,
+                errorEvent.error.message,
+                ExceptionUtils.getStackTrace(errorEvent.error),
+                null,
+                errorEvent.event.toString()))
     }
 
-    private fun handle_FirstDocumentPageProductUrlsErrorEvent(errorEvent: ParseProductListURLsErrorEvent) {
+    private fun handle_ParseProductListURLsErrorEvent(errorEvent: ParseProductListURLsErrorEvent) {
         logErrorEvent(errorEvent)
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        internalTxService.createError(ErrorCreateDto(
+                errorEvent.event.eshopUuid,
+                ErrorType.UNKNOWN, null,
+                errorEvent.error.message,
+                ExceptionUtils.getStackTrace(errorEvent.error),
+                null,
+                errorEvent.event.toString()))
     }
 
 }

@@ -90,6 +90,7 @@ data class ParseProductListURLsErrorEvent(override val event: SearchPageDocument
                                           override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
 data class CountOfPagesEvent(val countOfPages: Int,
+                             val searchUrl: String,
                              val searchKeyWord: String,
                              val eshopUuid: EshopUuid,
                              val identifier: String) : CoreEvent()

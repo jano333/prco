@@ -178,7 +178,11 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         errorFindFilterDto.statusCodesToSkip = arrayOf("404")
         errorFindFilterDto.limit = 50
         internalTxService.findErrorsByFilter(errorFindFilterDto)
-                .forEach { println(it.customToString()) }
+//                .forEach { println(it.customToString()) }
+                .forEach {
+                    println(it.additionalInfo)
+                    println(it.message)
+                }
 
 
         // --- UPDATE PRICE DATA ---
