@@ -1,4 +1,11 @@
 -------------------
+vsetky maju problem
+Caused by: sk.hudak.prco.exception.PrcoRuntimeException: New product https://www.brendon.sk/pampers-premium-care-smallpack-s2-23-pcs-jednorazove-plienky-12386002 has none name
+	at sk.hudak.prco.task.handler.add.ProductNewDataEvent_8b_Handler$saveProductNewData$1.get(ProductNewDataEvent_8b_Handler.kt:53)
+	at sk.hudak.prco.task.handler.add.ProductNewDataEvent_8b_Handler$saveProductNewData$1.get(ProductNewDataEvent_8b_Handler.kt:22)
+	at sk.hudak.prco.task.handler.EshopLogSupplier.get(BasicHandler.kt:23)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1590)
+-------------------
 BRENDON:
 * problem lebo su 4 strany a mne dava stale akj pre 2 stranu produkty url z prvej strany teda mam 4 krat duplicitu a neveim preco
 -------------
@@ -37,7 +44,7 @@ sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while 
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:140)
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:22)
 	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:72)
-	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:187)
+	at sk.hudak.prco.task.old.ExceptionHandlingRunnable.run(EshopTask.kt:187)
 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
@@ -73,7 +80,7 @@ sk.hudak.prco.exception.ProductPageNotFoundHttpParserException: error creating d
 	at sk.hudak.prco.manager.updateprocess.NgUpdateProductDataManagerImpl.access$updateProductDataErrorWrapper(NgUpdateProductDataManagerImpl.kt:27)
 	at sk.hudak.prco.manager.updateprocess.NgUpdateProductDataManagerImpl$updateProductDataForEachProductInEshop$1.doInRunnable(NgUpdateProductDataManagerImpl.kt:100)
 	at sk.hudak.prco.manager.updateprocess.NgUpdateProductDataManagerImpl$updateProductDataForEachProductInEshop$1.doInRunnable(NgUpdateProductDataManagerImpl.kt:87)
-	at sk.hudak.prco.task.ExceptionHandlingRunnable.run(EshopTask.kt:193)
+	at sk.hudak.prco.task.old.ExceptionHandlingRunnable.run(EshopTask.kt:193)
 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)

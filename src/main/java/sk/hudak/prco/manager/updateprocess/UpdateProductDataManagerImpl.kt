@@ -14,9 +14,9 @@ import sk.hudak.prco.manager.updateprocess.UpdateProductDataListenerAdapter.Comp
 import sk.hudak.prco.mapper.PrcoOrikaMapper
 import sk.hudak.prco.parser.html.HtmlParser
 import sk.hudak.prco.service.InternalTxService
-import sk.hudak.prco.task.EshopTaskManager
-import sk.hudak.prco.task.ExceptionHandlingRunnable
-import sk.hudak.prco.task.SingleContext
+import sk.hudak.prco.task.old.EshopTaskManager
+import sk.hudak.prco.task.old.ExceptionHandlingRunnable
+import sk.hudak.prco.task.old.SingleContext
 import sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe
 import sk.hudak.prco.utils.ThreadUtils.sleepSafe
 import java.util.*

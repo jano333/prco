@@ -84,7 +84,7 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         theadStatisticManager.start()
 
         //run deadlok detector
-        DeadlockedThreadDetector(2, TimeUnit.SECONDS).start()
+        DeadlockedThreadDetector(3, TimeUnit.SECONDS).start()
 
         //TODO
         internalTxService.startErrorCleanUp()

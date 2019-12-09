@@ -1,4 +1,4 @@
-package sk.hudak.prco.task.ng.ee.handlers.addprocess
+package sk.hudak.prco.task.handler.add
 
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
@@ -7,11 +7,11 @@ import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.parser.eshopuid.EshopUuidParser
-import sk.hudak.prco.task.ng.ee.AddProductExecutors
-import sk.hudak.prco.task.ng.ee.NewProductUrlEvent
-import sk.hudak.prco.task.ng.ee.NewProductUrlWithEshopEvent
-import sk.hudak.prco.task.ng.ee.ParseEshopUuidErrorEvent
-import sk.hudak.prco.task.ng.ee.handlers.NoEshopLogSupplier
+import sk.hudak.prco.task.add.AddProductExecutors
+import sk.hudak.prco.task.add.NewProductUrlEvent
+import sk.hudak.prco.task.add.NewProductUrlWithEshopEvent
+import sk.hudak.prco.task.add.ParseEshopUuidErrorEvent
+import sk.hudak.prco.task.handler.NoEshopLogSupplier
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier

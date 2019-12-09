@@ -1,13 +1,13 @@
-package sk.hudak.prco.task.ng.ee.handlers.addprocess
+package sk.hudak.prco.task.handler.add
 
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import org.springframework.stereotype.Component
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
-import sk.hudak.prco.task.ng.ee.AddProductExecutors
-import sk.hudak.prco.task.ng.ee.BuildNextSearchPageUrlEvent
-import sk.hudak.prco.task.ng.ee.CountOfPagesEvent
+import sk.hudak.prco.task.add.AddProductExecutors
+import sk.hudak.prco.task.add.BuildNextSearchPageUrlEvent
+import sk.hudak.prco.task.add.CountOfPagesEvent
 import java.util.*
 
 @Component

@@ -1,10 +1,11 @@
-package sk.hudak.prco.task.ng.ee
+package sk.hudak.prco.task.handler.add
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.events.PrcoObserver
+import sk.hudak.prco.task.add.*
 import java.util.*
 
 @Component

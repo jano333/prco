@@ -1,4 +1,4 @@
-package sk.hudak.prco.task.ng.ee.handlers.addprocess
+package sk.hudak.prco.task.handler.add
 
 import org.jsoup.nodes.Document
 import org.slf4j.LoggerFactory
@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
-import sk.hudak.prco.task.ng.ee.*
-import sk.hudak.prco.task.ng.ee.handlers.EshopLogSupplier
-import sk.hudak.prco.task.ng.ee.helper.EshopProductsParserHelper
+import sk.hudak.prco.task.add.*
+import sk.hudak.prco.task.handler.EshopLogSupplier
+import sk.hudak.prco.task.helper.EshopProductsParserHelper
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier

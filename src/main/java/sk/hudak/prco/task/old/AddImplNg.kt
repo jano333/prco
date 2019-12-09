@@ -1,4 +1,4 @@
-package sk.hudak.prco.task.ng
+package sk.hudak.prco.task.old
 
 import org.jsoup.nodes.Document
 import org.slf4j.LoggerFactory
@@ -10,7 +10,6 @@ import sk.hudak.prco.exception.EshopParserNotFoundException
 import sk.hudak.prco.parser.eshop.EshopProductsParser
 import sk.hudak.prco.parser.html.HtmlParser
 import sk.hudak.prco.service.InternalTxService
-import sk.hudak.prco.task.PrcoUncaughtExceptionHandler
 import java.util.*
 import java.util.concurrent.*
 import java.util.concurrent.atomic.AtomicInteger

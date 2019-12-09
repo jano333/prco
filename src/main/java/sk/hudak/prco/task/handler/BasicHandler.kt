@@ -1,4 +1,4 @@
-package sk.hudak.prco.task.ng.ee.handlers
+package sk.hudak.prco.task.handler
 
 import org.slf4j.MDC
 import sk.hudak.prco.api.EshopUuid

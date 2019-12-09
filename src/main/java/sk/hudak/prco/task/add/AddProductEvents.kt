@@ -1,4 +1,4 @@
-package sk.hudak.prco.task.ng.ee
+package sk.hudak.prco.task.add
 
 import org.jsoup.nodes.Document
 import sk.hudak.prco.api.EshopUuid

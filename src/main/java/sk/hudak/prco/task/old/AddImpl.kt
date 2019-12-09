@@ -1,4 +1,4 @@
-package sk.hudak.prco.task.ng
+package sk.hudak.prco.task.old
 
 import org.jsoup.nodes.Document
 import org.slf4j.LoggerFactory
@@ -11,7 +11,6 @@ import sk.hudak.prco.exception.PrcoRuntimeException
 import sk.hudak.prco.parser.eshop.EshopProductsParser
 import sk.hudak.prco.parser.html.HtmlParser
 import sk.hudak.prco.service.InternalTxService
-import sk.hudak.prco.task.PrcoUncaughtExceptionHandler
 import sk.hudak.prco.utils.ThreadUtils
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit

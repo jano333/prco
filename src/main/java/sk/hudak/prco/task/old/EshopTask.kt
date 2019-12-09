@@ -1,4 +1,4 @@
-package sk.hudak.prco.task
+package sk.hudak.prco.task.old
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component

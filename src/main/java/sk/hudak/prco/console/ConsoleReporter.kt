@@ -11,9 +11,9 @@ import sk.hudak.prco.dto.product.ProductFilterUIDto
 import sk.hudak.prco.dto.product.ProductFullDto
 import sk.hudak.prco.manager.GroupProductResolver
 import sk.hudak.prco.service.InternalTxService
-import sk.hudak.prco.task.ng.AddImpl
-import sk.hudak.prco.task.ng.AddImplNg
-import sk.hudak.prco.task.ng.ee.AddProductImpl
+import sk.hudak.prco.task.ng.AddProductImpl
+import sk.hudak.prco.task.old.AddImpl
+import sk.hudak.prco.task.old.AddImplNg
 import sk.hudak.prco.utils.CalculationUtils
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -26,7 +26,7 @@ class PrcoConsole(val internalTxService: InternalTxService,
                   val groupProductResolver: GroupProductResolver,
                   val addImpl: AddImpl,
                   val addImplNg: AddImplNg,
-                val addEe: AddProductImpl) {
+                  val addEe: AddProductImpl) {
 
     fun showInConsole() {
 

@@ -1,4 +1,4 @@
-package sk.hudak.prco.task.ng.ee.handlers.addprocess
+package sk.hudak.prco.task.handler.add
 
 import org.jsoup.nodes.Document
 import org.slf4j.LoggerFactory
@@ -8,12 +8,12 @@ import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
-import sk.hudak.prco.task.ng.ee.AddProductExecutors
-import sk.hudak.prco.task.ng.ee.NewProductDocumentEvent
-import sk.hudak.prco.task.ng.ee.ParseProductNewDataErrorEvent
-import sk.hudak.prco.task.ng.ee.ProductNewDataEvent
-import sk.hudak.prco.task.ng.ee.handlers.EshopLogSupplier
-import sk.hudak.prco.task.ng.ee.helper.EshopProductsParserHelper
+import sk.hudak.prco.task.add.AddProductExecutors
+import sk.hudak.prco.task.add.NewProductDocumentEvent
+import sk.hudak.prco.task.add.ParseProductNewDataErrorEvent
+import sk.hudak.prco.task.add.ProductNewDataEvent
+import sk.hudak.prco.task.handler.EshopLogSupplier
+import sk.hudak.prco.task.helper.EshopProductsParserHelper
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
@@ -34,7 +34,7 @@ class NewProductDocumentEvent_7b_Handler(prcoObservable: PrcoObservable,
         parseProductNewData(event.document, event.newProductUrl, event.eshopUuid, event.identifier)
                 .handle { productNewData, exception ->
                     if (exception == null) {
-                        prcoObservable.notify(ProductNewDataEvent(productNewData,event.identifier))
+                        prcoObservable.notify(ProductNewDataEvent(productNewData, event.identifier))
                     } else {
                         prcoObservable.notify(ParseProductNewDataErrorEvent(event, exception))
                     }

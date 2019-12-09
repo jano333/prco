@@ -1,4 +1,4 @@
-package sk.hudak.prco.task.ng.ee.handlers.addprocess
+package sk.hudak.prco.task.handler.add
 
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
@@ -8,8 +8,8 @@ import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.manager.error.ErrorLogManager
 import sk.hudak.prco.service.InternalTxService
-import sk.hudak.prco.task.ng.ee.*
-import sk.hudak.prco.task.ng.ee.handlers.EshopLogSupplier
+import sk.hudak.prco.task.add.*
+import sk.hudak.prco.task.handler.EshopLogSupplier
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier

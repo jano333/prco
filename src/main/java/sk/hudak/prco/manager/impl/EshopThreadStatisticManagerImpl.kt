@@ -5,10 +5,12 @@ import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.manager.EshopThreadStatisticManager
 import sk.hudak.prco.service.InternalTxService
-import sk.hudak.prco.task.EshopTaskManager
-import sk.hudak.prco.task.TaskStatus
-import sk.hudak.prco.task.ng.ee.AddProductExecutors
+import sk.hudak.prco.task.add.AddProductExecutors
+import sk.hudak.prco.task.add.EshopScheduledExecutor
+import sk.hudak.prco.task.old.EshopTaskManager
+import sk.hudak.prco.task.old.TaskStatus
 import java.util.*
+import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ThreadPoolExecutor
 
 // TODO prerobit cez spring scheduled bean v priavidelnych intervaloch nech zobrazuje statistiku
@@ -71,17 +73,45 @@ class EshopThreadStatisticManagerImpl(
         log.debug("all tasks: {}  running: {}, finished(ok/error): {}/{}{}", tasks.size, running.size, finishedOk.size, finishedNotOk.size, finishedNotOk)
         log.debug("error statistic {}", internalTxService.statisticForErrors)
 
-        log.debug("hadlers info:")
+        //TODO
+        log.trace("hadlers info:")
+        //TODO vsetky?
+        EshopUuid.values()
+//        Arrays.asList(EshopUuid.FEEDO, EshopUuid.MALL)
+                .forEach { eshopUuid ->
+                    val eshopExecutor: ScheduledExecutorService = addExecutors.getEshopExecutor(eshopUuid)
+                    eshopExecutor as EshopScheduledExecutor
+                    if (eshopExecutor.activeCount != 0 ||
+                            eshopExecutor.completedTaskCount != 0L ||
+                            eshopExecutor.taskCount != 0L) {
+
+                        val running: Boolean = eshopExecutor.activeCount != 0
+                        var state: String
+                        if (running) {
+                            state = "running"
+                        }
+                        if (eshopExecutor.completedTaskCount != eshopExecutor.taskCount) {
+                            state = "waiting"
+                        } else {
+                            state = "completed"
+                        }
+
+                        log.debug("$eshopUuid executor: $state, ${eshopExecutor.completedTaskCount} of ${eshopExecutor.taskCount} are completed ")
+
+                    }
+                }
 
         addExecutors.handlerTaskExecutor as ThreadPoolExecutor
-        log.debug("handlerTaskExecutor active/max cout: ${addExecutors.handlerTaskExecutor.activeCount}/${addExecutors.handlerTaskExecutor.maximumPoolSize} ")
+        log.trace("handlerTaskExecutor active/max cout: ${addExecutors.handlerTaskExecutor.activeCount}/${addExecutors.handlerTaskExecutor.maximumPoolSize} ")
         addExecutors.searchUrlBuilderExecutor as ThreadPoolExecutor
-        log.debug("searchUrlBuilderExecutor active/max cout: ${addExecutors.searchUrlBuilderExecutor.activeCount}/${addExecutors.searchUrlBuilderExecutor.maximumPoolSize} ")
+        log.trace("searchUrlBuilderExecutor active/max cout: ${addExecutors.searchUrlBuilderExecutor.activeCount}/${addExecutors.searchUrlBuilderExecutor.maximumPoolSize} ")
         addExecutors.internalServiceExecutor as ThreadPoolExecutor
-        log.debug("internalServiceExecutor active/max cout: ${addExecutors.internalServiceExecutor.activeCount}/${addExecutors.internalServiceExecutor.maximumPoolSize} ")
+        log.trace("internalServiceExecutor active/max cout: ${addExecutors.internalServiceExecutor.activeCount}/${addExecutors.internalServiceExecutor.maximumPoolSize} ")
         addExecutors.eshopUuidParserExecutor as ThreadPoolExecutor
-        log.debug("eshopUuidParserExecutor active/max cout: ${addExecutors.eshopUuidParserExecutor.activeCount}/${addExecutors.eshopUuidParserExecutor.maximumPoolSize} ")
+        log.trace("eshopUuidParserExecutor active/max cout: ${addExecutors.eshopUuidParserExecutor.activeCount}/${addExecutors.eshopUuidParserExecutor.maximumPoolSize} ")
         addExecutors.htmlParserExecutor as ThreadPoolExecutor
-        log.debug("htmlParserExecutor active/max cout: ${addExecutors.htmlParserExecutor.activeCount}/${addExecutors.htmlParserExecutor.maximumPoolSize} ")
+        log.trace("htmlParserExecutor active/max cout: ${addExecutors.htmlParserExecutor.activeCount}/${addExecutors.htmlParserExecutor.maximumPoolSize} ")
+
+
     }
 }

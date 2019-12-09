@@ -16,9 +16,9 @@ import sk.hudak.prco.parser.eshop.EshopProductsParser
 import sk.hudak.prco.parser.eshopuid.EshopUuidParser
 import sk.hudak.prco.parser.html.HtmlParser
 import sk.hudak.prco.service.InternalTxService
-import sk.hudak.prco.task.EshopTaskManager
-import sk.hudak.prco.task.ExceptionHandlingRunnable
-import sk.hudak.prco.task.SingleContext
+import sk.hudak.prco.task.old.EshopTaskManager
+import sk.hudak.prco.task.old.ExceptionHandlingRunnable
+import sk.hudak.prco.task.old.SingleContext
 import sk.hudak.prco.utils.ConsoleColor
 import sk.hudak.prco.utils.ConsoleWithColor.wrapWithColor
 import sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe

@@ -1,11 +1,11 @@
-package sk.hudak.prco.task.ng.ee.helper
+package sk.hudak.prco.task.add
 
 import org.jsoup.nodes.Document
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.task.ng.ee.AddProductExecutors
-import sk.hudak.prco.task.ng.ee.handlers.EshopLogSupplier
+import sk.hudak.prco.task.handler.EshopLogSupplier
+import sk.hudak.prco.task.helper.EshopProductsParserHelper
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
 

@@ -1,15 +1,11 @@
-package sk.hudak.prco.task.ng.ee.handlers.addprocess
+package sk.hudak.prco.task.handler.add
 
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import org.springframework.stereotype.Component
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
-import sk.hudak.prco.task.ng.ee.AddProductExecutors
-import sk.hudak.prco.task.ng.ee.RetrieveDocumentForSearchUrlErrorEvent
-import sk.hudak.prco.task.ng.ee.SearchKeywordUrlEvent
-import sk.hudak.prco.task.ng.ee.SearchPageDocumentEvent
-import sk.hudak.prco.task.ng.ee.helper.DocumentHelper
+import sk.hudak.prco.task.add.*
 import java.util.*
 
 /**

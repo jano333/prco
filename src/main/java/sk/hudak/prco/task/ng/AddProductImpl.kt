@@ -1,9 +1,12 @@
-package sk.hudak.prco.task.ng.ee
+package sk.hudak.prco.task.ng
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.events.PrcoObservable
+import sk.hudak.prco.task.add.NewEshopKeywordIdEvent
+import sk.hudak.prco.task.add.NewKeywordIdEvent
+import sk.hudak.prco.task.add.NewProductUrlsEvent
 import java.util.*
 
 @Component
@@ -16,8 +19,9 @@ class AddProductImpl(private val prcoObservable: PrcoObservable) {
     fun addNewProductsByConfiguredKeywordsForAllEshops() {
         LOG.trace(">> addNewProductsByConfiguredKeywordsForAllEshops")
 
-        EnumSet.of(EshopUuid.FEEDO).forEach { eshopUuid ->
-//        EshopUuid.values().forEach { eshopUuid ->
+        EnumSet.of(EshopUuid.DR_MAX, EshopUuid.DROGERIA_VMD,EshopUuid.DROGERKA)
+                .forEach { eshopUuid ->
+            //        EshopUuid.values().forEach { eshopUuid ->
             eshopUuid.config.supportedSearchKeywordIds.forEach { searchKeyWordId ->
                 prcoObservable.notify(NewEshopKeywordIdEvent(eshopUuid, searchKeyWordId))
             }
