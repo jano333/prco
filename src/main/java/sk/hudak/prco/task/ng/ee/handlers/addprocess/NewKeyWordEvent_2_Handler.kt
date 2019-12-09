@@ -59,13 +59,17 @@ class NewKeyWordEvent_2_Handler(prcoObservable: PrcoObservable,
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is NewKeywordEvent -> addProductExecutors.handlerTaskExecutor.submit {
-                MDC.put("eshop", event.eshopUuid.toString())
-                MDC.put("identifier", event.identifier)
+            is NewKeywordEvent -> {
+                LOG.trace(">> update NewKeywordEvent")
+                addProductExecutors.handlerTaskExecutor.submit {
+                    MDC.put("eshop", event.eshopUuid.toString())
+                    MDC.put("identifier", event.identifier)
 
-                handle(event)
-                MDC.remove("eshop")
-                MDC.remove("identifier")
+                    handle(event)
+                    MDC.remove("eshop")
+                    MDC.remove("identifier")
+                }
+                LOG.trace("<< update NewKeywordEvent")
             }
         }
     }

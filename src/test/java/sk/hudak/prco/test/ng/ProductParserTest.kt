@@ -22,14 +22,14 @@ fun main() {
 
     val test = ProductParserTest()
 
-//    val urlList = test.parseUrlsOfProduct(EshopUuid.MAXIKOVY_HRACKY, "pampers")
-//    println("count in list ${urlList.size}")
-//    println("count in set ${HashSet(urlList).size}")
-//    println(urlList)
+    val urlList = test.parseUrlsOfProduct(EshopUuid.FEEDO, "pampers")
+    println("count in list ${urlList.size}")
+    println("count in set ${HashSet(urlList).size}")
+    println(urlList)
 
 //    println(test.parseProductNewData("https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-76-ks?zmena_meny=EUR"))
 
-    println(test.parseProductUpdateData("https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-76-ks"))
+//    println(test.parseProductUpdateData("https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-76-ks"))
 }
 
 class ProductParserTest {

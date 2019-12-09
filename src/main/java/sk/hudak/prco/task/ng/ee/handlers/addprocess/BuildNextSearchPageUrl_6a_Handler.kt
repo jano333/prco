@@ -55,12 +55,16 @@ class BuildNextSearchPageUrl_6a_Handler(prcoObservable: PrcoObservable,
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is BuildNextSearchPageUrlEvent -> addProductExecutors.handlerTaskExecutor.submit {
-                MDC.put("eshop", event.eshopUuid.toString())
-                MDC.put("identifier", event.identifier)
-                handle(event)
-                MDC.remove("eshop")
-                MDC.remove("identifier")
+            is BuildNextSearchPageUrlEvent -> {
+                LOG.trace(">> update BuildNextSearchPageUrlEvent")
+                addProductExecutors.handlerTaskExecutor.submit {
+                    MDC.put("eshop", event.eshopUuid.toString())
+                    MDC.put("identifier", event.identifier)
+                    handle(event)
+                    MDC.remove("eshop")
+                    MDC.remove("identifier")
+                }
+                LOG.trace("<< update BuildNextSearchPageUrlEvent")
             }
         }
     }

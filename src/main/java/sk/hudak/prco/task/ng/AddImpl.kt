@@ -274,15 +274,15 @@ class EshopScheduledExecutor(val eshopUuid: EshopUuid, threadFactory: ThreadFact
     override fun execute(command: Runnable) {
         var countOfSecond: Long? = null
 
-        LOG.debug("-> requesting lock")
+        LOG.debug("-> requesting lock for ${Thread.currentThread().name}")
         myLock.lock()
-        LOG.debug("<- received lock")
+        LOG.debug("<- received lock for ${Thread.currentThread().name}")
         try {
             if (lastRunDate == null) {
                 // spusti to hned
                 LOG.debug("scheduling command for $eshopUuid to be run now")
                 // nastavim novy cas...
-                lastRunDate =  Date()
+                lastRunDate = Date()
             } else {
                 // vygenerum interval medzi <5,20> v sekundach
                 val randomSecInterval = ThreadUtils.generateRandomSecondInInterval(5, 20).toLong()
@@ -297,14 +297,13 @@ class EshopScheduledExecutor(val eshopUuid: EshopUuid, threadFactory: ThreadFact
                 lastRunDate = dateTimeToRun
             }
         } finally {
-            LOG.debug("-> requesting unlock")
             myLock.unlock()
-            LOG.debug("<- received unlock")
+            LOG.debug("received unlock for ${Thread.currentThread().name}")
         }
 
         if (countOfSecond != null) {
             LOG.debug("-> scheduling command")
-            val schedule = super.schedule(command, countOfSecond!!, TimeUnit.SECONDS)
+            val schedule = super.schedule(command, countOfSecond, TimeUnit.SECONDS)
             LOG.debug("<- scheduling command")
 
         } else {

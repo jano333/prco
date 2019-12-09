@@ -38,12 +38,16 @@ class NewProductUrlWithEshopEvent_6b_Handler(prcoObservable: PrcoObservable,
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is NewProductUrlWithEshopEvent -> addProductExecutors.handlerTaskExecutor.submit {
-                MDC.put("eshop", event.eshopUuid.toString())
-                MDC.put("identifier", event.identifier)
-                handle(event)
-                MDC.remove("eshop")
-                MDC.remove("identifier")
+            is NewProductUrlWithEshopEvent -> {
+                LOG.trace(">> update ${event.javaClass.simpleName}")
+                addProductExecutors.handlerTaskExecutor.submit {
+                    MDC.put("eshop", event.eshopUuid.toString())
+                    MDC.put("identifier", event.identifier)
+                    handle(event)
+                    MDC.remove("eshop")
+                    MDC.remove("identifier")
+                }
+                LOG.trace("<< update ${event.javaClass.simpleName}")
             }
         }
     }

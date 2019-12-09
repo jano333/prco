@@ -27,12 +27,15 @@ import sk.hudak.prco.service.UIService
 import sk.hudak.prco.service.WatchDogService
 import sk.hudak.prco.ssl.PrcoSslManager
 import sk.hudak.prco.utils.CalculationUtils
+import sk.hudak.prco.utils.DeadlockedThreadDetector
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.Arrays.asList
+import java.util.concurrent.TimeUnit
+
 
 /**
  * Created by jan.hudak on 9/29/2017.
@@ -78,7 +81,10 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         PrcoSslManager.init()
 
         // start thread for showing statistics
-        theadStatisticManager.startShowingStatistics()
+        theadStatisticManager.start()
+
+        //run deadlok detector
+        DeadlockedThreadDetector(2, TimeUnit.SECONDS).start()
 
         //TODO
         internalTxService.startErrorCleanUp()
@@ -86,7 +92,6 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         val statisticsOfProducts = uiService.statisticsOfProducts
         println(statisticsOfProducts.toString())
         //        System.out.println(">> --------");
-
 
 
         //        System.out.println("");
@@ -127,8 +132,6 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         //        watchDogManager.startWatching("https://www.obi.sk/zahradne-hadice/cmi-zahradna-hadica-12-5-mm-1-2-20-m-zelena/p/2235422",
         //                BigDecimal.valueOf(4.99));
         //        watchDogManager.collectAllUpdateAndSendEmail();
-
-
 
 
         //        uiService.deleteProducts(169L, 802L);
@@ -264,9 +267,6 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
     }
 
 
-
-
-
     private fun deleteProductsFromNotInterested(eshopUuid: EshopUuid) {
         internalTxService.deleteNotInterestedProducts(eshopUuid)
     }
@@ -302,7 +302,6 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
     }
 
 
-
     private fun formatPercentage(priceForPackage: BigDecimal?, commonPrice: BigDecimal?): String {
         return if (priceForPackage == null || commonPrice == null) {
             ""
@@ -315,7 +314,6 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
             "-"
         } else SimpleDateFormat("dd.MM.yyyy").format(date)
     }
-
 
 
     private fun formatPrice(bigDecimal: BigDecimal?, countOfDecimal: Int): String {

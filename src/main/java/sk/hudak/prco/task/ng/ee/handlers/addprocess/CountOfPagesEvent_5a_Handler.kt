@@ -38,12 +38,16 @@ class CountOfPagesEvent_5a_Handler(prcoObservable: PrcoObservable,
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is CountOfPagesEvent -> addProductExecutors.handlerTaskExecutor.submit {
-                MDC.put("eshop", event.eshopUuid.toString())
-                MDC.put("identifier", event.identifier)
-                handle(event)
-                MDC.remove("eshop")
-                MDC.remove("identifier")
+            is CountOfPagesEvent -> {
+                LOG.trace(">> update ${event.javaClass.simpleName}")
+                addProductExecutors.handlerTaskExecutor.submit {
+                    MDC.put("eshop", event.eshopUuid.toString())
+                    MDC.put("identifier", event.identifier)
+                    handle(event)
+                    MDC.remove("eshop")
+                    MDC.remove("identifier")
+                }
+                LOG.trace("<< update ${event.javaClass.simpleName}")
             }
         }
     }

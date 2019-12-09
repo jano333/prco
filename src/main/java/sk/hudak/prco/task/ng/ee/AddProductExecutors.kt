@@ -16,7 +16,7 @@ class AddProductExecutors {
     val handlerTaskExecutor: ExecutorService = createInternalThreadExecutor("add-handler-task", 10)
     val searchUrlBuilderExecutor: ExecutorService = createInternalThreadExecutor("add-search-url", 5)
     val internalServiceExecutor: ExecutorService = createInternalThreadExecutor("add-internal-service", 20)
-    private val eshopDocumentExecutor = EnumMap<EshopUuid, ScheduledExecutorService>(EshopUuid::class.java)
+    val eshopDocumentExecutor = EnumMap<EshopUuid, ScheduledExecutorService>(EshopUuid::class.java)
     val htmlParserExecutor: ExecutorService = createInternalThreadExecutor("add-html-parser", 10)
     val eshopUuidParserExecutor: ExecutorService = createInternalThreadExecutor("add-eshop-uuid-parser", 5)
 
@@ -25,7 +25,6 @@ class AddProductExecutors {
     }
 
     init {
-        //TODO should down of executor
         EshopUuid.values().forEach {
             eshopDocumentExecutor[it] = createEshopThreadExecutor(it)
         }

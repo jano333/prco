@@ -7,21 +7,24 @@ import sk.hudak.prco.manager.EshopThreadStatisticManager
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.EshopTaskManager
 import sk.hudak.prco.task.TaskStatus
+import sk.hudak.prco.task.ng.ee.AddProductExecutors
 import java.util.*
+import java.util.concurrent.ThreadPoolExecutor
 
 // TODO prerobit cez spring scheduled bean v priavidelnych intervaloch nech zobrazuje statistiku
 
 @Component
 class EshopThreadStatisticManagerImpl(
         private val eshopTaskManager: EshopTaskManager,
-        private val internalTxService: InternalTxService)
+        private val internalTxService: InternalTxService,
+        private val addExecutors: AddProductExecutors)
     : EshopThreadStatisticManager {
 
     companion object {
         val log = LoggerFactory.getLogger(EshopThreadStatisticManagerImpl::class.java)!!
     }
 
-    override fun startShowingStatistics() {
+    override fun start() {
         val shoudDownStatistic = false
         val thread = Thread {
             val aha = true
@@ -67,5 +70,18 @@ class EshopThreadStatisticManagerImpl(
 
         log.debug("all tasks: {}  running: {}, finished(ok/error): {}/{}{}", tasks.size, running.size, finishedOk.size, finishedNotOk.size, finishedNotOk)
         log.debug("error statistic {}", internalTxService.statisticForErrors)
+
+        log.debug("hadlers info:")
+
+        addExecutors.handlerTaskExecutor as ThreadPoolExecutor
+        log.debug("handlerTaskExecutor active/max cout: ${addExecutors.handlerTaskExecutor.activeCount}/${addExecutors.handlerTaskExecutor.maximumPoolSize} ")
+        addExecutors.searchUrlBuilderExecutor as ThreadPoolExecutor
+        log.debug("searchUrlBuilderExecutor active/max cout: ${addExecutors.searchUrlBuilderExecutor.activeCount}/${addExecutors.searchUrlBuilderExecutor.maximumPoolSize} ")
+        addExecutors.internalServiceExecutor as ThreadPoolExecutor
+        log.debug("internalServiceExecutor active/max cout: ${addExecutors.internalServiceExecutor.activeCount}/${addExecutors.internalServiceExecutor.maximumPoolSize} ")
+        addExecutors.eshopUuidParserExecutor as ThreadPoolExecutor
+        log.debug("eshopUuidParserExecutor active/max cout: ${addExecutors.eshopUuidParserExecutor.activeCount}/${addExecutors.eshopUuidParserExecutor.maximumPoolSize} ")
+        addExecutors.htmlParserExecutor as ThreadPoolExecutor
+        log.debug("htmlParserExecutor active/max cout: ${addExecutors.htmlParserExecutor.activeCount}/${addExecutors.htmlParserExecutor.maximumPoolSize} ")
     }
 }

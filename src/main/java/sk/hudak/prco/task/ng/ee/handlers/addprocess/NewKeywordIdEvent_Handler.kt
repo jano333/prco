@@ -31,8 +31,12 @@ class NewKeywordIdEvent_Handler(prcoObservable: PrcoObservable,
 
     override fun update(source: Observable?, event: CoreEvent) {
         when (event) {
-            is NewKeywordIdEvent -> addProductExecutors.handlerTaskExecutor.submit {
-                handle(event)
+            is NewKeywordIdEvent -> {
+                LOG.trace(">> update ${event.javaClass.simpleName}")
+                addProductExecutors.handlerTaskExecutor.submit {
+                    handle(event)
+                }
+                LOG.trace("<< update ${event.javaClass.simpleName}")
             }
         }
     }
