@@ -23,6 +23,7 @@ data class TaskContext constructor(
         val status: TaskStatus,
         val lastChanged: Date = Date())
 
+@Deprecated("dont use")
 interface EshopTaskManager {
 
 //    fun dajmiho(eshopUuid: EshopUuid): Executor
@@ -195,6 +196,7 @@ data class PrcoUncaughtExceptionHandler(val eshopUuid: EshopUuid)
     companion object {
         val LOG = LoggerFactory.getLogger(PrcoUncaughtExceptionHandler::class.java)!!
     }
+
     override fun uncaughtException(t: Thread?, e: Throwable?) {
         LOG.error("eshop: $eshopUuid", e)
     }

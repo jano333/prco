@@ -1,0 +1,19 @@
+UpdateProductsInEshop   => ProductDetailInfoForUpdateEvent
+                        =# LoadProductToBeUpdateErrorEvent
+
+ProductDetailInfoForUpdateEvent => UpdateProductDocumentEvent
+                                =# RetrieveUpdateDocumentForUrlErrorEvent
+
+UpdateProductDocumentEvent => ProductUpdateDataEvent
+                           =# ParseProductUpdateDataErrorEvent
+
+ProductUpdateDataEvent  => ProductUpdateDataRedirectEvent(redirect)
+                        => MarkProductAsUnavailableEvent(product is NOT available)
+                        => ProcessProductUpdateDataEvent
+
+ProcessProductUpdateDataEvent =>
+
+MarkProductAsUnavailableEvent =>
+
+ProductUpdateDataRedirectEvent =>
+

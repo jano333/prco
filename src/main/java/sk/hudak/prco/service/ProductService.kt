@@ -132,6 +132,7 @@ interface ProductService {
     /**
      * vyhlada product na zaklade URL, pozor nemusi existovat...
      */
+    //TODO rename to findProductForUpdateByUrl
     fun getProductForUpdateByUrl(productUrl: String): ProductDetailInfo?
 
 

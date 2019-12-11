@@ -36,16 +36,18 @@ interface EshopProductsParser {
      * @return
      * @throws ProductNameNotFoundException, ProductPriceNotFoundException
      */
+    @Deprecated("use fun parseProductUpdateData(document: Document, productUrl: String): ProductUpdateData")
     fun parseProductUpdateData(productUrl: String): ProductUpdateData
 
     // --- nove API ---
     fun retrieveDocument(productUrl: String): Document
 
-    //TODO toto nema byt htlm parser ???
     fun parseCountOfPages(document: Document): Int
 
     fun parsePageForProductUrls(document: Document, pageNumber: Int): List<String>
 
     fun parseProductNewData(document: Document, productUrl: String): ProductNewData
+
+    fun parseProductUpdateData(document: Document, productUrl: String): ProductUpdateData
 
 }

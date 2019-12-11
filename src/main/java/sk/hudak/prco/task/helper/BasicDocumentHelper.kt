@@ -1,20 +1,20 @@
-package sk.hudak.prco.task.add
+package sk.hudak.prco.task.helper
 
 import org.jsoup.nodes.Document
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.task.ProductExecutors
 import sk.hudak.prco.task.handler.EshopLogSupplier
-import sk.hudak.prco.task.helper.EshopProductsParserHelper
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
 
 @Component
-class DocumentHelper(private val eshopProductsParserHelper: EshopProductsParserHelper,
-                     private val addProductExecutors: AddProductExecutors) {
+class BasicDocumentHelper(private val eshopProductsParserHelper: EshopProductsParserHelper,
+                          val eshopDocumentExecutor: ProductExecutors) {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(DocumentHelper::class.java)!!
+        private val LOG = LoggerFactory.getLogger(BasicDocumentHelper::class.java)!!
     }
 
     fun retrieveDocumentForUrl(productUrl: String, eshopUuid: EshopUuid, identifier: String): CompletableFuture<Document> {
@@ -23,6 +23,6 @@ class DocumentHelper(private val eshopProductsParserHelper: EshopProductsParserH
                     LOG.trace("retrieveDocumentForUrl")
                     eshopProductsParserHelper.findParserForEshop(eshopUuid).retrieveDocument(productUrl)
                 }),
-                addProductExecutors.getEshopExecutor(eshopUuid))
+                eshopDocumentExecutor.getEshopExecutor(eshopUuid))
     }
 }

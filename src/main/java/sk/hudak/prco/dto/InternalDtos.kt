@@ -34,6 +34,7 @@ data class ProductNewData(val eshopUuid: EshopUuid,
 
 // TODO porozmyslat ci toto nema ist do package pre update manager.... nech je to biznisovo spolu vsetko co sa tyka update
 // TODO prerobit nech konstruktor je z 2 parametrami povinny !!!
+// TODO urobit to ako data class urcite...
 class ProductUpdateData : InternalMarkerDto {
 
     val url: String

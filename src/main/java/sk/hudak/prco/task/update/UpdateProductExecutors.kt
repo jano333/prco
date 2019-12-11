@@ -1,4 +1,4 @@
-package sk.hudak.prco.task.add
+package sk.hudak.prco.task.update
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -9,28 +9,25 @@ import java.util.concurrent.atomic.AtomicInteger
 import javax.annotation.PreDestroy
 
 @Component
-class AddProductExecutors(val eshopDocumentExecutor: ProductExecutors) {
+class UpdateProductExecutors(val eshopDocumentExecutor: ProductExecutors) {
 
-    val handlerTaskExecutor: ExecutorService = createInternalThreadExecutor("add-handler-task", 10)
-    val searchUrlBuilderExecutor: ExecutorService = createInternalThreadExecutor("add-search-url", 5)
-    val internalServiceExecutor: ExecutorService = createInternalThreadExecutor("add-internal-service", 20)
-    val htmlParserExecutor: ExecutorService = createInternalThreadExecutor("add-html-parser", 10)
-    val eshopUuidParserExecutor: ExecutorService = createInternalThreadExecutor("add-eshop-uuid-parser", 5)
+    val handlerTaskExecutor: ExecutorService = createInternalThreadExecutor("update-handler-task", 10)
+    val internalServiceExecutor: ExecutorService = createInternalThreadExecutor("update-internal-service", 20)
+    val htmlParserExecutor: ExecutorService = createInternalThreadExecutor("update-html-parser", 10)
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(AddProductExecutors::class.java)!!
+        private val LOG = LoggerFactory.getLogger(UpdateProductExecutors::class.java)!!
     }
-
 
     @PreDestroy
     fun shutdownNowAllExecutors() {
         LOG.trace("start shutting down of all executors")
         handlerTaskExecutor.shutdownNow()
         internalServiceExecutor.shutdownNow()
-        searchUrlBuilderExecutor.shutdownNow()
-        htmlParserExecutor.shutdownNow()
+//        searchUrlBuilderExecutor.shutdownNow()
+//        htmlParserExecutor.shutdownNow()
         eshopDocumentExecutor.shutdownAllNow()
-        eshopUuidParserExecutor.shutdownNow()
+//        eshopUuidParserExecutor.shutdownNow()
         LOG.debug("shutting down of all executors completed")
     }
 
@@ -38,6 +35,7 @@ class AddProductExecutors(val eshopDocumentExecutor: ProductExecutors) {
         return eshopDocumentExecutor.getEshopExecutor(eshopUuid)
     }
 
+    //FIXME spolocna metoda aj pre add executor
     private fun createInternalThreadExecutor(prefix: String, nThreads: Int): ExecutorService {
         return ThreadPoolExecutor(nThreads, nThreads, 0L, TimeUnit.MILLISECONDS,
                 LinkedBlockingQueue(),
@@ -45,7 +43,7 @@ class AddProductExecutors(val eshopDocumentExecutor: ProductExecutors) {
     }
 }
 
-class InternalThreadFactory(prefix: String) : ThreadFactory {
+private class InternalThreadFactory(prefix: String) : ThreadFactory {
 
     private val group: ThreadGroup
     private val threadNumber = AtomicInteger(1)
@@ -73,4 +71,6 @@ class InternalThreadFactory(prefix: String) : ThreadFactory {
             t.priority = Thread.NORM_PRIORITY
         return t
     }
+
+
 }

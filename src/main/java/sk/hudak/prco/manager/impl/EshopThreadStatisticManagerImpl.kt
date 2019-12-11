@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.manager.EshopThreadStatisticManager
 import sk.hudak.prco.service.InternalTxService
+import sk.hudak.prco.task.EshopScheduledExecutor
 import sk.hudak.prco.task.add.AddProductExecutors
-import sk.hudak.prco.task.add.EshopScheduledExecutor
 import sk.hudak.prco.task.old.EshopTaskManager
 import sk.hudak.prco.task.old.TaskStatus
 import java.util.*

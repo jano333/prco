@@ -5,13 +5,17 @@ import org.slf4j.MDC
 import org.springframework.stereotype.Component
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
-import sk.hudak.prco.task.add.*
+import sk.hudak.prco.task.add.AddProductExecutors
+import sk.hudak.prco.task.add.NewProductDocumentEvent
+import sk.hudak.prco.task.add.NewProductUrlWithEshopEvent
+import sk.hudak.prco.task.add.RetrieveDocumentForUrlErrorEvent
+import sk.hudak.prco.task.helper.BasicDocumentHelper
 import java.util.*
 
 @Component
 class NewProductUrlWithEshopEvent_6b_Handler(prcoObservable: PrcoObservable,
                                              addProductExecutors: AddProductExecutors,
-                                             private val documentHelper: DocumentHelper)
+                                             private val documentHelper: BasicDocumentHelper)
     : AddProcessHandler(prcoObservable, addProductExecutors) {
 
     companion object {

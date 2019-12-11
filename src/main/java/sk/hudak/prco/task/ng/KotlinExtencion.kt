@@ -1,8 +1,10 @@
 package sk.hudak.prco.task.ng
 
 import sk.hudak.prco.dto.ProductNewData
+import sk.hudak.prco.dto.ProductUpdateData
+import sk.hudak.prco.dto.ProductUpdateDataDto
 import sk.hudak.prco.dto.product.NewProductCreateDto
-
+//TODO move to mapping
 fun ProductNewData.toNewProductCreateDto(): NewProductCreateDto {
     var dto = NewProductCreateDto()
     dto.eshopUuid = this.eshopUuid
@@ -14,3 +16,13 @@ fun ProductNewData.toNewProductCreateDto(): NewProductCreateDto {
     dto.pictureUrl = this.pictureUrl
     return dto
 }
+
+fun ProductUpdateData.toProductUpdateDataDto(productId: Long): ProductUpdateDataDto =
+        ProductUpdateDataDto(
+                productId,
+                this.url,
+                this.name,
+                this.priceForPackage,
+                this.productAction,
+                this.actionValidity,
+                this.pictureUrl)

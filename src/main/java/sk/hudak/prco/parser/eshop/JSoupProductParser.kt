@@ -155,44 +155,10 @@ abstract class JSoupProductParser : EshopProductsParser {
         val document = retrieveDocument(productUrl)
         //TODO porozmyslat ci tu nerobit alebo logovat redirect... tak ako je pre update proces
 
-       return parseProductNewData(document, productUrl)
+        return parseProductNewData(document, productUrl)
     }
 
-    override fun parseProductNewData(document: Document, productUrl: String): ProductNewData {
-
-        val result = ProductNewData(eshopUuid, productUrl)
-
-        val productNameOpt = parseProductNameFromDetail(document)
-        logWarningIfNullOrEmpty(productNameOpt, "productName", document.location())
-        if (productNameOpt.isPresent && productNameOpt.get().isNotBlank()) {
-            result.name = productNameOpt.get()
-        }
-
-        val productPictureUrlOpt = internalParseProductPictureURL(document, productUrl)
-        logWarningIfNullOrEmpty(productPictureUrlOpt, "pictureUrl", document.location())
-        if (productPictureUrlOpt.isPresent && productPictureUrlOpt.get().isNotBlank()) {
-            result.pictureUrl = productPictureUrlOpt.get()
-        }
-
-        // ak nemame nazov produktu nemozeme pokracovat v parsovani 'unit'
-        if (result.name == null) {
-            return result
-        }
-
-        parseUnitValueCount(document, result.name!!)
-                .ifPresent { (unit, value, packageCount) ->
-                    result.unit = unit
-                    result.unitValue = value
-                    result.unitPackageCount = packageCount
-                }
-
-        return result
-    }
-
-
-    override fun parseProductUpdateData(productUrl: String): ProductUpdateData {
-        val document = retrieveDocument(productUrl)
-
+    override fun parseProductUpdateData(document: Document, productUrl: String): ProductUpdateData {
         // because there could be redirect
         val realProductUrl = document.location()
         val redirect = if (productUrl != realProductUrl) {
@@ -244,6 +210,44 @@ abstract class JSoupProductParser : EshopProductsParser {
                 // FIXME spojit do jedneho ohladne product action
                 if (productAction.isPresent) productAction.get() else null,
                 if (productActionValidity.isPresent) productActionValidity.get() else null)
+    }
+
+
+    override fun parseProductNewData(document: Document, productUrl: String): ProductNewData {
+
+        val result = ProductNewData(eshopUuid, productUrl)
+
+        val productNameOpt = parseProductNameFromDetail(document)
+        logWarningIfNullOrEmpty(productNameOpt, "productName", document.location())
+        if (productNameOpt.isPresent && productNameOpt.get().isNotBlank()) {
+            result.name = productNameOpt.get()
+        }
+
+        val productPictureUrlOpt = internalParseProductPictureURL(document, productUrl)
+        logWarningIfNullOrEmpty(productPictureUrlOpt, "pictureUrl", document.location())
+        if (productPictureUrlOpt.isPresent && productPictureUrlOpt.get().isNotBlank()) {
+            result.pictureUrl = productPictureUrlOpt.get()
+        }
+
+        // ak nemame nazov produktu nemozeme pokracovat v parsovani 'unit'
+        if (result.name == null) {
+            return result
+        }
+
+        parseUnitValueCount(document, result.name!!)
+                .ifPresent { (unit, value, packageCount) ->
+                    result.unit = unit
+                    result.unitValue = value
+                    result.unitPackageCount = packageCount
+                }
+
+        return result
+    }
+
+
+    override fun parseProductUpdateData(productUrl: String): ProductUpdateData {
+        val document = retrieveDocument(productUrl)
+        return parseProductUpdateData(document, productUrl)
     }
 
     /**
