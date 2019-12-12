@@ -55,6 +55,3 @@ class ProductUpdateDataRedirectEvent_5c_Handler(prcoObservable: PrcoObservable,
                 updateProductExecutors.internalServiceExecutor)
     }
 }
-
-
-

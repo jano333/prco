@@ -49,16 +49,32 @@ data class ProductUpdateDataRedirectEvent(val productUpdateData: ProductUpdateDa
                                           val identifier: String) : CoreEvent()
 
 data class ProductUpdateDataRedirectNotYetExistEvent(val productUpdateData: ProductUpdateData,
-                                                     val productForUpdate: ProductDetailInfo,
+                                                     val productForUpdateData: ProductDetailInfo,
                                                      val identifier: String) : CoreEvent()
 
-data class ProductUpdateDataRedirectAlreadyExistEvent(val newProductForUpdate: ProductDetailInfo,
+data class ProductUpdateDataRedirectAlreadyExistEvent(val newProductForUpdateData: ProductDetailInfo,
                                                       val productUpdateData: ProductUpdateData,
-                                                      val productForUpdate: ProductDetailInfo,
+                                                      val productForUpdateData: ProductDetailInfo,
                                                       val identifier: String) : CoreEvent()
 
 data class FindRedirectProductByUrlErrorEvent(override val event: ProductUpdateDataRedirectEvent,
                                               override val error: Throwable) : CoreEvent(), BasicErrorEvent
+
+data class ProcessProductUpdateUrlEvent(val productUpdateData: ProductUpdateData,
+                                        val productForUpdateData: ProductDetailInfo,
+                                        val identifier: String) : CoreEvent()
+
+data class UpdateProductWithNewUrlErrorEvent(override val event: ProcessProductUpdateUrlEvent,
+                                             override val error: Throwable) : CoreEvent(), BasicErrorEvent
+
+data class ProcessRemoveOldProductEvent(val productUpdateData: ProductUpdateData,
+                                        val productForUpdateData: ProductDetailInfo,
+                                        val identifier: String) : CoreEvent()
+
+data class ProcessProductUpdateDataForRedirectEvent(val newProductForUpdateData: ProductDetailInfo,
+                                                    val productUpdateData: ProductUpdateData,
+                                                    val identifier: String) : CoreEvent()
+
 
 
 

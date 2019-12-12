@@ -6,11 +6,10 @@ import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.service.InternalTxService
-import sk.hudak.prco.task.update.ProductUpdateDataRedirectNotYetExistEvent
-import sk.hudak.prco.task.update.UpdateProductExecutors
+import sk.hudak.prco.task.update.*
 
 @Component
-class ProductUpdateDataRedirectNotYetExistEvent_6c_Handler(prcoObservable: PrcoObservable,
+class ProductUpdateDataRedirectNotYetExistEvent_6b_Handler(prcoObservable: PrcoObservable,
                                                            updateProductExecutors: UpdateProductExecutors,
                                                            val internalTxService: InternalTxService)
 
@@ -27,21 +26,16 @@ class ProductUpdateDataRedirectNotYetExistEvent_6c_Handler(prcoObservable: PrcoO
     override fun handle(event: ProductUpdateDataRedirectNotYetExistEvent) {
         LOG.trace("handle $event")
 
+        // if not available -> update only URL
+        if (!event.productUpdateData.isProductAvailable) {
+            // update only URL of product
+            prcoObservable.notify(ProcessProductUpdateUrlEvent(event.productUpdateData, event.productForUpdateData, event.identifier))
+            //  mark it as unavailable
+            prcoObservable.notify(MarkProductAsUnavailableEvent(event.productForUpdateData, event.identifier))
+        } else {
+            // product is available -> update product data
+            prcoObservable.notify(ProcessProductUpdateDataEvent(event.productUpdateData, event.productForUpdateData, event.identifier))
+        }
 
     }
-
-
-//    log.debug("product with redirect URL ${updateData.url} not exist")
-//    // if not available -> update only URL
-//    if (!updateData.isProductAvailable) {
-//        // update only URL of product
-//        internalTxService.updateProductUrl(productForUpdate.id, updateData.url)
-//        // mark it as unavailable
-//        internalTxService.markProductAsUnavailable(productForUpdate.id)
-//        return ContinueUpdateStatus.CONTINUE_TO_NEXT_ONE_ERROR
-//    }
-//
-//    // update product data
-//    internalTxService.updateProduct(updateData.toProductUpdateDataDto(productForUpdate.id))
-//    return ContinueUpdateStatus.CONTINUE_TO_NEXT_ONE_OK
 }

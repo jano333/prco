@@ -14,9 +14,9 @@ import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
 
 @Component
-class MarkProductAsUnavailableEvent_5b_Handler(prcoObservable: PrcoObservable,
-                                               updateProductExecutors: UpdateProductExecutors,
-                                               val internalTxService: InternalTxService)
+class MarkProductAsUnavailableEvent_e_Handler(prcoObservable: PrcoObservable,
+                                              updateProductExecutors: UpdateProductExecutors,
+                                              val internalTxService: InternalTxService)
 
     : UpdateProcessHandler<MarkProductAsUnavailableEvent>(prcoObservable, updateProductExecutors) {
 

@@ -16,14 +16,14 @@ import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
 
 @Component
-class ProcessProductUpdateDataEvent_5a_Handler(prcoObservable: PrcoObservable,
-                                               updateProductExecutors: UpdateProductExecutors,
-                                               val internalTxService: InternalTxService)
+class ProcessProductUpdateDataEvent_5ae_Handler(prcoObservable: PrcoObservable,
+                                                updateProductExecutors: UpdateProductExecutors,
+                                                val internalTxService: InternalTxService)
 
     : UpdateProcessHandler<ProcessProductUpdateDataEvent>(prcoObservable, updateProductExecutors) {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(ProcessProductUpdateDataEvent_5a_Handler::class.java)!!
+        private val LOG = LoggerFactory.getLogger(ProcessProductUpdateDataEvent_5ae_Handler::class.java)!!
     }
 
     override fun isSpecificType(event: CoreEvent): Boolean = event is ProcessProductUpdateDataEvent

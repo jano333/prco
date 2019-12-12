@@ -7,13 +7,28 @@ ProductDetailInfoForUpdateEvent => UpdateProductDocumentEvent
 UpdateProductDocumentEvent => ProductUpdateDataEvent
                            =# ParseProductUpdateDataErrorEvent
 
-ProductUpdateDataEvent  => ProductUpdateDataRedirectEvent(redirect)
-                        => MarkProductAsUnavailableEvent(product is NOT available)
-                        => ProcessProductUpdateDataEvent
+ProductUpdateDataEvent  =?> ProductUpdateDataRedirectEvent if (redirect)
+                        =?> MarkProductAsUnavailableEvent  else if (product is NOT available)
+                        =?> ProcessProductUpdateDataEvent  else (otherwise)
 
-ProcessProductUpdateDataEvent =>
 
-MarkProductAsUnavailableEvent =>
+ProductUpdateDataRedirectEvent =?> ProductUpdateDataRedirectNotYetExistEvent  if (product with new URL not exist)
+                               =?> ProductUpdateDataRedirectAlreadyExistEvent else (otherwise)
+                               =# FindRedirectProductByUrlErrorEvent
 
-ProductUpdateDataRedirectEvent =>
+ProductUpdateDataRedirectNotYetExistEvent =?> ProcessProductUpdateDataEvent if (product is NOT available)
+                                          =?> MarkProductAsUnavailableEvent if (product is NOT available)
+                                          =?> ProcessProductUpdateUrlEvent  else (otherwise)
+
+ProductUpdateDataRedirectAlreadyExistEvent  => ProcessRemoveOldProductEvent
+                                           =?> MarkProductAsUnavailableEvent            if (product is NOT available)
+                                           =?> ProcessProductUpdateDataForRedirectEvent else (otherwise)
+
+MarkProductAsUnavailableEvent => END
+
+ProcessProductUpdateUrlEvent => END (save new URL to DB)
+                             =# UpdateProductWithNewUrlErrorEvent
+
+ProcessProductUpdateDataEvent => END (save update to DB)
+
 
