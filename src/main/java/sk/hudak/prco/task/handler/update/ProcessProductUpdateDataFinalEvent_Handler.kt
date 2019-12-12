@@ -10,27 +10,27 @@ import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.handler.EshopLogSupplier
 import sk.hudak.prco.task.ng.toProductUpdateDataDto
 import sk.hudak.prco.task.update.ProcessProductUpdateDataErrorEvent
-import sk.hudak.prco.task.update.ProcessProductUpdateDataEvent
+import sk.hudak.prco.task.update.ProcessProductUpdateDataFinalEvent
 import sk.hudak.prco.task.update.UpdateProductExecutors
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
 
 @Component
-class ProcessProductUpdateDataEvent_5ae_Handler(prcoObservable: PrcoObservable,
-                                                updateProductExecutors: UpdateProductExecutors,
-                                                val internalTxService: InternalTxService)
+class ProcessProductUpdateDataFinalEvent_Handler(prcoObservable: PrcoObservable,
+                                                 updateProductExecutors: UpdateProductExecutors,
+                                                 val internalTxService: InternalTxService)
 
-    : UpdateProcessHandler<ProcessProductUpdateDataEvent>(prcoObservable, updateProductExecutors) {
+    : UpdateProcessHandler<ProcessProductUpdateDataFinalEvent>(prcoObservable, updateProductExecutors) {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(ProcessProductUpdateDataEvent_5ae_Handler::class.java)!!
+        private val LOG = LoggerFactory.getLogger(ProcessProductUpdateDataFinalEvent_Handler::class.java)!!
     }
 
-    override fun isSpecificType(event: CoreEvent): Boolean = event is ProcessProductUpdateDataEvent
-    override fun getEshopUuid(event: ProcessProductUpdateDataEvent): EshopUuid? = event.productForUpdateData.eshopUuid
-    override fun getIdentifier(event: ProcessProductUpdateDataEvent): String = event.identifier
+    override fun isSpecificType(event: CoreEvent): Boolean = event is ProcessProductUpdateDataFinalEvent
+    override fun getEshopUuid(event: ProcessProductUpdateDataFinalEvent): EshopUuid? = event.productForUpdateData.eshopUuid
+    override fun getIdentifier(event: ProcessProductUpdateDataFinalEvent): String = event.identifier
 
-    override fun handle(event: ProcessProductUpdateDataEvent) {
+    override fun handle(event: ProcessProductUpdateDataFinalEvent) {
         LOG.trace("handle $event")
 
         updateProductData(event.productUpdateData, event.productForUpdateData.id, event.identifier)
@@ -43,6 +43,7 @@ class ProcessProductUpdateDataEvent_5ae_Handler(prcoObservable: PrcoObservable,
                 }
     }
 
+    //TODO tato metoda je aj v ProcessProductUpdateDataForRedirectEvent_7b_Handler
     private fun updateProductData(productUpdateData: ProductUpdateData, id: Long, identifier: String): CompletableFuture<Long> {
         return CompletableFuture.supplyAsync(EshopLogSupplier(productUpdateData.eshopUuid, identifier,
                 Supplier {

@@ -12,6 +12,7 @@ import sk.hudak.prco.dto.product.ProductFullDto
 import sk.hudak.prco.manager.GroupProductResolver
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.ng.AddProductImpl
+import sk.hudak.prco.task.ng.UpdateProductImpl
 import sk.hudak.prco.task.old.AddImpl
 import sk.hudak.prco.task.old.AddImplNg
 import sk.hudak.prco.utils.CalculationUtils
@@ -26,9 +27,12 @@ class PrcoConsole(val internalTxService: InternalTxService,
                   val groupProductResolver: GroupProductResolver,
                   val addImpl: AddImpl,
                   val addImplNg: AddImplNg,
-                  val addEe: AddProductImpl) {
+                  val addEe: AddProductImpl,
+                  val updateEE: UpdateProductImpl) {
 
     fun showInConsole() {
+
+        updateEE.updateProductDataForEachProductInEshop(EshopUuid.MALL)
 
 //        addImplNg.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
 //        addEe.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, SearchKeyWordId.PAMPERS_ID)

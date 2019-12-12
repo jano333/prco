@@ -3,20 +3,14 @@ package sk.hudak.prco.task.add
 import org.jsoup.nodes.Document
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ProductNewData
+import sk.hudak.prco.events.BasicErrorEvent
 import sk.hudak.prco.events.CoreEvent
 import java.util.*
-
-/**
- * basic error event
- */
-interface BasicErrorEvent {
-    val event: CoreEvent
-    val error: Throwable
-}
 
 // TODO pridat identifier do error eventov pre vsetky...
 // TODO toString nezobrazuje createOn pre danu event...
 // FIXME identifier dat do CoreEvent..  pozor NewKeywordIdEvent toto nema identifier
+// TODO urobit final eventy pre add process tak ako je pre update process
 /**
  *  1. searchKeywordId -> searchKeyword
  */

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component
 import sk.hudak.prco.api.ErrorType
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ErrorCreateDto
+import sk.hudak.prco.events.BasicErrorEvent
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.events.PrcoObserver

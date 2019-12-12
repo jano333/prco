@@ -36,12 +36,12 @@ class ProductUpdateDataEvent_4_Handler(prcoObservable: PrcoObservable,
         // product is NOT available
         if (!event.productUpdateData.isProductAvailable) {
             //  mark it as unavailable
-            prcoObservable.notify(MarkProductAsUnavailableEvent(event.productForUpdateData, event.identifier))
+            prcoObservable.notify(MarkProductAsUnavailableFinalEvent(event.productForUpdateData, event.identifier))
             return
         }
 
         // product is available -> update product data
-        prcoObservable.notify(ProcessProductUpdateDataEvent(event.productUpdateData, event.productForUpdateData, event.identifier))
+        prcoObservable.notify(ProcessProductUpdateDataFinalEvent(event.productUpdateData, event.productForUpdateData, event.identifier))
     }
 }
 

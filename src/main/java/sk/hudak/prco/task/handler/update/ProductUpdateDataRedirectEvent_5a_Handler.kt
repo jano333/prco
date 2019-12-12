@@ -13,14 +13,14 @@ import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
 
 @Component
-class ProductUpdateDataRedirectEvent_5c_Handler(prcoObservable: PrcoObservable,
+class ProductUpdateDataRedirectEvent_5a_Handler(prcoObservable: PrcoObservable,
                                                 updateProductExecutors: UpdateProductExecutors,
                                                 val internalTxService: InternalTxService)
 
     : UpdateProcessHandler<ProductUpdateDataRedirectEvent>(prcoObservable, updateProductExecutors) {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(ProductUpdateDataRedirectEvent_5c_Handler::class.java)!!
+        private val LOG = LoggerFactory.getLogger(ProductUpdateDataRedirectEvent_5a_Handler::class.java)!!
     }
 
     override fun isSpecificType(event: CoreEvent): Boolean = event is ProductUpdateDataRedirectEvent

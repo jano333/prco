@@ -16,13 +16,13 @@ import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
 
 @Component
-class UpdateProductsInEshop_1_Handler(prcoObservable: PrcoObservable,
-                                      updateProductExecutors: UpdateProductExecutors,
-                                      val internalTxService: InternalTxService)
+class UpdateProductsInEshopEvent_1_Handler(prcoObservable: PrcoObservable,
+                                           updateProductExecutors: UpdateProductExecutors,
+                                           val internalTxService: InternalTxService)
     : UpdateProcessHandler<UpdateProductsInEshopEvent>(prcoObservable, updateProductExecutors) {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(UpdateProductsInEshop_1_Handler::class.java)!!
+        private val LOG = LoggerFactory.getLogger(UpdateProductsInEshopEvent_1_Handler::class.java)!!
     }
 
     override fun isSpecificType(event: CoreEvent): Boolean = event is UpdateProductsInEshopEvent
@@ -37,6 +37,8 @@ class UpdateProductsInEshop_1_Handler(prcoObservable: PrcoObservable,
                     if (exception == null) {
                         if (productDetailInfo != null) {
                             prcoObservable.notify(ProductDetailInfoForUpdateEvent(productDetailInfo, event.identifier))
+                            //TODO znova volanie loadNextProductToBeUpdated? lebo dalsi nech urobit
+
                         } else {
                             LOG.debug("nothing for update")
                         }

@@ -8,27 +8,27 @@ import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.handler.EshopLogSupplier
 import sk.hudak.prco.task.update.MarkProductAsUnavailableErrorEvent
-import sk.hudak.prco.task.update.MarkProductAsUnavailableEvent
+import sk.hudak.prco.task.update.MarkProductAsUnavailableFinalEvent
 import sk.hudak.prco.task.update.UpdateProductExecutors
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
 
 @Component
-class MarkProductAsUnavailableEvent_e_Handler(prcoObservable: PrcoObservable,
-                                              updateProductExecutors: UpdateProductExecutors,
-                                              val internalTxService: InternalTxService)
+class MarkProductAsUnavailableFinalEvent_Handler(prcoObservable: PrcoObservable,
+                                                 updateProductExecutors: UpdateProductExecutors,
+                                                 val internalTxService: InternalTxService)
 
-    : UpdateProcessHandler<MarkProductAsUnavailableEvent>(prcoObservable, updateProductExecutors) {
+    : UpdateProcessHandler<MarkProductAsUnavailableFinalEvent>(prcoObservable, updateProductExecutors) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(ProductUpdateDataEvent_4_Handler::class.java)!!
     }
 
-    override fun isSpecificType(event: CoreEvent): Boolean = event is MarkProductAsUnavailableEvent
-    override fun getEshopUuid(event: MarkProductAsUnavailableEvent): EshopUuid? = event.productForUpdateData.eshopUuid
-    override fun getIdentifier(event: MarkProductAsUnavailableEvent): String = event.identifier
+    override fun isSpecificType(event: CoreEvent): Boolean = event is MarkProductAsUnavailableFinalEvent
+    override fun getEshopUuid(event: MarkProductAsUnavailableFinalEvent): EshopUuid? = event.productForUpdateData.eshopUuid
+    override fun getIdentifier(event: MarkProductAsUnavailableFinalEvent): String = event.identifier
 
-    override fun handle(event: MarkProductAsUnavailableEvent) {
+    override fun handle(event: MarkProductAsUnavailableFinalEvent) {
         LOG.trace("handle $event")
 
         markProductAsUnavailable(event.productForUpdateData.id, event.productForUpdateData.eshopUuid, event.identifier)

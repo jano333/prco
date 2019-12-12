@@ -72,7 +72,7 @@ class ProductBestPriceInGroupDto : DtoAble {
                 '}'.toString()
     }
 }
-//FIXME premenovat na ProductData
+//FIXME premenovat na ProductData??? nieco lepsie dat ...
 data class ProductDetailInfo(val id: Long,
                              val url: String,
                              val eshopUuid: EshopUuid)
