@@ -10,9 +10,14 @@ import sk.hudak.prco.events.BasicErrorEvent
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.events.PrcoObserver
+import sk.hudak.prco.exception.ProductPriceNotFoundException
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.add.*
+import sk.hudak.prco.task.update.ParseProductUpdateDataErrorEvent
 import java.util.*
+import java.util.concurrent.CompletionException
+
+// TODO urobit to tiez asynchronne cez osobintne vlakla tu update metodu tak ako je add alebo update event handlery
 
 @Component
 class ErrorEventProductHandler(prcoObservable: PrcoObservable,
@@ -54,12 +59,41 @@ class ErrorEventProductHandler(prcoObservable: PrcoObservable,
             is ParseEshopUuidErrorEvent -> handle_ParseEshopUuidErrorEvent(event)
 
             // update process
+            is ParseProductUpdateDataErrorEvent -> handle_ParseProductUpdateDataErrorEvent(event)
         }
     }
 
+    private fun handle_ParseProductUpdateDataErrorEvent(errorEvent: ParseProductUpdateDataErrorEvent) {
+        when (errorEvent.error) {
+            !is CompletionException -> {
+                //TODO log nie je to CompletionException
+                return
+            }
+            else -> {
+                if (errorEvent.error.cause == null) {
+                    //TODO log
+                    return
+                }
+
+                when (errorEvent.error.cause) {
+                    is ProductPriceNotFoundException -> {
+                        internalTxService.createError(ErrorCreateDto(
+                                eshopUuid = errorEvent.event.productForUpdate.eshopUuid,
+                                errorType = ErrorType.PARSING_PRODUCT_UPDATE_DATA,
+                                url = errorEvent.event.productForUpdate.url,
+                                message = errorEvent.error.message,
+                                fullMsg = ExceptionUtils.getStackTrace(errorEvent.error),
+                                additionalInfo = errorEvent.event.toString()))
+                    }
+                }
+            }
+        }
+    }
+
+
     private fun logErrorEvent(errorEvent: BasicErrorEvent) {
-        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}")
-        LOG.error("source event ${errorEvent.event}")
+        LOG.error("error event: ${errorEvent.javaClass.simpleName}")
+        LOG.error("error while processing source event: ${errorEvent.event}")
         LOG.error("${errorEvent.error.message}", errorEvent.error)
     }
 
