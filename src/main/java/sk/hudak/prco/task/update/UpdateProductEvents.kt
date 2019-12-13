@@ -20,7 +20,14 @@ data class ProductDetailInfoForUpdateEvent(val productDetailInfo: ProductDetailI
 
 data class UpdateProductDocumentEvent(val document: Document,
                                       val productForUpdate: ProductDetailInfo,
-                                      val identifier: String) : CoreEvent()
+                                      val identifier: String) : CoreEvent() {
+    override fun toString(): String {
+        return "UpdateProductDocumentEvent(" +
+                "document=${document.location()}, " +
+                "productForUpdate=$productForUpdate, " +
+                "identifier='$identifier')"
+    }
+}
 
 data class RetrieveUpdateDocumentForUrlErrorEvent(override val event: ProductDetailInfoForUpdateEvent,
                                                   override val error: Throwable) : CoreEvent(), BasicErrorEvent

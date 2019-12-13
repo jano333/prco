@@ -2,14 +2,12 @@ package sk.hudak.prco.task.update
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.task.ProductExecutors
 import java.util.concurrent.*
 import java.util.concurrent.atomic.AtomicInteger
 import javax.annotation.PreDestroy
 
 @Component
-class UpdateProductExecutors(val eshopDocumentExecutor: ProductExecutors) {
+class UpdateProductExecutors {
 
     val handlerTaskExecutor: ExecutorService = createInternalThreadExecutor("update-handler-task", 10)
     val internalServiceExecutor: ExecutorService = createInternalThreadExecutor("update-internal-service", 20)
@@ -24,15 +22,8 @@ class UpdateProductExecutors(val eshopDocumentExecutor: ProductExecutors) {
         LOG.trace("start shutting down of all executors")
         handlerTaskExecutor.shutdownNow()
         internalServiceExecutor.shutdownNow()
-//        searchUrlBuilderExecutor.shutdownNow()
-//        htmlParserExecutor.shutdownNow()
-        eshopDocumentExecutor.shutdownAllNow()
-//        eshopUuidParserExecutor.shutdownNow()
+        htmlParserExecutor.shutdownNow()
         LOG.debug("shutting down of all executors completed")
-    }
-
-    fun getEshopExecutor(eshopUuid: EshopUuid): ScheduledExecutorService {
-        return eshopDocumentExecutor.getEshopExecutor(eshopUuid)
     }
 
     //FIXME spolocna metoda aj pre add executor

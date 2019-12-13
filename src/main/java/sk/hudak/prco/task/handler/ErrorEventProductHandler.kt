@@ -1,4 +1,4 @@
-package sk.hudak.prco.task.handler.add
+package sk.hudak.prco.task.handler
 
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.slf4j.LoggerFactory
@@ -15,13 +15,13 @@ import sk.hudak.prco.task.add.*
 import java.util.*
 
 @Component
-class AddProductErrorHandler(prcoObservable: PrcoObservable,
-                             private val addProductExecutors: AddProductExecutors,
-                             private val internalTxService: InternalTxService)
+class ErrorEventProductHandler(prcoObservable: PrcoObservable,
+                               private val addProductExecutors: AddProductExecutors,
+                               private val internalTxService: InternalTxService)
     : PrcoObserver {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(AddProductErrorHandler::class.java)!!
+        private val LOG = LoggerFactory.getLogger(ErrorEventProductHandler::class.java)!!
     }
 
     // registering itself as observer
@@ -38,6 +38,7 @@ class AddProductErrorHandler(prcoObservable: PrcoObservable,
 
         // process specifig errors if needed...
         when (event) {
+            // add process
             is RetrieveKeywordBaseOnKeywordIdErrorEvent -> handle_RetrieveKeywordBaseOnKeywordIdErrorEvent(event)
             is BuildSearchUrlForKeywordErrorEvent -> handle_BuildSearchUrlForKeywordErrorEvent(event)
             is RetrieveDocumentForSearchUrlErrorEvent -> handle_RetrieveDocumentForSearchUrlErrorEvent(event)
@@ -51,15 +52,18 @@ class AddProductErrorHandler(prcoObservable: PrcoObservable,
             is BuildNextPageSearchUrlErrorEvent -> handle_BuildNextPageSearchUrlErrorEvent(event)
             is FilterNotExistingProductErrorEvent -> handle_FilterNotExistingProductErrorEvent(event)
             is ParseEshopUuidErrorEvent -> handle_ParseEshopUuidErrorEvent(event)
-            else -> {
-                //TODO
-                logErrorEvent(event as BasicErrorEvent)
-            }
+
+            // update process
         }
     }
 
+    private fun logErrorEvent(errorEvent: BasicErrorEvent) {
+        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}")
+        LOG.error("source event ${errorEvent.event}")
+        LOG.error("${errorEvent.error.message}", errorEvent.error)
+    }
+
     private fun handle_ParseEshopUuidErrorEvent(errorEvent: ParseEshopUuidErrorEvent) {
-        logErrorEvent(errorEvent)
         internalTxService.createError(ErrorCreateDto(
                 //TODO eshop je poviiny ale tu ho nemame...
                 EshopUuid.OBI,
@@ -76,12 +80,6 @@ class AddProductErrorHandler(prcoObservable: PrcoObservable,
 
     private fun handle_BuildSearchUrlForKeywordErrorEvent(errorEvent: BuildSearchUrlForKeywordErrorEvent) {
         addProductExecutors.shutdownNowAllExecutors()
-    }
-
-    private fun logErrorEvent(errorEvent: BasicErrorEvent) {
-        LOG.error("error while processing event ${errorEvent.event.javaClass.simpleName}")
-        LOG.error("source event ${errorEvent.event}")
-        LOG.error("${errorEvent.error.message}", errorEvent.error)
     }
 
     private fun handle_FilterNotExistingProductErrorEvent(errorEvent: FilterNotExistingProductErrorEvent) {

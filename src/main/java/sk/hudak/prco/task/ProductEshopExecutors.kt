@@ -11,18 +11,32 @@ import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.*
 import java.util.concurrent.locks.ReentrantLock
+import javax.annotation.PreDestroy
 
 @Component
-class ProductExecutors {
+class ProductEshopExecutors {
 
     //TODO PrcoUncaughtExceptionHandler
 
     private val eshopDocumentExecutor = EnumMap<EshopUuid, ScheduledExecutorService>(EshopUuid::class.java)
 
+    companion object {
+        private val LOG = LoggerFactory.getLogger(ProductEshopExecutors::class.java)!!
+    }
+
     init {
         EshopUuid.values().forEach {
             eshopDocumentExecutor[it] = createEshopThreadExecutor(it)
         }
+    }
+
+    @PreDestroy
+    fun shutdownAllNow() {
+        LOG.trace("start shutting down of all eshop executors")
+        eshopDocumentExecutor.values.forEach {
+            it.shutdownNow()
+        }
+        LOG.debug("shutting down of all eshop executors completed")
     }
 
     private fun createEshopThreadExecutor(eshopUuid: EshopUuid): ScheduledExecutorService {
@@ -33,11 +47,6 @@ class ProductExecutors {
         })
     }
 
-    fun shutdownAllNow() {
-        eshopDocumentExecutor.values.forEach {
-            it.shutdownNow()
-        }
-    }
 
     fun getEshopExecutor(eshopUuid: EshopUuid): ScheduledExecutorService {
         return eshopDocumentExecutor[eshopUuid]!!

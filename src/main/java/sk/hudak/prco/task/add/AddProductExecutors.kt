@@ -3,13 +3,13 @@ package sk.hudak.prco.task.add
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.task.ProductExecutors
+import sk.hudak.prco.task.ProductEshopExecutors
 import java.util.concurrent.*
 import java.util.concurrent.atomic.AtomicInteger
 import javax.annotation.PreDestroy
 
 @Component
-class AddProductExecutors(val eshopDocumentExecutor: ProductExecutors) {
+class AddProductExecutors(val eshopDocumentExecutor: ProductEshopExecutors) {
 
     val handlerTaskExecutor: ExecutorService = createInternalThreadExecutor("add-handler-task", 10)
     val searchUrlBuilderExecutor: ExecutorService = createInternalThreadExecutor("add-search-url", 5)
