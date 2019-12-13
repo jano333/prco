@@ -52,10 +52,10 @@ class DeadlockedThreadDetector(private val period: Long,
     private val deadlockCheck = Runnable {
         val deadlockedThreadIds: LongArray? = mbean.findDeadlockedThreads()
         if (deadlockedThreadIds != null) {
-            LOG.trace("deadlocked threads detected")
+            LOG.warn("deadlocked threads detected")
             deadlockHandler.handleDeadlock(mbean.getThreadInfo(deadlockedThreadIds))
         } else {
-            LOG.trace("no deadlocked threads detected")
+            LOG.debug("no deadlocked threads detected")
         }
     }
 

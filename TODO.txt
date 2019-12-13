@@ -1,3 +1,69 @@
+2019-12-13 15:03:55,746 DEBUG [PERINBABA-process-thread] s.h.p.p.e.JSoupProductParser[JSoupProductParser.kt:258][PERINBABA-8a8961c2-a02c-4d48-b8f3-12a65480e1db] request URL: http://www.perinbaba.sk/plienky-premium-care-4-maxi-8-14kg-52ks.html
+2019-12-13 15:03:55,959 ERROR [PERINBABA-process-thread] s.h.p.t.h.ErrorEventProductHandler[ErrorEventProductHandler.kt:104][PERINBABA-8a8961c2-a02c-4d48-b8f3-12a65480e1db] error event: RetrieveUpdateDocumentForUrlErrorEvent
+2019-12-13 15:03:55,961 ERROR [PERINBABA-process-thread] s.h.p.t.h.ErrorEventProductHandler[ErrorEventProductHandler.kt:105][PERINBABA-8a8961c2-a02c-4d48-b8f3-12a65480e1db] error while processing source event: ProductDetailInfoForUpdateEvent(productDetailInfo=ProductDetailInfo(id=4050, url=http://www.perinbaba.sk/plienky-premium-care-4-maxi-8-14kg-52ks.html, eshopUuid=PERINBABA), identifier=8a8961c2-a02c-4d48-b8f3-12a65480e1db)
+2019-12-13 15:03:55,962 ERROR [PERINBABA-process-thread] s.h.p.t.h.ErrorEventProductHandler[ErrorEventProductHandler.kt:106][PERINBABA-8a8961c2-a02c-4d48-b8f3-12a65480e1db] sk.hudak.prco.exception.CoreParserException: error creating document for url 'http://www.perinbaba.sk/plienky-premium-care-4-maxi-8-14kg-52ks.html':
+java.util.concurrent.CompletionException: sk.hudak.prco.exception.CoreParserException: error creating document for url 'http://www.perinbaba.sk/plienky-premium-care-4-maxi-8-14kg-52ks.html':
+	at java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:273)
+	at java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:280)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1592)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: sk.hudak.prco.exception.CoreParserException: error creating document for url 'http://www.perinbaba.sk/plienky-premium-care-4-maxi-8-14kg-52ks.html':
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.convertToParserException(JSoupProductParser.kt:296)
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.retrieveDocument(JSoupProductParser.kt:277)
+	at sk.hudak.prco.task.helper.BasicDocumentHelper$retrieveDocumentForUrl$1.get(BasicDocumentHelper.kt:24)
+	at sk.hudak.prco.task.helper.BasicDocumentHelper$retrieveDocumentForUrl$1.get(BasicDocumentHelper.kt:13)
+	at sk.hudak.prco.task.handler.EshopLogSupplier.get(BasicHandler.kt:23)
+	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1590)
+	... 7 common frames omitted
+Caused by: javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:192)
+	at sun.security.ssl.SSLSocketImpl.fatal(SSLSocketImpl.java:1949)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:302)
+	at sun.security.ssl.Handshaker.fatalSE(Handshaker.java:296)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1506)
+	at sun.security.ssl.ClientHandshaker.processMessage(ClientHandshaker.java:216)
+	at sun.security.ssl.Handshaker.processLoop(Handshaker.java:979)
+	at sun.security.ssl.Handshaker.process_record(Handshaker.java:914)
+	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:1062)
+	at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1375)
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1403)
+	at sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1387)
+	at sun.net.www.protocol.https.HttpsClient.afterConnect(HttpsClient.java:559)
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:185)
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.connect(HttpsURLConnectionImpl.java:153)
+	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:652)
+	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:679)
+	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:629)
+	at org.jsoup.helper.HttpConnection.execute(HttpConnection.java:261)
+	at sk.hudak.prco.parser.eshop.JSoupProductParser.retrieveDocument(JSoupProductParser.kt:269)
+	... 11 common frames omitted
+Caused by: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:387)
+	at sun.security.validator.PKIXValidator.engineValidate(PKIXValidator.java:292)
+	at sun.security.validator.Validator.validate(Validator.java:260)
+	at sun.security.ssl.X509TrustManagerImpl.validate(X509TrustManagerImpl.java:324)
+	at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:229)
+	at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:105)
+	at sk.hudak.prco.ssl.PrcoCustomTrustManager.checkServerTrusted(SSLHandling.kt:287)
+	at sun.security.ssl.AbstractTrustManagerWrapper.checkServerTrusted(SSLContextImpl.java:922)
+	at sun.security.ssl.ClientHandshaker.serverCertificate(ClientHandshaker.java:1488)
+	... 26 common frames omitted
+Caused by: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+	at sun.security.provider.certpath.SunCertPathBuilder.build(SunCertPathBuilder.java:146)
+	at sun.security.provider.certpath.SunCertPathBuilder.engineBuild(SunCertPathBuilder.java:131)
+	at java.security.cert.CertPathBuilder.build(CertPathBuilder.java:280)
+	at sun.security.validator.PKIXValidator.doBuild(PKIXValidator.java:382)
+	... 34 common frames omitted
+----------------
+ZLE je dostupny:
+c7e56ca] product is unavailable: https://www.brendon.sk/pampers-active-baby-dry-giant-pack-4-maxi-70-pcs-jednorazove-plienky-11842402
+---------------
 2019-12-09 15:04:32,771 DEBUG [add-internal-service-pool-7-thread-14] s.h.p.s.i.ErrorServiceImpl[ErrorServiceImpl.kt:103][BRENDON-6857cd1a-a35e-4aa2-82fa-38251823eba3_2_1] create entity ErrorEntity with id 7273 msg: sk.hudak.prco.exception.PrcoRuntimeException: New product https://www.brendon.sk/pampers-premium-care-smallpack-s2-23-pcs-jednorazove-plienky-12386002 has none name
 2019-12-09 15:04:32,772 WARN [add-internal-service-pool-7-thread-14] o.h.e.j.s.SqlExceptionHelper[SqlExceptionHelper.java:129][BRENDON-6857cd1a-a35e-4aa2-82fa-38251823eba3_2_1] SQL Error: 22001, SQLState: 22001
 2019-12-09 15:04:32,772 ERROR [add-internal-service-pool-7-thread-14] o.h.e.j.s.SqlExceptionHelper[SqlExceptionHelper.java:131][BRENDON-6857cd1a-a35e-4aa2-82fa-38251823eba3_2_1] Value too long for column "ADDITIONAL_INFO VARCHAR(255)": "'ProductNewDataEvent(productNewData=ProductNewData(eshopUuid=BRENDON, url=https://www.brendon.sk/pampers-premium-care-smallpack-... (430)"; SQL statement:

@@ -32,10 +32,8 @@ class MarkProductAsUnavailableFinalEvent_Handler(prcoObservable: PrcoObservable,
         LOG.trace("handle $event")
 
         markProductAsUnavailable(event.productForUpdateData.id, event.productForUpdateData.eshopUuid, event.identifier)
-                .handle { id, error ->
-                    if (error == null) {
-                        LOG.debug("product with id $id was marked as unavailable")
-                    } else {
+                .handle { _, error ->
+                    if (error != null) {
                         prcoObservable.notify(MarkProductAsUnavailableErrorEvent(event, error))
                     }
                 }

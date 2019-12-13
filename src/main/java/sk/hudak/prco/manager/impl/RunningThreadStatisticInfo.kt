@@ -51,7 +51,7 @@ class RunningThreadStatisticInfo(private val addProductExecutors: AddProductExec
                     state = "completed"
                 }
 
-                LOG.debug("$eshopUuid executor: $state, ${eshopExecutor.completedTaskCount} of ${eshopExecutor.taskCount} are completed ")
+                LOG.debug("$eshopUuid executor, state: $state, ${eshopExecutor.completedTaskCount}/${eshopExecutor.taskCount} completed ")
             }
         }
 

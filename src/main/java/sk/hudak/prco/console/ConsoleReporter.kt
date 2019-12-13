@@ -13,8 +13,6 @@ import sk.hudak.prco.manager.GroupProductResolver
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.ng.AddProductImpl
 import sk.hudak.prco.task.ng.UpdateProductImpl
-import sk.hudak.prco.task.old.AddImpl
-import sk.hudak.prco.task.old.AddImplNg
 import sk.hudak.prco.utils.CalculationUtils
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -25,14 +23,16 @@ import java.util.Arrays.asList
 @Component
 class PrcoConsole(val internalTxService: InternalTxService,
                   val groupProductResolver: GroupProductResolver,
-                  val addImpl: AddImpl,
-                  val addImplNg: AddImplNg,
                   val addEe: AddProductImpl,
                   val updateEE: UpdateProductImpl) {
 
     fun showInConsole() {
 
-        updateEE.updateProductDataForEachProductInEshop(EshopUuid.MALL)
+        //        updateEE.updateProductDataForEachProductInEshop(EshopUuid.MALL)
+        EshopUuid.values().forEach {
+            updateEE.updateProductDataForEachProductInEshop(it)
+            Thread.sleep(1 * 1000)
+        }
 
 //        addImplNg.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
 //        addEe.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, SearchKeyWordId.PAMPERS_ID)

@@ -34,10 +34,8 @@ class ProcessProductUpdateDataFinalEvent_Handler(prcoObservable: PrcoObservable,
         LOG.trace("handle $event")
 
         updateProductData(event.productUpdateData, event.productForUpdateData.id, event.identifier)
-                .handle { id, error ->
-                    if (error == null) {
-                        LOG.debug("product with id $id was updated")
-                    } else {
+                .handle { _, error ->
+                    if (error != null) {
                         prcoObservable.notify(ProcessProductUpdateDataErrorEvent(event, error))
                     }
                 }
@@ -49,6 +47,7 @@ class ProcessProductUpdateDataFinalEvent_Handler(prcoObservable: PrcoObservable,
                 Supplier {
                     LOG.trace("updateProductData")
                     internalTxService.updateProduct(productUpdateData.toProductUpdateDataDto(id))
+                    LOG.debug("product with id $id was updated")
                     id
                 }),
                 updateProductExecutors.internalServiceExecutor)

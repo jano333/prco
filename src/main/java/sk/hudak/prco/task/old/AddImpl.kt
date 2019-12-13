@@ -279,7 +279,7 @@ class EshopScheduledExecutor(val eshopUuid: EshopUuid, threadFactory: ThreadFact
         try {
             if (lastRunDate == null) {
                 // spusti to hned
-                LOG.debug("scheduling command for $eshopUuid to be run now")
+                LOG.info("scheduling command for $eshopUuid to be run now")
                 // nastavim novy cas...
                 lastRunDate = Date()
             } else {
@@ -291,7 +291,7 @@ class EshopScheduledExecutor(val eshopUuid: EshopUuid, threadFactory: ThreadFact
                         Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(),
                         dateTimeToRun.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
 
-                LOG.debug("scheduling command for $eshopUuid to be run after $countOfSecond at $dateTimeToRun")
+                LOG.info("scheduling command for $eshopUuid to be run after $countOfSecond at $dateTimeToRun")
                 // nastavim novy cas...
                 lastRunDate = dateTimeToRun
             }
@@ -301,14 +301,14 @@ class EshopScheduledExecutor(val eshopUuid: EshopUuid, threadFactory: ThreadFact
         }
 
         if (countOfSecond != null) {
-            LOG.debug("-> scheduling command")
+            LOG.trace("-> scheduling command")
             val schedule = super.schedule(command, countOfSecond, TimeUnit.SECONDS)
-            LOG.debug("<- scheduling command")
+            LOG.trace("<- scheduling command")
 
         } else {
-            LOG.debug("-> running command")
+            LOG.trace("-> running command")
             super.execute(command)
-            LOG.debug("<- running command")
+            LOG.trace("<- running command")
         }
     }
 

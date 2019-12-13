@@ -14,9 +14,9 @@ class UpdateProductImpl(private val prcoObservable: PrcoObservable) {
     }
 
     fun updateProductDataForEachProductInEshop(eshopUuid: EshopUuid) {
-        LOG.trace(">> updateProductDataForEachProductInEshop")
+        LOG.trace(">> updateProductDataForEachProductInEshop $eshopUuid")
         prcoObservable.notify(UpdateProductsInEshopEvent(eshopUuid))
-        LOG.trace("<< updateProductDataForEachProductInEshop")
+        LOG.trace("<< updateProductDataForEachProductInEshop $eshopUuid")
     }
 
 }

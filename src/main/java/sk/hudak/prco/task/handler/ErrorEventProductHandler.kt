@@ -14,6 +14,7 @@ import sk.hudak.prco.exception.ProductPriceNotFoundException
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.add.*
 import sk.hudak.prco.task.update.ParseProductUpdateDataErrorEvent
+import sk.hudak.prco.task.update.RetrieveUpdateDocumentForUrlErrorEvent
 import java.util.*
 import java.util.concurrent.CompletionException
 
@@ -60,6 +61,9 @@ class ErrorEventProductHandler(prcoObservable: PrcoObservable,
 
             // update process
             is ParseProductUpdateDataErrorEvent -> handle_ParseProductUpdateDataErrorEvent(event)
+            is RetrieveUpdateDocumentForUrlErrorEvent -> {
+                //nic je na to samostatny handler
+            }
         }
     }
 
@@ -88,6 +92,11 @@ class ErrorEventProductHandler(prcoObservable: PrcoObservable,
                 }
             }
         }
+    }
+
+    private fun handle_RetrieveUpdateDocumentForUrlErrorEvent(errorEvent: RetrieveUpdateDocumentForUrlErrorEvent) {
+        //nic, je na to samostatny handler...
+
     }
 
 

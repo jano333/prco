@@ -42,6 +42,7 @@ private class InternalThreadFactory(prefix: String) : ThreadFactory {
 
     companion object {
         private val poolNumber = AtomicInteger(1)
+        private val LOG = LoggerFactory.getLogger(InternalThreadFactory::class.java)!!
     }
 
     init {
@@ -60,6 +61,10 @@ private class InternalThreadFactory(prefix: String) : ThreadFactory {
             t.isDaemon = false
         if (t.priority != Thread.NORM_PRIORITY)
             t.priority = Thread.NORM_PRIORITY
+
+        t.uncaughtExceptionHandler = Thread.UncaughtExceptionHandler { t: Thread, e: Throwable ->
+            LOG.error("error in thread ${t.name}", e)
+        }
         return t
     }
 
