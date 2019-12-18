@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.servlet.ModelAndView
 import sk.hudak.prco.dto.GroupFilterDto
 import sk.hudak.prco.dto.product.ProductNotInAnyGroupDto
-import sk.hudak.prco.manager.GroupProductResolver
+import sk.hudak.prco.manager.group.GroupProductResolver
 import sk.hudak.prco.service.UIService
 import sk.hudak.prco.ui.MvcConstants.ATTRIBUTE_COUNT_OF_PRODUCTS_NOT_IN_ANY_GROUP
 import sk.hudak.prco.ui.MvcConstants.REDIRECT_TO_VIEW_PRODUCTS_NOT_IN_ANY_GROUP

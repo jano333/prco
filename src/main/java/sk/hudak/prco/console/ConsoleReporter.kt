@@ -9,10 +9,10 @@ import sk.hudak.prco.dto.GroupUpdateDto
 import sk.hudak.prco.dto.UnitData
 import sk.hudak.prco.dto.product.ProductFilterUIDto
 import sk.hudak.prco.dto.product.ProductFullDto
-import sk.hudak.prco.manager.GroupProductResolver
+import sk.hudak.prco.manager.add.AddProductManagerImpl
+import sk.hudak.prco.manager.group.GroupProductResolver
+import sk.hudak.prco.manager.update.UpdateProductManagerImpl
 import sk.hudak.prco.service.InternalTxService
-import sk.hudak.prco.task.ng.AddProductImpl
-import sk.hudak.prco.task.ng.UpdateProductImpl
 import sk.hudak.prco.utils.CalculationUtils
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -23,8 +23,8 @@ import java.util.Arrays.asList
 @Component
 class PrcoConsole(val internalTxService: InternalTxService,
                   val groupProductResolver: GroupProductResolver,
-                  val addEe: AddProductImpl,
-                  val updateEE: UpdateProductImpl) {
+                  val addEe: AddProductManagerImpl,
+                  val updateEEManager: UpdateProductManagerImpl) {
 
     fun showInConsole() {
 

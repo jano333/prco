@@ -3,6 +3,11 @@ package sk.hudak.prco.events
 import java.util.*
 
 /**
+ * Marker for start event
+ */
+interface StartEvent
+
+/**
  * Marker for final event
  */
 interface FinalEvent
@@ -19,12 +24,12 @@ abstract class CoreEvent {
  * basic error event
  */
 //FIXME prerobit na class ktory extenduje CoreEvent !!!
-interface BasicErrorEvent {
+interface ErrorEvent {
     val event: CoreEvent
     val error: Throwable
 }
 
-interface UpdateErrorEvent : BasicErrorEvent
+interface UpdateErrorEvent : ErrorEvent
 
 
 interface PrcoObserver : Observer {

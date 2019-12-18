@@ -3,10 +3,8 @@ package sk.hudak.prco.z.old
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.manager.impl.RunningThreadStatisticInfo
+import sk.hudak.prco.manager.todo.RunningThreadStatisticInfo
 import sk.hudak.prco.service.InternalTxService
-import sk.hudak.prco.task.old.EshopTaskManager
-import sk.hudak.prco.task.old.TaskStatus
 import java.util.*
 
 // TODO prerobit cez spring scheduled bean v priavidelnych intervaloch nech zobrazuje statistiku

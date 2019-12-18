@@ -4,6 +4,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
+//TODO dokoncit lebo toto sa uz nepouziva, a berie sa z db
 public enum GroupProductKeywords {
 
     //    TODO pridat zoznam ktore nesmie mat, data aby do nutrilon 4 nam nedava nutrilon 4 profutura

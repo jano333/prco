@@ -10,14 +10,11 @@ import sk.hudak.prco.dto.GroupFilterDto
 import sk.hudak.prco.dto.SearchKeywordCreateDto
 import sk.hudak.prco.dto.product.NotInterestedProductFindDto
 import sk.hudak.prco.dto.product.ProductFilterUIDto
-import sk.hudak.prco.manager.GroupProductResolver
-import sk.hudak.prco.manager.WatchDogManager
-import sk.hudak.prco.manager.addprocess.AddingNewProductManager
 import sk.hudak.prco.manager.export.DbExportImportManager
 import sk.hudak.prco.manager.export.HtmlExportManager
+import sk.hudak.prco.manager.group.GroupProductResolver
 import sk.hudak.prco.manager.remove.RemoveEshopManager
-import sk.hudak.prco.manager.updateprocess.UpdateProductDataManager
-import sk.hudak.prco.manager.updateprocess.UpdateStatusInfo
+import sk.hudak.prco.manager.watchdog.WatchDogManager
 import sk.hudak.prco.parser.html.HtmlParser
 import sk.hudak.prco.reporter.FacebookReporter
 import sk.hudak.prco.service.InternalTxService
@@ -26,8 +23,7 @@ import sk.hudak.prco.service.WatchDogService
 import sk.hudak.prco.ssl.PrcoSslManager
 import sk.hudak.prco.utils.CalculationUtils
 import sk.hudak.prco.utils.DeadlockedThreadDetector
-import sk.hudak.prco.z.old.EshopThreadStatisticManager
-import sk.hudak.prco.z.old.UpdateProductDataListener
+import sk.hudak.prco.z.old.*
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat

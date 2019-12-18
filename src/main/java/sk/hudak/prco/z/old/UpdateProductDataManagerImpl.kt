@@ -10,14 +10,9 @@ import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.events.PrcoObserver
 import sk.hudak.prco.exception.PrcoRuntimeException
-import sk.hudak.prco.manager.updateprocess.UpdateProductDataManager
-import sk.hudak.prco.manager.updateprocess.UpdateStatusInfo
 import sk.hudak.prco.mapper.PrcoOrikaMapper
 import sk.hudak.prco.parser.html.HtmlParser
 import sk.hudak.prco.service.InternalTxService
-import sk.hudak.prco.task.old.EshopTaskManager
-import sk.hudak.prco.task.old.ExceptionHandlingRunnable
-import sk.hudak.prco.task.old.SingleContext
 import sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe
 import sk.hudak.prco.utils.ThreadUtils.sleepSafe
 import sk.hudak.prco.z.old.UpdateProductDataListenerAdapter.Companion.EMPTY_INSTANCE

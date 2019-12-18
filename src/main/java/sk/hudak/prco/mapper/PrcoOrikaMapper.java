@@ -13,12 +13,12 @@ import sk.hudak.prco.dto.product.NewProductCreateDto;
 import sk.hudak.prco.dto.product.NewProductFullDto;
 import sk.hudak.prco.dto.product.ProductAddingToGroupDto;
 import sk.hudak.prco.dto.product.ProductFullDto;
-import sk.hudak.prco.manager.updateprocess.UpdateStatusInfo;
 import sk.hudak.prco.model.ErrorEntity;
 import sk.hudak.prco.model.GroupEntity;
 import sk.hudak.prco.model.NewProductEntity;
 import sk.hudak.prco.model.NotInterestedProductEntity;
 import sk.hudak.prco.model.ProductEntity;
+import sk.hudak.prco.z.old.UpdateStatusInfo;
 
 @Component
 public class PrcoOrikaMapper extends ConfigurableMapper {

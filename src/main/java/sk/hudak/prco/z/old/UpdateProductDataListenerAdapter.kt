@@ -1,7 +1,6 @@
 package sk.hudak.prco.z.old
 
 import org.slf4j.LoggerFactory
-import sk.hudak.prco.manager.updateprocess.UpdateStatusInfo
 
 class UpdateProductDataListenerAdapter : UpdateProductDataListener {
 

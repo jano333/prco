@@ -3,8 +3,8 @@ package sk.hudak.prco.events
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.kotlin.color
-import sk.hudak.prco.manager.addprocess.AddProductsToEshopByKeywordFinishedEvent
 import sk.hudak.prco.utils.ConsoleColor
+import sk.hudak.prco.z.old.AddProductsToEshopByKeywordFinishedEvent
 import java.util.*
 
 @Component

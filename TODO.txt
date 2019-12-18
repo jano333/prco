@@ -18,7 +18,7 @@ Caused by: sk.hudak.prco.exception.CoreParserException: error creating document 
 	at sk.hudak.prco.parser.eshop.JSoupProductParser.retrieveDocument(JSoupProductParser.kt:273)
 	at sk.hudak.prco.task.add.DocumentHelper$retrieveDocumentForUrl$1.get(DocumentHelper.kt:24)
 	at sk.hudak.prco.task.add.DocumentHelper$retrieveDocumentForUrl$1.get(DocumentHelper.kt:13)
-	at sk.hudak.prco.task.handler.EshopLogSupplier.get(BasicHandler.kt:23)
+	at sk.hudak.prco.events.handler.EshopLogSupplier.get(BasicHandler.kt:23)
 	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1590)
 	... 7 common frames omitted
 Caused by: javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
@@ -30,9 +30,9 @@ chyba transactionId
 -------------------
 vsetky maju problem
 Caused by: sk.hudak.prco.exception.PrcoRuntimeException: New product https://www.brendon.sk/pampers-premium-care-smallpack-s2-23-pcs-jednorazove-plienky-12386002 has none name
-	at sk.hudak.prco.task.handler.add.ProductNewDataEvent_8b_Handler$saveProductNewData$1.get(ProductNewDataEvent_8b_Handler.kt:53)
-	at sk.hudak.prco.task.handler.add.ProductNewDataEvent_8b_Handler$saveProductNewData$1.get(ProductNewDataEvent_8b_Handler.kt:22)
-	at sk.hudak.prco.task.handler.EshopLogSupplier.get(BasicHandler.kt:23)
+	at sk.hudak.prco.manager.add.event.handler.ProductNewDataEvent_8b_Handler$saveProductNewData$1.get(ProductNewDataEvent_8b_Handler.kt:53)
+	at sk.hudak.prco.manager.add.event.handler.ProductNewDataEvent_8b_Handler$saveProductNewData$1.get(ProductNewDataEvent_8b_Handler.kt:22)
+	at sk.hudak.prco.events.handler.EshopLogSupplier.get(BasicHandler.kt:23)
 	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1590)
 -------------------
 BRENDON:
@@ -69,11 +69,11 @@ remove lobmok from pom.xml, fist find ussage
 TODO EshopThreadStatisticManagerImpl urobit nech sa sam zastavi ked je finished alebo running 0 proste nech sa vypne ked uz nic nebezi...
 -----------------------------------------------------------
 2019-09-05 14:54:55,311 ERROR [GIGA_LEKAREN-thread] [] s.h.p.m.a.AddingNewProductManagerImpl [AddingNewProductManagerImpl.kt:295] error while creating new product from URL for eshop GIGA_LEKAREN
-sk.hudak.prco.manager.addprocess.CreateNewProductsForUrlsException: error while creating new product from URL for eshop GIGA_LEKAREN
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:140)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.access$createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:22)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:72)
-	at sk.hudak.prco.task.old.ExceptionHandlingRunnable.run(EshopTask.kt:187)
+sk.hudak.prco.z.old.CreateNewProductsForUrlsException: error while creating new product from URL for eshop GIGA_LEKAREN
+	at sk.hudak.prco.z.old.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:140)
+	at sk.hudak.prco.z.old.AddingNewProductManagerImpl.access$createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:22)
+	at sk.hudak.prco.z.old.AddingNewProductManagerImpl$addNewProductsByKeywordForEshop$1.doInRunnable(AddingNewProductManagerImpl.kt:72)
+	at sk.hudak.prco.z.old.ExceptionHandlingRunnable.run(EshopTask.kt:187)
 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
@@ -92,9 +92,9 @@ Caused by: sk.hudak.prco.exception.RequiredParameterException: parameter name is
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688)
 	at sk.hudak.prco.service.impl.InternalTxServiceImpl$$EnhancerBySpringCGLIB$$bdb457b3.createNewProduct(<generated>)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.processNewProductUrl(AddingNewProductManagerImpl.kt:194)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.kt:155)
-	at sk.hudak.prco.manager.addprocess.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:137)
+	at sk.hudak.prco.z.old.AddingNewProductManagerImpl.processNewProductUrl(AddingNewProductManagerImpl.kt:194)
+	at sk.hudak.prco.z.old.AddingNewProductManagerImpl.createNewProducts(AddingNewProductManagerImpl.kt:155)
+	at sk.hudak.prco.z.old.AddingNewProductManagerImpl.createNewProductsErrorWrapper(AddingNewProductManagerImpl.kt:137)
 	... 8 common frames omitted
 ----------------
 zmenint na warning nie error:
@@ -109,7 +109,7 @@ sk.hudak.prco.exception.ProductPageNotFoundHttpParserException: error creating d
 	at sk.hudak.prco.manager.updateprocess.NgUpdateProductDataManagerImpl.access$updateProductDataErrorWrapper(NgUpdateProductDataManagerImpl.kt:27)
 	at sk.hudak.prco.manager.updateprocess.NgUpdateProductDataManagerImpl$updateProductDataForEachProductInEshop$1.doInRunnable(NgUpdateProductDataManagerImpl.kt:100)
 	at sk.hudak.prco.manager.updateprocess.NgUpdateProductDataManagerImpl$updateProductDataForEachProductInEshop$1.doInRunnable(NgUpdateProductDataManagerImpl.kt:87)
-	at sk.hudak.prco.task.old.ExceptionHandlingRunnable.run(EshopTask.kt:193)
+	at sk.hudak.prco.z.old.ExceptionHandlingRunnable.run(EshopTask.kt:193)
 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
