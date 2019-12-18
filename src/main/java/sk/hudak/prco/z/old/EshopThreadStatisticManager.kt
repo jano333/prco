@@ -1,4 +1,4 @@
-package sk.hudak.prco.manager
+package sk.hudak.prco.z.old
 
 interface EshopThreadStatisticManager {
     fun start()

@@ -13,8 +13,7 @@ import sk.hudak.prco.events.PrcoObserver
 import sk.hudak.prco.exception.ProductPriceNotFoundException
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.add.*
-import sk.hudak.prco.task.update.ParseProductUpdateDataErrorEvent
-import sk.hudak.prco.task.update.RetrieveUpdateDocumentForUrlErrorEvent
+import sk.hudak.prco.task.update.*
 import java.util.*
 import java.util.concurrent.CompletionException
 
@@ -35,39 +34,13 @@ class ErrorEventProductHandler(prcoObservable: PrcoObservable,
         prcoObservable.addObserver(this)
     }
 
-    override fun update(source: Observable?, event: CoreEvent) {
-        if (event !is BasicErrorEvent) {
+    override fun update(source: Observable?, errorEvent: CoreEvent) {
+        if (errorEvent !is BasicErrorEvent) {
             return
         }
         // create error log
-        logErrorEvent(event)
+        logErrorEvent(errorEvent)
 
-        // process specifig errors if needed...
-        when (event) {
-            // add process
-            is RetrieveKeywordBaseOnKeywordIdErrorEvent -> handle_RetrieveKeywordBaseOnKeywordIdErrorEvent(event)
-            is BuildSearchUrlForKeywordErrorEvent -> handle_BuildSearchUrlForKeywordErrorEvent(event)
-            is RetrieveDocumentForSearchUrlErrorEvent -> handle_RetrieveDocumentForSearchUrlErrorEvent(event)
-            is ParseCountOfPagesErrorEvent -> handle_ParseCountOfPagesErrorEvent(event)
-            is ParseProductListURLsErrorEvent -> handle_ParseProductListURLsErrorEvent(event)
-            is FilterDuplicityErrorEvent -> handle_FilterDuplicityErrorEvent(event)
-            is FilterNotExistingErrorEvent -> handle_FilterNotExistingErrorEvent(event)
-            is RetrieveDocumentForUrlErrorEvent -> handle_RetrieveDocumentForUrlErrorEvent(event)
-            is ParseProductNewDataErrorEvent -> handle_ParseProductNewDataErrorEvent(event)
-            is SaveProductNewDataErrorEvent -> handle_SaveProductNewDataErrorEvent(event)
-            is BuildNextPageSearchUrlErrorEvent -> handle_BuildNextPageSearchUrlErrorEvent(event)
-            is FilterNotExistingProductErrorEvent -> handle_FilterNotExistingProductErrorEvent(event)
-            is ParseEshopUuidErrorEvent -> handle_ParseEshopUuidErrorEvent(event)
-
-            // update process
-            is ParseProductUpdateDataErrorEvent -> handle_ParseProductUpdateDataErrorEvent(event)
-            is RetrieveUpdateDocumentForUrlErrorEvent -> {
-                //nic je na to samostatny handler
-            }
-        }
-    }
-
-    private fun handle_ParseProductUpdateDataErrorEvent(errorEvent: ParseProductUpdateDataErrorEvent) {
         when (errorEvent.error) {
             !is CompletionException -> {
                 //TODO log nie je to CompletionException
@@ -78,27 +51,90 @@ class ErrorEventProductHandler(prcoObservable: PrcoObservable,
                     //TODO log
                     return
                 }
+            }
+        }
 
-                when (errorEvent.error.cause) {
-                    is ProductPriceNotFoundException -> {
-                        internalTxService.createError(ErrorCreateDto(
-                                eshopUuid = errorEvent.event.productForUpdate.eshopUuid,
-                                errorType = ErrorType.PARSING_PRODUCT_UPDATE_DATA,
-                                url = errorEvent.event.productForUpdate.url,
-                                message = errorEvent.error.message,
-                                fullMsg = ExceptionUtils.getStackTrace(errorEvent.error),
-                                additionalInfo = errorEvent.event.toString()))
-                    }
-                }
+        // process specifig errors if needed...
+        when (errorEvent) {
+            // add process
+            is RetrieveKeywordBaseOnKeywordIdErrorEvent -> handle_RetrieveKeywordBaseOnKeywordIdErrorEvent(errorEvent)
+            is BuildSearchUrlForKeywordErrorEvent -> handle_BuildSearchUrlForKeywordErrorEvent(errorEvent)
+            is RetrieveDocumentForSearchUrlErrorEvent -> handle_RetrieveDocumentForSearchUrlErrorEvent(errorEvent)
+            is ParseCountOfPagesErrorEvent -> handle_ParseCountOfPagesErrorEvent(errorEvent)
+            is ParseProductListURLsErrorEvent -> handle_ParseProductListURLsErrorEvent(errorEvent)
+            is FilterDuplicityErrorEvent -> handle_FilterDuplicityErrorEvent(errorEvent)
+            is FilterNotExistingErrorEvent -> handle_FilterNotExistingErrorEvent(errorEvent)
+            is RetrieveDocumentForUrlErrorEvent -> handle_RetrieveDocumentForUrlErrorEvent(errorEvent)
+            is ParseProductNewDataErrorEvent -> handle_ParseProductNewDataErrorEvent(errorEvent)
+            is SaveProductNewDataErrorEvent -> handle_SaveProductNewDataErrorEvent(errorEvent)
+            is BuildNextPageSearchUrlErrorEvent -> handle_BuildNextPageSearchUrlErrorEvent(errorEvent)
+            is FilterNotExistingProductErrorEvent -> handle_FilterNotExistingProductErrorEvent(errorEvent)
+            is ParseEshopUuidErrorEvent -> handle_ParseEshopUuidErrorEvent(errorEvent)
+
+            // update process
+            is ParseProductUpdateDataErrorEvent -> handle_ParseProductUpdateDataErrorEvent(errorEvent)
+            is RetrieveUpdateDocumentForUrlErrorEvent -> {
+                //nic je na to samostatny handler
+            }
+            is LoadNextProductToBeUpdatedErrorEvent -> handle_LoadNextProductToBeUpdatedErrorEvent(errorEvent)
+            is MarkProductAsUnavailableErrorEvent -> handle_MarkProductAsUnavailableErrorEvent(errorEvent)
+            is FindRedirectProductByUrlErrorEvent -> handle_FindRedirectProductByUrlErrorEvent(errorEvent)
+            is UpdateProductWithNewUrlErrorEvent -> handle_UpdateProductWithNewUrlErrorEvent(errorEvent)
+            is RemoveProductWithOldUrlErrorEvent -> handle_RemoveProductWithOldUrlErrorEvent(errorEvent)
+            is ProcessProductUpdateDataForRedirectErrorEvent -> handle_ProcessProductUpdateDataForRedirectErrorEvent(errorEvent)
+        }
+    }
+
+    private fun handle_ProcessProductUpdateDataForRedirectErrorEvent(errorEvent: ProcessProductUpdateDataForRedirectErrorEvent) {
+        saveGeneric(errorEvent, errorEvent.event.newProductForUpdateData.eshopUuid, errorEvent.event.newProductForUpdateData.url)
+    }
+
+    private fun handle_RemoveProductWithOldUrlErrorEvent(errorEvent: RemoveProductWithOldUrlErrorEvent) {
+        saveGeneric(errorEvent, errorEvent.event.productForUpdateData.eshopUuid, errorEvent.event.productForUpdateData.url)
+    }
+
+    private fun handle_UpdateProductWithNewUrlErrorEvent(errorEvent: UpdateProductWithNewUrlErrorEvent) {
+        saveGeneric(errorEvent, errorEvent.event.productForUpdateData.eshopUuid, errorEvent.event.productForUpdateData.url)
+    }
+
+    private fun handle_FindRedirectProductByUrlErrorEvent(errorEvent: FindRedirectProductByUrlErrorEvent) {
+        saveGeneric(errorEvent, errorEvent.event.productForUpdate.eshopUuid, errorEvent.event.productForUpdate.url)
+    }
+
+    private fun handle_MarkProductAsUnavailableErrorEvent(errorEvent: MarkProductAsUnavailableErrorEvent) {
+        saveGeneric(errorEvent, errorEvent.event.productForUpdateData.eshopUuid, errorEvent.event.productForUpdateData.url)
+    }
+
+    private fun handle_LoadNextProductToBeUpdatedErrorEvent(errorEvent: LoadNextProductToBeUpdatedErrorEvent) {
+        saveGeneric(errorEvent, errorEvent.event.eshopUuid, null)
+    }
+
+    private fun handle_ParseProductUpdateDataErrorEvent(errorEvent: ParseProductUpdateDataErrorEvent) {
+        when (errorEvent.error.cause) {
+            is ProductPriceNotFoundException -> {
+                internalTxService.createError(ErrorCreateDto(
+                        eshopUuid = errorEvent.event.productForUpdate.eshopUuid,
+                        errorType = ErrorType.PARSING_PRODUCT_UPDATE_DATA,
+                        url = errorEvent.event.productForUpdate.url,
+                        message = errorEvent.error.message,
+                        fullMsg = ExceptionUtils.getStackTrace(errorEvent.error),
+                        additionalInfo = errorEvent.event.toString()))
+            }
+            else -> {
+                saveGeneric(errorEvent, errorEvent.event.productForUpdate.eshopUuid, errorEvent.event.productForUpdate.url)
             }
         }
     }
 
-    private fun handle_RetrieveUpdateDocumentForUrlErrorEvent(errorEvent: RetrieveUpdateDocumentForUrlErrorEvent) {
-        //nic, je na to samostatny handler...
-
+    private fun saveGeneric(errorEvent: BasicErrorEvent, eshopUuid: EshopUuid, url: String?) {
+        internalTxService.createError(ErrorCreateDto(
+                eshopUuid,
+                ErrorType.UNKNOWN, null,
+                errorEvent.error.message,
+                ExceptionUtils.getStackTrace(errorEvent.error),
+                url,
+                errorEvent.event.toString()))
     }
-
 
     private fun logErrorEvent(errorEvent: BasicErrorEvent) {
         LOG.error("error event: ${errorEvent.javaClass.simpleName}")
@@ -119,10 +155,12 @@ class ErrorEventProductHandler(prcoObservable: PrcoObservable,
 
     private fun handle_RetrieveKeywordBaseOnKeywordIdErrorEvent(errorEvent: RetrieveKeywordBaseOnKeywordIdErrorEvent) {
         addProductExecutors.shutdownNowAllExecutors()
+        saveGeneric(errorEvent, errorEvent.event.eshopUuid, null)
     }
 
     private fun handle_BuildSearchUrlForKeywordErrorEvent(errorEvent: BuildSearchUrlForKeywordErrorEvent) {
         addProductExecutors.shutdownNowAllExecutors()
+        saveGeneric(errorEvent, errorEvent.event.eshopUuid, null)
     }
 
     private fun handle_FilterNotExistingProductErrorEvent(errorEvent: FilterNotExistingProductErrorEvent) {

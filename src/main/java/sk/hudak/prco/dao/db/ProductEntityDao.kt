@@ -18,6 +18,8 @@ interface ProductEntityDao : BaseDao<ProductEntity> {
      */
     fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductEntity?
 
+    fun findProductsForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): List<ProductEntity>
+
     fun findByFilter(filter: ProductFilterUIDto): List<ProductEntity>
 
     fun findByUrl(productUrl: String): ProductEntity?
@@ -35,6 +37,5 @@ interface ProductEntityDao : BaseDao<ProductEntity> {
     fun countOfProductsWaitingToBeUpdated(eshopUuid: EshopUuid, olderThanInHours: Int): Long
 
     fun countOfProductsAlreadyUpdated(eshopUuid: EshopUuid, olderThanInHours: Int): Long
-
     fun countOfProductMarkedAsUnavailable(eshopUuid: EshopUuid): Long
 }

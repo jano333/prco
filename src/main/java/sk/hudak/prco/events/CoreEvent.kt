@@ -24,6 +24,9 @@ interface BasicErrorEvent {
     val error: Throwable
 }
 
+interface UpdateErrorEvent : BasicErrorEvent
+
+
 interface PrcoObserver : Observer {
 
     override fun update(source: Observable?, event: Any?) {

@@ -56,11 +56,11 @@ class RunningThreadStatisticInfo(private val addProductExecutors: AddProductExec
         }
 
         updateProductExecutors.handlerTaskExecutor as ThreadPoolExecutor
-        LOG.trace("add handlerTaskExecutor active/max cout: ${updateProductExecutors.handlerTaskExecutor.activeCount}/${updateProductExecutors.handlerTaskExecutor.maximumPoolSize} ")
+        LOG.trace("update handlerTaskExecutor active/max cout: ${updateProductExecutors.handlerTaskExecutor.activeCount}/${updateProductExecutors.handlerTaskExecutor.maximumPoolSize} ")
         updateProductExecutors.internalServiceExecutor as ThreadPoolExecutor
-        LOG.trace("add internalServiceExecutor active/max cout: ${updateProductExecutors.internalServiceExecutor.activeCount}/${updateProductExecutors.internalServiceExecutor.maximumPoolSize} ")
+        LOG.trace("update internalServiceExecutor active/max cout: ${updateProductExecutors.internalServiceExecutor.activeCount}/${updateProductExecutors.internalServiceExecutor.maximumPoolSize} ")
         updateProductExecutors.htmlParserExecutor as ThreadPoolExecutor
-        LOG.trace("add htmlParserExecutor active/max cout: ${updateProductExecutors.htmlParserExecutor.activeCount}/${updateProductExecutors.htmlParserExecutor.maximumPoolSize} ")
+        LOG.trace("update htmlParserExecutor active/max cout: ${updateProductExecutors.htmlParserExecutor.activeCount}/${updateProductExecutors.htmlParserExecutor.maximumPoolSize} ")
     }
 
     private fun showAddProcess() {

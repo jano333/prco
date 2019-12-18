@@ -74,6 +74,10 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     override fun findProductsForUpdateWhichAreNotInAnyGroup(): Map<EshopUuid, List<Long>> =
             productService.findProductsForUpdateWhichAreNotInAnyGroup()
 
+    @Transactional(readOnly = true)
+    override fun findProductsForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): List<ProductDetailInfo> =
+            productService.findProductsForUpdate(eshopUuid, olderThanInHours)
+
     @Transactional
     override fun removeWatchDog(eshopUuid: EshopUuid, maxCountToDelete: Long): Int =
             watchDogService.removeWatchDog(eshopUuid, maxCountToDelete)

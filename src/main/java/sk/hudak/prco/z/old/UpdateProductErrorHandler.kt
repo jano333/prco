@@ -1,4 +1,4 @@
-package sk.hudak.prco.manager.updateprocess
+package sk.hudak.prco.z.old
 
 import sk.hudak.prco.dto.product.ProductDetailInfo
 

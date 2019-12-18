@@ -10,26 +10,26 @@ import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.handler.EshopLogSupplier
 import sk.hudak.prco.task.update.LoadNextProductToBeUpdatedErrorEvent
 import sk.hudak.prco.task.update.ProductDetailInfoForUpdateEvent
+import sk.hudak.prco.task.update.UpdateOneProductInEshopEvent
 import sk.hudak.prco.task.update.UpdateProductExecutors
-import sk.hudak.prco.task.update.UpdateProductsInEshopEvent
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier
 
 @Component
-class UpdateProductsInEshopEvent_1_Handler(prcoObservable: PrcoObservable,
-                                           updateProductExecutors: UpdateProductExecutors,
-                                           val internalTxService: InternalTxService)
-    : UpdateProcessHandler<UpdateProductsInEshopEvent>(prcoObservable, updateProductExecutors) {
+class UpdateOneProductInEshopEvent_1_Handler(prcoObservable: PrcoObservable,
+                                             updateProductExecutors: UpdateProductExecutors,
+                                             val internalTxService: InternalTxService)
+    : UpdateProcessHandler<UpdateOneProductInEshopEvent>(prcoObservable, updateProductExecutors) {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(UpdateProductsInEshopEvent_1_Handler::class.java)!!
+        private val LOG = LoggerFactory.getLogger(UpdateOneProductInEshopEvent_1_Handler::class.java)!!
     }
 
-    override fun isSpecificType(event: CoreEvent): Boolean = event is UpdateProductsInEshopEvent
-    override fun getEshopUuid(event: UpdateProductsInEshopEvent): EshopUuid? = event.eshopUuid
-    override fun getIdentifier(event: UpdateProductsInEshopEvent): String = event.identifier
+    override fun isSpecificType(event: CoreEvent): Boolean = event is UpdateOneProductInEshopEvent
+    override fun getEshopUuid(event: UpdateOneProductInEshopEvent): EshopUuid? = event.eshopUuid
+    override fun getIdentifier(event: UpdateOneProductInEshopEvent): String = event.identifier
 
-    override fun handle(event: UpdateProductsInEshopEvent) {
+    override fun handle(event: UpdateOneProductInEshopEvent) {
         LOG.trace("handle $event")
 
         loadNextProductToBeUpdated(event.eshopUuid, event.identifier)
@@ -37,8 +37,6 @@ class UpdateProductsInEshopEvent_1_Handler(prcoObservable: PrcoObservable,
                     if (exception == null) {
                         if (productDetailInfo != null) {
                             prcoObservable.notify(ProductDetailInfoForUpdateEvent(productDetailInfo, event.identifier))
-                            //TODO znova volanie loadNextProductToBeUpdated? lebo dalsi nech urobit
-
                         } else {
                             LOG.debug("nothing for update")
                         }

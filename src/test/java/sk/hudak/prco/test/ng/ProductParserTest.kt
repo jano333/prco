@@ -22,14 +22,14 @@ fun main() {
 
     val test = ProductParserTest()
 
-    val urlList = test.parseUrlsOfProduct(EshopUuid.FEEDO, "pampers")
-    println("count in list ${urlList.size}")
-    println("count in set ${HashSet(urlList).size}")
-    println(urlList)
+//    val urlList = test.parseUrlsOfProduct(EshopUuid.FEEDO, "pampers")
+//    println("count in list ${urlList.size}")
+//    println("count in set ${HashSet(urlList).size}")
+//    println(urlList)
 
-//    println(test.parseProductNewData("https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-76-ks?zmena_meny=EUR"))
+    println(test.parseProductNewData("https://www.brendon.sk/pampers-premium-care-smallpack-s2-23-pcs-jednorazove-plienky-12386002"))
 
-//    println(test.parseProductUpdateData("https://www.maxikovy-hracky.cz/pampers-active-baby-giant-pack-76-ks"))
+//    println(test.parseProductUpdateData("https://www.mall.sk/detske-mlieka/nutrilon-pronutra-3-6x800g-kasa-4x225g"))
 }
 
 class ProductParserTest {
@@ -64,6 +64,7 @@ class ProductParserTest {
             // P
             EshopUuid.PILULKA -> PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.PILULKA_24 -> Pilulka24ProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
+            EshopUuid.PERINBABA -> PerinbabaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
            // T
             EshopUuid.TESCO -> TescoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 

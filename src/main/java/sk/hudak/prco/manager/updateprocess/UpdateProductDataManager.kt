@@ -1,6 +1,7 @@
 package sk.hudak.prco.manager.updateprocess
 
 import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.z.old.UpdateProductDataListener
 
 interface UpdateProductDataManager {
 

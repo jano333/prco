@@ -43,6 +43,14 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
                 .fetchFirst()
     }
 
+    override fun findProductsForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): List<ProductEntity> {
+        return from(QProductEntity.productEntity)
+                .where(QProductEntity.productEntity.eshopUuid.eq(eshopUuid))
+                .where(QProductEntity.productEntity.lastTimeDataUpdated.isNull
+                        .or(QProductEntity.productEntity.lastTimeDataUpdated.lt(calculateDate(olderThanInHours))))
+                .fetch()
+    }
+
     override fun findAll(): List<ProductEntity> {
         //FIXME optimalizovat cez paging !!! max 500 naraz !!!
         return from(QProductEntity.productEntity).fetch()

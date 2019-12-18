@@ -68,9 +68,13 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
             result[it.eshopUuid]?.add(it.id)
         }
         return result
-
     }
 
+    override fun findProductsForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): List<ProductDetailInfo> {
+        return productEntityDao.findProductsForUpdate(eshopUuid, olderThanInHours)
+                .map { ProductDetailInfo(it.id, it.url, it.eshopUuid) }
+                .toList()
+    }
 
     override fun findProductsForExport(): List<ProductFullDto> {
         return mapper.mapAsList<Any, ProductFullDto>(productEntityDao.findAll().toTypedArray(),

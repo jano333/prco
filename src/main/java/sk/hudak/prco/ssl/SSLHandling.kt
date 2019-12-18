@@ -232,6 +232,8 @@ object PrcoSSLContants {
         ALLOWED_HOSTNAME.add("moonlake.cz")
         ALLOWED_HOSTNAME.add("www.lekarenexpres.sk")
 
+        ALLOWED_HOSTNAME.add("perinbaba.sk")
+
         //FARBY
         ALLOWED_HOSTNAME.add("CN=*.*,O=WebSupport")
         ALLOWED_HOSTNAME.add("www.farby.sk")

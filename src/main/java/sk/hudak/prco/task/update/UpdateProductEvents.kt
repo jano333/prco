@@ -9,10 +9,13 @@ import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.FinalEvent
 import java.util.*
 
-data class UpdateProductsInEshopEvent(val eshopUuid: EshopUuid,
-                                      val identifier: String = UUID.randomUUID().toString()) : CoreEvent()
+data class UpdateOneProductInEshopEvent(val eshopUuid: EshopUuid,
+                                        val identifier: String = UUID.randomUUID().toString()) : CoreEvent()
 
-data class LoadNextProductToBeUpdatedErrorEvent(override val event: UpdateProductsInEshopEvent,
+data class UpdateAllProductsInEshopEvent(val eshopUuid: EshopUuid,
+                                         val identifier: String = UUID.randomUUID().toString()) : CoreEvent()
+
+data class LoadNextProductToBeUpdatedErrorEvent(override val event: UpdateOneProductInEshopEvent,
                                                 override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
 data class ProductDetailInfoForUpdateEvent(val productDetailInfo: ProductDetailInfo,
@@ -87,8 +90,9 @@ data class RemoveProductWithOldUrlErrorEvent(override val event: ProcessRemoveOl
                                              override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
 data class ProcessProductUpdateDataForRedirectErrorEvent(override val event: ProcessProductUpdateDataForRedirectFinalEvent,
-                                                         override val error: Throwable)  : CoreEvent(), BasicErrorEvent
+                                                         override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
-
+data class LoadProductsToBeUpdatedErrorEvent(override val event: UpdateAllProductsInEshopEvent,
+                                             override val error: Throwable) : CoreEvent(), BasicErrorEvent
 
 

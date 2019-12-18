@@ -2,6 +2,7 @@ package sk.hudak.prco.manager.updateprocess
 
 import sk.hudak.prco.api.EshopUuid
 
+//TODO data class
 class UpdateStatusInfo {
 
     var eshopUuid: EshopUuid? = null

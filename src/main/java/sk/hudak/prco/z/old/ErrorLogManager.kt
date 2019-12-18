@@ -1,4 +1,4 @@
-package sk.hudak.prco.manager.error
+package sk.hudak.prco.z.old
 
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.springframework.stereotype.Component

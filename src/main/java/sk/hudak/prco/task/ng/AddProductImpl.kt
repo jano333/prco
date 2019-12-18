@@ -24,6 +24,7 @@ class AddProductImpl(private val prcoObservable: PrcoObservable) {
                 .forEach { eshopUuid ->
                     eshopUuid.config.supportedSearchKeywordIds.forEach { searchKeyWordId ->
                         prcoObservable.notify(NewEshopKeywordIdEvent(eshopUuid, searchKeyWordId))
+                        Thread.sleep(1 * 1000)
                     }
                 }
 

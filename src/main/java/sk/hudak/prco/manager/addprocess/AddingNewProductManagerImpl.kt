@@ -10,7 +10,6 @@ import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.events.PrcoObserver
 import sk.hudak.prco.exception.*
-import sk.hudak.prco.manager.error.ErrorLogManager
 import sk.hudak.prco.mapper.PrcoOrikaMapper
 import sk.hudak.prco.parser.eshop.EshopProductsParser
 import sk.hudak.prco.parser.eshopuid.EshopUuidParser
@@ -24,6 +23,7 @@ import sk.hudak.prco.utils.ConsoleWithColor.wrapWithColor
 import sk.hudak.prco.utils.ThreadUtils.sleepRandomSafe
 import sk.hudak.prco.utils.ThreadUtils.sleepSafe
 import sk.hudak.prco.utils.Validate.notEmpty
+import sk.hudak.prco.z.old.ErrorLogManager
 import java.util.*
 
 interface AddingNewProductManager {

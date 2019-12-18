@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
-import sk.hudak.prco.manager.error.ErrorLogManager
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.add.*
 import sk.hudak.prco.task.handler.EshopLogSupplier
+import sk.hudak.prco.z.old.ErrorLogManager
 import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.function.Supplier

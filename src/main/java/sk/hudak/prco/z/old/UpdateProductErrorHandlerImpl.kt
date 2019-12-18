@@ -1,4 +1,4 @@
-package sk.hudak.prco.manager.updateprocess
+package sk.hudak.prco.z.old
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -6,7 +6,6 @@ import sk.hudak.prco.dto.product.ProductDetailInfo
 import sk.hudak.prco.exception.HttpSocketTimeoutParserException
 import sk.hudak.prco.exception.HttpStatusParserException
 import sk.hudak.prco.exception.StringToNumberConvertPrcoException
-import sk.hudak.prco.manager.error.ErrorLogManager
 import sk.hudak.prco.service.InternalTxService
 
 @Component

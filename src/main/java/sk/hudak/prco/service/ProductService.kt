@@ -191,5 +191,7 @@ interface ProductService {
     fun findProductForUpdateInGroup(groupId: Long): Map<EshopUuid, List<Long>>
     fun findProductsForUpdateWhichAreNotInAnyGroup(): Map<EshopUuid, List<Long>>
 
+    fun findProductsForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): List<ProductDetailInfo>
+
 
 }

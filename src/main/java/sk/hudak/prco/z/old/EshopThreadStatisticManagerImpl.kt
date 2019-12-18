@@ -1,9 +1,9 @@
-package sk.hudak.prco.manager.impl
+package sk.hudak.prco.z.old
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.manager.EshopThreadStatisticManager
+import sk.hudak.prco.manager.impl.RunningThreadStatisticInfo
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.task.old.EshopTaskManager
 import sk.hudak.prco.task.old.TaskStatus

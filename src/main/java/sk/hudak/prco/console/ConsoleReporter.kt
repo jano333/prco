@@ -28,11 +28,14 @@ class PrcoConsole(val internalTxService: InternalTxService,
 
     fun showInConsole() {
 
-        //        updateEE.updateProductDataForEachProductInEshop(EshopUuid.MALL)
-        EshopUuid.values().forEach {
-            updateEE.updateProductDataForEachProductInEshop(it)
-            Thread.sleep(1 * 1000)
-        }
+//                updateEE.updateProductDataForEachProductInEshop(EshopUuid.ALZA)
+//                updateEE.updateProductDataForEachProductInEshop(EshopUuid.FEEDO)
+//                updateEE.updateProductDataForEachProductInEshop(EshopUuid.PILULKA)
+//                updateEE.updateProductDataForEachProductInEshop(EshopUuid.MALL)
+//        EshopUuid.values().forEach {
+//            updateEE.updateProductDataForEachProductInEshop(it)
+//            Thread.sleep(1 * 1000)
+//        }
 
 //        addImplNg.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
 //        addEe.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, SearchKeyWordId.PAMPERS_ID)

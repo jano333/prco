@@ -34,7 +34,6 @@ class MallProductParser(unitParser: UnitParser,
     }
 
     override val eshopUuid: EshopUuid = MALL
-
     override val timeout: Int = TIMEOUT_15_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
@@ -82,7 +81,10 @@ class MallProductParser(unitParser: UnitParser,
     }
 
     override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
-        val elements2 = documentDetailProduct.select("b[class=pro-price con-emphasize font-primary--bold mr-5]")
+        var elements2 = documentDetailProduct.select("b[class=pro-price con-emphasize font-primary--bold mr-5]")
+        if (elements2.isEmpty()) {
+            elements2 = documentDetailProduct.select("b[class=pro-price variant-BC con-emphasize font-primary--bold mr-5]")
+        }
         if (elements2.isEmpty()) {
             return Optional.empty()
         }
