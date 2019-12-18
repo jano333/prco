@@ -16,17 +16,14 @@ import java.math.BigDecimal
 import java.util.*
 
 @Component
-class DrMaxProductParser
-constructor(unitParser: UnitParser,
-            userAgentDataHolder: UserAgentDataHolder,
-            searchUrlBuilder: SearchUrlBuilder)
+class DrMaxProductParser(unitParser: UnitParser,
+                                    userAgentDataHolder: UserAgentDataHolder,
+                                    searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = DR_MAX
+    override val eshopUuid: EshopUuid = DR_MAX
 
-    override val timeout: Int
-        get() = TIMEOUT_15_SECOND
+    override val timeout: Int = TIMEOUT_15_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         val select = documentList.select("h2[class=title-subcategory]").first() ?: return 1
@@ -55,11 +52,11 @@ constructor(unitParser: UnitParser,
         return urls
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         val select = documentDetailProduct.select("#product-detail > div.row > div > div > div.col.data > div.redesign_desktop > div.redesign-product-detail-title.bold")
         val first = select.first().children().first()
         val text = first.text().trim { it <= ' ' }
-        return Optional.of(text)
+        return text
     }
 
     override fun parseUnitValueCount(document: Document, productName: String): Optional<UnitTypeValueCount> {

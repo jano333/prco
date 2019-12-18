@@ -86,10 +86,10 @@ class AlzaProductParser(unitParser: UnitParser,
                 .map { ConvertUtils.convertToBigDecimal(it) }
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         val first = documentDetailProduct.select("script[type=application/ld+json]")
         if (first.size < 2) {
-            return Optional.empty()
+            return null
         }
         val element = first[1]
         val nodes = element.childNodes()
@@ -101,11 +101,11 @@ class AlzaProductParser(unitParser: UnitParser,
             actualObj = mapper.readTree(wholeDataJson)
         } catch (e: IOException) {
             log.error("error while parsing json for url " + documentDetailProduct.location(), e)
-            return Optional.empty()
+            return null
         }
 
         val name = actualObj.get("name") as TextNode
-        return Optional.of(name.textValue())
+        return name.textValue()
     }
 
 

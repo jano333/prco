@@ -1,6 +1,11 @@
+---------------------------
+toto stale rasie zle je vyhodnotenie....
+DROGERIA_VMD executor, state: waiting, 14/94 completed
+---------------------------
 ZLE je dostupny:
 c7e56ca] product is unavailable: https://www.brendon.sk/pampers-active-baby-dry-giant-pack-4-maxi-70-pcs-jednorazove-plienky-11842402
 -----------------------
+pre toto urobit osobtny error type ze SSL !!!
 2019-12-09 14:25:40,815 ERROR [PERINBABA-add-process-thread] s.h.p.t.h.a.AddProductErrorHandler[AddProductErrorHandler.kt:68][PERINBABA-b84d4dbc-d1d0-4414-8451-aa159021c2d1] sk.hudak.prco.exception.CoreParserException: error creating document for url 'http://www.perinbaba.sk/catalogsearch/result/?limit=48&q=pampers':
 java.util.concurrent.CompletionException: sk.hudak.prco.exception.CoreParserException: error creating document for url 'http://www.perinbaba.sk/catalogsearch/result/?limit=48&q=pampers':
 	at java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:273)
@@ -27,13 +32,6 @@ Caused by: javax.net.ssl.SSLHandshakeException: sun.security.validator.Validator
 chyba transactionId
 2019-12-09 13:11:55,505 DEBUG [add-handler-task-pool-5-thread-1] s.h.p.t.h.a.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:31][FARBY-00b91dfe-8539-4b30-9e6f-1e4a58d2e9f2] count of products URL before duplicity check  13
 2019-12-09 13:11:55,505 DEBUG [ForkJoinPool.commonPool-worker-1] s.h.p.t.h.a.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:76][-] count of products URL after duplicity check 13
--------------------
-vsetky maju problem
-Caused by: sk.hudak.prco.exception.PrcoRuntimeException: New product https://www.brendon.sk/pampers-premium-care-smallpack-s2-23-pcs-jednorazove-plienky-12386002 has none name
-	at sk.hudak.prco.manager.add.event.handler.ProductNewDataEvent_8b_Handler$saveProductNewData$1.get(ProductNewDataEvent_8b_Handler.kt:53)
-	at sk.hudak.prco.manager.add.event.handler.ProductNewDataEvent_8b_Handler$saveProductNewData$1.get(ProductNewDataEvent_8b_Handler.kt:22)
-	at sk.hudak.prco.events.handler.EshopLogSupplier.get(BasicHandler.kt:23)
-	at java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1590)
 -------------------
 BRENDON:
 * problem lebo su 4 strany a mne dava stale akj pre 2 stranu produkty url z prvej strany teda mam 4 krat duplicitu a neveim preco

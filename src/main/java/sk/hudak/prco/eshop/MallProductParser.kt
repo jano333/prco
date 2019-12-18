@@ -75,9 +75,9 @@ class MallProductParser(unitParser: UnitParser,
         return s.isPresent
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
-        val element = documentDetailProduct.select("section[class=pro-column] h1").first() ?: return Optional.empty()
-        return Optional.of(element.text())
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
+        val element = documentDetailProduct.select("section[class=pro-column] h1").first() ?: return null
+        return element.text()
     }
 
     override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {

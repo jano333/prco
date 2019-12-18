@@ -56,7 +56,7 @@ class FourKidsProductParser(unitParser: UnitParser, userAgentDataHolder: UserAge
                 .toList()
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         var first = documentDetailProduct.select("div.product-detail > div.col-xs-12.col-md-7 > h1").first()
         if(first == null){
             first = documentDetailProduct.select("div.product-detail > div.col-xs-12.col-md-5 > h1").first()
@@ -64,6 +64,7 @@ class FourKidsProductParser(unitParser: UnitParser, userAgentDataHolder: UserAge
 
         return ofNullable(first)
                 .map { it.text() }
+                .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

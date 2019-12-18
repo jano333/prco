@@ -55,9 +55,10 @@ class KidMarketProductParser(unitParser: UnitParser,
         return notExistElement(documentDetailProduct, "div[class='box-info-product'] p[id=add_to_cart]")
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("h1[class=page-heading]").first())
                 .map { it.text() }
+                 .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

@@ -52,9 +52,16 @@ class BrendonProductParser(unitParser: UnitParser,
         return toList
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
-        return ofNullable(documentDetailProduct.select("div.product-name > h1").first())
-                .map { it.text() }
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
+        val result = documentDetailProduct.select("div.product-name > h1")
+                .first()
+                ?.text()
+        if(result !=null){
+            return result
+        }
+        return documentDetailProduct.select("h1[itemprop='name']")
+                .first()
+                ?.text()
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

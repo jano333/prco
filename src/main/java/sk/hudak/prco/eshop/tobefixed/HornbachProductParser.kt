@@ -57,14 +57,14 @@ class HornbachProductParser(unitParser: UnitParser, userAgentDataHolder: UserAge
 
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         val select = documentDetailProduct.select("#article-details > h1")
         if (select.isEmpty()) {
-            return empty()
+            return null
         }
         val first = select.first()
         val text = first.text()
-        return Optional.of(text)
+        return text
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

@@ -54,9 +54,10 @@ class Pilulka24ProductParser(unitParser: UnitParser,
                 .collect(Collectors.toList())
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("span[class='product-detail__header pr-3']").first())
                 .map{ it.text() }
+                .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

@@ -18,9 +18,7 @@ import java.math.BigDecimal
 import java.net.SocketTimeoutException
 import java.util.*
 
-/**
- * Created by jan.hudak on 9/29/2017.
- */
+//FIXME refactor...
 abstract class JSoupProductParser : EshopProductsParser {
 
     protected var unitParser: UnitParser
@@ -30,9 +28,9 @@ abstract class JSoupProductParser : EshopProductsParser {
     constructor(unitParser: UnitParser,
                 userAgentDataHolder: UserAgentDataHolder,
                 searchUrlBuilder: SearchUrlBuilder) {
-        this.unitParser = unitParser;
-        this.userAgentDataHolder = userAgentDataHolder;
-        this.searchUrlBuilder = searchUrlBuilder;
+        this.unitParser = unitParser
+        this.userAgentDataHolder = userAgentDataHolder
+        this.searchUrlBuilder = searchUrlBuilder
     }
 
     protected val TIMEOUT_15_SECOND = 15000
@@ -48,8 +46,7 @@ abstract class JSoupProductParser : EshopProductsParser {
     protected val userAgent: String
         get() = userAgentDataHolder.getUserAgentForEshop(eshopUuid)
 
-    protected open val timeout: Int
-        get() = DEFAULT_TIMEOUT_3_SECOND
+    protected open val timeout = DEFAULT_TIMEOUT_3_SECOND
 
     protected open val requestCookie: Map<String, String>
         get() = emptyMap()
@@ -90,8 +87,7 @@ abstract class JSoupProductParser : EshopProductsParser {
      * @param documentDetailProduct
      * @return
      */
-    //TODO zrusit obptional
-    protected abstract fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String>
+    protected abstract fun parseProductNameFromDetail(documentDetailProduct: Document): String?
 
     /**
      * TODO
@@ -149,15 +145,6 @@ abstract class JSoupProductParser : EshopProductsParser {
         return resultUrls
     }
 
-    override fun parseProductNewData(productUrl: String): ProductNewData {
-        //FIXME prepisat tak ako je parseProductUpdateData myslim tym tie optional(overit ci uz to tak nie je)
-
-        val document = retrieveDocument(productUrl)
-        //TODO porozmyslat ci tu nerobit alebo logovat redirect... tak ako je pre update proces
-
-        return parseProductNewData(document, productUrl)
-    }
-
     override fun parseProductUpdateData(document: Document, productUrl: String): ProductUpdateData {
         // because there could be redirect
         val realProductUrl = document.location()
@@ -180,9 +167,11 @@ abstract class JSoupProductParser : EshopProductsParser {
         }
 
         // product name
-        val productNameOpt = parseProductNameFromDetail(document)
-        logWarningIfNullOrEmpty(productNameOpt, "productName", document.location())
-        val productName = productNameOpt.orElseThrow { ProductNameNotFoundException(productUrl) }
+        val productName = parseProductNameFromDetail(document)
+        logWarningIfNullOrEmpty(Optional.ofNullable(productName), "productName", document.location())
+        if (productName == null) {
+            throw ProductNameNotFoundException(productUrl)
+        }
 
         // product price for package
         val productPriceForPackageOpt = parseProductPriceForPackage(document)
@@ -212,16 +201,17 @@ abstract class JSoupProductParser : EshopProductsParser {
                 if (productActionValidity.isPresent) productActionValidity.get() else null)
     }
 
-
     override fun parseProductNewData(document: Document, productUrl: String): ProductNewData {
 
         val result = ProductNewData(eshopUuid, productUrl)
 
         val productNameOpt = parseProductNameFromDetail(document)
-        logWarningIfNullOrEmpty(productNameOpt, "productName", document.location())
-        if (productNameOpt.isPresent && productNameOpt.get().isNotBlank()) {
-            result.name = productNameOpt.get()
+        logWarningIfNullOrEmpty(Optional.ofNullable(productNameOpt), "productName", document.location())
+        if (productNameOpt == null) {
+            throw  ProductNameNotFoundException(productUrl);
         }
+        result.name = productNameOpt
+
 
         val productPictureUrlOpt = internalParseProductPictureURL(document, productUrl)
         logWarningIfNullOrEmpty(productPictureUrlOpt, "pictureUrl", document.location())
@@ -249,6 +239,7 @@ abstract class JSoupProductParser : EshopProductsParser {
         val document = retrieveDocument(productUrl)
         return parseProductUpdateData(document, productUrl)
     }
+
 
     /**
      * TODO spisat ake vynimky moze vyhadzovat
@@ -278,7 +269,6 @@ abstract class JSoupProductParser : EshopProductsParser {
         }
     }
 
-
     protected open fun convertToParserException(productUrl: String, e: Exception): PrcoRuntimeException {
         val errMsg = "error creating document for url '$productUrl': "
         return when (e) {
@@ -297,6 +287,7 @@ abstract class JSoupProductParser : EshopProductsParser {
             }
         }
     }
+
 
     protected open fun parseNextPage(searchKeyWord: String, currentPageNumber: Int): List<String>? {
         val searchUrl = searchUrlBuilder.buildSearchUrl(eshopUuid, searchKeyWord, currentPageNumber)
@@ -370,6 +361,14 @@ abstract class JSoupProductParser : EshopProductsParser {
             }
         }
 
+    }
+
+    override fun parseProductNewData(productUrl: String): ProductNewData {
+
+        val document = retrieveDocument(productUrl)
+        //TODO porozmyslat ci tu nerobit alebo logovat redirect... tak ako je pre update proces
+
+        return parseProductNewData(document, productUrl)
     }
 
 }

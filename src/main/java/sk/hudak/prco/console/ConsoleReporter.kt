@@ -9,9 +9,9 @@ import sk.hudak.prco.dto.GroupUpdateDto
 import sk.hudak.prco.dto.UnitData
 import sk.hudak.prco.dto.product.ProductFilterUIDto
 import sk.hudak.prco.dto.product.ProductFullDto
-import sk.hudak.prco.manager.add.AddProductManagerImpl
+import sk.hudak.prco.manager.add.AddProductManager
 import sk.hudak.prco.manager.group.GroupProductResolver
-import sk.hudak.prco.manager.update.UpdateProductManagerImpl
+import sk.hudak.prco.manager.update.UpdateProductManager
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.utils.CalculationUtils
 import java.math.BigDecimal
@@ -23,8 +23,8 @@ import java.util.Arrays.asList
 @Component
 class PrcoConsole(val internalTxService: InternalTxService,
                   val groupProductResolver: GroupProductResolver,
-                  val addEe: AddProductManagerImpl,
-                  val updateEEManager: UpdateProductManagerImpl) {
+                  val addMangager: AddProductManager,
+                  val updateManager: UpdateProductManager) {
 
     fun showInConsole() {
 
@@ -42,7 +42,7 @@ class PrcoConsole(val internalTxService: InternalTxService,
 
 //        addEe.addNewProductsByKeywordForAllEshops(SearchKeyWordId.PAMPERS_ID)
 
-//            addEe.addNewProductsByConfiguredKeywordsForAllEshops()
+        addMangager.addNewProductsByConfiguredKeywordsForAllEshops()
 
 //        addImpl.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
         //Pampers Pure Value Pack S5 (11+kg) 24ks Junior

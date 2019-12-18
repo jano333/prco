@@ -52,9 +52,10 @@ class AmdDrogeriaProductParser(unitParser: UnitParser,
         return documentDetailProduct.select("div.product__buy div.product__add-to-cart > a").isEmpty()
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         return Optional.ofNullable(documentDetailProduct.select("div.product__title > h1").first())
                 .map { it.text() }
+                .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

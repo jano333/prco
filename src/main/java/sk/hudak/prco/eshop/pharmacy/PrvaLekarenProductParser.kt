@@ -48,9 +48,10 @@ class PrvaLekarenProductParser(unitParser: UnitParser, userAgentDataHolder: User
         return hrefs
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("div.detail > div.right > h1"))
                 .map { it.text() }
+                .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

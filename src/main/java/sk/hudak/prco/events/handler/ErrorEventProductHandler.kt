@@ -72,17 +72,27 @@ class ErrorEventProductHandler(prcoObservable: PrcoObservable,
             is ParseEshopUuidErrorEvent -> handle_ParseEshopUuidErrorEvent(errorEvent)
 
             // update process
-            is ParseProductUpdateDataErrorEvent -> handle_ParseProductUpdateDataErrorEvent(errorEvent)
+            is LoadNextProductToBeUpdatedErrorEvent -> handle_LoadNextProductToBeUpdatedErrorEvent(errorEvent)
             is RetrieveUpdateDocumentForUrlErrorEvent -> {
                 //nic je na to samostatny handler
             }
-            is LoadNextProductToBeUpdatedErrorEvent -> handle_LoadNextProductToBeUpdatedErrorEvent(errorEvent)
+            is ParseProductUpdateDataErrorEvent -> handle_ParseProductUpdateDataErrorEvent(errorEvent)
+            is ProcessProductUpdateDataErrorEvent -> handle_ProcessProductUpdateDataErrorEvent(errorEvent)
             is MarkProductAsUnavailableErrorEvent -> handle_MarkProductAsUnavailableErrorEvent(errorEvent)
             is FindRedirectProductByUrlErrorEvent -> handle_FindRedirectProductByUrlErrorEvent(errorEvent)
             is UpdateProductWithNewUrlErrorEvent -> handle_UpdateProductWithNewUrlErrorEvent(errorEvent)
             is RemoveProductWithOldUrlErrorEvent -> handle_RemoveProductWithOldUrlErrorEvent(errorEvent)
             is ProcessProductUpdateDataForRedirectErrorEvent -> handle_ProcessProductUpdateDataForRedirectErrorEvent(errorEvent)
+            is LoadProductsToBeUpdatedErrorEvent -> handle_LoadProductsToBeUpdatedErrorEvent(errorEvent)
         }
+    }
+
+    private fun handle_LoadProductsToBeUpdatedErrorEvent(errorEvent: LoadProductsToBeUpdatedErrorEvent) {
+        saveGeneric(errorEvent, errorEvent.event.eshopUuid, null)
+    }
+
+    private fun handle_ProcessProductUpdateDataErrorEvent(errorEvent: ProcessProductUpdateDataErrorEvent) {
+        saveGeneric(errorEvent, errorEvent.event.productForUpdateData.eshopUuid, errorEvent.event.productForUpdateData.url)
     }
 
     private fun handle_ProcessProductUpdateDataForRedirectErrorEvent(errorEvent: ProcessProductUpdateDataForRedirectErrorEvent) {

@@ -52,8 +52,9 @@ class FeedoProductParser(unitParser: UnitParser,
         return notExistElement(documentDetailProduct, "button[class=btn btn-danger btn-large cart]")
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         return getTextFromFirstElementByClass(documentDetailProduct, "product-detail-heading hidden-xs hidden-sm")
+                .orElse(null)
     }
 
     override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {

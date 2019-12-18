@@ -3,8 +3,8 @@ package sk.hudak.prco.manager.add.event
 import org.jsoup.nodes.Document
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ProductNewData
+import sk.hudak.prco.events.AddErrorEvent
 import sk.hudak.prco.events.CoreEvent
-import sk.hudak.prco.events.ErrorEvent
 import sk.hudak.prco.events.StartEvent
 import java.util.*
 
@@ -23,7 +23,7 @@ data class NewEshopKeywordIdEvent(val eshopUuid: EshopUuid,
  * Error while retrieving 'keyword' base on it's id.
  */
 data class RetrieveKeywordBaseOnKeywordIdErrorEvent(override val event: NewEshopKeywordIdEvent,
-                                                    override val error: Throwable) : CoreEvent(), ErrorEvent
+                                                    override val error: Throwable) : CoreEvent(), AddErrorEvent
 // -----------
 
 /**
@@ -38,7 +38,7 @@ data class NewKeywordEvent(val searchKeyword: String,
  * Error while building search url base on 'searchKeyword' for given eshop.
  */
 data class BuildSearchUrlForKeywordErrorEvent(override val event: NewKeywordEvent,
-                                              override val error: Throwable) : CoreEvent(), ErrorEvent
+                                              override val error: Throwable) : CoreEvent(), AddErrorEvent
 
 // -----------
 
@@ -52,7 +52,7 @@ data class SearchKeywordUrlEvent(val searchUrl: String,
                                  val identifier: String) : CoreEvent()
 
 data class RetrieveDocumentForSearchUrlErrorEvent(override val event: SearchKeywordUrlEvent,
-                                                  override val error: Throwable) : CoreEvent(), ErrorEvent
+                                                  override val error: Throwable) : CoreEvent(), AddErrorEvent
 
 // -------------
 /**
@@ -78,11 +78,11 @@ data class SearchPageDocumentEvent(val searchDocument: Document,
 }
 
 data class ParseCountOfPagesErrorEvent(override val event: SearchPageDocumentEvent,
-                                       override val error: Throwable) : CoreEvent(), ErrorEvent
+                                       override val error: Throwable) : CoreEvent(), AddErrorEvent
 
 data class ParseProductListURLsErrorEvent(override val event: SearchPageDocumentEvent,
                                           val pageNumber: Int,
-                                          override val error: Throwable) : CoreEvent(), ErrorEvent
+                                          override val error: Throwable) : CoreEvent(), AddErrorEvent
 
 data class CountOfPagesEvent(val countOfPages: Int,
                              val searchUrl: String,
@@ -115,10 +115,10 @@ data class NewProductUrlWithEshopEvent(val newProductUrl: String,
                                        val identifier: String) : CoreEvent()
 
 data class FilterDuplicityErrorEvent(override val event: NewProductEshopUrlsEvent,
-                                     override val error: Throwable) : CoreEvent(), ErrorEvent
+                                     override val error: Throwable) : CoreEvent(), AddErrorEvent
 
 data class FilterNotExistingErrorEvent(override val event: NewProductEshopUrlsEvent,
-                                       override val error: Throwable) : CoreEvent(), ErrorEvent
+                                       override val error: Throwable) : CoreEvent(), AddErrorEvent
 
 // -------
 data class NewProductDocumentEvent(val document: Document,
@@ -135,7 +135,7 @@ data class NewProductDocumentEvent(val document: Document,
 }
 
 data class RetrieveDocumentForUrlErrorEvent(override val event: NewProductUrlWithEshopEvent,
-                                            override val error: Throwable) : CoreEvent(), ErrorEvent
+                                            override val error: Throwable) : CoreEvent(), AddErrorEvent
 
 
 // ---------
@@ -143,10 +143,10 @@ data class ProductNewDataEvent(val productNewData: ProductNewData,
                                val identifier: String) : CoreEvent()
 
 data class ParseProductNewDataErrorEvent(override val event: NewProductDocumentEvent,
-                                         override val error: Throwable) : CoreEvent(), ErrorEvent
+                                         override val error: Throwable) : CoreEvent(), AddErrorEvent
 
 data class SaveProductNewDataErrorEvent(override val event: ProductNewDataEvent,
-                                        override val error: Throwable) : CoreEvent(), ErrorEvent
+                                        override val error: Throwable) : CoreEvent(), AddErrorEvent
 
 // --------
 data class BuildNextSearchPageUrlEvent(val currentPageNumber: Int,
@@ -155,7 +155,7 @@ data class BuildNextSearchPageUrlEvent(val currentPageNumber: Int,
                                        val identifier: String) : CoreEvent()
 
 data class BuildNextPageSearchUrlErrorEvent(override val event: BuildNextSearchPageUrlEvent,
-                                            override val error: Throwable) : CoreEvent(), ErrorEvent
+                                            override val error: Throwable) : CoreEvent(), AddErrorEvent
 
 // **************
 data class NewKeywordIdEvent(val searchKeyWordId: Long,
@@ -176,8 +176,8 @@ data class NewProductUrlEvent(val productUrl: String,
                               val identifier: String) : CoreEvent()
 
 data class FilterNotExistingProductErrorEvent(override val event: NewProductUrlsEvent,
-                                              override val error: Throwable) : CoreEvent(), ErrorEvent
+                                              override val error: Throwable) : CoreEvent(), AddErrorEvent
 
 data class ParseEshopUuidErrorEvent(override val event: NewProductUrlEvent,
-                                    override val error: Throwable) : CoreEvent(), ErrorEvent
+                                    override val error: Throwable) : CoreEvent(), AddErrorEvent
 

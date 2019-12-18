@@ -43,9 +43,10 @@ class FarbyProductParser(unitParser: UnitParser,
         return documentDetailProduct.select("button[title='Vložiť do košíka']").first() == null
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         return Optional.ofNullable(documentDetailProduct.select("h1[class='page-title']").first())
                 .map { it.text() }
+                .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

@@ -62,8 +62,9 @@ class TescoProductParser(unitParser: UnitParser,
         return notExistElement(documentDetailProduct, "button[class=button small add-control button-secondary]")
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         return getTextFromFirstElementByClass(documentDetailProduct, "product-details-tile__title")
+                .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

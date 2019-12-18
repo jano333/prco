@@ -55,7 +55,7 @@ class LekarenVKockeProductParser(unitParser: UnitParser,
                 .toList()
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         var first: Element? = documentDetailProduct.select("h1[class='product-detail-title title-xs']").first()
         if (first == null) {
             first = documentDetailProduct.select("h1[class='product-detail-title title-sm']").first()
@@ -64,6 +64,7 @@ class LekarenVKockeProductParser(unitParser: UnitParser,
         return ofNullable(first)
                 .map { it.text() }
                 .filter { StringUtils.isNotBlank(it) }
+                .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

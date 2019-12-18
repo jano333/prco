@@ -22,11 +22,9 @@ class GigaLekarenProductParser(unitParser: UnitParser,
                                searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = GIGA_LEKAREN
+    override val eshopUuid: EshopUuid = GIGA_LEKAREN
 
-    override val timeout: Int
-        get() = TIMEOUT_15_SECOND
+    override val timeout: Int = TIMEOUT_15_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         val size = documentList.select("div[class=paging_footer] a").size
@@ -43,9 +41,10 @@ class GigaLekarenProductParser(unitParser: UnitParser,
                 .collect(Collectors.toList())
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("#rw_det1 > table > tbody > tr:nth-child(1) > td:nth-child(2) > strong"))
                 .map { it.text() }
+                .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

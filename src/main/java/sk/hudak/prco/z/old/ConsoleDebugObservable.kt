@@ -1,10 +1,12 @@
-package sk.hudak.prco.events
+package sk.hudak.prco.z.old
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import sk.hudak.prco.events.CoreEvent
+import sk.hudak.prco.events.PrcoObservable
+import sk.hudak.prco.events.PrcoObserver
 import sk.hudak.prco.kotlin.color
 import sk.hudak.prco.utils.ConsoleColor
-import sk.hudak.prco.z.old.AddProductsToEshopByKeywordFinishedEvent
 import java.util.*
 
 @Component

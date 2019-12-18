@@ -44,8 +44,8 @@ class MetroProductParser(unitParser: UnitParser,
                 .toList()
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
-        return Optional.ofNullable(documentDetailProduct.select("h1.product-title").text())
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
+        return documentDetailProduct.select("h1.product-title").text()
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

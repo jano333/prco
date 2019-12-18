@@ -22,11 +22,9 @@ class EsoDrogeriaProductParser(unitParser: UnitParser,
                                searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = ESO_DROGERIA
+    override val eshopUuid: EshopUuid = ESO_DROGERIA
 
-    override val timeout: Int
-        get() = TIMEOUT_10_SECOND
+    override val timeout: Int = TIMEOUT_10_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         val select = documentList.select("div[class='pagination'] a")
@@ -57,9 +55,10 @@ class EsoDrogeriaProductParser(unitParser: UnitParser,
                 .collect(Collectors.toList())
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("#incenterpage2 > div.product-detail-container.in-stock-y > h1").first())
                 .map { it.text() }
+                .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

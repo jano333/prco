@@ -42,9 +42,10 @@ class InternetovaLekarenProductParser(unitParser: UnitParser, userAgentDataHolde
                 .collect(Collectors.toList())
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("#product-detail > div > div.header.block-green.fs-large.bold.radius-top > h1").first())
                 .map { it.text() }
+                .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

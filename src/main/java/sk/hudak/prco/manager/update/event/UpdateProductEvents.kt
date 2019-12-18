@@ -5,9 +5,9 @@ import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ProductUpdateData
 import sk.hudak.prco.dto.product.ProductDetailInfo
 import sk.hudak.prco.events.CoreEvent
-import sk.hudak.prco.events.ErrorEvent
 import sk.hudak.prco.events.FinalEvent
 import sk.hudak.prco.events.StartEvent
+import sk.hudak.prco.events.UpdateErrorEvent
 import java.util.*
 
 data class UpdateOneProductInEshopEvent(val eshopUuid: EshopUuid,
@@ -17,7 +17,7 @@ data class UpdateAllProductsInEshopEvent(val eshopUuid: EshopUuid,
                                          val identifier: String = UUID.randomUUID().toString()) : CoreEvent(), StartEvent
 
 data class LoadNextProductToBeUpdatedErrorEvent(override val event: UpdateOneProductInEshopEvent,
-                                                override val error: Throwable) : CoreEvent(), ErrorEvent
+                                                override val error: Throwable) : CoreEvent(), UpdateErrorEvent
 
 data class ProductDetailInfoForUpdateEvent(val productDetailInfo: ProductDetailInfo,
                                            val identifier: String) : CoreEvent()
@@ -34,27 +34,27 @@ data class UpdateProductDocumentEvent(val document: Document,
 }
 
 data class RetrieveUpdateDocumentForUrlErrorEvent(override val event: ProductDetailInfoForUpdateEvent,
-                                                  override val error: Throwable) : CoreEvent(), ErrorEvent
+                                                  override val error: Throwable) : CoreEvent(), UpdateErrorEvent
 
 data class ProductUpdateDataEvent(val productUpdateData: ProductUpdateData,
                                   val productForUpdateData: ProductDetailInfo,
                                   val identifier: String) : CoreEvent()
 
 data class ParseProductUpdateDataErrorEvent(override val event: UpdateProductDocumentEvent,
-                                            override val error: Throwable) : CoreEvent(), ErrorEvent
+                                            override val error: Throwable) : CoreEvent(), UpdateErrorEvent
 
 data class ProcessProductUpdateDataFinalEvent(val productUpdateData: ProductUpdateData,
                                               val productForUpdateData: ProductDetailInfo,
                                               val identifier: String) : CoreEvent(), FinalEvent
 
 data class ProcessProductUpdateDataErrorEvent(override val event: ProcessProductUpdateDataFinalEvent,
-                                              override val error: Throwable) : CoreEvent(), ErrorEvent
+                                              override val error: Throwable) : CoreEvent(), UpdateErrorEvent
 
 data class MarkProductAsUnavailableFinalEvent(val productForUpdateData: ProductDetailInfo,
                                               val identifier: String) : CoreEvent(), FinalEvent
 
 data class MarkProductAsUnavailableErrorEvent(override val event: MarkProductAsUnavailableFinalEvent,
-                                              override val error: Throwable) : CoreEvent(), ErrorEvent
+                                              override val error: Throwable) : CoreEvent(), UpdateErrorEvent
 
 data class ProductUpdateDataRedirectEvent(val productUpdateData: ProductUpdateData,
                                           val productForUpdate: ProductDetailInfo,
@@ -70,14 +70,14 @@ data class ProductUpdateDataRedirectAlreadyExistEvent(val newProductForUpdateDat
                                                       val identifier: String) : CoreEvent()
 
 data class FindRedirectProductByUrlErrorEvent(override val event: ProductUpdateDataRedirectEvent,
-                                              override val error: Throwable) : CoreEvent(), ErrorEvent
+                                              override val error: Throwable) : CoreEvent(), UpdateErrorEvent
 
 data class ProcessProductUpdateUrlFinalEvent(val productUpdateData: ProductUpdateData,
                                              val productForUpdateData: ProductDetailInfo,
                                              val identifier: String) : CoreEvent(), FinalEvent
 
 data class UpdateProductWithNewUrlErrorEvent(override val event: ProcessProductUpdateUrlFinalEvent,
-                                             override val error: Throwable) : CoreEvent(), ErrorEvent
+                                             override val error: Throwable) : CoreEvent(), UpdateErrorEvent
 
 data class ProcessRemoveOldProductFinalEvent(val productUpdateData: ProductUpdateData,
                                              val productForUpdateData: ProductDetailInfo,
@@ -88,12 +88,12 @@ data class ProcessProductUpdateDataForRedirectFinalEvent(val newProductForUpdate
                                                          val identifier: String) : CoreEvent()
 
 data class RemoveProductWithOldUrlErrorEvent(override val event: ProcessRemoveOldProductFinalEvent,
-                                             override val error: Throwable) : CoreEvent(), ErrorEvent
+                                             override val error: Throwable) : CoreEvent(), UpdateErrorEvent
 
 data class ProcessProductUpdateDataForRedirectErrorEvent(override val event: ProcessProductUpdateDataForRedirectFinalEvent,
-                                                         override val error: Throwable) : CoreEvent(), ErrorEvent
+                                                         override val error: Throwable) : CoreEvent(), UpdateErrorEvent
 
 data class LoadProductsToBeUpdatedErrorEvent(override val event: UpdateAllProductsInEshopEvent,
-                                             override val error: Throwable) : CoreEvent(), ErrorEvent
+                                             override val error: Throwable) : CoreEvent(), UpdateErrorEvent
 
 

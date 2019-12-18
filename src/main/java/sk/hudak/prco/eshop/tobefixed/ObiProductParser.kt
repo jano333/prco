@@ -17,21 +17,20 @@ import java.util.*
 
 // TODO doriesit aby bralo len kosicku pobocku? pozor su 2...
 //@Component
-class ObiProductParser (unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
+class ObiProductParser(unitParser: UnitParser,
+                       userAgentDataHolder: UserAgentDataHolder,
+                       searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder), WatchDogParser {
 
-    override val eshopUuid: EshopUuid
-        get() = OBI
+    override val eshopUuid: EshopUuid = OBI
+    override val timeout: Int = TIMEOUT_15_SECOND
 
-    override// koli pomalym odozvam davam na 15 sekund
-    val timeout: Int
-        get() = TIMEOUT_15_SECOND
-
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         val select = documentDetailProduct.select("h1[class=h2 overview__heading]")
         return if (select.isEmpty()) {
-            Optional.empty()
+            null
         } else Optional.of((select[0].childNode(0) as TextNode).wholeText)
+                .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

@@ -18,11 +18,9 @@ import java.util.*
 class PerinbabaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = PERINBABA
+    override val eshopUuid: EshopUuid = PERINBABA
 
-    override val timeout: Int
-        get() = TIMEOUT_10_SECOND
+    override val timeout: Int = TIMEOUT_10_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         val element = documentList.select("div[class=pages] ol").first() ?: return 1
@@ -46,11 +44,11 @@ class PerinbabaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAg
         return urls
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         val first = documentDetailProduct.select("#product_addtocart_form > div.product-shop > div > div.product-name")
-                .first() ?: return Optional.empty()
-        val first1 = first.children().first() ?: return Optional.empty()
-        return Optional.of(first1.text())
+                .first() ?: return null
+        val first1 = first.children().first() ?: return null
+        return first1.text()
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

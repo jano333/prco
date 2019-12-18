@@ -29,8 +29,9 @@ interface ErrorEvent {
     val error: Throwable
 }
 
-interface UpdateErrorEvent : ErrorEvent
+interface AddErrorEvent : ErrorEvent
 
+interface UpdateErrorEvent : ErrorEvent
 
 interface PrcoObserver : Observer {
 

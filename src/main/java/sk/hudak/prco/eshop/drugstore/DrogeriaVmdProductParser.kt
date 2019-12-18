@@ -47,9 +47,10 @@ class DrogeriaVmdProductParser(unitParser: UnitParser,
         return !ofNullable(documentDetailProduct.select("button[class='.btn koupit_detail_gb']")).isPresent
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("#content > div.rightSide > div:nth-child(2) > h1"))
                 .map { it.text() }
+                .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

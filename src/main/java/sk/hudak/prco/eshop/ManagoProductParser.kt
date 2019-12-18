@@ -54,10 +54,11 @@ class ManagoProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgent
                 .map { eshopUuid.productStartUrl + it }
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("h1[itemprop='name']").first())
                 .map { it.text() }
                 .filter { StringUtils.isNotBlank(it) }
+                .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

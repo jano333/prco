@@ -43,7 +43,7 @@ class MojaLekarenProductParser(unitParser: UnitParser,
         return urls
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         var element: Element? = documentDetailProduct.select("div.detail-top.list > div > h1").first()
         if (element == null) {
             element = documentDetailProduct.select("div > article > h1").first()
@@ -55,6 +55,7 @@ class MojaLekarenProductParser(unitParser: UnitParser,
         return ofNullable(element)
                 .map { it.text() }
                 .filter { StringUtils.isNotBlank(it) }
+                .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

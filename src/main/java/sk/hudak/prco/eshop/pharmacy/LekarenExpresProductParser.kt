@@ -47,9 +47,10 @@ class LekarenExpresProductParser(unitParser: UnitParser, userAgentDataHolder: Us
                 .toList()
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("#meta > h1").first())
                 .map { it.text() }
+                .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {

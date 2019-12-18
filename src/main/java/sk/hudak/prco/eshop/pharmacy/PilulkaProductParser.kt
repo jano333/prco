@@ -47,12 +47,13 @@ class PilulkaProductParser(unitParser: UnitParser,
                 .toList()
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         val first = documentDetailProduct.select("div[id=product-info] > form > div > h1 > span[itemprop=name]").first()
         return if (first != null) {
-            ofNullable(first.text())
+            ofNullable(first.text()).orElse(null)
         } else ofNullable(documentDetailProduct.select("span[class='product-detail__header pr-3']").first())
                 .map { it.text() }
+                .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

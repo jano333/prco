@@ -18,6 +18,7 @@ import sk.hudak.prco.utils.ThreadUtils.sleepSafe
 import sk.hudak.prco.z.old.UpdateProductDataListenerAdapter.Companion.EMPTY_INSTANCE
 import java.util.*
 
+@Deprecated("differ package")
 @Component
 class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
                                    private val internalTxService: InternalTxService,

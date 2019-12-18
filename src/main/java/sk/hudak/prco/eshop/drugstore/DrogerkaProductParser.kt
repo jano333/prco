@@ -20,11 +20,9 @@ import java.util.stream.Collectors
 class DrogerkaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = DROGERKA
+    override val eshopUuid: EshopUuid = DROGERKA
 
-    override val timeout: Int
-        get() = TIMEOUT_10_SECOND
+    override val timeout: Int = TIMEOUT_10_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         val size = documentList.select("ul[class='pagination'] li").size
@@ -41,10 +39,11 @@ class DrogerkaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAge
                 .collect(Collectors.toList())
     }
 
-    override fun parseProductNameFromDetail(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("#product > div.text > h1").first())
                 .map { it.text() }
                 .filter { StringUtils.isNotBlank(it) }
+                .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
