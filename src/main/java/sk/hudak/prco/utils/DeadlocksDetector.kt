@@ -1,11 +1,14 @@
 package sk.hudak.prco.utils
 
 import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Component
 import java.lang.management.ManagementFactory
 import java.lang.management.ThreadInfo
 import java.lang.management.ThreadMXBean
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import javax.annotation.PostConstruct
+import javax.annotation.PreDestroy
 
 /**
  * Base on: https://dzone.com/articles/how-detect-java-deadlocks
@@ -39,8 +42,8 @@ private class DeadlockConsoleHandlerImpl : DeadlockHandler {
     }
 }
 
-class DeadlockedThreadDetector(private val period: Long,
-                               private val unit: TimeUnit) {
+@Component
+class DeadlockedThreadDetector {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(DeadlockedThreadDetector::class.java)!!
@@ -59,7 +62,15 @@ class DeadlockedThreadDetector(private val period: Long,
         }
     }
 
+    @PostConstruct
     fun start() {
-        scheduler.scheduleAtFixedRate(deadlockCheck, period, period, unit)
+        scheduler.scheduleAtFixedRate(deadlockCheck, 3, 3, TimeUnit.SECONDS)
+        LOG.debug("scheduling stated")
+    }
+
+    @PreDestroy
+    fun shutdown() {
+        scheduler.shutdownNow()
+        LOG.debug("shutdownNow completed")
     }
 }

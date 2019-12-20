@@ -22,7 +22,6 @@ import sk.hudak.prco.service.UIService
 import sk.hudak.prco.service.WatchDogService
 import sk.hudak.prco.ssl.PrcoSslManager
 import sk.hudak.prco.utils.CalculationUtils
-import sk.hudak.prco.utils.DeadlockedThreadDetector
 import sk.hudak.prco.z.old.*
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -30,7 +29,6 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.Arrays.asList
-import java.util.concurrent.TimeUnit
 
 
 /**
@@ -78,9 +76,6 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
 
         // start thread for showing statistics
         theadStatisticManager.start()
-
-        //run deadlok detector
-        DeadlockedThreadDetector(3, TimeUnit.SECONDS).start()
 
         //TODO
         internalTxService.startErrorCleanUp()

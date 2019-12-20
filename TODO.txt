@@ -1,10 +1,8 @@
 ---------------------------
+
 toto stale rasie zle je vyhodnotenie....
-DROGERIA_VMD executor, state: waiting, 14/94 completed
+DROGERIA_VMD executor, state: waiting, 29/192 completed
 ---------------------------
-ZLE je dostupny:
-c7e56ca] product is unavailable: https://www.brendon.sk/pampers-active-baby-dry-giant-pack-4-maxi-70-pcs-jednorazove-plienky-11842402
------------------------
 pre toto urobit osobtny error type ze SSL !!!
 2019-12-09 14:25:40,815 ERROR [PERINBABA-add-process-thread] s.h.p.t.h.a.AddProductErrorHandler[AddProductErrorHandler.kt:68][PERINBABA-b84d4dbc-d1d0-4414-8451-aa159021c2d1] sk.hudak.prco.exception.CoreParserException: error creating document for url 'http://www.perinbaba.sk/catalogsearch/result/?limit=48&q=pampers':
 java.util.concurrent.CompletionException: sk.hudak.prco.exception.CoreParserException: error creating document for url 'http://www.perinbaba.sk/catalogsearch/result/?limit=48&q=pampers':

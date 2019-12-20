@@ -1,6 +1,5 @@
 package sk.hudak.prco.service.impl
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.*
@@ -13,19 +12,21 @@ import java.math.BigDecimal
  * Delegator pattern.
  */
 @Component
-class UIServiceImpl(
-        @Autowired private val internalTxService: InternalTxService
-) : UIService {
+class UIServiceImpl(private val internalTxService: InternalTxService)
+    : UIService {
 
-    override val statisticsOfProducts: ProductStatisticInfoDto
-        get() = internalTxService.statisticsOfProducts
+    override fun findErrorsByFilter(findDto: ErrorFindFilterDto): List<ErrorListDto> =
+            internalTxService.findErrorsByFilter(findDto)
 
-    override val countOfAllNewProducts: Long
-        get() = internalTxService.countOfAllNewProducts
+    override val statisticsOfProducts: ProductStatisticInfoDto =
+            internalTxService.statisticsOfProducts
 
-    override fun findNewProducts(filter: NewProductFilterUIDto): List<NewProductFullDto> {
-        return internalTxService.findNewProducts(filter)
-    }
+    override val countOfAllNewProducts: Long =
+            internalTxService.countOfAllNewProducts
+
+    override fun findNewProducts(filter: NewProductFilterUIDto): List<NewProductFullDto> =
+            internalTxService.findNewProducts(filter)
+
 
     override fun getNewProduct(newProductId: Long?): NewProductFullDto {
         return internalTxService.getNewProduct(newProductId!!)

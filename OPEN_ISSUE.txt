@@ -1,0 +1,361 @@
+
+
+-------------------------------------------------------------------------
+ESHOP: Brendon
+pre page 2 dava stale content prvej stranky,
+dokonca aj ked dam soruce v chrome tak tam nie su udaje z 2 stranky ale akokeby len z prvej... a pritom
+som dal zobrazit content prvej stranky
+TEMPORARY FIX: zatial som dal ze Brendon ma len jednu stranku na pevno
+-------------------------------------------------------------------------
+SearchKeywordUrlEvent_3_Handler sa zavolal len 2 krat a maj sa 3 krat preco?
+
+2019-12-20 13:19:34,829 TRACE [main] s.h.p.m.a.AddProductManagerImpl[AddProductManager.kt:78][-] >> addNewProductsByKeywordForEshop DROGERIA_VMD 1
+2019-12-20 13:19:34,831 TRACE [main] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:33][-] >> update NewEshopKeywordIdEvent
+2019-12-20 13:19:34,833 TRACE [main] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:48][-] << update NewEshopKeywordIdEvent
+2019-12-20 13:19:34,833 TRACE [main] s.h.p.m.a.AddProductManagerImpl[AddProductManager.kt:82][-] << addNewProductsByKeywordForEshop DROGERIA_VMD 1
+2019-12-20 13:19:34,857 TRACE [add-handler-task-pool-1-thread-1] s.h.p.m.a.e.h.NewEshopKeywordIdEvent_1_Handler[NewEshopKeywordIdEvent_1_Handler.kt:39][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] handle NewEshopKeywordIdEvent(eshopUuid=DROGERIA_VMD, searchKeywordId=1, identifier=609a913b-680e-4fd2-83f5-7baf0bda52fb)
+2019-12-20 13:19:34,879 TRACE [add-internal-service-pool-3-thread-1] s.h.p.m.a.e.h.NewEshopKeywordIdEvent_1_Handler[NewEshopKeywordIdEvent_1_Handler.kt:60][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] retrieveKeywordBaseOnKeywordId
+2019-12-20 13:19:34,894 TRACE [add-internal-service-pool-3-thread-1] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:33][-] >> update NewKeywordEvent
+2019-12-20 13:19:34,897 TRACE [add-internal-service-pool-3-thread-1] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:48][-] << update NewKeywordEvent
+2019-12-20 13:19:34,922 TRACE [add-handler-task-pool-1-thread-3] s.h.p.m.a.e.h.NewKeyWordEvent_2_Handler[NewKeyWordEvent_2_Handler.kt:40][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] handle NewKeywordEvent(searchKeyword=pampers, eshopUuid=DROGERIA_VMD, searchKeywordId=1, identifier=609a913b-680e-4fd2-83f5-7baf0bda52fb)
+2019-12-20 13:19:34,926 TRACE [add-search-url-pool-2-thread-1] s.h.p.m.a.e.h.NewKeyWordEvent_2_Handler[NewKeyWordEvent_2_Handler.kt:55][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] buildSearchUrlForKeyword
+2019-12-20 13:19:34,928 DEBUG [add-search-url-pool-2-thread-1] s.h.p.m.a.e.h.NewKeyWordEvent_2_Handler[NewKeyWordEvent_2_Handler.kt:57][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] build url for keyword pampers : https://www.drogeria-vmd.sk/hladanie/?q=pampers
+2019-12-20 13:19:34,928 TRACE [add-search-url-pool-2-thread-1] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:33][-] >> update SearchKeywordUrlEvent
+2019-12-20 13:19:34,929 TRACE [add-search-url-pool-2-thread-1] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:48][-] << update SearchKeywordUrlEvent
+2019-12-20 13:19:34,932 TRACE [add-handler-task-pool-1-thread-5] s.h.p.m.a.e.h.SearchKeywordUrlEvent_3_Handler[SearchKeywordUrlEvent_3_Handler.kt:36][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] handle SearchKeywordUrlEvent(searchUrl=https://www.drogeria-vmd.sk/hladanie/?q=pampers, pageNumber=1, searchKeyword=pampers, eshopUuid=DROGERIA_VMD, identifier=609a913b-680e-4fd2-83f5-7baf0bda52fb)
+2019-12-20 13:19:34,938 DEBUG [add-handler-task-pool-1-thread-5] s.h.p.e.e.EshopScheduledExecutor[EshopExecutors.kt:70][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] -> requesting lock for add-handler-task-pool-1-thread-5
+2019-12-20 13:19:34,938 DEBUG [add-handler-task-pool-1-thread-5] s.h.p.e.e.EshopScheduledExecutor[EshopExecutors.kt:72][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] <- received lock for add-handler-task-pool-1-thread-5
+2019-12-20 13:19:34,938 INFO [add-handler-task-pool-1-thread-5] s.h.p.e.e.EshopScheduledExecutor[EshopExecutors.kt:76][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] scheduling command for DROGERIA_VMD to be run now
+2019-12-20 13:19:34,939 DEBUG [add-handler-task-pool-1-thread-5] s.h.p.e.e.EshopScheduledExecutor[EshopExecutors.kt:94][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] received unlock for add-handler-task-pool-1-thread-5
+2019-12-20 13:19:34,939 TRACE [add-handler-task-pool-1-thread-5] s.h.p.e.e.EshopScheduledExecutor[EshopExecutors.kt:103][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] -> running command
+2019-12-20 13:19:34,960 TRACE [add-handler-task-pool-1-thread-5] s.h.p.e.e.EshopScheduledExecutor[EshopExecutors.kt:105][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] <- running command
+2019-12-20 13:19:34,960 TRACE [DROGERIA_VMD-process-thread] s.h.p.e.h.BasicDocumentHelper[BasicDocumentHelper.kt:23][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] retrieveDocumentForUrl
+2019-12-20 13:19:34,961 DEBUG [DROGERIA_VMD-process-thread] s.h.p.p.e.JSoupProductParser[JSoupProductParser.kt:249][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] request URL: https://www.drogeria-vmd.sk/hladanie/?q=pampers
+2019-12-20 13:19:34,961 TRACE [DROGERIA_VMD-process-thread] s.h.p.p.e.JSoupProductParser[JSoupProductParser.kt:250][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] request userAgent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36
+2019-12-20 13:19:35,324 TRACE [DROGERIA_VMD-process-thread] s.h.p.s.PrcoCustomTrustManager[SSLHandling.kt:279][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] server cert subject name CN=b2bexchange.vmd-drogerie.cz
+2019-12-20 13:19:35,325 TRACE [DROGERIA_VMD-process-thread] s.h.p.s.PrcoCustomTrustManager[SSLHandling.kt:284][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] ignoring server cert
+2019-12-20 13:19:35,326 TRACE [DROGERIA_VMD-process-thread] s.h.p.s.PrcoCustomTrustManager[SSLHandling.kt:293][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] getAcceptedIssuers()
+2019-12-20 13:19:35,360 DEBUG [DROGERIA_VMD-process-thread] s.h.p.s.PrcoCustomHostnameVerifier[SSLHandling.kt:367][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] verify www.drogeria-vmd.sk
+2019-12-20 13:19:37,186 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:19:37,187 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: running, 0/1 completed
+2019-12-20 13:19:37,187 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:19:37,187 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:19:37,187 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:19:37,196 TRACE [DROGERIA_VMD-process-thread] s.h.p.p.e.JSoupProductParser[JSoupProductParser.kt:262][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] response cookies: {PHPSESSID=9691bkkeip8893o8f5mh23cp80, binargonUserId=1684437536}
+2019-12-20 13:19:37,278 TRACE [DROGERIA_VMD-process-thread] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:33][-] >> update SearchPageDocumentEvent
+2019-12-20 13:19:37,279 TRACE [DROGERIA_VMD-process-thread] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:48][-] << update SearchPageDocumentEvent
+2019-12-20 13:19:37,279 TRACE [add-handler-task-pool-1-thread-7] s.h.p.m.a.e.h.SearchPageDocumentEvent_4_Handler[SearchPageDocumentEvent_4_Handler.kt:34][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] handle SearchPageDocumentEvent(searchDocument=https://www.drogeria-vmd.sk/hladanie/?q=pampers, pageNumber=1, eshopUuid=DROGERIA_VMD, searchKeyWord='pampers', searchUrl='https://www.drogeria-vmd.sk/hladanie/?q=pampers', identifier='609a913b-680e-4fd2-83f5-7baf0bda52fb')
+2019-12-20 13:19:37,280 TRACE [add-html-parser-pool-4-thread-1] s.h.p.m.a.e.h.SearchPageDocumentEvent_4_Handler[SearchPageDocumentEvent_4_Handler.kt:65][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] parseCountOfPages
+2019-12-20 13:19:37,282 TRACE [add-html-parser-pool-4-thread-2] s.h.p.m.a.e.h.SearchPageDocumentEvent_4_Handler[SearchPageDocumentEvent_4_Handler.kt:78][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] parseProductListURLs
+2019-12-20 13:19:37,296 DEBUG [add-html-parser-pool-4-thread-2] s.h.p.m.a.e.h.SearchPageDocumentEvent_4_Handler[SearchPageDocumentEvent_4_Handler.kt:81][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] page: 1, count of products: 12
+2019-12-20 13:19:37,296 TRACE [add-html-parser-pool-4-thread-2] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:33][-] >> update NewProductEshopUrlsEvent
+2019-12-20 13:19:37,296 DEBUG [add-html-parser-pool-4-thread-1] s.h.p.m.a.e.h.SearchPageDocumentEvent_4_Handler[SearchPageDocumentEvent_4_Handler.kt:68][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] count of pages is 3 for URL https://www.drogeria-vmd.sk/hladanie/?q=pampers
+2019-12-20 13:19:37,297 TRACE [add-html-parser-pool-4-thread-2] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:48][-] << update NewProductEshopUrlsEvent
+2019-12-20 13:19:37,297 TRACE [add-html-parser-pool-4-thread-1] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:33][-] >> update CountOfPagesEvent
+2019-12-20 13:19:37,297 TRACE [add-html-parser-pool-4-thread-1] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:48][-] << update CountOfPagesEvent
+2019-12-20 13:19:37,297 DEBUG [add-handler-task-pool-1-thread-2] s.h.p.m.a.e.h.HistoryLogAddProductHandler[HistoryLogAddProductHandler.kt:33][-] DROGERIA_VMD: keyword: pampers, page number: 1 count of products: 12, search URL: https://www.drogeria-vmd.sk/hladanie/?q=pampers
+2019-12-20 13:19:37,297 TRACE [add-handler-task-pool-1-thread-1] s.h.p.m.a.e.h.CountOfPagesEvent_5a_Handler[CountOfPagesEvent_5a_Handler.kt:27][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] handle CountOfPagesEvent(countOfPages=3, searchUrl=https://www.drogeria-vmd.sk/hladanie/?q=pampers, searchKeyWord=pampers, eshopUuid=DROGERIA_VMD, identifier=609a913b-680e-4fd2-83f5-7baf0bda52fb)
+2019-12-20 13:19:37,297 TRACE [add-handler-task-pool-1-thread-1] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:33][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] >> update BuildNextSearchPageUrlEvent
+2019-12-20 13:19:37,298 TRACE [add-handler-task-pool-1-thread-1] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:48][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] << update BuildNextSearchPageUrlEvent
+2019-12-20 13:19:37,298 TRACE [add-handler-task-pool-1-thread-3] s.h.p.m.a.e.h.BuildNextSearchPageUrl_6a_Handler[BuildNextSearchPageUrl_6a_Handler.kt:33][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] handle BuildNextSearchPageUrlEvent(currentPageNumber=2, searchKeyWord=pampers, eshopUuid=DROGERIA_VMD, identifier=609a913b-680e-4fd2-83f5-7baf0bda52fb_1)
+2019-12-20 13:19:37,298 TRACE [add-handler-task-pool-1-thread-9] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:31][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] handle NewProductEshopUrlsEvent(pageProductURLs size=12, searchPageDocument=https://www.drogeria-vmd.sk/hladanie/?q=pampers, pageNumber=1, eshopUuid=DROGERIA_VMD, searchKeyWord='pampers', searchUrl='https://www.drogeria-vmd.sk/hladanie/?q=pampers', identifier='609a913b-680e-4fd2-83f5-7baf0bda52fb')
+2019-12-20 13:19:37,298 TRACE [add-handler-task-pool-1-thread-1] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:33][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] >> update BuildNextSearchPageUrlEvent
+2019-12-20 13:19:37,298 TRACE [add-handler-task-pool-1-thread-1] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:48][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] << update BuildNextSearchPageUrlEvent
+2019-12-20 13:19:37,298 TRACE [add-handler-task-pool-1-thread-5] s.h.p.m.a.e.h.BuildNextSearchPageUrl_6a_Handler[BuildNextSearchPageUrl_6a_Handler.kt:33][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_2] handle BuildNextSearchPageUrlEvent(currentPageNumber=3, searchKeyWord=pampers, eshopUuid=DROGERIA_VMD, identifier=609a913b-680e-4fd2-83f5-7baf0bda52fb_2)
+2019-12-20 13:19:37,298 DEBUG [add-handler-task-pool-1-thread-9] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:33][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] count of products URL before duplicity check  12
+2019-12-20 13:19:37,299 DEBUG [add-handler-task-pool-1-thread-10] s.h.p.m.a.e.h.HistoryLogAddProductHandler[HistoryLogAddProductHandler.kt:30][-] DROGERIA_VMD: keyword: pampers, count of pages: 3, search URL: https://www.drogeria-vmd.sk/hladanie/?q=pampers
+2019-12-20 13:19:37,300 TRACE [add-search-url-pool-2-thread-2] s.h.p.m.a.e.h.BuildNextSearchPageUrl_6a_Handler[BuildNextSearchPageUrl_6a_Handler.kt:50][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_2] buildNextPageSearchUrlForGivenPageNumber
+2019-12-20 13:19:37,300 TRACE [add-search-url-pool-2-thread-3] s.h.p.m.a.e.h.BuildNextSearchPageUrl_6a_Handler[BuildNextSearchPageUrl_6a_Handler.kt:50][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] buildNextPageSearchUrlForGivenPageNumber
+2019-12-20 13:19:37,301 DEBUG [add-search-url-pool-2-thread-2] s.h.p.m.a.e.h.BuildNextSearchPageUrl_6a_Handler[BuildNextSearchPageUrl_6a_Handler.kt:52][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_2] search URL for page 3 : https://www.drogeria-vmd.sk/hladanie-stranka-3/?q=pampers
+2019-12-20 13:19:37,301 DEBUG [add-search-url-pool-2-thread-3] s.h.p.m.a.e.h.BuildNextSearchPageUrl_6a_Handler[BuildNextSearchPageUrl_6a_Handler.kt:52][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] search URL for page 2 : https://www.drogeria-vmd.sk/hladanie-stranka-2/?q=pampers
+2019-12-20 13:19:37,301 DEBUG [ForkJoinPool.commonPool-worker-1] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:78][-] count of products URL after duplicity check 12
+2019-12-20 13:19:37,301 TRACE [add-search-url-pool-2-thread-3] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:33][-] >> update SearchKeywordUrlEvent
+2019-12-20 13:19:37,301 TRACE [add-handler-task-pool-1-thread-8] s.h.p.m.a.e.h.SearchKeywordUrlEvent_3_Handler[SearchKeywordUrlEvent_3_Handler.kt:36][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] handle SearchKeywordUrlEvent(searchUrl=https://www.drogeria-vmd.sk/hladanie-stranka-2/?q=pampers, pageNumber=2, searchKeyword=pampers, eshopUuid=DROGERIA_VMD, identifier=609a913b-680e-4fd2-83f5-7baf0bda52fb_1)
+2019-12-20 13:19:37,301 TRACE [add-search-url-pool-2-thread-3] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:48][-] << update SearchKeywordUrlEvent
+2019-12-20 13:19:37,301 DEBUG [add-handler-task-pool-1-thread-8] s.h.p.e.e.EshopScheduledExecutor[EshopExecutors.kt:70][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] -> requesting lock for add-handler-task-pool-1-thread-8
+2019-12-20 13:19:37,301 DEBUG [add-handler-task-pool-1-thread-8] s.h.p.e.e.EshopScheduledExecutor[EshopExecutors.kt:72][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] <- received lock for add-handler-task-pool-1-thread-8
+2019-12-20 13:19:37,303 INFO [add-handler-task-pool-1-thread-8] s.h.p.e.e.EshopScheduledExecutor[EshopExecutors.kt:88][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] scheduling command for DROGERIA_VMD to be run after 10 at Fri Dec 20 13:19:47 CET 2019
+2019-12-20 13:19:37,303 DEBUG [add-handler-task-pool-1-thread-8] s.h.p.e.e.EshopScheduledExecutor[EshopExecutors.kt:94][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] received unlock for add-handler-task-pool-1-thread-8
+2019-12-20 13:19:37,304 TRACE [add-handler-task-pool-1-thread-8] s.h.p.e.e.EshopScheduledExecutor[EshopExecutors.kt:98][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] -> scheduling command
+2019-12-20 13:19:37,304 TRACE [add-handler-task-pool-1-thread-8] s.h.p.e.e.EshopScheduledExecutor[EshopExecutors.kt:100][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] <- scheduling command
+2019-12-20 13:19:37,315 INFO [add-internal-service-pool-3-thread-2] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] product https://www.drogeria-vmd.sk/pampers-splashers-plen-kal-do-vody-5-6-14-kg-10ks-8951/ already existing
+2019-12-20 13:19:37,319 INFO [add-internal-service-pool-3-thread-2] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] product https://www.drogeria-vmd.sk/pampers-sleep-play-4-maxi-7-18-kg-50-ks-detske-plenkove-nohavicky/ already existing
+2019-12-20 13:19:37,328 INFO [add-internal-service-pool-3-thread-2] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] product https://www.drogeria-vmd.sk/pampers-pure-protect-3-6-10kg-31ks-4843-1/ already existing
+2019-12-20 13:19:37,337 INFO [add-internal-service-pool-3-thread-2] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] product https://www.drogeria-vmd.sk/pampers-premium-care-3-midi-4-9-kg-60-ks-detske-plenkove-kalhotky/ already existing
+2019-12-20 13:19:37,343 INFO [add-internal-service-pool-3-thread-2] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] product https://www.drogeria-vmd.sk/pampers-splashers-plen-kal-do-vody-4-5-9-15kg-11ks-8384/ already existing
+2019-12-20 13:19:37,346 INFO [add-internal-service-pool-3-thread-2] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] product https://www.drogeria-vmd.sk/pampers-splashers-plen-kal-do-vody-3-4-6-11kg-12ks-8346/ already existing
+2019-12-20 13:19:37,350 INFO [add-internal-service-pool-3-thread-2] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] product https://www.drogeria-vmd.sk/pampers-det-ubr-natur-clean-4x64ks-7059/ already existing
+2019-12-20 13:19:37,358 INFO [add-internal-service-pool-3-thread-2] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] product https://www.drogeria-vmd.sk/pampers-premium-care-5-junior-11-25-kg-44-ks-detske-plenkove-kalhotky/ already existing
+2019-12-20 13:19:37,365 INFO [add-internal-service-pool-3-thread-2] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] product https://www.drogeria-vmd.sk/pampers-giantpack-junior-5-11-16kg-64ks-9974/ already existing
+2019-12-20 13:19:37,372 INFO [add-internal-service-pool-3-thread-2] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] product https://www.drogeria-vmd.sk/pampers-vlhc-ubrousky-aqua-pure-48ks-3326/ already existing
+2019-12-20 13:19:37,382 INFO [add-internal-service-pool-3-thread-2] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] product https://www.drogeria-vmd.sk/pampers-vlhc-ubrousky-aqua-pure-3x48ks-3388/ already existing
+2019-12-20 13:19:37,389 INFO [add-internal-service-pool-3-thread-2] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb] product https://www.drogeria-vmd.sk/pampers-pure-protection-4-9-14-kg-plankove-kalhotky-28-kusu/ already existing
+2019-12-20 13:19:37,390 INFO [add-internal-service-pool-3-thread-2] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:109][-] count of non existing products URL is zero
+2019-12-20 13:19:37,406 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:19:40,187 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:19:40,188 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: waiting, 1/2 completed
+2019-12-20 13:19:40,188 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:19:40,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:19:40,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:19:40,406 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:19:43,186 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:19:43,186 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: waiting, 1/2 completed
+2019-12-20 13:19:43,187 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:19:43,188 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:19:43,188 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:19:43,406 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:19:43,679 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:67][-] all tasks: 27  running: 0, finished(ok/error): 0/0[]
+2019-12-20 13:19:43,685 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:68][-] error statistic {PARSING_PRODUCT_UPDATE_DATA=1, PARSING_PRODUCT_INFO_ERR=0, HTTP_STATUS_ERR=0, HTTP_STATUS_404_ERR=0, PARSING_PRODUCT_UNIT_ERR=0, PARSING_PRODUCT_URLS=0, PARSING_PRODUCT_NEW_DATA=3, PARSING_PRODUCT_NAME_FOR_NEW_PRODUCT=6, TIME_OUT_ERR=0, UNKNOWN=22}
+2019-12-20 13:19:46,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:19:46,190 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: waiting, 1/2 completed
+2019-12-20 13:19:46,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:19:46,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:19:46,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:19:46,408 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:19:47,315 TRACE [DROGERIA_VMD-process-thread] s.h.p.e.h.BasicDocumentHelper[BasicDocumentHelper.kt:23][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] retrieveDocumentForUrl
+2019-12-20 13:19:47,315 DEBUG [DROGERIA_VMD-process-thread] s.h.p.p.e.JSoupProductParser[JSoupProductParser.kt:249][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] request URL: https://www.drogeria-vmd.sk/hladanie-stranka-2/?q=pampers
+2019-12-20 13:19:47,315 TRACE [DROGERIA_VMD-process-thread] s.h.p.p.e.JSoupProductParser[JSoupProductParser.kt:250][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] request userAgent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36
+2019-12-20 13:19:47,330 DEBUG [DROGERIA_VMD-process-thread] s.h.p.s.PrcoCustomHostnameVerifier[SSLHandling.kt:367][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] verify www.drogeria-vmd.sk
+2019-12-20 13:19:48,097 TRACE [DROGERIA_VMD-process-thread] s.h.p.p.e.JSoupProductParser[JSoupProductParser.kt:262][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] response cookies: {PHPSESSID=ni46m8dpesmt635c66p1ovvtp2, binargonUserId=2684438769}
+2019-12-20 13:19:48,107 TRACE [DROGERIA_VMD-process-thread] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:33][-] >> update SearchPageDocumentEvent
+2019-12-20 13:19:48,107 TRACE [DROGERIA_VMD-process-thread] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:48][-] << update SearchPageDocumentEvent
+2019-12-20 13:19:48,107 TRACE [add-handler-task-pool-1-thread-2] s.h.p.m.a.e.h.SearchPageDocumentEvent_4_Handler[SearchPageDocumentEvent_4_Handler.kt:34][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] handle SearchPageDocumentEvent(searchDocument=https://www.drogeria-vmd.sk/hladanie-stranka-2/?q=pampers, pageNumber=2, eshopUuid=DROGERIA_VMD, searchKeyWord='pampers', searchUrl='https://www.drogeria-vmd.sk/hladanie-stranka-2/?q=pampers', identifier='609a913b-680e-4fd2-83f5-7baf0bda52fb_1')
+2019-12-20 13:19:48,108 TRACE [add-html-parser-pool-4-thread-3] s.h.p.m.a.e.h.SearchPageDocumentEvent_4_Handler[SearchPageDocumentEvent_4_Handler.kt:78][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] parseProductListURLs
+2019-12-20 13:19:48,109 DEBUG [add-html-parser-pool-4-thread-3] s.h.p.m.a.e.h.SearchPageDocumentEvent_4_Handler[SearchPageDocumentEvent_4_Handler.kt:81][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] page: 2, count of products: 12
+2019-12-20 13:19:48,109 TRACE [add-html-parser-pool-4-thread-3] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:33][-] >> update NewProductEshopUrlsEvent
+2019-12-20 13:19:48,109 TRACE [add-html-parser-pool-4-thread-3] s.h.p.m.a.e.h.AddProcessHandler[AddProcessHandler.kt:48][-] << update NewProductEshopUrlsEvent
+2019-12-20 13:19:48,109 TRACE [add-handler-task-pool-1-thread-6] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:31][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] handle NewProductEshopUrlsEvent(pageProductURLs size=12, searchPageDocument=https://www.drogeria-vmd.sk/hladanie-stranka-2/?q=pampers, pageNumber=2, eshopUuid=DROGERIA_VMD, searchKeyWord='pampers', searchUrl='https://www.drogeria-vmd.sk/hladanie-stranka-2/?q=pampers', identifier='609a913b-680e-4fd2-83f5-7baf0bda52fb_1')
+2019-12-20 13:19:48,109 DEBUG [add-handler-task-pool-1-thread-1] s.h.p.m.a.e.h.HistoryLogAddProductHandler[HistoryLogAddProductHandler.kt:33][-] DROGERIA_VMD: keyword: pampers, page number: 2 count of products: 12, search URL: https://www.drogeria-vmd.sk/hladanie-stranka-2/?q=pampers
+2019-12-20 13:19:48,109 DEBUG [add-handler-task-pool-1-thread-6] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:33][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] count of products URL before duplicity check  12
+2019-12-20 13:19:48,110 DEBUG [ForkJoinPool.commonPool-worker-2] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:78][-] count of products URL after duplicity check 12
+2019-12-20 13:19:48,115 INFO [add-internal-service-pool-3-thread-3] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] product https://www.drogeria-vmd.sk/pampers-pure-protect-5-11-kg-24ks-4966/ already existing
+2019-12-20 13:19:48,118 INFO [add-internal-service-pool-3-thread-3] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] product https://www.drogeria-vmd.sk/pampers-vlhc-ubrousky-aqua-pure-48ks-3326/ already existing
+2019-12-20 13:19:48,122 INFO [add-internal-service-pool-3-thread-3] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] product https://www.drogeria-vmd.sk/pampers-vlhc-ubrousky-aqua-pure-3x48ks-3388/ already existing
+2019-12-20 13:19:48,125 INFO [add-internal-service-pool-3-thread-3] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] product https://www.drogeria-vmd.sk/pampers-pure-protect-1-2-5kg-35ks-3120-1/ already existing
+2019-12-20 13:19:48,128 INFO [add-internal-service-pool-3-thread-3] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] product https://www.drogeria-vmd.sk/pampers-pure-protection-4-9-14-kg-plankove-kalhotky-28-kusu/ already existing
+2019-12-20 13:19:48,134 INFO [add-internal-service-pool-3-thread-3] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] product https://www.drogeria-vmd.sk/pampers-giantpack-maxi-7-14kg-76ks-6271/ already existing
+2019-12-20 13:19:48,137 INFO [add-internal-service-pool-3-thread-3] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] product https://www.drogeria-vmd.sk/pampers-sleep-play-3-midi-4-9-kg-58-ks-detske-plenkove-nohavicky/ already existing
+2019-12-20 13:19:48,142 INFO [add-internal-service-pool-3-thread-3] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] product https://www.drogeria-vmd.sk/pampers-premium-care-4-maxi-7-18-kg-52-ks-detske-plenkove-kalhotky/ already existing
+2019-12-20 13:19:48,147 INFO [add-internal-service-pool-3-thread-3] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] product https://www.drogeria-vmd.sk/pampers-active-baby-giant-pack-3-midi-6-10-kg-plenkove-kalhotky-90-kusu/ already existing
+2019-12-20 13:19:48,152 INFO [add-internal-service-pool-3-thread-3] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] product https://www.drogeria-vmd.sk/pampers-giantpack-maxi-pl-4-70ks-10-15kg-9813/ already existing
+2019-12-20 13:19:48,155 INFO [add-internal-service-pool-3-thread-3] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] product https://www.drogeria-vmd.sk/pampers-sleep-play-5-junior-11-25-kg-42-ks-detske-plenkove-nohavicky/ already existing
+2019-12-20 13:19:48,160 INFO [add-internal-service-pool-3-thread-3] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:97][DROGERIA_VMD-609a913b-680e-4fd2-83f5-7baf0bda52fb_1] product https://www.drogeria-vmd.sk/pampers-premium-care-1-newborn-2-5-kg-78-ks-detske-plenkove-kalhotky/ already existing
+2019-12-20 13:19:48,160 INFO [add-internal-service-pool-3-thread-3] s.h.p.m.a.e.h.NewProductEshopUrlsEvent_5b_Handler[NewProductEshopUrlsEvent_5b_Handler.kt:109][-] count of non existing products URL is zero
+2019-12-20 13:19:49,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:19:49,189 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:19:49,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:19:49,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:19:49,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:19:49,408 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:19:52,193 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:19:52,193 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:19:52,193 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:19:52,193 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:19:52,193 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:19:52,412 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:19:53,686 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:67][-] all tasks: 27  running: 0, finished(ok/error): 0/0[]
+2019-12-20 13:19:53,689 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:68][-] error statistic {PARSING_PRODUCT_UPDATE_DATA=1, PARSING_PRODUCT_INFO_ERR=0, HTTP_STATUS_ERR=0, HTTP_STATUS_404_ERR=0, PARSING_PRODUCT_UNIT_ERR=0, PARSING_PRODUCT_URLS=0, PARSING_PRODUCT_NEW_DATA=3, PARSING_PRODUCT_NAME_FOR_NEW_PRODUCT=6, TIME_OUT_ERR=0, UNKNOWN=22}
+2019-12-20 13:19:55,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:19:55,190 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:19:55,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:19:55,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:19:55,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:19:55,409 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:19:58,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:19:58,190 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:19:58,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:19:58,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:19:58,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:19:58,409 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:01,191 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:01,191 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:01,191 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:01,191 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:01,191 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:01,410 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:03,690 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:67][-] all tasks: 27  running: 0, finished(ok/error): 0/0[]
+2019-12-20 13:20:03,690 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:68][-] error statistic {PARSING_PRODUCT_UPDATE_DATA=1, PARSING_PRODUCT_INFO_ERR=0, HTTP_STATUS_ERR=0, HTTP_STATUS_404_ERR=0, PARSING_PRODUCT_UNIT_ERR=0, PARSING_PRODUCT_URLS=0, PARSING_PRODUCT_NEW_DATA=3, PARSING_PRODUCT_NAME_FOR_NEW_PRODUCT=6, TIME_OUT_ERR=0, UNKNOWN=22}
+2019-12-20 13:20:04,198 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:04,198 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:04,198 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:04,198 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:04,198 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:04,416 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:07,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:07,189 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:07,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:07,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:07,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:07,408 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:10,192 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:10,192 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:10,192 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:10,192 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:10,192 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:10,411 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:13,191 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:13,191 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:13,191 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:13,191 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:13,191 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:13,409 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:13,691 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:67][-] all tasks: 27  running: 0, finished(ok/error): 0/0[]
+2019-12-20 13:20:13,691 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:68][-] error statistic {PARSING_PRODUCT_UPDATE_DATA=1, PARSING_PRODUCT_INFO_ERR=0, HTTP_STATUS_ERR=0, HTTP_STATUS_404_ERR=0, PARSING_PRODUCT_UNIT_ERR=0, PARSING_PRODUCT_URLS=0, PARSING_PRODUCT_NEW_DATA=3, PARSING_PRODUCT_NAME_FOR_NEW_PRODUCT=6, TIME_OUT_ERR=0, UNKNOWN=22}
+2019-12-20 13:20:16,195 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:16,195 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:16,195 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:16,195 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:16,195 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:16,414 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:19,196 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:19,196 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:19,196 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:19,196 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:19,196 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:19,415 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:22,192 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:22,192 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:22,192 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:22,192 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:22,192 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:22,411 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:23,692 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:67][-] all tasks: 27  running: 0, finished(ok/error): 0/0[]
+2019-12-20 13:20:23,692 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:68][-] error statistic {PARSING_PRODUCT_UPDATE_DATA=1, PARSING_PRODUCT_INFO_ERR=0, HTTP_STATUS_ERR=0, HTTP_STATUS_404_ERR=0, PARSING_PRODUCT_UNIT_ERR=0, PARSING_PRODUCT_URLS=0, PARSING_PRODUCT_NEW_DATA=3, PARSING_PRODUCT_NAME_FOR_NEW_PRODUCT=6, TIME_OUT_ERR=0, UNKNOWN=22}
+2019-12-20 13:20:25,192 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:25,192 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:25,192 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:25,192 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:25,192 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:25,411 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:28,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:28,189 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:28,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:28,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:28,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:28,408 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:31,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:31,189 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:31,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:31,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:31,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:31,408 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:33,705 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:67][-] all tasks: 27  running: 0, finished(ok/error): 0/0[]
+2019-12-20 13:20:33,705 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:68][-] error statistic {PARSING_PRODUCT_UPDATE_DATA=1, PARSING_PRODUCT_INFO_ERR=0, HTTP_STATUS_ERR=0, HTTP_STATUS_404_ERR=0, PARSING_PRODUCT_UNIT_ERR=0, PARSING_PRODUCT_URLS=0, PARSING_PRODUCT_NEW_DATA=3, PARSING_PRODUCT_NAME_FOR_NEW_PRODUCT=6, TIME_OUT_ERR=0, UNKNOWN=22}
+2019-12-20 13:20:34,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:34,189 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:34,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:34,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:34,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:34,408 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:37,187 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:37,187 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:37,187 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:37,187 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:37,188 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:37,405 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:40,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:40,190 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:40,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:40,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:40,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:40,409 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:43,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:43,189 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:43,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:43,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:43,189 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:43,408 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:43,705 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:67][-] all tasks: 27  running: 0, finished(ok/error): 0/0[]
+2019-12-20 13:20:43,718 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:68][-] error statistic {PARSING_PRODUCT_UPDATE_DATA=1, PARSING_PRODUCT_INFO_ERR=0, HTTP_STATUS_ERR=0, HTTP_STATUS_404_ERR=0, PARSING_PRODUCT_UNIT_ERR=0, PARSING_PRODUCT_URLS=0, PARSING_PRODUCT_NEW_DATA=3, PARSING_PRODUCT_NAME_FOR_NEW_PRODUCT=6, TIME_OUT_ERR=0, UNKNOWN=22}
+2019-12-20 13:20:46,194 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:46,194 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:46,194 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:46,194 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:46,194 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:46,413 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:49,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:49,190 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:49,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:49,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:49,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:49,409 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:52,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:52,190 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:52,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:52,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:52,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:52,409 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:53,720 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:67][-] all tasks: 27  running: 0, finished(ok/error): 0/0[]
+2019-12-20 13:20:53,726 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:68][-] error statistic {PARSING_PRODUCT_UPDATE_DATA=1, PARSING_PRODUCT_INFO_ERR=0, HTTP_STATUS_ERR=0, HTTP_STATUS_404_ERR=0, PARSING_PRODUCT_UNIT_ERR=0, PARSING_PRODUCT_URLS=0, PARSING_PRODUCT_NEW_DATA=3, PARSING_PRODUCT_NAME_FOR_NEW_PRODUCT=6, TIME_OUT_ERR=0, UNKNOWN=22}
+2019-12-20 13:20:55,188 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:55,188 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:55,188 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:55,188 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:55,188 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:55,407 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:20:58,191 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:20:58,191 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:20:58,191 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:20:58,191 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:20:58,191 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:20:58,410 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:21:01,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:21:01,190 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:21:01,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:21:01,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:21:01,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:21:01,408 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:21:03,727 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:67][-] all tasks: 27  running: 0, finished(ok/error): 0/0[]
+2019-12-20 13:21:03,733 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:68][-] error statistic {PARSING_PRODUCT_UPDATE_DATA=1, PARSING_PRODUCT_INFO_ERR=0, HTTP_STATUS_ERR=0, HTTP_STATUS_404_ERR=0, PARSING_PRODUCT_UNIT_ERR=0, PARSING_PRODUCT_URLS=0, PARSING_PRODUCT_NEW_DATA=3, PARSING_PRODUCT_NAME_FOR_NEW_PRODUCT=6, TIME_OUT_ERR=0, UNKNOWN=22}
+2019-12-20 13:21:04,186 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:21:04,186 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:21:04,186 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:21:04,187 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:21:04,187 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:21:04,405 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:21:07,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:21:07,190 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:21:07,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:21:07,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:21:07,190 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:21:07,409 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:21:10,186 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:21:10,186 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:21:10,186 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:21:10,187 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:21:10,187 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:21:10,405 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:21:13,200 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:21:13,200 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:21:13,200 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:21:13,200 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:21:13,200 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:21:13,419 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:21:13,747 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:67][-] all tasks: 27  running: 0, finished(ok/error): 0/0[]
+2019-12-20 13:21:13,747 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:68][-] error statistic {PARSING_PRODUCT_UPDATE_DATA=1, PARSING_PRODUCT_INFO_ERR=0, HTTP_STATUS_ERR=0, HTTP_STATUS_404_ERR=0, PARSING_PRODUCT_UNIT_ERR=0, PARSING_PRODUCT_URLS=0, PARSING_PRODUCT_NEW_DATA=3, PARSING_PRODUCT_NAME_FOR_NEW_PRODUCT=6, TIME_OUT_ERR=0, UNKNOWN=22}
+2019-12-20 13:21:16,200 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:21:16,200 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:21:16,200 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:21:16,200 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:21:16,200 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:21:16,419 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:21:19,186 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:21:19,186 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:21:19,186 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:21:19,186 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:21:19,186 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:21:19,405 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:21:22,186 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:21:22,186 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:21:22,186 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:21:22,186 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:21:22,187 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:21:22,405 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected
+2019-12-20 13:21:23,758 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:67][-] all tasks: 27  running: 0, finished(ok/error): 0/0[]
+2019-12-20 13:21:23,758 DEBUG [thread-statistic-mng] s.h.p.z.o.EshopThreadStatisticManagerImpl[EshopThreadStatisticManagerImpl.kt:68][-] error statistic {PARSING_PRODUCT_UPDATE_DATA=1, PARSING_PRODUCT_INFO_ERR=0, HTTP_STATUS_ERR=0, HTTP_STATUS_404_ERR=0, PARSING_PRODUCT_UNIT_ERR=0, PARSING_PRODUCT_URLS=0, PARSING_PRODUCT_NEW_DATA=3, PARSING_PRODUCT_NAME_FOR_NEW_PRODUCT=6, TIME_OUT_ERR=0, UNKNOWN=22}
+2019-12-20 13:21:25,195 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:36][-] update handlers info:
+2019-12-20 13:21:25,195 DEBUG [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:54][-] DROGERIA_VMD executor, state: completed, 2/2 completed
+2019-12-20 13:21:25,195 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:59][-] update handlerTaskExecutor active/max cout: 0/10
+2019-12-20 13:21:25,195 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:61][-] update internalServiceExecutor active/max cout: 0/20
+2019-12-20 13:21:25,195 TRACE [pool-2-thread-1] s.h.p.m.t.RunningThreadStatisticInfo[RunningThreadStatisticInfo.kt:63][-] update htmlParserExecutor active/max cout: 0/10
+2019-12-20 13:21:25,414 DEBUG [pool-3-thread-1] s.h.p.u.DeadlockedThreadDetector[DeadlocksDetector.kt:61][-] no deadlocked threads detected

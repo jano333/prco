@@ -10,6 +10,9 @@ import java.math.BigDecimal
  */
 interface UIService {
 
+    // ---------- Errors ------------------
+    fun findErrorsByFilter(findDto: ErrorFindFilterDto): List<ErrorListDto>
+
     // ------------ Statistiky --------------
 
     val statisticsOfProducts: ProductStatisticInfoDto

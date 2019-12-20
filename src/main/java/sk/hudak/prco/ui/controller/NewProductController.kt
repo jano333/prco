@@ -14,10 +14,11 @@ import sk.hudak.prco.ui.MvcConstants.REDIRECT_TO_VIEW_NEW_PRODUCTS
 import sk.hudak.prco.ui.MvcConstants.VIEW_NEW_PRODUCTS
 import sk.hudak.prco.ui.MvcConstants.VIEW_NEW_PRODUCT_UNIT_DATA_EDIT
 import java.util.*
+import javax.servlet.http.HttpServletResponse
 import kotlin.streams.toList
 
 @Controller
-class NewProductController (uiService: UIService) : BasicController(uiService) {
+class NewProductController(uiService: UIService) : BasicController(uiService) {
 
     /**
      * Zoznam vsetky Unit hodnot
@@ -39,11 +40,14 @@ class NewProductController (uiService: UIService) : BasicController(uiService) {
      * @return
      */
     @RequestMapping("/newProducts")
-    fun listNewProducts(): ModelAndView {
+    fun listNewProducts(response: HttpServletResponse): ModelAndView {
         val newProducts = uiService.findNewProducts(NewProductFilterUIDto())
         val modelAndView = ModelAndView(VIEW_NEW_PRODUCTS, "newProducts", newProducts)
         modelAndView.addObject("countOfAllNewProducts", newProducts.size)
         modelAndView.addObject("fullCountOfAllNewProducts", uiService.countOfAllNewProducts)
+
+        // nastavim aby sa stranka refresovala automaticky kazdych X sekund...
+        response.addHeader("Refresh", "10")
 
         return modelAndView
     }

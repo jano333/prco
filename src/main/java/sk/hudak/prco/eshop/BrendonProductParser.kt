@@ -10,7 +10,6 @@ import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
 import sk.hudak.prco.utils.ConvertUtils
-import sk.hudak.prco.utils.JsoupUtils
 import sk.hudak.prco.utils.UserAgentDataHolder
 import sk.hudak.prco.utils.href
 import java.math.BigDecimal
@@ -32,17 +31,19 @@ class BrendonProductParser(unitParser: UnitParser,
     override val timeout: Int = TIMEOUT_15_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
-        val first = documentList.select("span.allProductsReturned").first()
-        return ofNullable(first)
-                .map { it.text() }
-                .map { StringUtils.removeStart(it, "1 / ") }
-                .map { Integer.valueOf(it) }
-                .map { JsoupUtils.calculateCountOfPages(it, eshopUuid.maxCountOfProductOnPage) }
-                .orElse(1)
+        //TODO see OPEN_ISSUE
+        return 1
+//        val first = documentList.select("span.allProductsReturned").first()
+//        return ofNullable(first)
+//                .map { it.text() }
+//                .map { StringUtils.removeStart(it, "1 / ") }
+//                .map { Integer.valueOf(it) }
+//                .map { JsoupUtils.calculateCountOfPages(it, eshopUuid.maxCountOfProductOnPage) }
+//                .orElse(1)
     }
 
     override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
-       log.debug("page number $pageNumber")
+        log.debug("page number $pageNumber")
         log.debug(documentList.location())
         val toList = documentList.select("div.details > div.product-title.pb-2.flex-fill > h3 > a")
                 .stream()
@@ -56,7 +57,7 @@ class BrendonProductParser(unitParser: UnitParser,
         val result = documentDetailProduct.select("div.product-name > h1")
                 .first()
                 ?.text()
-        if(result !=null){
+        if (result != null) {
             return result
         }
         return documentDetailProduct.select("h1[itemprop='name']")

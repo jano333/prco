@@ -8,6 +8,7 @@ object MvcConstants {
     const val  VIEW_PRODUCTS_NOT_IN_ANY_GROUP = "productsNotIntAnyGroup"
     const val  VIEW_PRODUCT_ADD_TO_GROUP = "productAddToGroup"
     const val  VIEW_PRODUCTS_IN_GROUP = "productsInGroup"
+    const val  VIEW_ERRORS = "errors"
 
     const val  ATTRIBUTE_COUNT_OF_PRODUCTS_NOT_IN_ANY_GROUP = "countOfProductsNotInAnyGroup"
 

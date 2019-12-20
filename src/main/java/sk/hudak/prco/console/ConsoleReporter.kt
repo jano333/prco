@@ -28,6 +28,12 @@ class PrcoConsole(val internalTxService: InternalTxService,
 
     fun showInConsole() {
 
+//        addMangager.addNewProductsByConfiguredKeywordsForAllEshops()
+//        addMangager.addNewProductsByKeywordForEshop(EshopUuid.DROGERIA_VMD, SearchKeyWordId.PAMPERS_ID)
+//        addMangager.addNewProductsByKeywordForAllEshops(SearchKeyWordId.PAMPERS_ID)
+
+
+
 //                updateEE.updateProductDataForEachProductInEshop(EshopUuid.ALZA)
 //                updateEE.updateProductDataForEachProductInEshop(EshopUuid.FEEDO)
 //                updateEE.updateProductDataForEachProductInEshop(EshopUuid.PILULKA)
@@ -37,14 +43,10 @@ class PrcoConsole(val internalTxService: InternalTxService,
 //            Thread.sleep(1 * 1000)
 //        }
 
-//        addImplNg.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
-//        addEe.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, SearchKeyWordId.PAMPERS_ID)
+//        addMangager.addNewProductsByKeywordForEshop(EshopUuid.BRENDON, SearchKeyWordId.PAMPERS_ID)
+//        addMangager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, SearchKeyWordId.PAMPERS_ID)
 
-//        addEe.addNewProductsByKeywordForAllEshops(SearchKeyWordId.PAMPERS_ID)
 
-        addMangager.addNewProductsByConfiguredKeywordsForAllEshops()
-
-//        addImpl.addNewProductsByKeywordForAllEshops(EshopUuid.MALL, SearchKeyWordId.PAMPERS_ID)
         //Pampers Pure Value Pack S5 (11+kg) 24ks Junior
 //        val groupProductKeywords = groupProductResolver.resolveGroupId("Pampers Premium Care Veľkosť 6, Plienky x38, 13kg+")
 
