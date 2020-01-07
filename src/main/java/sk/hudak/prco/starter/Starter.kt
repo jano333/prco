@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.console.PrcoConsole
-import sk.hudak.prco.dto.ErrorFindFilterDto
 import sk.hudak.prco.dto.GroupFilterDto
 import sk.hudak.prco.dto.SearchKeywordCreateDto
 import sk.hudak.prco.dto.product.NotInterestedProductFindDto
@@ -22,7 +21,9 @@ import sk.hudak.prco.service.UIService
 import sk.hudak.prco.service.WatchDogService
 import sk.hudak.prco.ssl.PrcoSslManager
 import sk.hudak.prco.utils.CalculationUtils
-import sk.hudak.prco.z.old.*
+import sk.hudak.prco.z.old.AddingNewProductManager
+import sk.hudak.prco.z.old.UpdateProductDataListener
+import sk.hudak.prco.z.old.UpdateStatusInfo
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -35,10 +36,9 @@ import java.util.Arrays.asList
  * Created by jan.hudak on 9/29/2017.
  */
 @Component
-class Starter(private val updateProductDataManager: UpdateProductDataManager,
+class Starter(/*private val updateProductDataManager: UpdateProductDataManager,*/
               private val internalTxService: InternalTxService,
               private val uiService: UIService,
-              private val theadStatisticManager: EshopThreadStatisticManager,
               private val newProductManager: AddingNewProductManager,
               private val facebookReporter: FacebookReporter,
               private val prcoConsole: PrcoConsole) {
@@ -74,14 +74,10 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
         //init ssl
         PrcoSslManager.init()
 
-        // start thread for showing statistics
-        theadStatisticManager.start()
-
         //TODO
         internalTxService.startErrorCleanUp()
 
-        val statisticsOfProducts = uiService.statisticsOfProducts
-        println(statisticsOfProducts.toString())
+        println(uiService.statisticsOfProducts().toString())
         //        System.out.println(">> --------");
 
 
@@ -164,18 +160,18 @@ class Starter(private val updateProductDataManager: UpdateProductDataManager,
 
         //        watchDogService.notifyByEmail(Collections.emptyList());
 
-        println("Errors:")
-        val errorFindFilterDto = ErrorFindFilterDto()
-        errorFindFilterDto.statusCodesToSkip = arrayOf("404")
-        errorFindFilterDto.limit = 50
-        internalTxService.findErrorsByFilter(errorFindFilterDto)
-//                .forEach { println(it.customToString()) }
-                .forEach {
-                    println("${it.eshopUuid} - ${it.id} - ${it.updated}")
-                    println(it.message)
-                    println(it.additionalInfo)
-                    println("---")
-                }
+//        println("Errors:")
+//        val errorFindFilterDto = ErrorFindFilterDto()
+//        errorFindFilterDto.statusCodesToSkip = arrayOf("404")
+//        errorFindFilterDto.limit = 50
+//        internalTxService.findErrorsByFilter(errorFindFilterDto)
+////                .forEach { println(it.customToString()) }
+//                .forEach {
+//                    println("${it.eshopUuid} - ${it.id} - ${it.updated}")
+//                    println(it.message)
+//                    println(it.additionalInfo)
+//                    println("---")
+//                }
 
 
         // --- UPDATE PRICE DATA ---

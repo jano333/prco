@@ -4,25 +4,62 @@ import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.*
 import sk.hudak.prco.dto.product.*
+import sk.hudak.prco.events.executors.EshopExecutors
+import sk.hudak.prco.events.executors.EshopScheduledExecutor
+import sk.hudak.prco.manager.update.UpdateProductManager
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.service.UIService
 import java.math.BigDecimal
+import java.util.concurrent.ScheduledExecutorService
 
 /**
  * Delegator pattern.
  */
 @Component
-class UIServiceImpl(private val internalTxService: InternalTxService)
+class UIServiceImpl(private val internalTxService: InternalTxService,
+                    private val eshopDocumentExecutor: EshopExecutors,
+                    private val updateProductManager: UpdateProductManager)
     : UIService {
+
+    override fun getEshopsAdminData(): List<EshopAdminDto> {
+        val info = ArrayList<EshopAdminDto>()
+        EshopUuid.values().forEach {
+            info.add(EshopAdminDto(it))
+        }
+        return info
+    }
+
+    override fun getExecutorStatistic(): List<EshopsExecutorInfoDto> {
+        val info = ArrayList<EshopsExecutorInfoDto>()
+
+        EshopUuid.values().forEach { eshopUuid ->
+
+            val eshopExecutor: ScheduledExecutorService = eshopDocumentExecutor.getEshopExecutor(eshopUuid)
+            eshopExecutor as EshopScheduledExecutor
+
+            info.add(EshopsExecutorInfoDto(
+                    eshopUuid = eshopUuid,
+                    activeCount = eshopExecutor.activeCount,
+                    completedTaskCount = eshopExecutor.completedTaskCount,
+                    taskCount = eshopExecutor.taskCount
+            ))
+        }
+        //sort by state Running -> Waiting -> Completed
+        info.sortWith(Comparator { e1, e2 ->
+            e1.getState().id.compareTo(e2.getState().id)
+        })
+
+        return info
+    }
 
     override fun findErrorsByFilter(findDto: ErrorFindFilterDto): List<ErrorListDto> =
             internalTxService.findErrorsByFilter(findDto)
 
-    override val statisticsOfProducts: ProductStatisticInfoDto =
-            internalTxService.statisticsOfProducts
+    override fun statisticsOfProducts(): ProductStatisticInfoDto =
+            internalTxService.statisticsOfProducts()
 
-    override val countOfAllNewProducts: Long =
-            internalTxService.countOfAllNewProducts
+    override fun countOfAllNewProducts(): Long =
+            internalTxService.countOfAllNewProducts()
 
     override fun findNewProducts(filter: NewProductFilterUIDto): List<NewProductFullDto> =
             internalTxService.findNewProducts(filter)
@@ -38,8 +75,16 @@ class UIServiceImpl(private val internalTxService: InternalTxService)
         internalTxService.confirmUnitDataForNewProducts(newProductIds)
     }
 
-    override fun markNewProductAsInterested(newProductId: Long?) {
-        internalTxService.markNewProductAsInterested(newProductId!!)
+    override fun markNewProductAsInterested(newProductId: Long) {
+        val productId = internalTxService.markNewProductAsInterested(newProductId)
+        if (productId != null) {
+            // spustim update process pre dany product
+            updateProductManager.updateProductDataForProductWithId(productId)
+        } else {
+//            product z danou URL uz existuje ...
+            //TODO asi urobit log s errorom...
+        }
+
     }
 
     override fun markNewProductAsNotInterested(newProductId: Long?) {

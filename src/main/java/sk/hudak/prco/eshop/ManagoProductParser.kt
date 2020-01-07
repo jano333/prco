@@ -34,7 +34,7 @@ class ManagoProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgent
         } else size - 1
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
+    override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("div[class='product-card'] > div > a")
                 .stream()
                 .map { it.attr("href") }

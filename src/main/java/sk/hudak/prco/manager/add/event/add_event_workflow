@@ -1,13 +1,18 @@
-NewKeyWordIdEvent => NewKeyWordEvent
+*
+*db keyword id convert to keyword it self which will be use to search product on eshop
+*
+NewKeywordIdEvent => NewKeyWordEvent
                   =# RetrieveKeywordBaseOnKeywordIdErrorEvent
-
-NewKeyWordEvent => SearchKeywordUrlEvent
+*
+* convert keyword to search keyword URL
+*
+NewKeywordEvent => SearchKeywordUrlEvent
                 =# BuildSearchUrlForKeywordErrorEvent
 
 SearchKeywordUrlEvent => SearchPageDocumentEvent
                       =# RetrieveDocumentForSearchUrlErrorEvent
 
-SearchPageDocumentEvent =?> CountOfPagesEvent if( pageNumber is 1)
+SearchPageDocumentEvent =?> CountOfPagesEvent           if( pageNumber is 1)
                         => NewProductEshopUrlsEvent
                         =# ParseCountOfPagesErrorEvent
                         =# ParseProductListURLsErrorEvent

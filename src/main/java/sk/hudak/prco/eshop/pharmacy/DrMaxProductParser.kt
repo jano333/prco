@@ -43,7 +43,7 @@ class DrMaxProductParser(unitParser: UnitParser,
         }
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
+    override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
         val urls = ArrayList<String>()
         for (child in documentList.select("#main > div.productList.productListTypeRow.row").first().children()) {
             val attr = child.children().first().attr("data-href") ?: continue

@@ -22,29 +22,40 @@
     <table class="table table-striped">
         <tr>
             <td>Eshop(Id)</td>
-            <td>Message/URL/Aditional Info</td>
+            <td>Info</td>
+            <td>Actions</td>
         </tr>
         <tr th:each="error : ${errors}">
-            <!-- eshop and id-->
-            <td th:text="${error.eshopUuid.name()}+'('+${error.id}+')'"></td>
-            <!-- message -->
+            <td >
+                <!-- eshop and id-->
+                <span th:text="${error.eshopUuid.name()}+'('+${error.id}+')'"> </span>
+                <br>
+                <!-- last updated -->
+                <span th:text="${#dates.format(error.updated, 'dd-MMM-yyyy HH:mm:ss')}"></span>
+            </td>
             <td>
+                <!-- Message -->
                 <span style="font-weight:bold;color:red;">Message:</span>
                 <br>
                 <span th:text="${error.message!=null} ? ${error.message} : '-'"></span>
                 <br>
-
+                <!-- URL -->
                 <span style="font-weight:bold; color:blue;">URL:</span>
                 <br>
                 <span th:text="${error.url!=null} ? ${error.url} : '-'"></span>
                 <br>
-
+                <!-- Additional Info -->
                 <span style="font-weight:bold;">Additional Info:</span>
                 <br>
                 <span th:text="${error.additionalInfo!=null} ? ${error.additionalInfo} : '-'"></span>
             </td>
+            <!-- Actions -->
+            <td>
+                <span th:text="aloha"></span>
+                <!-- delte by id -->
+                <!-- delete all for given eshop -->
+            </td>
         </tr>
-
     </table>
 
 </div>

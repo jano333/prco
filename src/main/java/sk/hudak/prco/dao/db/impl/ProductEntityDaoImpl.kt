@@ -88,8 +88,8 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
                 .fetch()
     }
 
-    override val countOfAll: Long
-        get() = from(QProductEntity.productEntity).fetchCount()
+    override fun countOfAll(): Long =
+            from(QProductEntity.productEntity).fetchCount()
 
     override fun countOfAllProductInEshop(eshopUuid: EshopUuid): Long {
         return queryFactory

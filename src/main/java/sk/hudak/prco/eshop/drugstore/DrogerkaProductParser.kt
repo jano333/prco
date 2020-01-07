@@ -31,7 +31,7 @@ class DrogerkaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAge
         } else size - 2
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
+    override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("div[class='col-xs-6 col-sm-4 col-md-3'] div div[class='desc'] a")
                 .stream()
                 .map { it.attr("href") }

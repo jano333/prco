@@ -45,7 +45,7 @@ class TescoProductParser(unitParser: UnitParser,
         return 1
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
+    override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
 
 
         val select = documentList.select("li.product-list--list-item > div > div > div > div > a")

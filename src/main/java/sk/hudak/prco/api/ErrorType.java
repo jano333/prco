@@ -3,12 +3,12 @@ package sk.hudak.prco.api;
 public enum ErrorType {
 
     PARSING_PRODUCT_UPDATE_DATA,
+    HTTP_STATUS_ERR,
 
 
     // OLD ----,
     PARSING_PRODUCT_INFO_ERR,
 
-    HTTP_STATUS_ERR,
     HTTP_STATUS_404_ERR,
 
     //FIXME overit ako je mozne ze tato konstanta nie je pouzivata pri update!!!,

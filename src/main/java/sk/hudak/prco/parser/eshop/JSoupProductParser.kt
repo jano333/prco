@@ -71,7 +71,7 @@ abstract class JSoupProductParser : EshopProductsParser {
      * @param pageNumber   poradove cislo stranky(z pagingu)
      * @return zoznam URL produktov
      */
-    abstract override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String>
+    abstract override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String>
 
     /**
      * Volane pri aktualizacii udajov, overuje sa ci je product dostupny
@@ -235,10 +235,10 @@ abstract class JSoupProductParser : EshopProductsParser {
     }
 
 
-    override fun parseProductUpdateData(productUrl: String): ProductUpdateData {
-        val document = retrieveDocument(productUrl)
-        return parseProductUpdateData(document, productUrl)
-    }
+//    override fun parseProductUpdateData(productUrl: String): ProductUpdateData {
+//        val document = retrieveDocument(productUrl)
+//        return parseProductUpdateData(document, productUrl)
+//    }
 
 
     /**
@@ -293,7 +293,7 @@ abstract class JSoupProductParser : EshopProductsParser {
         val searchUrl = searchUrlBuilder.buildSearchUrl(eshopUuid, searchKeyWord, currentPageNumber)
         // FIXME 5 a 20 dat nech nacita od konfiguracie pre konkretny eshop
         sleepRandomSafeBetween(5, 20)
-        return parsePageForProductUrls(retrieveDocument(searchUrl), currentPageNumber)
+        return parseUrlsOfProduct(retrieveDocument(searchUrl), currentPageNumber)
     }
 
     protected open fun parseUnitValueCount(document: Document, productName: String): Optional<UnitTypeValueCount> {
@@ -302,7 +302,7 @@ abstract class JSoupProductParser : EshopProductsParser {
 
     private fun internalParsePageForProductUrls(firstPageDocument: Document, searchUrl: String): List<String> {
         try {
-            val urls = parsePageForProductUrls(firstPageDocument, 1) ?: throw PrcoRuntimeException("urls is null")
+            val urls = parseUrlsOfProduct(firstPageDocument, 1) ?: throw PrcoRuntimeException("urls is null")
             urls.stream()
                     .filter { value -> value == null || value.isEmpty() }
                     .findAny()
@@ -361,14 +361,6 @@ abstract class JSoupProductParser : EshopProductsParser {
             }
         }
 
-    }
-
-    override fun parseProductNewData(productUrl: String): ProductNewData {
-
-        val document = retrieveDocument(productUrl)
-        //TODO porozmyslat ci tu nerobit alebo logovat redirect... tak ako je pre update proces
-
-        return parseProductNewData(document, productUrl)
     }
 
 }

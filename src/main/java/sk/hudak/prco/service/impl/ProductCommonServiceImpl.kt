@@ -2,7 +2,6 @@ package sk.hudak.prco.service.impl
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dao.db.*
 import sk.hudak.prco.dto.EshopProductInfoDto
@@ -35,43 +34,41 @@ open class ProductCommonServiceImpl(private val newProductEntityDao: NewProductE
     }
 
     // FIXME cez stream prepisat
-    override val statisticsOfProducts: ProductStatisticInfoDto
-        @Transactional
-        get() {
-            val result = ProductStatisticInfoDto()
-            result.countOfNewProducts = newProductEntityDao.countOfAll
-            result.countOfInterestedProducts = productEntityDao.countOfAll
-            result.countOfNotInterestedProducts = notInterestedProductDbDao.countOfAll
+    override fun statisticsOfProducts(): ProductStatisticInfoDto {
+        val result = ProductStatisticInfoDto()
+        result.countOfNewProducts = newProductEntityDao.countOfAll()
+        result.countOfInterestedProducts = productEntityDao.countOfAll()
+        result.countOfNotInterestedProducts = notInterestedProductDbDao.countOfAll()
 
-            result.countOfProductsNotInAnyGroup = groupOfProductFindEntityDao.countOfProductsWitchAreNotInAnyGroup()
+        result.countOfProductsNotInAnyGroup = groupOfProductFindEntityDao.countOfProductsWitchAreNotInAnyGroup()
 
-            val groupNames = groupEntityDao.findAllGroupNames()
-            val countProductInGroup = HashMap<String, Long>(groupNames.size)
-            for (groupName in groupNames) {
-                countProductInGroup[groupName] = groupOfProductFindEntityDao.countOfProductInGroup(groupName)
-            }
-            result.countProductInGroup = countProductInGroup
-
-            val eshopProductInfo = EnumMap<EshopUuid, EshopProductInfoDto>(EshopUuid::class.java)
-            EshopUuid.values().forEach {
-                //TODO udaj ohladne hodin zobrat z eshop configu
-                val countOfAlreadyUpdated = productEntityDao.countOfAllProductInEshopUpdatedMax24Hours(it)
-                val countOfNew = newProductEntityDao.countOfAllProductInEshop(it)
-                val countOfInterested = productEntityDao.countOfAllProductInEshop(it)
-                val countOfNotInterested = notInterestedProductDbDao.countOfAllProductInEshop(it)
-                val countOfProductMarkedAsUnavailable = productEntityDao.countOfProductMarkedAsUnavailable(it)
-                eshopProductInfo[it] = EshopProductInfoDto(
-                        countOfNew,
-                        countOfInterested,
-                        countOfAlreadyUpdated,
-                        countOfNotInterested,
-                        countOfNew + countOfInterested + countOfNotInterested,
-                        countOfProductMarkedAsUnavailable)
-            }
-            result.eshopProductInfo = eshopProductInfo
-
-            return result
+        val groupNames = groupEntityDao.findAllGroupNames()
+        val countProductInGroup = HashMap<String, Long>(groupNames.size)
+        for (groupName in groupNames) {
+            countProductInGroup[groupName] = groupOfProductFindEntityDao.countOfProductInGroup(groupName)
         }
+        result.countProductInGroup = countProductInGroup
+
+        val eshopProductInfo = EnumMap<EshopUuid, EshopProductInfoDto>(EshopUuid::class.java)
+        EshopUuid.values().forEach {
+            //TODO udaj ohladne hodin zobrat z eshop configu
+            val countOfAlreadyUpdated = productEntityDao.countOfAllProductInEshopUpdatedMax24Hours(it)
+            val countOfNew = newProductEntityDao.countOfAllProductInEshop(it)
+            val countOfInterested = productEntityDao.countOfAllProductInEshop(it)
+            val countOfNotInterested = notInterestedProductDbDao.countOfAllProductInEshop(it)
+            val countOfProductMarkedAsUnavailable = productEntityDao.countOfProductMarkedAsUnavailable(it)
+            eshopProductInfo[it] = EshopProductInfoDto(
+                    countOfNew,
+                    countOfInterested,
+                    countOfAlreadyUpdated,
+                    countOfNotInterested,
+                    countOfNew + countOfInterested + countOfNotInterested,
+                    countOfProductMarkedAsUnavailable)
+        }
+        result.eshopProductInfo = eshopProductInfo
+
+        return result
+    }
 
 
     override fun existProductWithURL(productURL: String): Boolean {
@@ -93,34 +90,44 @@ open class ProductCommonServiceImpl(private val newProductEntityDao: NewProductE
         return productEntityDao.existWithUrl(productURL)
     }
 
-    override fun markNewProductAsInterested(vararg newProductIds: Long) {
-        //TODO
-        //        atLeastOneIsNotNull(newProductIds, "newProductIds");
+    override fun markNewProductAsInterested(newProductId: Long): Long? {
+        // find existing new product
+        val newProductEntity = newProductEntityDao.findById(newProductId)
 
-        Arrays.stream(newProductIds).forEach { newProductId ->
-            // find existing new product
-            val newProductEntity = newProductEntityDao.findById(newProductId)
+        if (java.lang.Boolean.TRUE != newProductEntity.confirmValidity) {
+            throw PrcoRuntimeException(newProductEntity.javaClass.simpleName + " with id " + newProductEntity.id + " is not confirmed.")
+        }
 
-            if (java.lang.Boolean.TRUE != newProductEntity.confirmValidity) {
-                throw PrcoRuntimeException(newProductEntity.javaClass.simpleName + " with id " + newProductEntity.id + " is not confirmed.")
-            }
-
-            // overim ci uz s takou URL neexistuje PRODUCT... ak ano tak ho len odsranim z NEW a nerobim save do ProductEntity
-            if (productEntityDao.existWithUrl(newProductEntity.url!!)) {
-                log.debug("product with url {} already exist in products -> deleting from new", newProductEntity.url)
-
-            } else {
-                // map NewProductEntity -> ProductEntity
-                val productEntity = mapper.map(newProductEntity, ProductEntity::class.java)
-
-                // save new ProductEntity
-                productEntityDao.save(productEntity)
-                log.debug("created new {} with id {}", productEntity.javaClass.simpleName, productEntity.id)
-            }
+        // overim ci uz s takou URL neexistuje PRODUCT... ak ano tak ho len odsranim z NEW a nerobim save do ProductEntity
+        if (productEntityDao.existWithUrl(newProductEntity.url!!)) {
+            log.error("product with url {} already exist in products -> deleting from new", newProductEntity.url)
 
             // remove NewProductEntity
             newProductEntityDao.delete(newProductEntity)
             log.debug("deleted {} with id {}", newProductEntity.javaClass.simpleName, newProductEntity.id)
+
+            return null
+        }
+        // map NewProductEntity -> ProductEntity
+        val productEntity = mapper.map(newProductEntity, ProductEntity::class.java)
+
+        // save new ProductEntity
+        val productId = productEntityDao.save(productEntity)
+        log.debug("created new {} with id {}", productEntity.javaClass.simpleName, productEntity.id)
+
+        // remove NewProductEntity
+        newProductEntityDao.delete(newProductEntity)
+        log.debug("deleted {} with id {}", newProductEntity.javaClass.simpleName, newProductEntity.id)
+
+        return productId
+    }
+
+    override fun markNewProductsAsInterested(vararg newProductIds: Long) {
+        //TODO
+        //        atLeastOneIsNotNull(newProductIds, "newProductIds");
+
+        Arrays.stream(newProductIds).forEach { newProductId ->
+            markNewProductAsInterested(newProductId)
         }
     }
 

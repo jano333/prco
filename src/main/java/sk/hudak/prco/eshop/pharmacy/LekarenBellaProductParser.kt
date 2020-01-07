@@ -34,7 +34,7 @@ class LekarenBellaProductParser(unitParser: UnitParser, userAgentDataHolder: Use
         } else size / 2
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
+    override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("div[class='product-items '] > div[class='row'] > div > a")
                 .stream()
                 .map { it.attr("href") }

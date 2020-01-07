@@ -11,13 +11,24 @@ import sk.hudak.prco.events.UpdateErrorEvent
 import java.util.*
 
 data class UpdateOneProductInEshopEvent(val eshopUuid: EshopUuid,
-                                        val identifier: String = UUID.randomUUID().toString()) : CoreEvent(), StartEvent
+                                        val identifier: String = UUID.randomUUID().toString())
+    : CoreEvent(), StartEvent
 
 data class UpdateAllProductsInEshopEvent(val eshopUuid: EshopUuid,
-                                         val identifier: String = UUID.randomUUID().toString()) : CoreEvent(), StartEvent
+                                         val identifier: String = UUID.randomUUID().toString())
+    : CoreEvent(), StartEvent
+
+data class UpdateProductDataForProductIdEvent(val productId: Long,
+                                              val identifier: String = UUID.randomUUID().toString())
+    : CoreEvent(), StartEvent
+
+data class LoadProductToBeUpdatedErrorEvent(override val event: UpdateProductDataForProductIdEvent,
+                                            override val error: Throwable)
+    : CoreEvent(), UpdateErrorEvent
 
 data class LoadNextProductToBeUpdatedErrorEvent(override val event: UpdateOneProductInEshopEvent,
-                                                override val error: Throwable) : CoreEvent(), UpdateErrorEvent
+                                                override val error: Throwable)
+    : CoreEvent(), UpdateErrorEvent
 
 data class ProductDetailInfoForUpdateEvent(val productDetailInfo: ProductDetailInfo,
                                            val identifier: String) : CoreEvent()

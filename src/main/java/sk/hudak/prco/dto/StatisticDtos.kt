@@ -4,6 +4,26 @@ import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.kotlin.color
 import sk.hudak.prco.utils.ConsoleColor
 
+enum class ExecutorState(val id: Int) {
+    RUNNING(1),
+    WAITING(2),
+    COMPLETED(3)
+}
+
+data class EshopsExecutorInfoDto(
+        val eshopUuid: EshopUuid,
+
+        val activeCount: Int,
+        val completedTaskCount: Long, // already completed tasks
+        val taskCount: Long // all tasks
+) {
+    fun getState(): ExecutorState = when {
+        activeCount != 0 -> ExecutorState.RUNNING
+        completedTaskCount != taskCount -> ExecutorState.WAITING
+        else -> ExecutorState.COMPLETED
+    }
+}
+
 data class EshopProductInfoDto(
         val countOfNew: Long,
         val countOfInterested: Long,

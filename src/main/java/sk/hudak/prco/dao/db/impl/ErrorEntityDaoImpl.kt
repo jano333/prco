@@ -15,6 +15,7 @@ import java.time.temporal.TemporalUnit
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.persistence.EntityManager
+import kotlin.collections.ArrayList
 
 // musi byt open koli springu, lebo ked nie je tak nespusti spring boot app
 @Repository
@@ -64,27 +65,38 @@ open class ErrorEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ErrorEntity>(em),
     }
 
     override fun findErrorsByFilter(findDto: ErrorFindFilterDto): List<ErrorEntity> {
-        val query = queryFactory
-                .select(QErrorEntity.errorEntity)
-                .from(QErrorEntity.errorEntity)
+        var result: ArrayList<ErrorEntity> = ArrayList()
 
-        if (findDto.errorTypes != null) {
-            query.where(QErrorEntity.errorEntity.errorType.`in`(*findDto.errorTypes!!))
-        }
-        if (findDto.errorTypesToSkip != null) {
-            query.where(QErrorEntity.errorEntity.errorType.notIn(*findDto.errorTypesToSkip!!))
+        EshopUuid.values().forEach { eshopUuid ->
+            val query = queryFactory
+                    .select(QErrorEntity.errorEntity)
+                    .from(QErrorEntity.errorEntity)
+                    .where(QErrorEntity.errorEntity.eshopUuid.eq(eshopUuid))
+
+            if (findDto.errorTypes != null) {
+                query.where(QErrorEntity.errorEntity.errorType.`in`(*findDto.errorTypes!!))
+            }
+            if (findDto.errorTypesToSkip != null) {
+                query.where(QErrorEntity.errorEntity.errorType.notIn(*findDto.errorTypesToSkip!!))
+            }
+
+            if (findDto.statusCodes != null) {
+                query.where(QErrorEntity.errorEntity.statusCode.`in`(*findDto.statusCodes!!))
+            }
+            if (findDto.statusCodesToSkip != null) {
+                query.where(QErrorEntity.errorEntity.statusCode.isNull
+                        .or(QErrorEntity.errorEntity.statusCode.notIn(*findDto.statusCodesToSkip!!)))
+            }
+            query.limit(findDto.maxCountPerEshop.toLong())
+            query.orderBy(OrderSpecifier(Order.DESC, QErrorEntity.errorEntity.updated))
+            result.addAll(query.fetch())
         }
 
-        if (findDto.statusCodes != null) {
-            query.where(QErrorEntity.errorEntity.statusCode.`in`(*findDto.statusCodes!!))
-        }
-        if (findDto.statusCodesToSkip != null) {
-            query.where(QErrorEntity.errorEntity.statusCode.isNull
-                    .or(QErrorEntity.errorEntity.statusCode.notIn(*findDto.statusCodesToSkip!!)))
-        }
-        query.limit(findDto.limit.toLong())
-        query.orderBy(OrderSpecifier(Order.DESC, QErrorEntity.errorEntity.updated))
-        return query.fetch()
+        //zosortulem vsetky podla datumu
+        result.sortWith(Comparator { e1, e2 ->
+            e1.updated.compareTo(e2.updated)*(-1)
+        })
+        return result
     }
 
     override fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<ErrorEntity> =

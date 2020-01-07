@@ -18,14 +18,14 @@ import java.util.function.Supplier
  * searchKeyword -> searchKeywordURL
  */
 @Component
-class NewKeyWordEvent_2_Handler(prcoObservable: PrcoObservable,
+class NewKeywordEvent_2_Handler(prcoObservable: PrcoObservable,
                                 addProductExecutors: AddProductExecutors,
                                 private var searchUrlBuilder: SearchUrlBuilder)
 
     : AddProcessHandler<NewKeywordEvent>(prcoObservable, addProductExecutors) {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(NewKeyWordEvent_2_Handler::class.java)!!
+        private val LOG = LoggerFactory.getLogger(NewKeywordEvent_2_Handler::class.java)!!
     }
 
     override fun isSpecificType(event: CoreEvent): Boolean = event is NewKeywordEvent

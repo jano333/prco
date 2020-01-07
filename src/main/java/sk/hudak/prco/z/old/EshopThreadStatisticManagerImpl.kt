@@ -65,6 +65,6 @@ class EshopThreadStatisticManagerImpl(
         }
 
         LOG.debug("all tasks: {}  running: {}, finished(ok/error): {}/{}{}", tasks.size, running.size, finishedOk.size, finishedNotOk.size, finishedNotOk)
-        LOG.debug("error statistic {}", internalTxService.statisticForErrors)
+        LOG.debug("error statistic {}", internalTxService.statisticForErrors())
     }
 }

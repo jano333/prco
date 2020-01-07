@@ -44,10 +44,10 @@ class NewProductController(uiService: UIService) : BasicController(uiService) {
         val newProducts = uiService.findNewProducts(NewProductFilterUIDto())
         val modelAndView = ModelAndView(VIEW_NEW_PRODUCTS, "newProducts", newProducts)
         modelAndView.addObject("countOfAllNewProducts", newProducts.size)
-        modelAndView.addObject("fullCountOfAllNewProducts", uiService.countOfAllNewProducts)
+        modelAndView.addObject("fullCountOfAllNewProducts", uiService.countOfAllNewProducts())
 
         // nastavim aby sa stranka refresovala automaticky kazdych X sekund...
-        response.addHeader("Refresh", "10")
+//        response.addHeader("Refresh", "10")
 
         return modelAndView
     }
@@ -84,7 +84,7 @@ class NewProductController(uiService: UIService) : BasicController(uiService) {
      * @return
      */
     @RequestMapping("/newProduct/{id}/interested")
-    fun interestedNewProducts(@PathVariable id: Long?): ModelAndView {
+    fun interestedNewProducts(@PathVariable id: Long): ModelAndView {
         uiService.markNewProductAsInterested(id)
         return ModelAndView(REDIRECT_TO_VIEW_NEW_PRODUCTS)
     }

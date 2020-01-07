@@ -2,6 +2,7 @@ package sk.hudak.prco.z.old
 
 import sk.hudak.prco.api.EshopUuid
 
+@Deprecated("old")
 interface UpdateProductDataManager {
 
     /**

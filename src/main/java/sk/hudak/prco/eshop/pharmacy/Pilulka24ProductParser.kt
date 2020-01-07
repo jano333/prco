@@ -42,7 +42,7 @@ class Pilulka24ProductParser(unitParser: UnitParser,
                 .orElse(SINGLE_PAGE_ONE)
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
+    override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("div[class='col-6 col-sm-4 col-lg-3 p-0 product-card__border'] > div:nth-child(1) > div > a").stream()
                 .map { it.href() }
                 .filter{ StringUtils.isNotBlank(it) }

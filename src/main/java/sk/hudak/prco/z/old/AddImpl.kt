@@ -183,7 +183,7 @@ class AddImpl(private val internalTxService: InternalTxService,
                                      currentPageNumber: Int): Function<in DocumentDataForGivenPageNumber, List<String>> {
 
         return Function { documentDataForGivenPageNumber ->
-            eshopParser.parsePageForProductUrls(documentDataForGivenPageNumber.document, currentPageNumber)
+            eshopParser.parseUrlsOfProduct(documentDataForGivenPageNumber.document, currentPageNumber)
         }
     }
 
@@ -259,6 +259,7 @@ class AddImpl(private val internalTxService: InternalTxService,
 
 }
 
+@Deprecated("old")
 class EshopScheduledExecutor(val eshopUuid: EshopUuid, threadFactory: ThreadFactory)
     : ScheduledThreadPoolExecutor(1, threadFactory) {
 

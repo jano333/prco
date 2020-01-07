@@ -311,7 +311,7 @@ class AddImplNg(private val internalTxService: InternalTxService,
         return CompletableFuture.supplyAsync(
                 Supplier {
                     LOG.trace("parseProductListURLs")
-                    val parsePageForProductUrls = eshopParser.parsePageForProductUrls(document, currentPageNumber)
+                    val parsePageForProductUrls = eshopParser.parseUrlsOfProduct(document, currentPageNumber)
                     LOG.debug("page: $currentPageNumber, count of products: ${parsePageForProductUrls.size}")
                     parsePageForProductUrls
                 },

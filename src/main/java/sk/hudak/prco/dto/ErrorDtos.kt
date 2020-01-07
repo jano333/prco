@@ -16,22 +16,21 @@ data class ErrorCreateDto(val eshopUuid: EshopUuid,
 //TODO prorobit na data class
 class ErrorFindFilterDto : DtoAble {
 
-    companion object {
-        const val DEFAULT_COUNT_LIMIT = 50
-    }
-
-    var limit = DEFAULT_COUNT_LIMIT
     var errorTypes: Array<ErrorType>? = null
     var errorTypesToSkip: Array<ErrorType>? = null
+
     var statusCodes: Array<String>? = null
     var statusCodesToSkip: Array<String>? = null
 
+    var maxCountPerEshop = Integer.MAX_VALUE
+
     override fun toString(): String {
-        return "ErrorFindFilterDto(limit=$limit, " +
+        return "ErrorFindFilterDto(" +
                 "errorTypes=${Arrays.toString(errorTypes)}, " +
                 "errorTypesToSkip=${Arrays.toString(errorTypesToSkip)}," +
                 " statusCodes=${Arrays.toString(statusCodes)}, " +
-                "statusCodesToSkip=${Arrays.toString(statusCodesToSkip)})"
+                "statusCodesToSkip=${Arrays.toString(statusCodesToSkip)}, "+
+                " maxCountPerEshop=${maxCountPerEshop})"
     }
 }
 

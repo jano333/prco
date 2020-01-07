@@ -1,7 +1,6 @@
 package sk.hudak.prco.z.old
 
 import org.slf4j.LoggerFactory
-import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ProductUpdateData
 import sk.hudak.prco.dto.ProductUpdateDataDto
@@ -19,7 +18,6 @@ import sk.hudak.prco.z.old.UpdateProductDataListenerAdapter.Companion.EMPTY_INST
 import java.util.*
 
 @Deprecated("differ package")
-@Component
 class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
                                    private val internalTxService: InternalTxService,
                                    private val eshopTaskManager: EshopTaskManager,

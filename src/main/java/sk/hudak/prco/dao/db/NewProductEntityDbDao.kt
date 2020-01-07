@@ -7,7 +7,7 @@ import sk.hudak.prco.model.NewProductEntity
 
 interface NewProductEntityDbDao : BaseDao<NewProductEntity> {
 
-    val countOfAll: Long
+    fun countOfAll(): Long
 
     fun existWithUrl(url: String): Boolean
 

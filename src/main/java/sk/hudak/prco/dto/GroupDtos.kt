@@ -59,8 +59,8 @@ class GroupListExtendedDto : DtoAble {
     }
 }
 
-data class GroupProductKeywordsCreateDto(var groupId: Long,
-                                         var keyWords: List<String>) : DtoAble
+data class GroupProductKeywordsCreateDto(val groupId: Long,
+                                         val keyWords: List<String>) : DtoAble
 
 data class GroupProductKeywordsFullDto(var groupIdNameDto: GroupIdNameDto,
                                        var keyWords: List<Array<String>>) : DtoAble {

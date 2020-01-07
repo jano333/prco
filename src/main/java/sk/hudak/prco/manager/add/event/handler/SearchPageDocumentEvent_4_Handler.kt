@@ -77,7 +77,7 @@ class SearchPageDocumentEvent_4_Handler(prcoObservable: PrcoObservable,
                 Supplier {
                     LOG.trace("parseProductListURLs")
                     val parserForEshop = eshopProductsParserHelper.findParserForEshop(eshopUuid)
-                    val parsePageForProductUrls = parserForEshop.parsePageForProductUrls(document, currentPageNumber)
+                    val parsePageForProductUrls = parserForEshop.parseUrlsOfProduct(document, currentPageNumber)
                     LOG.debug("page: $currentPageNumber, count of products: ${parsePageForProductUrls.size}")
                     parsePageForProductUrls
                 }),

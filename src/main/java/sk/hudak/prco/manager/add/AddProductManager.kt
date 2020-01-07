@@ -46,7 +46,7 @@ class AddProductManagerImpl(private val prcoObservable: PrcoObservable) : AddPro
     override fun addNewProductsByConfiguredKeywordsForAllEshops() {
         LOG.trace(">> addNewProductsByConfiguredKeywordsForAllEshops")
 
-//        EnumSet.of(EshopUuid.TESCO)
+//        EnumSet.of(EshopUuid.PILULKA, EshopUuid.LEKAREN_V_KOCKE)
         EshopUuid.values()
                 .forEach { eshopUuid ->
                     eshopUuid.config.supportedSearchKeywordIds.forEach { searchKeyWordId ->

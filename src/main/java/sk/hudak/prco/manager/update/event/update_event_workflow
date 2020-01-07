@@ -1,6 +1,9 @@
 UpdateProductsInEshop   => ProductDetailInfoForUpdateEvent
                         =# LoadProductToBeUpdateErrorEvent
 
+UpdateOneProductInEshopEvent => ProductDetailInfoForUpdateEvent
+                             =# LoadProductToBeUpdatedErrorEvent
+
 ProductDetailInfoForUpdateEvent => UpdateProductDocumentEvent
                                 =# RetrieveUpdateDocumentForUrlErrorEvent
 
@@ -22,6 +25,7 @@ ProductUpdateDataRedirectNotYetExistEvent =?> ProcessProductUpdateUrlFinalEvent 
 ProductUpdateDataRedirectAlreadyExistEvent  => ProcessRemoveOldProductFinalEvent
                                            =?> MarkProductAsUnavailableFinalEvent             if (product is NOT available)
                                            =?> ProcessProductUpdateDataForRedirectFinalEvent else (otherwise)
+
 
 MarkProductAsUnavailableFinalEvent =O END (save unavailability product in DB)
                                    =# MarkProductAsUnavailableErrorEvent

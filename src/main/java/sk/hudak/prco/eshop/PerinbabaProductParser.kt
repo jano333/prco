@@ -30,7 +30,7 @@ class PerinbabaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAg
         } else size - 1
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
+    override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
         val urls = ArrayList<String>()
         documentList.select("div[class=category-products] ul").stream()
                 .filter { element -> Objects.nonNull(element.attr("products-grid")) }

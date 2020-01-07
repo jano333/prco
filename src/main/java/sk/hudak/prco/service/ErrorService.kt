@@ -9,7 +9,7 @@ import java.util.concurrent.Future
 
 interface ErrorService {
 
-    val statisticForErrors: Map<ErrorType, Long>
+    fun statisticForErrors(): Map<ErrorType, Long>
 
     // TODO cron na odmazavanie
 

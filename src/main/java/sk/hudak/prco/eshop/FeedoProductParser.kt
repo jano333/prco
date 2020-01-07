@@ -40,7 +40,7 @@ class FeedoProductParser(unitParser: UnitParser,
         return calculateCountOfPages(Integer.valueOf(countOfProductString), eshopUuid.maxCountOfProductOnPage)
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
+    override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("div[class=box-product__top]").stream()
                 .map { it.select("h1 a").first() }
                 .map { it.attr("href") }

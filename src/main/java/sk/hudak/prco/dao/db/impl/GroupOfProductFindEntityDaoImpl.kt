@@ -23,10 +23,11 @@ open class GroupOfProductFindEntityDaoImpl(private val em: EntityManager) : Grou
         return queryFactory
                 .select(QProductEntity.productEntity)
                 .from(QProductEntity.productEntity)
-                .where(QProductEntity.productEntity.id.notIn(queryFactory
-                        .select(QGroupOfProductFindEntity.groupOfProductFindEntity.productId)
-                        .from(QGroupOfProductFindEntity.groupOfProductFindEntity)
-                        .distinct()
+                .where(QProductEntity.productEntity.id.notIn(
+                        queryFactory
+                                .select(QGroupOfProductFindEntity.groupOfProductFindEntity.productId)
+                                .from(QGroupOfProductFindEntity.groupOfProductFindEntity)
+                                .distinct()
                 ).and(QProductEntity.productEntity.lastTimeDataUpdated.isNull
                         .or(QProductEntity.productEntity.lastTimeDataUpdated.lt(DateUtils.calculateDate(12))))
                 )

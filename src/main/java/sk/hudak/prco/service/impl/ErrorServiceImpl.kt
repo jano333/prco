@@ -1,7 +1,6 @@
 package sk.hudak.prco.service.impl
 
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sk.hudak.prco.api.ErrorType
 import sk.hudak.prco.api.EshopUuid
@@ -24,10 +23,9 @@ import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
 @Service("errorService")
-class ErrorServiceImpl(
-        @Autowired private val errorEntityDao: ErrorEntityDao,
-        @Autowired private val prcoMapper: PrcoOrikaMapper,
-        @Autowired private val notInterestedProductDbDao: NotInterestedProductDbDao) : ErrorService {
+class ErrorServiceImpl(private val errorEntityDao: ErrorEntityDao,
+                       private val prcoMapper: PrcoOrikaMapper,
+                       private val notInterestedProductDbDao: NotInterestedProductDbDao) : ErrorService {
 
     private lateinit var executorService: ExecutorService
 
@@ -45,14 +43,13 @@ class ErrorServiceImpl(
         executorService.shutdownNow()
     }
 
-    override val statisticForErrors: Map<ErrorType, Long>
-        get() {
-            val result = EnumMap<ErrorType, Long>(ErrorType::class.java)
-            for (type in ErrorType.values()) {
-                result[type] = errorEntityDao.getCountOfType(type)
-            }
-            return result
+    override fun statisticForErrors(): Map<ErrorType, Long> {
+        val result = EnumMap<ErrorType, Long>(ErrorType::class.java)
+        for (type in ErrorType.values()) {
+            result[type] = errorEntityDao.getCountOfType(type)
         }
+        return result
+    }
 
     override fun createError(createDto: ErrorCreateDto): Long? {
         notNull(createDto.errorType, "errorType")
@@ -125,13 +122,10 @@ class ErrorServiceImpl(
                 .collect(Collectors.toList())
     }
 
-
     override fun findErrorsByFilter(findDto: ErrorFindFilterDto): List<ErrorListDto> {
-        notNull(findDto, "findDto")
-
-        return errorEntityDao.findErrorsByFilter(findDto).stream()
-                .map { entity -> prcoMapper.map(entity, ErrorListDto::class.java) }
-                .collect(Collectors.toList())
+        return errorEntityDao.findErrorsByFilter(findDto)
+                .map { prcoMapper.map(it, ErrorListDto::class.java) }
+                .toList()
     }
 
     override fun removeErrorsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int {

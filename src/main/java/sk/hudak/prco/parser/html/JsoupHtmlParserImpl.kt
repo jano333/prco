@@ -28,11 +28,15 @@ class JsoupHtmlParserImpl(
     }
 
     override fun parseProductNewData(productUrl: String): ProductNewData {
-        return findParserForEshop(productUrl).parseProductNewData(productUrl)
+        val parserForEshop = findParserForEshop(productUrl)
+        val document = parserForEshop.retrieveDocument(productUrl)
+        return parserForEshop.parseProductNewData(document, productUrl)
     }
 
     override fun parseProductUpdateData(productUrl: String): ProductUpdateData {
-        return findParserForEshop(productUrl).parseProductUpdateData(productUrl)
+        val parserForEshop = findParserForEshop(productUrl)
+        val document = parserForEshop.retrieveDocument(productUrl)
+        return parserForEshop.parseProductUpdateData(document, productUrl)
     }
 
     private fun findParserForEshop(productUrl: String): EshopProductsParser {

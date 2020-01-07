@@ -50,7 +50,7 @@ class ObiProductParser(unitParser: UnitParser,
         throw PrcoRuntimeException("Not yet implemented")
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
+    override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
         //TODO
         throw PrcoRuntimeException("Not yet implemented")
     }

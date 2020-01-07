@@ -27,9 +27,9 @@ fun main() {
 //    println("count in set ${HashSet(urlList).size}")
 //    println(urlList)
 
-    println(test.parseProductNewData("https://www.brendon.sk/pampers-premium-care-smallpack-s2-23-pcs-jednorazove-plienky-12386002"))
+//    println(test.parseProductNewData("https://www.brendon.sk/pampers-premium-care-smallpack-s2-23-pcs-jednorazove-plienky-12386002"))
 
-//    println(test.parseProductUpdateData("https://www.mall.sk/detske-mlieka/nutrilon-pronutra-3-6x800g-kasa-4x225g"))
+    println(test.parseProductUpdateData("https://www.lekarenvkocke.sk/zq26fa812b7f8becd9963af004a7bd9262-plienky-active-baby-3-midi-6-10kg-104ks-pampers"))
 }
 
 class ProductParserTest {
@@ -65,7 +65,7 @@ class ProductParserTest {
             EshopUuid.PILULKA -> PilulkaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.PILULKA_24 -> Pilulka24ProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
             EshopUuid.PERINBABA -> PerinbabaProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
-           // T
+            // T
             EshopUuid.TESCO -> TescoProductParser(unitParser, userAgentDataHolder, searchUrlBuilder)
 
             else -> throw PrcoRuntimeException("Pridaj implementaciu do testu pre eshop $eshopUuid")
@@ -93,11 +93,17 @@ class ProductParserTest {
     }
 
     fun parseProductNewData(productUrl: String): ProductNewData {
-        return getParserForEshop(eshopUuidParser.parseEshopUuid(productUrl)).parseProductNewData(productUrl)
+        val eshopUuid = eshopUuidParser.parseEshopUuid(productUrl)
+        val parserForEshop = getParserForEshop(eshopUuid)
+        val document = parserForEshop.retrieveDocument(productUrl)
+        return parserForEshop.parseProductNewData(document, productUrl)
     }
 
     fun parseProductUpdateData(productUrl: String): ProductUpdateData {
-        return getParserForEshop(eshopUuidParser.parseEshopUuid(productUrl)).parseProductUpdateData(productUrl)
+        val eshopUuid = eshopUuidParser.parseEshopUuid(productUrl)
+        val parserForEshop = getParserForEshop(eshopUuid)
+        val document = parserForEshop.retrieveDocument(productUrl)
+        return parserForEshop.parseProductUpdateData(document, productUrl)
     }
 
 

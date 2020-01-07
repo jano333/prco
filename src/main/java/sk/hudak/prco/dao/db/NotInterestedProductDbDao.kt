@@ -7,7 +7,7 @@ import sk.hudak.prco.model.NotInterestedProductEntity
 
 interface NotInterestedProductDbDao : BaseDao<NotInterestedProductEntity> {
 
-    val countOfAll: Long
+    fun countOfAll(): Long
 
     fun existWithUrl(url: String): Boolean
 

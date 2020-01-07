@@ -1,5 +1,6 @@
+----------------------
+duplicity ak je tak osobitny event a napr log ako error !!!
 ---------------------------
-
 toto stale rasie zle je vyhodnotenie....
 DROGERIA_VMD executor, state: waiting, 29/192 completed
 ---------------------------

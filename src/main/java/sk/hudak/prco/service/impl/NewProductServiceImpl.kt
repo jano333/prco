@@ -38,15 +38,12 @@ class NewProductServiceImpl(private val newProductEntityDao: NewProductEntityDbD
         private const val NEW_PRODUCT_ID = "newProductId"
     }
 
-    override val countOfInvalidNewProduct: Long
-        get() {
-            return newProductEntityDao.countOfAllInvalidNewProduct()
-        }
+    override fun countOfInvalidNewProduct(): Long =
+            newProductEntityDao.countOfAllInvalidNewProduct()
 
-    override val countOfAllNewProducts: Long
-        get() {
-            return newProductEntityDao.countOfAll
-        }
+    override fun countOfAllNewProducts(): Long =
+            newProductEntityDao.countOfAll()
+
 
     override fun createNewProduct(newProductCreateDto: NewProductCreateDto): Long {
         try {

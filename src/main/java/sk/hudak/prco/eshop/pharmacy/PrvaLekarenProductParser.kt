@@ -33,7 +33,7 @@ class PrvaLekarenProductParser(unitParser: UnitParser, userAgentDataHolder: User
         } else countOfPages
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
+    override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
         val href1 = documentList.select("div[class=productbox ] > a:nth-child(1)").stream()
                 .map { it.attr("href") }
                 .filter { StringUtils.isNotBlank(it) }

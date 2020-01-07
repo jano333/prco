@@ -110,7 +110,12 @@ class EshopScheduledExecutor(val eshopUuid: EshopUuid, threadFactory: ThreadFact
         val calendar = Calendar.getInstance()
         calendar.time = lastRunDate
         calendar.add(Calendar.SECOND, countOfSecondToRun.toInt())
-        return calendar.time
+        val calculated = calendar.time
+        val now = Date()
+        if(calculated.before(now)){
+            return now
+        }
+        return calculated
     }
 
     override fun <T : Any?> submit(task: Callable<T>): Future<T> {

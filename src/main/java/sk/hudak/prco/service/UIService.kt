@@ -10,16 +10,21 @@ import java.math.BigDecimal
  */
 interface UIService {
 
+    // ---------- Eshop Admin -------------------
+    fun getEshopsAdminData(): List<EshopAdminDto>
+
     // ---------- Errors ------------------
     fun findErrorsByFilter(findDto: ErrorFindFilterDto): List<ErrorListDto>
 
-    // ------------ Statistiky --------------
+    // ---------- Statistiky --------------
 
-    val statisticsOfProducts: ProductStatisticInfoDto
+    fun statisticsOfProducts(): ProductStatisticInfoDto
 
-    val countOfAllNewProducts: Long
+    fun countOfAllNewProducts(): Long
 
-    //-------------- NEW PRODUCTS -------------------
+    fun getExecutorStatistic(): List<EshopsExecutorInfoDto>
+
+    //----------- NEW PRODUCTS -------------------
 
     /**
      * Zoznam vsetkych 'novo' pridanych produktov na zaklade filtra.
@@ -56,7 +61,7 @@ interface UIService {
      *
      * @param newProductId id new produktu
      */
-    fun markNewProductAsInterested(newProductId: Long?)
+    fun markNewProductAsInterested(newProductId: Long)
 
     /**
      * Presunie 'novy' produkt do zoznamu 'not interested' produktov.

@@ -47,7 +47,7 @@ class LekarenVKockeProductParser(unitParser: UnitParser,
         return 1
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
+    override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("div[class='product col-xs-6 col-xs-offset-0 col-s-6 col-s-offset-0 col-sm-3 col-sm-offset-0'] > a")
                 .stream()
                 .map { it.href() }
@@ -85,7 +85,11 @@ class LekarenVKockeProductParser(unitParser: UnitParser,
     }
 
     override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
-        return ofNullable(documentDetailProduct.select("strong[class='price-default'] span[itemprop='price']").first())
+        var select = documentDetailProduct.select("div.product-detail-info > form > div > div.price.price-lg > div > ins > span")
+        if (select.isEmpty()) {
+            select = documentDetailProduct.select("div.product-detail-info > form > div > div.price.price-lg > div > strong > span")
+        }
+        return ofNullable(select.first())
                 .map { it.text() }
                 .map { it.trim { it <= ' ' } }
                 .filter { StringUtils.isNotBlank(it) }

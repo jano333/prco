@@ -13,9 +13,9 @@ interface NewProductService {
     /**
      * @return pocet vsetkych nevalidnych novych produktov
      */
-    val countOfInvalidNewProduct: Long
+    fun countOfInvalidNewProduct(): Long
 
-    val countOfAllNewProducts: Long
+    fun countOfAllNewProducts(): Long
 
     /**
      * Vytvori novy zaznam, pricom<br></br>

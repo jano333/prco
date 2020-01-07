@@ -48,7 +48,7 @@ class FourKidsProductParser(unitParser: UnitParser, userAgentDataHolder: UserAge
         }
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
+    override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("#products-list > div > a").stream()
                 .map {
                      eshopUuid.productStartUrl + it.attr("href")

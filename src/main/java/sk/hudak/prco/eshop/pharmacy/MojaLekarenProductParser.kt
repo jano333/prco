@@ -33,7 +33,7 @@ class MojaLekarenProductParser(unitParser: UnitParser,
         return Integer.valueOf(select.children().last().previousElementSibling().previousElementSibling().text())
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
+    override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
         val urls = ArrayList<String>()
         for (element in documentList.select("li[class=product]")) {
             val aHref = element.child(0).child(0)

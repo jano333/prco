@@ -36,7 +36,7 @@ class DrogeriaVmdProductParser(unitParser: UnitParser,
                 .orElse(ZERO)
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
+    override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("div.produkt > div.inner > a.name").stream()
                 .map { element -> element.attr("href") }
                 .filter { StringUtils.isNotBlank(it) }

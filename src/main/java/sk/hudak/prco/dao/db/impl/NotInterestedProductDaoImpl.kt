@@ -14,13 +14,12 @@ import javax.persistence.EntityManager
 open class NotInterestedProductDaoImpl(em: EntityManager)
     : BaseDaoImpl<NotInterestedProductEntity>(em), NotInterestedProductDbDao {
 
-    override val countOfAll: Long
-        get() = from(QNotInterestedProductEntity.notInterestedProductEntity).fetchCount()
+    override fun countOfAll(): Long =
+            from(QNotInterestedProductEntity.notInterestedProductEntity).fetchCount()
 
 
-    override fun findById(id: Long): NotInterestedProductEntity {
-        return findById(NotInterestedProductEntity::class.java, id)
-    }
+    override fun findById(id: Long): NotInterestedProductEntity =
+            findById(NotInterestedProductEntity::class.java, id)
 
     override fun existWithUrl(url: String): Boolean {
         return from(QNotInterestedProductEntity.notInterestedProductEntity)

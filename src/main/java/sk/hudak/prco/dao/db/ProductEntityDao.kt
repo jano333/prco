@@ -28,7 +28,7 @@ interface ProductEntityDao : BaseDao<ProductEntity> {
 
     fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<ProductEntity>
 
-    val countOfAll: Long
+    fun countOfAll(): Long
 
     fun countOfAllProductInEshop(eshopUuid: EshopUuid): Long
 

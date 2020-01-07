@@ -15,7 +15,7 @@ class ErrorsControler(uiService: UIService) : BasicController(uiService) {
     fun listNewProducts(response: HttpServletResponse): ModelAndView {
         val errorFindFilterDto = ErrorFindFilterDto()
         errorFindFilterDto.statusCodesToSkip = arrayOf("404")
-        errorFindFilterDto.limit = 50
+        errorFindFilterDto.maxCountPerEshop = 3
         val errors = uiService.findErrorsByFilter(errorFindFilterDto)
 
         val modelAndView = ModelAndView(VIEW_ERRORS, "errors", errors)

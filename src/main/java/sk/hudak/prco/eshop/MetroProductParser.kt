@@ -36,7 +36,7 @@ class MetroProductParser(unitParser: UnitParser,
         return if (documentList.select("p[class='mo-pagination-status']").first() != null) 1 else 0
     }
 
-    override fun parsePageForProductUrls(documentList: Document, pageNumber: Int): List<String> {
+    override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("div.product-layer-content div.product-info-wrapper a.product-photo")
                 .stream()
                 .map { it.href() }

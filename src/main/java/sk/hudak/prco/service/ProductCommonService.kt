@@ -10,7 +10,7 @@ interface ProductCommonService {
     /**
      * Return statistic for all eshops.
      */
-    val statisticsOfProducts: ProductStatisticInfoDto
+    fun statisticsOfProducts(): ProductStatisticInfoDto
 
     /**
      * @param productURL
@@ -24,11 +24,13 @@ interface ProductCommonService {
      * Oznaci dane produkty, ze o ne mam zaujem.
      *
      *
-     * Implementacne: presunie zaznam z [sk.hudak.prco.model.NewProductEntity] do [sk.hudak.prco.model.ProductEntity]
+     * Implementacne: presunie zaznam z [NewProductEntity] do [ProductEntity]
      *
-     * @param newProductIds zoznam idcok z [sk.hudak.prco.model.NewProductEntity]
+     * @param newProductIds zoznam idcok z [NewProductEntity]
      */
-    fun markNewProductAsInterested(vararg newProductIds: Long)
+    fun markNewProductsAsInterested(vararg newProductIds: Long)
+
+    fun markNewProductAsInterested(newProductId: Long): Long?
 
     /**
      * Oznaci dane produkty, ze o ne mam zaujem.

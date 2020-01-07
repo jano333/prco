@@ -267,8 +267,9 @@ class ProductServiceImpl(private val productEntityDao: ProductEntityDao,
     }
 
     override fun findProductsNotInAnyGroup(): List<ProductFullDto> {
+        val findProductsWitchAreNotInAnyGroup = groupOfProductFindEntityDao.findProductsWitchAreNotInAnyGroup()
         return mapper.mapAsList<Any, ProductFullDto>(
-                groupOfProductFindEntityDao.findProductsWitchAreNotInAnyGroup().toTypedArray(),
+                findProductsWitchAreNotInAnyGroup.toTypedArray(),
                 ProductFullDto::class.java)
     }
 

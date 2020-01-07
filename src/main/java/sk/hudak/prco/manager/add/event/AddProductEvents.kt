@@ -17,7 +17,8 @@ import java.util.*
  */
 data class NewEshopKeywordIdEvent(val eshopUuid: EshopUuid,
                                   val searchKeywordId: Long,
-                                  val identifier: String = UUID.randomUUID().toString()) : CoreEvent(), StartEvent
+                                  val identifier: String = UUID.randomUUID().toString())
+    : CoreEvent(), StartEvent
 
 /**
  * Error while retrieving 'keyword' base on it's id.

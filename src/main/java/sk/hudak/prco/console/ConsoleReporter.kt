@@ -29,28 +29,23 @@ class PrcoConsole(val internalTxService: InternalTxService,
     fun showInConsole() {
 
 //        addMangager.addNewProductsByConfiguredKeywordsForAllEshops()
-//        addMangager.addNewProductsByKeywordForEshop(EshopUuid.DROGERIA_VMD, SearchKeyWordId.PAMPERS_ID)
+//        addMangager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, SearchKeyWordId.PAMPERS_ID)
 //        addMangager.addNewProductsByKeywordForAllEshops(SearchKeyWordId.PAMPERS_ID)
 
-
-
-//                updateEE.updateProductDataForEachProductInEshop(EshopUuid.ALZA)
-//                updateEE.updateProductDataForEachProductInEshop(EshopUuid.FEEDO)
-//                updateEE.updateProductDataForEachProductInEshop(EshopUuid.PILULKA)
-//                updateEE.updateProductDataForEachProductInEshop(EshopUuid.MALL)
+//        updateEE.updateProductDataForEachProductInEshop(EshopUuid.ALZA)
 //        EshopUuid.values().forEach {
-//            updateEE.updateProductDataForEachProductInEshop(it)
+//            updateManager.updateProductDataForEachProductInEshop(it)
 //            Thread.sleep(1 * 1000)
 //        }
 
-//        addMangager.addNewProductsByKeywordForEshop(EshopUuid.BRENDON, SearchKeyWordId.PAMPERS_ID)
-//        addMangager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, SearchKeyWordId.PAMPERS_ID)
+        // Pampers Plenky S2 100ks, 4-8 kg
+        val groupProductKeywords = groupProductResolver.resolveGroupId("Pampers Plenky S2 100ks, 4-8 kg")
+        println()
+//        internalTxService.findAllGroupProductKeywords().forEach {
+//            println(it)
+//        }
 
-
-        //Pampers Pure Value Pack S5 (11+kg) 24ks Junior
-//        val groupProductKeywords = groupProductResolver.resolveGroupId("Pampers Premium Care Veľkosť 6, Plienky x38, 13kg+")
-
-//        createNewGroup("pampers 6 premium") // id: 609
+//        createNewGroup("nutrilon 1") // id: 609
 
 //        removeAllKeywordsForGroup(609L)
 //        createGroupKeyWords()
@@ -62,11 +57,13 @@ class PrcoConsole(val internalTxService: InternalTxService,
 //        showGroupKeysWords(481L)
 //
 //        showGroupKeysWords(545L)
-//        showGroupKeysWords(546L)
+//        showGroupKeysWords(546L) // pampers zelene 2
 //        showGroupKeysWords(547L)
 //        showGroupKeysWords(1L)
 //        showGroupKeysWords(321L)
 //        showGroupKeysWords(513L)
+
+//        showGroupKeysWords(577L)
 //
 //        showAllGroups()
 
@@ -98,65 +95,8 @@ class PrcoConsole(val internalTxService: InternalTxService,
 
     private fun createGroupKeyWords() {
         internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                513L,
-                asList("pampers", "active", "baby", "6")))
-        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                513L,
-
-                asList("pampers", "active", "baby", "6,")))
-        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                513L,
-
-                asList("pampers", "active", "baby", "6+")))
-        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                513L,
-
-                asList("pampers", "active", "baby", "6+,")))
-        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                513L,
-
-                asList("pampers", "active", "baby", "s6")))
-        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                513L,
-
-                asList("pampers", "active", "baby", "s6+")))
-        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                513L,
-
-                asList("pampers", "active", "baby", "s6p")))
-        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                513L,
-
-                asList("pampers", "active", "baby-dry", "6+")))
-        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                513L,
-
-                asList("pampers", "activebaby", "6+")))
-        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                513L,
-
-                asList("pampers", "new", "baby-dry", "6")))
-        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                513L,
-
-                asList("pampers", "active", "baby-dry", "6")))
-        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                513L,
-
-                asList("pampers", "pure", "protection", "6")))
-        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                513L,
-
-                asList("pampers", "pure", "protection", "s6")))
-        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                513L,
-
-                asList("pampers", "pure", "protection", "s6,")))
-        internalTxService.createGroupProductKeywords(GroupProductKeywordsCreateDto(
-                513L,
-
-                asList("pampers", "giant", "pack", "maxi", "6")))
-
+                546L,
+                asList("pampers", "s2")))
     }
 
 
@@ -257,7 +197,7 @@ class PrcoConsole(val internalTxService: InternalTxService,
     }
 
     fun UC_fixOneInvalidNewProduct() {
-        println("pocet neplatnych: " + internalTxService.countOfInvalidNewProduct)
+        println("pocet neplatnych: " + internalTxService.countOfInvalidNewProduct())
 
         val firstInvalidNewProductInfo = internalTxService.findFirstInvalidNewProduct()
         if (firstInvalidNewProductInfo != null) {

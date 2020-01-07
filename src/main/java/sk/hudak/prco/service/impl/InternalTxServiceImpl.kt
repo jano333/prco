@@ -31,14 +31,12 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
             groupProductKeywordsService.findAllGroupProductKeywords()
 
     @Transactional
-    override fun updateProductUnitPackageCount(productId: Long, unitPackageCount: Int) {
-        productService.updateProductUnitPackageCount(productId, unitPackageCount)
-    }
+    override fun updateProductUnitPackageCount(productId: Long, unitPackageCount: Int) =
+            productService.updateProductUnitPackageCount(productId, unitPackageCount)
 
     @Transactional(readOnly = true)
     override fun getProductById(productId: Long): ProductFullDto =
             productService.getProductById(productId)
-
 
     @Transactional(readOnly = true)
     override fun getSearchKeywordById(searchKeyWordId: Long): String =
@@ -49,22 +47,20 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
             searchKeywordService.createSearchKeyword(createDto)
 
     @Transactional
-    override fun updateSearchKeyword(updateDto: SearchKeywordUdateDto) {
-        searchKeywordService.updateSearchKeyword(updateDto)
-    }
+    override fun updateSearchKeyword(updateDto: SearchKeywordUdateDto) =
+            searchKeywordService.updateSearchKeyword(updateDto)
 
     @Transactional(readOnly = true)
-    override fun findAllSearchKeyword(): List<SearchKeywordListDto> = searchKeywordService.findAllSearchKeyword()
+    override fun findAllSearchKeyword(): List<SearchKeywordListDto> =
+            searchKeywordService.findAllSearchKeyword()
 
     @Transactional
-    override fun updateProductUrl(productId: Long, newProductUrl: String) {
-        productService.updateProductUrl(productId, newProductUrl)
-    }
+    override fun updateProductUrl(productId: Long, newProductUrl: String) =
+            productService.updateProductUrl(productId, newProductUrl)
 
     @Transactional(readOnly = true)
     override fun getProductForUpdateByUrl(productUrl: String): ProductDetailInfo? =
             productService.getProductForUpdateByUrl(productUrl)
-
 
     @Transactional(readOnly = true)
     override fun findProductForUpdateInGroup(groupId: Long): Map<EshopUuid, List<Long>> =
@@ -86,47 +82,41 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     override fun removeErrorsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int =
             errorService.removeErrorsByCount(eshopUuid, maxCountToDelete)
 
-
     @Transactional
     override fun removeProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int =
             productService.removeProductsByCount(eshopUuid, maxCountToDelete)
-
 
     @Transactional
     override fun removeNewProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int =
             newProductService.removeNewProductsByCount(eshopUuid, maxCountToDelete)
 
-
     @Transactional
-    override fun removeNotInterestedProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int {
-        return notInterestedProductService.removeNotInterestedProductsByCount(eshopUuid, maxCountToDelete)
-    }
-
-    override val countOfInvalidNewProduct: Long
-        @Transactional(readOnly = true)
-        get() = newProductService.countOfInvalidNewProduct
-
-    override val countOfAllNewProducts: Long
-        @Transactional(readOnly = true)
-        get() = newProductService.countOfAllNewProducts
-
-    override val statisticsOfProducts: ProductStatisticInfoDto
-        @Transactional(readOnly = true)
-        get() = productCommonService.statisticsOfProducts
-
-    override val statisticForErrors: Map<ErrorType, Long>
-        @Transactional(readOnly = true)
-        get() = errorService.statisticForErrors
+    override fun removeNotInterestedProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int =
+            notInterestedProductService.removeNotInterestedProductsByCount(eshopUuid, maxCountToDelete)
 
     @Transactional(readOnly = true)
-    override fun existProductWithURL(productURL: String): Boolean {
-        return productCommonService.existProductWithURL(productURL)
-    }
+    override fun countOfInvalidNewProduct(): Long =
+            newProductService.countOfInvalidNewProduct()
+
+    @Transactional(readOnly = true)
+    override fun countOfAllNewProducts(): Long =
+            newProductService.countOfAllNewProducts()
+
+    @Transactional(readOnly = true)
+    override fun statisticsOfProducts(): ProductStatisticInfoDto =
+            productCommonService.statisticsOfProducts()
+
+    @Transactional(readOnly = true)
+    override fun statisticForErrors(): Map<ErrorType, Long> =
+            errorService.statisticForErrors()
+
+    @Transactional(readOnly = true)
+    override fun existProductWithURL(productURL: String): Boolean =
+            productCommonService.existProductWithURL(productURL)
 
     @Transactional
-    override fun createNewProduct(newProductCreateDto: NewProductCreateDto): Long {
-        return newProductService.createNewProduct(newProductCreateDto)
-    }
+    override fun createNewProduct(newProductCreateDto: NewProductCreateDto): Long =
+            newProductService.createNewProduct(newProductCreateDto)
 
     @Transactional(readOnly = true)
     override fun getNewProduct(newProductId: Long): NewProductFullDto {
@@ -165,8 +155,13 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional
-    override fun markNewProductAsInterested(vararg newProductIds: Long) {
-        productCommonService.markNewProductAsInterested(*newProductIds)
+    override fun markNewProductsAsInterested(vararg newProductIds: Long) {
+        productCommonService.markNewProductsAsInterested(*newProductIds)
+    }
+
+    @Transactional
+    override fun markNewProductAsInterested(newProductId: Long): Long? {
+        return productCommonService.markNewProductAsInterested(newProductId)
     }
 
     @Transactional
