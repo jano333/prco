@@ -56,7 +56,7 @@
          <appender-ref ref="FILE_SLOW_SQL" />
      </logger>-->
 
-    <logger name="sk.hudak" level="debug" additivity="true">
+    <logger name="sk.hudak" level="trace" additivity="true">
         <appender-ref ref="FILE_DEBUG" />
         <!--<appender-ref ref="STDOUT" />-->
     </logger>

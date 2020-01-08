@@ -64,8 +64,12 @@ class SearchPageDocumentEvent_4_Handler(prcoObservable: PrcoObservable,
                 Supplier {
                     LOG.trace("parseCountOfPages")
                     val parserForEshop = eshopProductsParserHelper.findParserForEshop(eshopUuid)
-                    val countOfPages = parserForEshop.parseCountOfPages(document)
-                    LOG.debug("count of pages is $countOfPages for URL $searchUrl ")
+                    var countOfPages = parserForEshop.parseCountOfPages(document)
+                    LOG.debug("count of new pages is $countOfPages for URL $searchUrl")
+                    if (countOfPages > eshopUuid.config.maxCountOfNewPages) {
+                        LOG.debug("count of new pages changed to max: ${eshopUuid.config.maxCountOfNewPages} for URL $searchUrl")
+                        countOfPages = eshopUuid.config.maxCountOfNewPages
+                    }
                     countOfPages
                 }),
                 addProductExecutors.htmlParserExecutor)

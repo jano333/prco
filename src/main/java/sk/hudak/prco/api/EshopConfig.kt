@@ -71,8 +71,8 @@ object DrMaxConfiguration : StaticEshopConfiguration(EshopCategory.PHARMACY,
 
 object DrogeriaVmdConfiguration : StaticEshopConfiguration(EshopCategory.DRUGSTORE,
         "https://www.drogeria-vmd.sk",
-        "https://www.drogeria-vmd.sk/hladanie/?q=" + KEYWORD_TEMP,
-        "https://www.drogeria-vmd.sk/hladanie-stranka-{pageNumber}/?q=" + KEYWORD_TEMP,
+        "https://www.drogeria-vmd.sk/hladanie/?q=$KEYWORD_TEMP",
+        "https://www.drogeria-vmd.sk/hladanie-stranka-{pageNumber}/?q=$KEYWORD_TEMP",
         4, 12, 12,
         supportedSearchKeywordIds = listOf(PAMPERS_ID, NUTRILON_ID, LOVELA_ID)
 )
@@ -359,10 +359,7 @@ abstract class DynamicEshopConfiguration(category: EshopCategory,
         maxCountOfProductOnPage = maxCountOfProductOnPage,
         supportedSearchKeywordIds = supportedSearchKeywordIds) {
 
-    //TODO po preklopenie vsetkych eshop to odkomentovat
-//    override val searchTemplateUrl: String?
-//        get() = throw PrcoRuntimeException("cant be called for dynamic")
-
-
+    override val searchTemplateUrl: String?
+        get() = throw PrcoRuntimeException("cant be called for dynamic")
 }
 

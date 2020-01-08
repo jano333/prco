@@ -9,10 +9,12 @@ import sk.hudak.prco.dto.GroupFilterDto
 import sk.hudak.prco.dto.SearchKeywordCreateDto
 import sk.hudak.prco.dto.product.NotInterestedProductFindDto
 import sk.hudak.prco.dto.product.ProductFilterUIDto
+import sk.hudak.prco.manager.add.AddProductManager
 import sk.hudak.prco.manager.export.DbExportImportManager
 import sk.hudak.prco.manager.export.HtmlExportManager
 import sk.hudak.prco.manager.group.GroupProductResolver
 import sk.hudak.prco.manager.remove.RemoveEshopManager
+import sk.hudak.prco.manager.update.UpdateProductManager
 import sk.hudak.prco.manager.watchdog.WatchDogManager
 import sk.hudak.prco.parser.html.HtmlParser
 import sk.hudak.prco.reporter.FacebookReporter
@@ -21,7 +23,6 @@ import sk.hudak.prco.service.UIService
 import sk.hudak.prco.service.WatchDogService
 import sk.hudak.prco.ssl.PrcoSslManager
 import sk.hudak.prco.utils.CalculationUtils
-import sk.hudak.prco.z.old.AddingNewProductManager
 import sk.hudak.prco.z.old.UpdateProductDataListener
 import sk.hudak.prco.z.old.UpdateStatusInfo
 import java.math.BigDecimal
@@ -36,10 +37,10 @@ import java.util.Arrays.asList
  * Created by jan.hudak on 9/29/2017.
  */
 @Component
-class Starter(/*private val updateProductDataManager: UpdateProductDataManager,*/
+class Starter(private val addProductManager: AddProductManager,
+              private val updateProductManager: UpdateProductManager,
               private val internalTxService: InternalTxService,
               private val uiService: UIService,
-              private val newProductManager: AddingNewProductManager,
               private val facebookReporter: FacebookReporter,
               private val prcoConsole: PrcoConsole) {
 

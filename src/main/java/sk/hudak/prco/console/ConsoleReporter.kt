@@ -2,6 +2,7 @@ package sk.hudak.prco.console
 
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
+import sk.hudak.prco.api.SearchKeyWordId
 import sk.hudak.prco.api.Unit
 import sk.hudak.prco.dto.GroupCreateDto
 import sk.hudak.prco.dto.GroupProductKeywordsCreateDto
@@ -29,7 +30,7 @@ class PrcoConsole(val internalTxService: InternalTxService,
     fun showInConsole() {
 
 //        addMangager.addNewProductsByConfiguredKeywordsForAllEshops()
-//        addMangager.addNewProductsByKeywordForEshop(EshopUuid.FEEDO, SearchKeyWordId.PAMPERS_ID)
+        addMangager.addNewProductsByKeywordForEshop(EshopUuid.DROGERIA_VMD, SearchKeyWordId.LOVELA_ID)
 //        addMangager.addNewProductsByKeywordForAllEshops(SearchKeyWordId.PAMPERS_ID)
 
 //        updateEE.updateProductDataForEachProductInEshop(EshopUuid.ALZA)
@@ -39,8 +40,8 @@ class PrcoConsole(val internalTxService: InternalTxService,
 //        }
 
         // Pampers Plenky S2 100ks, 4-8 kg
-        val groupProductKeywords = groupProductResolver.resolveGroupId("Pampers Plenky S2 100ks, 4-8 kg")
-        println()
+//        val groupProductKeywords = groupProductResolver.resolveGroupId("Pampers Plenky S2 100ks, 4-8 kg")
+//        println()
 //        internalTxService.findAllGroupProductKeywords().forEach {
 //            println(it)
 //        }

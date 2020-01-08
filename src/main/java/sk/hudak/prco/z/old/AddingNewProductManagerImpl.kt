@@ -51,7 +51,7 @@ interface AddingNewProductManager {
     fun addNewProductsByConfiguredKeywordsForAllEshops()
 }
 
-@Component
+@Deprecated("use new one")
 class AddingNewProductManagerImpl(private val internalTxService: InternalTxService,
                                   private val mapper: PrcoOrikaMapper,
                                   private val htmlParser: HtmlParser,
