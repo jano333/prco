@@ -10,12 +10,14 @@ import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.ErrorEvent
 import sk.hudak.prco.events.PrcoObservable
 import sk.hudak.prco.events.PrcoObserver
+import sk.hudak.prco.exception.CoreParserException
 import sk.hudak.prco.exception.ProductPriceNotFoundException
 import sk.hudak.prco.manager.add.event.*
 import sk.hudak.prco.manager.update.event.*
 import sk.hudak.prco.service.InternalTxService
 import java.util.*
 import java.util.concurrent.CompletionException
+import javax.net.ssl.SSLHandshakeException
 
 // TODO urobit to tiez asynchronne cez osobintne vlakla tu update metodu tak ako je add alebo update event handlery
 
@@ -195,13 +197,27 @@ class ErrorEventProductHandler(prcoObservable: PrcoObservable,
     }
 
     private fun handle_RetrieveDocumentForSearchUrlErrorEvent(errorEvent: RetrieveDocumentForSearchUrlErrorEvent) {
-        internalTxService.createError(ErrorCreateDto(
-                errorEvent.event.eshopUuid,
-                ErrorType.PARSING_PRODUCT_NEW_DATA, null,
-                errorEvent.error.message,
-                ExceptionUtils.getStackTrace(errorEvent.error),
-                errorEvent.event.searchUrl,
-                errorEvent.event.toString()))
+
+        if (errorEvent.error.cause is CoreParserException && (errorEvent.error.cause as CoreParserException).cause is SSLHandshakeException) {
+            internalTxService.createError(ErrorCreateDto(
+                    errorEvent.event.eshopUuid,
+                    ErrorType.HTTP_SSL_ERR, null,
+                    errorEvent.error.message,
+                    ExceptionUtils.getStackTrace(errorEvent.error),
+                    errorEvent.event.searchUrl,
+                    errorEvent.event.toString()))
+        } else {
+            //TODO zle ...
+            internalTxService.createError(ErrorCreateDto(
+                    errorEvent.event.eshopUuid,
+                    ErrorType.PARSING_PRODUCT_NEW_DATA, null,
+                    errorEvent.error.message,
+                    ExceptionUtils.getStackTrace(errorEvent.error),
+                    errorEvent.event.searchUrl,
+                    errorEvent.event.toString()))
+        }
+
+
     }
 
     private fun handle_SaveProductNewDataErrorEvent(errorEvent: SaveProductNewDataErrorEvent) {

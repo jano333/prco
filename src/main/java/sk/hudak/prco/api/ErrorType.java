@@ -4,6 +4,7 @@ public enum ErrorType {
 
     PARSING_PRODUCT_UPDATE_DATA,
     HTTP_STATUS_ERR,
+    HTTP_SSL_ERR,
 
 
     // OLD ----,

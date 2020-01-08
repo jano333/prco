@@ -167,7 +167,6 @@ object PrcoSslManager {
 object PrcoSSLContants {
 
     // obsahuje zoznam povenych hostov, pre ktore sa nevaliduje
-    @JvmField
     val ALLOWED_HOSTNAME: MutableSet<String> = HashSet(1)
 
     init {

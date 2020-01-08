@@ -2,7 +2,6 @@ package sk.hudak.prco.console
 
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.api.SearchKeyWordId
 import sk.hudak.prco.api.Unit
 import sk.hudak.prco.dto.GroupCreateDto
 import sk.hudak.prco.dto.GroupProductKeywordsCreateDto
@@ -30,7 +29,7 @@ class PrcoConsole(val internalTxService: InternalTxService,
     fun showInConsole() {
 
 //        addMangager.addNewProductsByConfiguredKeywordsForAllEshops()
-        addMangager.addNewProductsByKeywordForEshop(EshopUuid.DROGERIA_VMD, SearchKeyWordId.LOVELA_ID)
+//        addMangager.addNewProductsByKeywordForEshop(EshopUuid.PERINBABA, SearchKeyWordId.PAMPERS_ID)
 //        addMangager.addNewProductsByKeywordForAllEshops(SearchKeyWordId.PAMPERS_ID)
 
 //        updateEE.updateProductDataForEachProductInEshop(EshopUuid.ALZA)
@@ -68,7 +67,7 @@ class PrcoConsole(val internalTxService: InternalTxService,
 //
 //        showAllGroups()
 
-//        showDuplicityProductsInEshops()
+        showDuplicityProductsInEshops()
 
 //        showProductPerEshop(EshopUuid.MOJA_LEKAREN)
 
