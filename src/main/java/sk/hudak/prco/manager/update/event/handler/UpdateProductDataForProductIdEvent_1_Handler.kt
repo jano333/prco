@@ -45,7 +45,7 @@ class UpdateProductDataForProductIdEvent_1_Handler(prcoObservable: PrcoObservabl
         return CompletableFuture.supplyAsync(NoEshopLogSupplier(identifier,
                 Supplier {
                     LOG.trace("findProductForUpdate")
-                    internalTxService.findProductForUpdate(productId)
+                    internalTxService.findProductById(productId)
                 }),
                 updateProductExecutors.internalServiceExecutor)
     }

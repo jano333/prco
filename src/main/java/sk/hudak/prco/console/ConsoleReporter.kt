@@ -67,9 +67,10 @@ class PrcoConsole(val internalTxService: InternalTxService,
 //
 //        showAllGroups()
 
-        showDuplicityProductsInEshops()
+//        showDuplicityProductsInEshops()
 
 //        showProductPerEshop(EshopUuid.MOJA_LEKAREN)
+//        showProductPerEshop(EshopUuid.KID_MARKET)
 
 //        showProductIdBuUrl("https://www.drmax.sk/nutrilon-3-pronutra/")
 //        showProductInfoById(3959L)
@@ -120,7 +121,7 @@ class PrcoConsole(val internalTxService: InternalTxService,
 
     private fun showProductPerEshop(eshopUuid: EshopUuid) {
         println("product for eshop $eshopUuid")
-        internalTxService.findProducts(ProductFilterUIDto.withEshopOnly(eshopUuid).orderBy(ProductFilterUIDto.ORDER_BY.NAME))
+        internalTxService.findProductsByFilter(ProductFilterUIDto.withEshopOnly(eshopUuid).orderBy(ProductFilterUIDto.ORDER_BY.NAME))
                 .forEach {
                     println("${it.name} ${it.url} ${it.id}")
                 }
@@ -146,7 +147,7 @@ class PrcoConsole(val internalTxService: InternalTxService,
     private fun showDuplicityProductsInEshops() {
         for (eshopUuid in EshopUuid.values()) {
             println("Duplicity for eshop: $eshopUuid")
-            val result = internalTxService.findDuplicityProductsByNameAndPriceInEshop(eshopUuid)
+            val result = internalTxService.findProductsInEshopWithDuplicityByNameAndPrice(eshopUuid)
             for (productFullDto in result) {
                 println(productFullDto.id.toString() + ", "
                         + productFullDto.name + " "
@@ -165,7 +166,7 @@ class PrcoConsole(val internalTxService: InternalTxService,
     }
 
     private fun showAllProducts() {
-        val products = internalTxService.findProducts(ProductFilterUIDto())
+        val products = internalTxService.findProductsByFilter(ProductFilterUIDto())
         for (product in products) {
             println("id ${product.id}, name ${product.name}, url ${product.url}")
         }
@@ -238,7 +239,7 @@ class PrcoConsole(val internalTxService: InternalTxService,
     private fun showProductsInEshop(eshopUuid: EshopUuid) {
         println("Eshop $eshopUuid")
 
-        val products = internalTxService.findProducts(ProductFilterUIDto.withEshopOnly(eshopUuid))
+        val products = internalTxService.findProductsByFilter(ProductFilterUIDto.withEshopOnly(eshopUuid))
         for (product in products) {
             println("id " + product.id + ", "
                     + formatPrice(product.priceForPackage) + "(" + formatValidTo(product.actionValidTo) + ") " + formatPrice(product.commonPrice)

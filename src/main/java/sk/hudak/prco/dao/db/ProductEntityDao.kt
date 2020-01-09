@@ -7,35 +7,36 @@ import sk.hudak.prco.model.ProductEntity
 
 interface ProductEntityDao : BaseDao<ProductEntity> {
 
-    fun existWithUrl(url: String): Boolean
+    fun existProductWithUrl(url: String): Boolean
 
-    fun findAll(): List<ProductEntity>
+    fun findProducts(): List<ProductEntity>
+
+    fun findProductsByFilter(filter: ProductFilterUIDto): List<ProductEntity>
+
+    fun findProductByUrl(productUrl: String): ProductEntity?
+
+    fun findProductsInEshopForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): List<ProductEntity>
 
     /**
      * @param eshopUuid
      * @param olderThanInHours pocet v hodinach, kolko minimalne sa neupdatoval dany record
      * @return
      */
-    fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductEntity?
+    fun findProductInEshopForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductEntity?
 
-    fun findProductsForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): List<ProductEntity>
-
-    fun findByFilter(filter: ProductFilterUIDto): List<ProductEntity>
-
-    fun findByUrl(productUrl: String): ProductEntity?
+    fun findProductsInEshop(eshopUuid: EshopUuid, maxCount: Long): List<ProductEntity>
 
     fun findProductIdWithUrl(productUrl: String, productIdToIgnore: Long?): Long?
 
-    fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<ProductEntity>
+    fun countOfProducts(): Long
 
-    fun countOfAll(): Long
+    fun countOfProductsInEshop(eshopUuid: EshopUuid): Long
 
-    fun countOfAllProductInEshop(eshopUuid: EshopUuid): Long
-
-    fun countOfAllProductInEshopUpdatedMax24Hours(eshopUuid: EshopUuid): Long
+    fun countOfProductsInEshopUpdatedMax24Hours(eshopUuid: EshopUuid): Long
 
     fun countOfProductsWaitingToBeUpdated(eshopUuid: EshopUuid, olderThanInHours: Int): Long
 
     fun countOfProductsAlreadyUpdated(eshopUuid: EshopUuid, olderThanInHours: Int): Long
-    fun countOfProductMarkedAsUnavailable(eshopUuid: EshopUuid): Long
+
+    fun countOfProductsMarkedAsUnavailable(eshopUuid: EshopUuid): Long
 }

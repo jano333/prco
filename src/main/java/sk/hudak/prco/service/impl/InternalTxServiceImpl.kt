@@ -59,8 +59,8 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
             productService.updateProductUrl(productId, newProductUrl)
 
     @Transactional(readOnly = true)
-    override fun getProductForUpdateByUrl(productUrl: String): ProductDetailInfo? =
-            productService.getProductForUpdateByUrl(productUrl)
+    override fun findProductForUpdateByUrl(productUrl: String): ProductDetailInfo? =
+            productService.findProductForUpdateByUrl(productUrl)
 
     @Transactional(readOnly = true)
     override fun findProductForUpdateInGroup(groupId: Long): Map<EshopUuid, List<Long>> =
@@ -83,8 +83,8 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
             errorService.removeErrorsByCount(eshopUuid, maxCountToDelete)
 
     @Transactional
-    override fun removeProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int =
-            productService.removeProductsByCount(eshopUuid, maxCountToDelete)
+    override fun removeProductsInEshopByCount(eshopUuid: EshopUuid, maxCountToBeDelete: Long): Int =
+            productService.removeProductsInEshopByCount(eshopUuid, maxCountToBeDelete)
 
     @Transactional
     override fun removeNewProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int =
@@ -170,8 +170,8 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional(readOnly = true)
-    override fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductDetailInfo? {
-        return productService.findProductForUpdate(eshopUuid, olderThanInHours)
+    override fun findProductInEshopForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductDetailInfo? {
+        return productService.findProductInEshopForUpdate(eshopUuid, olderThanInHours)
     }
 
     @Transactional
@@ -230,8 +230,8 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional(readOnly = true)
-    override fun findProducts(filter: ProductFilterUIDto): List<ProductFullDto> {
-        return productService.findProducts(filter)
+    override fun findProductsByFilter(filter: ProductFilterUIDto): List<ProductFullDto> {
+        return productService.findProductsByFilter(filter)
     }
 
     @Transactional(readOnly = true)
@@ -260,8 +260,8 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional(readOnly = true)
-    override fun getProduct(productId: Long?): ProductAddingToGroupDto {
-        return productService.getProduct(productId)
+    override fun getProductForAddingToGroup(productId: Long): ProductAddingToGroupDto {
+        return productService.getProductForAddingToGroup(productId)
     }
 
     @Transactional(readOnly = true)
@@ -285,8 +285,8 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional(readOnly = true)
-    override fun findProductForUpdate(productId: Long): ProductDetailInfo {
-        return productService.findProductForUpdate(productId)
+    override fun findProductById(productId: Long): ProductDetailInfo {
+        return productService.findProductById(productId)
     }
 
     @Transactional(readOnly = true)
@@ -322,8 +322,8 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional
-    override fun addProductsToGroup(groupId: Long, vararg productId: Long) {
-        groupService.addProductsToGroup(groupId, *productId)
+    override fun addProductsToGroup(groupId: Long, vararg productIds: Long) {
+        groupService.addProductsToGroup(groupId, *productIds)
     }
 
     @Transactional
@@ -403,8 +403,8 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional(readOnly = true)
-    override fun findDuplicityProductsByNameAndPriceInEshop(eshopUuid: EshopUuid): List<ProductFullDto> {
-        return productService.findDuplicityProductsByNameAndPriceInEshop(eshopUuid)
+    override fun findProductsInEshopWithDuplicityByNameAndPrice(eshopUuid: EshopUuid): List<ProductFullDto> {
+        return productService.findProductsInEshopWithDuplicityByNameAndPrice(eshopUuid)
     }
 
     @Transactional(readOnly = true)
@@ -413,8 +413,8 @@ open class InternalTxServiceImpl(@param:Qualifier("newProductService") private v
     }
 
     @Transactional
-    override fun createGroupProductKeywords(groupProductKeywordsCreateDto: GroupProductKeywordsCreateDto): Long {
-        return groupProductKeywordsService.createGroupProductKeywords(groupProductKeywordsCreateDto)
+    override fun createGroupProductKeywords(createDto: GroupProductKeywordsCreateDto): Long {
+        return groupProductKeywordsService.createGroupProductKeywords(createDto)
     }
 
     @Transactional(readOnly = true)

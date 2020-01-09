@@ -50,7 +50,7 @@ class ProductUpdateDataRedirectEvent_5a_Handler(prcoObservable: PrcoObservable,
         return CompletableFuture.supplyAsync(EshopLogSupplier(eshopUuid, identifier,
                 Supplier {
                     LOG.trace("findRedirectProductByUrl")
-                    internalTxService.getProductForUpdateByUrl(redirectUrl)
+                    internalTxService.findProductForUpdateByUrl(redirectUrl)
                 }),
                 updateProductExecutors.internalServiceExecutor)
     }

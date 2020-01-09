@@ -1,3 +1,4 @@
+stranka esopu a jeho produktov, a akciami ako remove from eshop!!!
 ---------------------------
 duplicity ak je tak osobitny event a napr log ako error !!!
 ---------------------------
@@ -58,10 +59,6 @@ PAMPERS_ZELENE_3
 TODO: urobit group keywordy aj pre pants vsetky velkosti a prest zoznam notinteresting s nazvom pampers
 *****************************************************************************************
 ----------------------------
-Je to toiste(prest vsetky eshopy a vypisat duplicity na zaklade nazvu) !!!
-4. 0.22500€/kus 14,40€/balenie https://kidmarket.sk/jednorazove-plienky/177-pampers-active-baby-5-giant-pack-64ks.html
-5. 0.22500€/kus 14,40€/balenie https://kidmarket.sk/active-baby/177-pampers-active-baby-5-giant-pack-64ks-8001090278067.html
------------------------------------------------------------------------------------------------------------------------
 !!! do nutrilon groupy som pridal aj vanilku
 -----------------------------------------------------------------------------------------------------------------------
 BUG: dvojite lomitka:

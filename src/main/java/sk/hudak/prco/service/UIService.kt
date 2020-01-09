@@ -72,7 +72,7 @@ interface UIService {
 
     //-------------- PRODUCTS -------------------
 
-    fun getProduct(productId: Long?): ProductAddingToGroupDto
+    fun getProduct(productId: Long): ProductAddingToGroupDto
 
     fun updateProductUnitData(productUnitDataDto: ProductUnitDataDto)
 

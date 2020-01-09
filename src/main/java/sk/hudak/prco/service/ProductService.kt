@@ -8,15 +8,11 @@ import java.math.BigDecimal
 
 interface ProductService {
 
-    //TODO niekde je delete a niekde remove na product ujednotit to ...
-
     /**
      * @param productURL URL of product
      * @return true, if product exist (product table only)
      */
     fun existProductWithUrl(productURL: String): Boolean
-
-    // ----------- GET -----------
 
     fun getProductById(productId: Long): ProductFullDto
 
@@ -26,9 +22,7 @@ interface ProductService {
      * @param productId product id
      * @return product data
      */
-    //TODO zrusit ? v  Long?
-    //TODO rename methody
-    fun getProduct(productId: Long?): ProductAddingToGroupDto
+    fun getProductForAddingToGroup(productId: Long): ProductAddingToGroupDto
 
     /**
      * Eshop to which the product with given id belongs to.
@@ -43,24 +37,8 @@ interface ProductService {
      * @param olderThanInHours
      * @return
      */
+    //TODO overit ci sa pouziva
     fun getStatisticForUpdateForEshop(eshopUuid: EshopUuid, olderThanInHours: Int): StatisticForUpdateForEshopDto
-
-    // ----------- FIND -----------
-
-    /**
-     * @param productId product id
-     * @return
-     */
-    fun findProductForUpdate(productId: Long): ProductDetailInfo
-
-
-    /**
-     * @param eshopUuid        eshop unique identifier
-     * @param olderThanInHours
-     * @return
-     */
-    fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductDetailInfo?
-
 
     // ----------- UPDATE -----------
 
@@ -81,6 +59,80 @@ interface ProductService {
      */
     fun updateProductCommonPrice(productId: Long, newCommonPrice: BigDecimal)
 
+    // ----------- FIND -----------
+
+    /**
+     * @param productId product id
+     * @return
+     */
+    fun findProductById(productId: Long): ProductDetailInfo
+
+
+    /**
+     * @param eshopUuid        eshop unique identifier
+     * @param olderThanInHours
+     * @return
+     */
+    fun findProductInEshopForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductDetailInfo?
+
+
+    /**
+     * vyhlada product na zaklade URL, pozor nemusi existovat...
+     */
+    fun findProductForUpdateByUrl(productUrl: String): ProductDetailInfo?
+
+    /**
+     * @param filter
+     * @return
+     */
+    fun findProductsByFilter(filter: ProductFilterUIDto): List<ProductFullDto>
+
+    /**
+     * @param groupId       id of group
+     * @param withPriceOnly
+     * @param eshopsToSkip
+     * @return
+     */
+    fun findProductsInGroup(groupId: Long, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto>
+
+    /**
+     * @return list of products which are not in any group
+     */
+    fun findProductsNotInAnyGroup(): List<ProductFullDto>
+
+    /**
+     * @param eshopUuid eshop unique identifier
+     * @return list of product in action for given eshop
+     */
+    fun findProductsInAction(eshopUuid: EshopUuid): List<ProductInActionDto>
+
+    /**
+     * @param eshopUuid eshop unique identifier
+     * @return
+     */
+    //TODO rename na nieco zmysluplne...
+    fun findProductsBestPriceInGroupDto(eshopUuid: EshopUuid): List<ProductBestPriceInGroupDto>
+
+    /**
+     * @param eshopUuid eshop unique identifier
+     * @return
+     */
+    fun findProductsInEshopWithDuplicityByNameAndPrice(eshopUuid: EshopUuid): List<ProductFullDto>
+
+    /**
+     * @param productUrl        URL of product
+     * @param productIdToIgnore product id which will be ignored during finding
+     * @return product id if found, empty if not
+     */
+    fun findProductIdWithUrl(productUrl: String, productIdToIgnore: Long?): Long?
+
+    fun findProductForUpdateInGroup(groupId: Long): Map<EshopUuid, List<Long>>
+
+    fun findProductsForUpdateWhichAreNotInAnyGroup(): Map<EshopUuid, List<Long>>
+
+    fun findProductsForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): List<ProductDetailInfo>
+
+    fun findProductsForExport(): List<ProductFullDto>
 
     // -------- OTHERS --------
 
@@ -126,72 +178,7 @@ interface ProductService {
     /**
      * Remove/delete randomly count of product. Return count of really deleted products.
      */
-    fun removeProductsByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): Int
-
-
-    /**
-     * vyhlada product na zaklade URL, pozor nemusi existovat...
-     */
-    //TODO rename to findProductForUpdateByUrl
-    fun getProductForUpdateByUrl(productUrl: String): ProductDetailInfo?
-
-
-
-    // ----------- FIND -----------
-
-    /**
-     * @param filter
-     * @return
-     */
-    fun findProducts(filter: ProductFilterUIDto): List<ProductFullDto>
-
-    /**
-     * @param groupId       id of group
-     * @param withPriceOnly
-     * @param eshopsToSkip
-     * @return
-     */
-    fun findProductsInGroup(groupId: Long, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto>
-
-    /**
-     * @return list of products which are not in any group
-     */
-    fun findProductsNotInAnyGroup(): List<ProductFullDto>
-
-    /**
-     * @param eshopUuid eshop unique identifier
-     * @return list of product in action for given eshop
-     */
-    fun findProductsInAction(eshopUuid: EshopUuid): List<ProductInActionDto>
-
-    /**
-     * @param eshopUuid eshop unique identifier
-     * @return
-     */
-    fun findProductsBestPriceInGroupDto(eshopUuid: EshopUuid): List<ProductBestPriceInGroupDto>
-
-    /**
-     * @return
-     */
-    fun findProductsForExport(): List<ProductFullDto>
-
-    /**
-     * @param eshopUuid eshop unique identifier
-     * @return
-     */
-    fun findDuplicityProductsByNameAndPriceInEshop(eshopUuid: EshopUuid): List<ProductFullDto>
-
-    /**
-     * @param productUrl        URL of product
-     * @param productIdToIgnore product id which will be ignored during finding
-     * @return product id if found, empty if not
-     */
-    fun findProductIdWithUrl(productUrl: String, productIdToIgnore: Long?): Long?
-
-    fun findProductForUpdateInGroup(groupId: Long): Map<EshopUuid, List<Long>>
-    fun findProductsForUpdateWhichAreNotInAnyGroup(): Map<EshopUuid, List<Long>>
-
-    fun findProductsForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): List<ProductDetailInfo>
+    fun removeProductsInEshopByCount(eshopUuid: EshopUuid, maxCountToBeDelete: Long): Int
 
 
 }

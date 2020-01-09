@@ -69,7 +69,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
 
     override fun updateProductData(productId: Long) {
         // vyhladam product na update v DB na zaklade id
-        val productForUpdate: ProductDetailInfo = internalTxService.findProductForUpdate(productId)
+        val productForUpdate: ProductDetailInfo = internalTxService.findProductById(productId)
 
         val eshopUuid = productForUpdate.eshopUuid
 
@@ -105,7 +105,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
                 log.debug(">> updateProductDataForEachProductInEshop eshop $eshopUuid")
                 eshopTaskManager.markTaskAsRunning(eshopUuid)
 
-                var productForUpdate: ProductDetailInfo? = internalTxService.findProductForUpdate(eshopUuid, eshopUuid.olderThanInHours)
+                var productForUpdate: ProductDetailInfo? = internalTxService.findProductInEshopForUpdate(eshopUuid, eshopUuid.olderThanInHours)
                 var finishedWithError = false
                 // until we have anything for update
                 loop@
@@ -126,7 +126,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
                         ContinueUpdateStatus.CONTINUE_TO_NEXT_ONE_OK,
                         ContinueUpdateStatus.CONTINUE_TO_NEXT_ONE_ERROR -> {
                             sleepRandomSafe()
-                            productForUpdate = internalTxService.findProductForUpdate(eshopUuid, eshopUuid.olderThanInHours)
+                            productForUpdate = internalTxService.findProductInEshopForUpdate(eshopUuid, eshopUuid.olderThanInHours)
                         }
                     }
                 }
@@ -167,7 +167,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
                 loop@
                 for (productForUpdateId in productForUpdateIds) {
                     // read detail about product
-                    var productForUpdate = internalTxService.findProductForUpdate(productForUpdateId)
+                    var productForUpdate = internalTxService.findProductById(productForUpdateId)
 
                     // handle update proces
                     val continueStatus = updateProductDataErrorWrapper(productForUpdate, EMPTY_INSTANCE)
@@ -274,7 +274,7 @@ class UpdateProductDataManagerImpl(private val htmlParser: HtmlParser,
         }
 
         // redirect -> url was changed, try to find product with new URL
-        var newProductForUpdate: ProductDetailInfo? = internalTxService.getProductForUpdateByUrl(updateData.url)
+        var newProductForUpdate: ProductDetailInfo? = internalTxService.findProductForUpdateByUrl(updateData.url)
 
         // product with new URL don't exist
         if (newProductForUpdate == null) {

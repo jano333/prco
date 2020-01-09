@@ -22,7 +22,7 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
 
     override fun findById(id: Long): ProductEntity = findById(ProductEntity::class.java, id)
 
-    override fun existWithUrl(url: String): Boolean =
+    override fun existProductWithUrl(url: String): Boolean =
             from(QProductEntity.productEntity)
                     .where(QProductEntity.productEntity.url.equalsIgnoreCase(url))
                     .fetchCount() > 0
@@ -34,7 +34,7 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
      * @param olderThanInHours pocet v hodinach, kolko minimalne sa neupdatoval dany record
      * @return
      */
-    override fun findProductForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductEntity? {
+    override fun findProductInEshopForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): ProductEntity? {
         return from(QProductEntity.productEntity)
                 .where(QProductEntity.productEntity.eshopUuid.eq(eshopUuid))
                 .where(QProductEntity.productEntity.lastTimeDataUpdated.isNull
@@ -43,7 +43,7 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
                 .fetchFirst()
     }
 
-    override fun findProductsForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): List<ProductEntity> {
+    override fun findProductsInEshopForUpdate(eshopUuid: EshopUuid, olderThanInHours: Int): List<ProductEntity> {
         return from(QProductEntity.productEntity)
                 .where(QProductEntity.productEntity.eshopUuid.eq(eshopUuid))
                 .where(QProductEntity.productEntity.lastTimeDataUpdated.isNull
@@ -51,12 +51,12 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
                 .fetch()
     }
 
-    override fun findAll(): List<ProductEntity> {
+    override fun findProducts(): List<ProductEntity> {
         //FIXME optimalizovat cez paging !!! max 500 naraz !!!
         return from(QProductEntity.productEntity).fetch()
     }
 
-    override fun findByFilter(filter: ProductFilterUIDto): List<ProductEntity> {
+    override fun findProductsByFilter(filter: ProductFilterUIDto): List<ProductEntity> {
         val query = from(QProductEntity.productEntity)
 
         // EshopUuid
@@ -75,23 +75,23 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
         return query.fetch()
     }
 
-    override fun findByUrl(productUrl: String): ProductEntity? {
+    override fun findProductByUrl(productUrl: String): ProductEntity? {
         return from(QProductEntity.productEntity)
                 .where(QProductEntity.productEntity.url.eq(productUrl))
                 .fetchFirst()
     }
 
-    override fun findByCount(eshopUuid: EshopUuid, maxCountToDelete: Long): List<ProductEntity> {
+    override fun findProductsInEshop(eshopUuid: EshopUuid, maxCount: Long): List<ProductEntity> {
         return from(QProductEntity.productEntity)
                 .where(QProductEntity.productEntity.eshopUuid.eq(eshopUuid))
-                .limit(maxCountToDelete)
+                .limit(maxCount)
                 .fetch()
     }
 
-    override fun countOfAll(): Long =
+    override fun countOfProducts(): Long =
             from(QProductEntity.productEntity).fetchCount()
 
-    override fun countOfAllProductInEshop(eshopUuid: EshopUuid): Long {
+    override fun countOfProductsInEshop(eshopUuid: EshopUuid): Long {
         return queryFactory
                 .select(QProductEntity.productEntity.id)
                 .from(QProductEntity.productEntity)
@@ -122,7 +122,7 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
                 .fetchCount()
     }
 
-    override fun countOfAllProductInEshopUpdatedMax24Hours(eshopUuid: EshopUuid): Long {
+    override fun countOfProductsInEshopUpdatedMax24Hours(eshopUuid: EshopUuid): Long {
         return countOfProductsAlreadyUpdated(eshopUuid, OLDER_THAN_IN_HOURS)
     }
 
@@ -138,7 +138,7 @@ open class ProductEntityDaoImpl(em: EntityManager) : BaseDaoImpl<ProductEntity>(
         return query.fetchFirst()
     }
 
-    override fun countOfProductMarkedAsUnavailable(eshopUuid: EshopUuid): Long {
+    override fun countOfProductsMarkedAsUnavailable(eshopUuid: EshopUuid): Long {
         return JPAQueryFactory(em)
                 .select(QProductEntity.productEntity.id)
                 .from(QProductEntity.productEntity)

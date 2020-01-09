@@ -53,7 +53,7 @@ class ProductController(uiService: UIService,
      * Pohlad pre pridanie produktu do skupiny
      */
     @RequestMapping("/products/{productId}/addToGroup")
-    fun addProductToGroupView(@PathVariable productId: Long?): ModelAndView {
+    fun addProductToGroupView(@PathVariable productId: Long): ModelAndView {
         val modelAndView = ModelAndView(VIEW_PRODUCT_ADD_TO_GROUP, "product", uiService.getProduct(productId))
         modelAndView.addObject("groupsWithoutProduct", uiService.getGroupsWithoutProduct(productId))
         return modelAndView

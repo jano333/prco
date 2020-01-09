@@ -37,7 +37,7 @@ open class ProductCommonServiceImpl(private val newProductEntityDao: NewProductE
     override fun statisticsOfProducts(): ProductStatisticInfoDto {
         val result = ProductStatisticInfoDto()
         result.countOfNewProducts = newProductEntityDao.countOfAll()
-        result.countOfInterestedProducts = productEntityDao.countOfAll()
+        result.countOfInterestedProducts = productEntityDao.countOfProducts()
         result.countOfNotInterestedProducts = notInterestedProductDbDao.countOfAll()
 
         result.countOfProductsNotInAnyGroup = groupOfProductFindEntityDao.countOfProductsWitchAreNotInAnyGroup()
@@ -52,11 +52,11 @@ open class ProductCommonServiceImpl(private val newProductEntityDao: NewProductE
         val eshopProductInfo = EnumMap<EshopUuid, EshopProductInfoDto>(EshopUuid::class.java)
         EshopUuid.values().forEach {
             //TODO udaj ohladne hodin zobrat z eshop configu
-            val countOfAlreadyUpdated = productEntityDao.countOfAllProductInEshopUpdatedMax24Hours(it)
+            val countOfAlreadyUpdated = productEntityDao.countOfProductsInEshopUpdatedMax24Hours(it)
             val countOfNew = newProductEntityDao.countOfAllProductInEshop(it)
-            val countOfInterested = productEntityDao.countOfAllProductInEshop(it)
+            val countOfInterested = productEntityDao.countOfProductsInEshop(it)
             val countOfNotInterested = notInterestedProductDbDao.countOfAllProductInEshop(it)
-            val countOfProductMarkedAsUnavailable = productEntityDao.countOfProductMarkedAsUnavailable(it)
+            val countOfProductMarkedAsUnavailable = productEntityDao.countOfProductsMarkedAsUnavailable(it)
             eshopProductInfo[it] = EshopProductInfoDto(
                     countOfNew,
                     countOfInterested,
@@ -87,7 +87,7 @@ open class ProductCommonServiceImpl(private val newProductEntityDao: NewProductE
             return true
         }
         // produkty, o ktore mam zaujem - aktualizuju sa
-        return productEntityDao.existWithUrl(productURL)
+        return productEntityDao.existProductWithUrl(productURL)
     }
 
     override fun markNewProductAsInterested(newProductId: Long): Long? {
@@ -99,7 +99,7 @@ open class ProductCommonServiceImpl(private val newProductEntityDao: NewProductE
         }
 
         // overim ci uz s takou URL neexistuje PRODUCT... ak ano tak ho len odsranim z NEW a nerobim save do ProductEntity
-        if (productEntityDao.existWithUrl(newProductEntity.url!!)) {
+        if (productEntityDao.existProductWithUrl(newProductEntity.url!!)) {
             log.error("product with url {} already exist in products -> deleting from new", newProductEntity.url)
 
             // remove NewProductEntity

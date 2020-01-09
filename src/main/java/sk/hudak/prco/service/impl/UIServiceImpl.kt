@@ -91,8 +91,8 @@ class UIServiceImpl(private val internalTxService: InternalTxService,
         internalTxService.markNewProductAsNotInterested(newProductId!!)
     }
 
-    override fun getProduct(productId: Long?): ProductAddingToGroupDto {
-        return internalTxService.getProduct(productId)
+    override fun getProduct(productId: Long): ProductAddingToGroupDto {
+        return internalTxService.getProductForAddingToGroup(productId)
     }
 
     override fun updateProductUnitData(productUnitDataDto: ProductUnitDataDto) {
@@ -108,7 +108,7 @@ class UIServiceImpl(private val internalTxService: InternalTxService,
     }
 
     override fun findProducts(filter: ProductFilterUIDto): List<ProductFullDto> {
-        return internalTxService.findProducts(filter)
+        return internalTxService.findProductsByFilter(filter)
     }
 
     override fun removeProduct(productId: Long?) {

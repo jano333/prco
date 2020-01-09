@@ -130,12 +130,12 @@ class RemoveEshopManagerImp(private val internalTxService: InternalTxService)
     private fun removeFromProduct(eshopUuid: EshopUuid): Callable<Long> {
         return Callable {
             var finalCount = 0L
-            var countOfProducts = internalTxService.removeProductsByCount(eshopUuid, MAX_COUNT_TO_DELETE)
+            var countOfProducts = internalTxService.removeProductsInEshopByCount(eshopUuid, MAX_COUNT_TO_DELETE)
             finalCount += countOfProducts
 
             while (countOfProducts > 0) {
                 log.debug("current count of 'product': $countOfProducts")
-                countOfProducts = internalTxService.removeProductsByCount(eshopUuid, MAX_COUNT_TO_DELETE)
+                countOfProducts = internalTxService.removeProductsInEshopByCount(eshopUuid, MAX_COUNT_TO_DELETE)
                 finalCount += countOfProducts
             }
             finalCount
