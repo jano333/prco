@@ -47,11 +47,12 @@ class InternetovaLekarenProductParser(unitParser: UnitParser, userAgentDataHolde
                 .orElse(null)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("#productImg > img.image").first())
                 .map { it.attr("src") }
                 .filter { StringUtils.isNotBlank(it) }
                 .map { eshopUuid.productStartUrl + it }
+                .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

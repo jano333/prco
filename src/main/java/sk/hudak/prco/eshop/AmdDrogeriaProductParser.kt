@@ -57,11 +57,12 @@ class AmdDrogeriaProductParser(unitParser: UnitParser,
                 .orElse(null)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         return Optional.ofNullable(documentDetailProduct.select("body > section.product > div > div > div.product__left-column.col-lg-6 > div > a > img").first())
                 .map { element -> element.attr("src") }
                 .filter { StringUtils.isNotBlank(it) }
                 .map { src -> eshopUuid.productStartUrl + src }
+                .orElse(null)
     }
 
     override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {

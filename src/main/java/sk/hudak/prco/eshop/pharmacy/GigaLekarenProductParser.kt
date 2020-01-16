@@ -46,10 +46,11 @@ class GigaLekarenProductParser(unitParser: UnitParser,
                 .orElse(null)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("#thephoto"))
                 .map { it.attr("src") }
                 .filter { StringUtils.isNotBlank(it) }
+                .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

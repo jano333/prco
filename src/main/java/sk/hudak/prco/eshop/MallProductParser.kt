@@ -119,13 +119,14 @@ class MallProductParser(unitParser: UnitParser,
         return Optional.of(parseDate(sb.toString(), DATE_FORMAT_HH_MM_YYYY)!!)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         var img: Element? = documentDetailProduct.select("img[class=gall-slide-img]").first()
         if (img == null) {
             img = documentDetailProduct.select("img.gallery-magnifier__normal").first()
         }
         return Optional.ofNullable(img)
                 .map { it.src() }
+                .orElse(null)
     }
 
     //TODO toto dat do util

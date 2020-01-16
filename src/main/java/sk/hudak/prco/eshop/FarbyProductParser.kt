@@ -48,10 +48,11 @@ class FarbyProductParser(unitParser: UnitParser,
                 .orElse(null)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         val select = documentDetailProduct.select("img[id='img_zoom']")
         return Optional.ofNullable(select)
                 .map { eshopUuid.productStartUrl + it.src() }
+                .orElse(null)
     }
 
     override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {

@@ -42,7 +42,7 @@ class ManagoProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgent
                 .toList()
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         var first: Element? = documentDetailProduct.select("div[class='images single-image'] a img").first()
         if (first == null) {
             first = documentDetailProduct.select("div[class='img-holder'] img").first()
@@ -51,6 +51,7 @@ class ManagoProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgent
                 .map { it.attr("src") }
                 .filter { StringUtils.isNotBlank(it) }
                 .map { eshopUuid.productStartUrl + it }
+                .orElse(null)
     }
 
     override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {

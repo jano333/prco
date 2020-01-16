@@ -59,13 +59,14 @@ class Pilulka24ProductParser(unitParser: UnitParser,
                 .orElse(null)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         var first: Element? = documentDetailProduct.select("div[class='product-detail__images'] > picture > a > img").first()
         if (first == null) {
             first = documentDetailProduct.select("div[class='product-detail__images w-100 js-carousel-item'] > picture > a > img").first()
         }
         return ofNullable(first)
                 .map { JsoupUtils.dataSrcAttribute(it) }
+                .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

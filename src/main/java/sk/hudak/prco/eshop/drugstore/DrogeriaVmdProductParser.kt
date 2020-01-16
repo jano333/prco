@@ -54,9 +54,10 @@ class DrogeriaVmdProductParser(unitParser: UnitParser,
                 .orElse(null)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("#detail_image"))
                 .map { elements -> elements.attr("src") }
+                .orElse(null)
     }
 
     override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {

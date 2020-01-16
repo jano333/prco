@@ -64,9 +64,10 @@ class BrendonProductParser(unitParser: UnitParser,
                 ?.text()
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("#picture-slider ul li img").first())
                 .map { it.attr("data-src") }
+                .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

@@ -61,11 +61,12 @@ class EsoDrogeriaProductParser(unitParser: UnitParser,
                 .orElse(null)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("#detail_src_magnifying_small").first())
                 .map { it.attr("src") }
                 .filter { StringUtils.isNotBlank(it) }
                 .map { eshopUuid.productStartUrl + it }
+                .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

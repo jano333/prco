@@ -96,14 +96,14 @@ class FeedoProductParser(unitParser: UnitParser,
         return Optional.of(convertToBigDecimal(cenaZaBalenie))
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         val select = documentDetailProduct.select("div[class=box-image]")
         if (select.isEmpty()) {
-            return Optional.empty()
+            return null
         }
         val child = select[0].child(0)
         val href = child.attr("href")
-        return Optional.ofNullable(href)
+        return Optional.ofNullable(href) .orElse(null)
     }
 
     override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {

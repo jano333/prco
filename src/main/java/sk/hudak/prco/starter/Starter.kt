@@ -23,8 +23,6 @@ import sk.hudak.prco.service.UIService
 import sk.hudak.prco.service.WatchDogService
 import sk.hudak.prco.ssl.PrcoSslManager
 import sk.hudak.prco.utils.CalculationUtils
-import sk.hudak.prco.z.old.UpdateProductDataListener
-import sk.hudak.prco.z.old.UpdateStatusInfo
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -182,14 +180,6 @@ class Starter(private val addProductManager: AddProductManager,
 //        }
 
         prcoConsole.showInConsole()
-
-        val listener: UpdateProductDataListener = object : UpdateProductDataListener {
-            override fun onUpdateStatus(updateStatusInfo: UpdateStatusInfo) {
-                log.debug(">> eshop: {}, updated/waiting: {}/{}",
-                        updateStatusInfo.eshopUuid, updateStatusInfo.countOfProductsAlreadyUpdated, updateStatusInfo.countOfProductsWaitingToBeUpdated)
-
-            }
-        }
 
 //        searchKeywords()
 

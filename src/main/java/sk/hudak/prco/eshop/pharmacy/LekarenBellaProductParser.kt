@@ -54,11 +54,12 @@ class LekarenBellaProductParser(unitParser: UnitParser, userAgentDataHolder: Use
                 .orElse(null)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         val select = documentDetailProduct.select("img[class='img-responsive']")
         return ofNullable(select)
                 .map { it.attr("src") }
                 .filter { StringUtils.isNotBlank(it) }
+                .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

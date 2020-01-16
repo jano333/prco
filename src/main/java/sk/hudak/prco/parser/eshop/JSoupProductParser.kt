@@ -95,8 +95,7 @@ abstract class JSoupProductParser : EshopProductsParser {
      * @param documentDetailProduct
      * @return
      */
-    //TODO zrusit obptional
-    protected abstract fun parseProductPictureURL(documentDetailProduct: Document): Optional<String>
+    protected abstract fun parseProductPictureURL(documentDetailProduct: Document): String?
 
     /**
      * TODO
@@ -198,7 +197,7 @@ abstract class JSoupProductParser : EshopProductsParser {
                 eshopUuid,
                 redirect,
                 productName,
-                if (pictureUrl.isPresent) pictureUrl.get() else null,
+                pictureUrl,
                 productPriceForPackage,
                 // FIXME spojit do jedneho ohladne product action
                 if (productAction.isPresent) productAction.get() else null,
@@ -217,10 +216,10 @@ abstract class JSoupProductParser : EshopProductsParser {
         result.name = productNameOpt
 
 
-        val productPictureUrlOpt = internalParseProductPictureURL(document, productUrl)
-        logWarningIfNullOrEmpty(productPictureUrlOpt, "pictureUrl", document.location())
-        if (productPictureUrlOpt.isPresent && productPictureUrlOpt.get().isNotBlank()) {
-            result.pictureUrl = productPictureUrlOpt.get()
+        val productPictureUrl = internalParseProductPictureURL(document, productUrl)
+        logWarningIfNullOrEmpty(productPictureUrl, "pictureUrl", document.location())
+        if (productPictureUrl!=null && productPictureUrl.isNotBlank()) {
+            result.pictureUrl = productPictureUrl
         }
 
         // ak nemame nazov produktu nemozeme pokracovat v parsovani 'unit'
@@ -328,7 +327,7 @@ abstract class JSoupProductParser : EshopProductsParser {
 
     }
 
-    private fun internalParseProductPictureURL(document: Document, productUrl: String): Optional<String> {
+    private fun internalParseProductPictureURL(document: Document, productUrl: String): String? {
         try {
             return parseProductPictureURL(document)
         } catch (e: Exception) {
@@ -353,6 +352,17 @@ abstract class JSoupProductParser : EshopProductsParser {
         }
     }
 
+    private fun logWarningIfNullOrEmpty(propertyValue: String?, propertyName: String, productUrl: String) {
+        if (propertyValue == null) {
+            log.warn("property {} is null for product url {}", propertyName, productUrl)
+            return
+        }
+
+        if (propertyValue.isBlank()) {
+            log.warn("property {} is blank for product url {}", propertyName, productUrl)
+        }
+    }
+
     private fun logWarningIfNullOrEmpty(propertyValue: Optional<*>, propertyName: String, productUrl: String) {
         if (!propertyValue.isPresent) {
             log.warn("property {} is null for product url {}", propertyName, productUrl)
@@ -364,7 +374,6 @@ abstract class JSoupProductParser : EshopProductsParser {
                 log.warn("property {} is blank for product url {}", propertyName, productUrl)
             }
         }
-
     }
 
 }

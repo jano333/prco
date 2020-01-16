@@ -109,14 +109,14 @@ class AlzaProductParser(unitParser: UnitParser,
     }
 
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         val select = documentDetailProduct.select("#imgMain")
         if (select.isEmpty()) {
-            return Optional.empty()
+            return null
         }
         val element = select[0]
         val fullUrl = element.attr("data-src")
-        return Optional.of(fullUrl)
+        return Optional.of(fullUrl) .orElse(null)
     }
 
     override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {

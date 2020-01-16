@@ -50,9 +50,9 @@ class PerinbabaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAg
         return first1.text()
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
-        val first = documentDetailProduct.select("div.prolabel-wrapper > a > img").first() ?: return Optional.empty()
-        return Optional.of(first.attr("src"))
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
+        val first = documentDetailProduct.select("div.prolabel-wrapper > a > img").first() ?: return null
+        return Optional.of(first.attr("src")) .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

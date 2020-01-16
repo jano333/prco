@@ -67,14 +67,14 @@ class TescoProductParser(unitParser: UnitParser,
                 .orElse(null)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         val first = ofNullable(documentDetailProduct.select("img[class=product-image product-image-visible]").first())
         var pictureOpt = first.map { element1 -> element1.attr("data-src") }
         // niekedy je aj takto
         if (!pictureOpt.isPresent || pictureOpt.get().isEmpty()) {
             pictureOpt = first.map { element -> element.attr("src") }
         }
-        return pictureOpt
+        return pictureOpt .orElse(null)
     }
 
     override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {

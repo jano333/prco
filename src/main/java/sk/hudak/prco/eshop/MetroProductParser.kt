@@ -48,12 +48,12 @@ class MetroProductParser(unitParser: UnitParser,
         return documentDetailProduct.select("h1.product-title").text()
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         val href = documentDetailProduct.select("a.product-photo").href()
         if (href.isBlank()) {
-            return Optional.empty()
+            return null
         }
-        return Optional.of(href)
+        return Optional.of(href) .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

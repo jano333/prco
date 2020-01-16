@@ -83,12 +83,13 @@ class DrMaxProductParser(unitParser: UnitParser,
         return Optional.ofNullable(value)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         val select = documentDetailProduct.select("#productImg > img.image")
         val element = select[0]
         val src = element.attr("src")
         val s = eshopUuid.productStartUrl + src
-        return Optional.of(s)
+        val of = Optional.of(s)
+        return of.orElse(null)
     }
 
 }

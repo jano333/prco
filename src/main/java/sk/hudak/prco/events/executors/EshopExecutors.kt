@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.exception.PrcoRuntimeException
 import sk.hudak.prco.utils.ThreadUtils
-import sk.hudak.prco.z.old.PrcoUncaughtExceptionHandler
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.util.*
@@ -128,5 +127,17 @@ class EshopScheduledExecutor(val eshopUuid: EshopUuid, threadFactory: ThreadFact
 
     override fun submit(task: Runnable): Future<*> {
         throw PrcoRuntimeException("Not suppoerted")
+    }
+}
+
+data class PrcoUncaughtExceptionHandler(val eshopUuid: EshopUuid)
+    : Thread.UncaughtExceptionHandler {
+
+    companion object {
+        val LOG = LoggerFactory.getLogger(PrcoUncaughtExceptionHandler::class.java)!!
+    }
+
+    override fun uncaughtException(t: Thread?, e: Throwable?) {
+        LOG.error("eshop: $eshopUuid", e)
     }
 }

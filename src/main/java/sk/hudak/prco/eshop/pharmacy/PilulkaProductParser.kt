@@ -15,7 +15,8 @@ import sk.hudak.prco.utils.UserAgentDataHolder
 import sk.hudak.prco.utils.href
 import java.math.BigDecimal
 import java.util.*
-import java.util.Optional.*
+import java.util.Optional.of
+import java.util.Optional.ofNullable
 
 @Component
 class PilulkaProductParser(unitParser: UnitParser,
@@ -78,12 +79,12 @@ class PilulkaProductParser(unitParser: UnitParser,
                 .map { convertToBigDecimal(it) }
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         // 1 scenar
         val result: Optional<String> = ofNullable(documentDetailProduct.select("div[class='product-detail__images'] > picture > a > img").first())
                 .map { JsoupUtils.dataSrcAttribute(it) }
         if (result.isPresent) {
-            return result
+            return result.orElse(null)
         }
 
         // 2 scenar
@@ -93,11 +94,11 @@ class PilulkaProductParser(unitParser: UnitParser,
                     JsoupUtils.dataSrcAttribute(it)
                 }
         if (let != null && let.isNotBlank()) {
-            return of(let)
+            return of(let).orElse(null)
         }
 
         // ak ani jeden scenar
-        return empty()
+        return null
 
     }
 }

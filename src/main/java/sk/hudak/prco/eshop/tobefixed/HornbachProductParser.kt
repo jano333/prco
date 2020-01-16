@@ -131,7 +131,7 @@ class HornbachProductParser(unitParser: UnitParser, userAgentDataHolder: UserAge
         return empty()
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         try {
             val jsonString = parseJson(documentDetailProduct)
 
@@ -139,12 +139,12 @@ class HornbachProductParser(unitParser: UnitParser, userAgentDataHolder: UserAge
             val actualObj = mapper.readTree(jsonString)
             val image = actualObj.get("image") as ArrayNode
             return if (image.size() == 0) {
-                empty()
-            } else of(image.get(0).get("url").textValue())
+               null
+            } else of(image.get(0).get("url").textValue()) .orElse(null)
 
         } catch (e: Exception) {
             log.error("error while product picture url", e)
-            return empty()
+            return null
         }
 
     }

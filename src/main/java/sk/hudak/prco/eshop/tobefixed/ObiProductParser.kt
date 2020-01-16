@@ -65,8 +65,8 @@ class ObiProductParser(unitParser: UnitParser,
         return Optional.empty()
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         //TODO impl
-        return Optional.empty()
+        return null
     }
 }

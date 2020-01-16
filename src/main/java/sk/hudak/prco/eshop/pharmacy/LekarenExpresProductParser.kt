@@ -52,9 +52,10 @@ class LekarenExpresProductParser(unitParser: UnitParser, userAgentDataHolder: Us
                 .orElse(null)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String {
         return ofNullable(documentDetailProduct.select("#topImg > a").first())
                 .map { it.href() }
+                .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

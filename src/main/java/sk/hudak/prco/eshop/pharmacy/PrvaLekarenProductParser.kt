@@ -51,10 +51,11 @@ class PrvaLekarenProductParser(unitParser: UnitParser, userAgentDataHolder: User
                 .orElse(null)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("div.detail > div.left > img"))
                 .map { it.attr("src") }
                 .filter { StringUtils.isNotBlank(it) }
+                .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

@@ -57,10 +57,10 @@ class MojaLekarenProductParser(unitParser: UnitParser,
                 .orElse(null)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         val first = documentDetailProduct.select("div.product__img > a > picture > img").first()
-                ?: return Optional.empty()
-        return Optional.of(eshopUuid.productStartUrl + first.attr("data-srcset"))
+                ?: return null
+        return Optional.of(eshopUuid.productStartUrl + first.attr("data-srcset")) .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

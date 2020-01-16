@@ -67,9 +67,10 @@ class FourKidsProductParser(unitParser: UnitParser,
                 .orElse(null)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("div.product-detail > div.col-xs-12.col-md-7 > div.img-detail.relative.text-center > a > img").first())
                 .map { it.attr("src") }
+                .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {

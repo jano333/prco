@@ -46,13 +46,13 @@ class DrogerkaProductParser(unitParser: UnitParser, userAgentDataHolder: UserAge
                 .orElse(null)
     }
 
-    override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
+    override fun parseProductPictureURL(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("#product > div.img.thumbnails > a > img").first())
                 .map { it.attr("src") }
                 .filter {
                     //it.isNotBlank()
                     StringUtils.isNotBlank(it)
-                }
+                } .orElse(null)
     }
 
     override fun isProductUnavailable(documentDetailProduct: Document): Boolean {
