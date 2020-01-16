@@ -108,9 +108,13 @@ abstract class JSoupProductParser : EshopProductsParser {
 
     //TODO nasledovne 2 metody spojit do jednej a urobit aj navratovy typ
 
-    protected abstract fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction>
+    protected open fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
+        return Optional.empty()
+    }
 
-    protected abstract fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date>
+    protected open fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
+        return Optional.empty()
+    }
 
     override fun parseUrlsOfProduct(searchKeyWord: String): List<String> {
         val searchUrl = searchUrlBuilder.buildSearchUrl(eshopUuid, searchKeyWord)

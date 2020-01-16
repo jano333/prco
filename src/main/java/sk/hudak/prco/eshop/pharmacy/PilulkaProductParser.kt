@@ -6,7 +6,6 @@ import org.jsoup.nodes.Element
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.EshopUuid.PILULKA
-import sk.hudak.prco.api.ProductAction
 import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
@@ -29,8 +28,8 @@ class PilulkaProductParser(unitParser: UnitParser,
     // koli pomalym odozvam davam na 15 sekund
     override val timeout: Int = TIMEOUT_15_SECOND
 
-    override fun parseCountOfPages(documentList: Document): Int {
-        val text = documentList.select("#js-product-list-content > p").first()
+    override fun parseCountOfPages(document: Document): Int {
+        val text = document.select("#js-product-list-content > p").first()
                 ?.text()
         if (text == null || text.isBlank()) {
             return 1
@@ -40,7 +39,8 @@ class PilulkaProductParser(unitParser: UnitParser,
     }
 
     override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
-        return documentList.select("div[class='col-6 col-sm-4 col-lg-3 p-0 product-card__border'] > div > a")
+        val select = documentList.select("h2[class='p-0 my-2'] > a")
+        return select
                 .map { it.href() }
                 .filter { it.isNotBlank() }
                 .map { eshopUuid.productStartUrl + it }
@@ -68,7 +68,7 @@ class PilulkaProductParser(unitParser: UnitParser,
         var first: Element? = documentDetailProduct.select("strong[id=priceNew]").first()
         if (first != null) {
             val substring = first.text().substring(0, first.text().length - 2)
-            return Optional.of(convertToBigDecimal(substring))
+            return of(convertToBigDecimal(substring))
         }
 
         first = documentDetailProduct.select("span[class='fs-28 mb-3 text-primary fwb']").first()
@@ -87,7 +87,7 @@ class PilulkaProductParser(unitParser: UnitParser,
         }
 
         // 2 scenar
-        var let: String? = documentDetailProduct.select("#js-product-carousel > div:nth-child(1) > picture > a > img")
+        val let: String? = documentDetailProduct.select("#js-product-carousel > div:nth-child(1) > picture > a > img")
                 .first()
                 ?.let {
                     JsoupUtils.dataSrcAttribute(it)
@@ -99,15 +99,5 @@ class PilulkaProductParser(unitParser: UnitParser,
         // ak ani jeden scenar
         return empty()
 
-    }
-
-    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
-        //TODO impl
-        return Optional.empty()
-    }
-
-    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
-        //TODO impl
-        return Optional.empty()
     }
 }
