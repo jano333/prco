@@ -31,7 +31,6 @@ class NewProductDocumentEvent_7b_Handler(prcoObservable: PrcoObservable,
     override fun getIdentifier(event: NewProductDocumentEvent): String = event.identifier
 
     override fun handle(event: NewProductDocumentEvent) {
-        LOG.trace("handle $event")
 
         parseProductNewData(event.document, event.newProductUrl, event.eshopUuid, event.identifier)
                 .handle { productNewData, exception ->

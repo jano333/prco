@@ -30,7 +30,6 @@ class NewProductUrlsEvent_Handler(prcoObservable: PrcoObservable,
 
 
     override fun handle(event: NewProductUrlsEvent) {
-        LOG.trace("handle $event")
 
         if (event.pageProductURLs.isEmpty()) {
             LOG.info("count of products URL iz zero")

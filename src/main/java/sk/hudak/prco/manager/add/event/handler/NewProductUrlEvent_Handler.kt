@@ -30,7 +30,6 @@ class NewProductUrlEvent_Handler(prcoObservable: PrcoObservable,
 
 
     override fun handle(event: NewProductUrlEvent) {
-        LOG.trace("handle $event")
 
         parseEshopUuid(event.productUrl, event.identifier)
                 .handle { eshopUuid, exception ->

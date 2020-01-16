@@ -30,7 +30,6 @@ class BuildNextSearchPageUrl_6a_Handler(prcoObservable: PrcoObservable,
     override fun getIdentifier(event: BuildNextSearchPageUrlEvent): String = event.identifier
 
     override fun handle(event: BuildNextSearchPageUrlEvent) {
-        LOG.trace("handle $event")
 
         buildNextPageSearchUrlForGivenPageNumber(event.eshopUuid, event.searchKeyWord, event.currentPageNumber, event.identifier)
                 .handle { nextPageSearchUrl, exception ->

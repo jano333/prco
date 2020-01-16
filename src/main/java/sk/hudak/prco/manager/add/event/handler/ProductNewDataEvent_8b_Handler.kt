@@ -12,6 +12,7 @@ import sk.hudak.prco.kotlin.toNewProductCreateDto
 import sk.hudak.prco.manager.add.event.AddProductExecutors
 import sk.hudak.prco.manager.add.event.ProductNewDataEvent
 import sk.hudak.prco.manager.add.event.SaveProductNewDataErrorEvent
+import sk.hudak.prco.manager.add.event.SaveProductNewDataEvent
 import sk.hudak.prco.service.InternalTxService
 import sk.hudak.prco.z.old.ErrorLogManager
 import java.util.concurrent.CompletableFuture
@@ -34,13 +35,12 @@ class ProductNewDataEvent_8b_Handler(prcoObservable: PrcoObservable,
     override fun getIdentifier(event: ProductNewDataEvent): String = event.identifier
 
     override fun handle(event: ProductNewDataEvent) {
-        //FIXME tento log dat do bazovej a vo vsetky odstranit...
-        LOG.trace("handle $event")
 
         saveProductNewData(event.productNewData, event.identifier)
                 .handle { newProductId, exception ->
                     if (exception == null) {
                         LOG.debug("new product add with id $newProductId")
+                        prcoObservable.notify(SaveProductNewDataEvent(newProductId, event.productNewData.url, event.productNewData.eshopUuid, event.identifier))
                     } else {
                         prcoObservable.notify(SaveProductNewDataErrorEvent(event, exception))
                     }

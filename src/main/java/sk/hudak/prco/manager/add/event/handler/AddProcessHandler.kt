@@ -38,6 +38,7 @@ abstract class AddProcessHandler<E : CoreEvent>(prcoObservable: PrcoObservable,
                 }
                 MDC.put("identifier", getIdentifier(event))
 
+                LOG.trace("handle $event")
                 handle(event)
 
                 if (eshopUuid != null) {

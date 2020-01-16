@@ -24,7 +24,6 @@ class CountOfPagesEvent_5a_Handler(prcoObservable: PrcoObservable,
     override fun getIdentifier(event: CountOfPagesEvent): String = event.identifier
 
     override fun handle(event: CountOfPagesEvent) {
-        LOG.trace("handle $event")
 
         if (event.countOfPages <= 1) {
             //TODO log ze je to tak?

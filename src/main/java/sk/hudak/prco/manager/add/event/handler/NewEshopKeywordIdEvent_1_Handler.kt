@@ -36,7 +36,6 @@ class NewEshopKeywordIdEvent_1_Handler(prcoObservable: PrcoObservable,
      * searchKeywordId -> searchKeyword
      */
     override fun handle(event: NewEshopKeywordIdEvent) {
-        LOG.trace("handle $event")
 
         // kontrola ci dane klucove slovo podporovane eshopom
         if (!event.eshopUuid.config.supportedSearchKeywordIds.contains(event.searchKeywordId)) {

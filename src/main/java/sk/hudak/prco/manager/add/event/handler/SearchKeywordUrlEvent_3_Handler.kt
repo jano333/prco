@@ -1,6 +1,5 @@
 package sk.hudak.prco.manager.add.event.handler
 
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.events.CoreEvent
@@ -21,10 +20,6 @@ class SearchKeywordUrlEvent_3_Handler(prcoObservable: PrcoObservable,
 
     : AddProcessHandler<SearchKeywordUrlEvent>(prcoObservable, addProductExecutors) {
 
-    companion object {
-        private val LOG = LoggerFactory.getLogger(SearchKeywordUrlEvent_3_Handler::class.java)!!
-    }
-
     override fun isSpecificType(event: CoreEvent): Boolean = event is SearchKeywordUrlEvent
     override fun getEshopUuid(event: SearchKeywordUrlEvent): EshopUuid? = event.eshopUuid
     override fun getIdentifier(event: SearchKeywordUrlEvent): String = event.identifier
@@ -33,7 +28,6 @@ class SearchKeywordUrlEvent_3_Handler(prcoObservable: PrcoObservable,
      * searchKeywordURL -> Document
      */
     override fun handle(event: SearchKeywordUrlEvent) {
-        LOG.trace("handle $event")
 
         documentHelper.retrieveDocumentForUrl(event.searchUrl, event.eshopUuid, event.identifier)
                 .handle { document, exception ->

@@ -28,8 +28,6 @@ class NewProductEshopUrlsEvent_5b_Handler(prcoObservable: PrcoObservable,
     override fun getIdentifier(event: NewProductEshopUrlsEvent): String = event.identifier
 
     override fun handle(event: NewProductEshopUrlsEvent) {
-        LOG.trace("handle $event")
-
         LOG.debug("count of products URL before duplicity check  ${event.pageProductURLs.size}")
         filterDuplicityAsync(event.eshopUuid, event.searchKeyWord, event.pageProductURLs, event.identifier)
                 .handle { pageProductURLsAfterDuplicity, exception ->

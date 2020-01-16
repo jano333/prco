@@ -31,8 +31,6 @@ class SearchPageDocumentEvent_4_Handler(prcoObservable: PrcoObservable,
      * 4.b Document -> pageProductURLs[]
      */
     override fun handle(event: SearchPageDocumentEvent) {
-        LOG.trace("handle $event")
-
         val currentPageNumber = event.pageNumber
 
         if (currentPageNumber == 1) {

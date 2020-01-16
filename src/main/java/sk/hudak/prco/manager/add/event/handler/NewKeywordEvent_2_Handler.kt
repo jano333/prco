@@ -37,7 +37,6 @@ class NewKeywordEvent_2_Handler(prcoObservable: PrcoObservable,
      * searchKeyword -> searchKeywordRL
      */
     override fun handle(event: NewKeywordEvent) {
-        LOG.trace("handle $event")
 
         buildSearchUrlForKeyword(event.eshopUuid, event.searchKeyword, event.identifier)
                 .handle { searchUrl, exception ->

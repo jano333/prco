@@ -5,6 +5,7 @@ import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.dto.ProductNewData
 import sk.hudak.prco.events.AddErrorEvent
 import sk.hudak.prco.events.CoreEvent
+import sk.hudak.prco.events.FinalEvent
 import sk.hudak.prco.events.StartEvent
 import java.util.*
 
@@ -142,6 +143,11 @@ data class RetrieveDocumentForUrlErrorEvent(override val event: NewProductUrlWit
 // ---------
 data class ProductNewDataEvent(val productNewData: ProductNewData,
                                val identifier: String) : CoreEvent()
+
+data class SaveProductNewDataEvent(val productId: Long,
+                                   val newProductUrl: String,
+                                   val eshopUuid: EshopUuid,
+                                   val identifier: String) : CoreEvent(), FinalEvent
 
 data class ParseProductNewDataErrorEvent(override val event: NewProductDocumentEvent,
                                          override val error: Throwable) : CoreEvent(), AddErrorEvent

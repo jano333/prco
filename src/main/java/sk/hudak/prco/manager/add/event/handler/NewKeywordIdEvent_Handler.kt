@@ -26,7 +26,6 @@ class NewKeywordIdEvent_Handler(prcoObservable: PrcoObservable,
     override fun getIdentifier(event: NewKeywordIdEvent): String = event.identifier
 
     override fun handle(event: NewKeywordIdEvent) {
-        LOG.trace("handle $event")
 
         //TODO generovat sub id _1 a _2 ...
         eshopProductsParserHelper.getRegisteredEshopWithParser().forEach {

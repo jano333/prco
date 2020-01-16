@@ -17,7 +17,7 @@ SearchPageDocumentEvent =?> CountOfPagesEvent           if( pageNumber is 1)
                         =# ParseCountOfPagesErrorEvent
                         =# ParseProductListURLsErrorEvent
 
-NewProductEshopUrlsEvent => NewProductUrlWithEshopEvent
+NewProductEshopUrlsEvent =?> [*]NewProductUrlWithEshopEvent if (none duplicity, none existance)
                          =# FilterDuplicityErrorEvent
                          =# FilterNotExistingErrorEvent
 
@@ -33,8 +33,10 @@ BuildNextSearchPageUrlEvent => SearchKeywordUrlEvent
 NewProductDocumentEvent => ProductNewDataEvent
                         =# ParseProductNewDataErrorEvent
 
-ProductNewDataEvent => END
+ProductNewDataEvent => SaveProductNewDataEvent
                     =# SaveProductNewDataErrorEvent
+
+SaveProductNewDataEvent => END
 
 **************************************************************************************
 NewProductUrlsEvent => NewProductUrlEvent

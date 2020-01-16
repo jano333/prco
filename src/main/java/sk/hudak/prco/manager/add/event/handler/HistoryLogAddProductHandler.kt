@@ -1,6 +1,7 @@
 package sk.hudak.prco.manager.add.event.handler
 
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.stereotype.Component
 import sk.hudak.prco.events.CoreEvent
 import sk.hudak.prco.events.PrcoObservable
@@ -27,10 +28,24 @@ class HistoryLogAddProductHandler(prcoObservable: PrcoObservable,
         addProductExecutors.handlerTaskExecutor.submit {
             when (event) {
                 is CountOfPagesEvent -> {
+                    MDC.put("eshop", event.eshopUuid.toString())
+                    MDC.put("identifier", event.identifier)
+
                     LOG.debug("${event.eshopUuid}: keyword: ${event.searchKeyWord}, count of pages: ${event.countOfPages}, search URL: ${event.searchUrl}")
+
+                    MDC.remove("eshop")
+                    MDC.remove("identifier")
+
                 }
+
                 is NewProductEshopUrlsEvent -> {
+                    MDC.put("eshop", event.eshopUuid.toString())
+                    MDC.put("identifier", event.identifier)
+
                     LOG.debug("${event.eshopUuid}: keyword: ${event.searchKeyWord}, page number: ${event.pageNumber} count of products: ${event.pageProductURLs.size}, search URL: ${event.searchPageDocument.location()}")
+
+                    MDC.remove("eshop")
+                    MDC.remove("identifier")
                 }
             }
         }

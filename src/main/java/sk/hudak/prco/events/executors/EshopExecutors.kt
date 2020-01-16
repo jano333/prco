@@ -67,9 +67,9 @@ class EshopScheduledExecutor(val eshopUuid: EshopUuid, threadFactory: ThreadFact
     override fun execute(command: Runnable) {
         var countOfSecond: Long? = null
 
-        LOG.debug("-> requesting lock for ${Thread.currentThread().name}")
+        LOG.trace("-> requesting lock for ${Thread.currentThread().name}")
         myLock.lock()
-        LOG.debug("<- received lock for ${Thread.currentThread().name}")
+        LOG.trace("<- received lock for ${Thread.currentThread().name}")
         try {
             if (lastRunDate == null) {
                 // spusti to hned
