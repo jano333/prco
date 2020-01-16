@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils.removeStart
 import org.jsoup.nodes.Document
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.api.ProductAction
 import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
@@ -17,13 +16,14 @@ import java.util.Optional.ofNullable
 import kotlin.streams.toList
 
 @Component
-class FourKidsProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgentDataHolder, searchUrlBuilder: SearchUrlBuilder) : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
+class FourKidsProductParser(unitParser: UnitParser,
+                            userAgentDataHolder: UserAgentDataHolder,
+                            searchUrlBuilder: SearchUrlBuilder)
+    : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
-    override val eshopUuid: EshopUuid
-        get() = EshopUuid.FOUR_KIDS
+    override val eshopUuid: EshopUuid = EshopUuid.FOUR_KIDS
 
-    override val timeout: Int
-        get() = TIMEOUT_10_SECOND
+    override val timeout: Int = TIMEOUT_10_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {
         val countOfProductsOpt = ofNullable(documentList.select("body > div.inner.relative > div > div > div:nth-child(5) > div.col-md-4.hidden-xs.hidden-sm > span").first())
@@ -51,14 +51,14 @@ class FourKidsProductParser(unitParser: UnitParser, userAgentDataHolder: UserAge
     override fun parseUrlsOfProduct(documentList: Document, pageNumber: Int): List<String> {
         return documentList.select("#products-list > div > a").stream()
                 .map {
-                     eshopUuid.productStartUrl + it.attr("href")
+                    eshopUuid.productStartUrl + it.attr("href")
                 }
                 .toList()
     }
 
     override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         var first = documentDetailProduct.select("div.product-detail > div.col-xs-12.col-md-7 > h1").first()
-        if(first == null){
+        if (first == null) {
             first = documentDetailProduct.select("div.product-detail > div.col-xs-12.col-md-5 > h1").first()
         }
 
@@ -82,13 +82,5 @@ class FourKidsProductParser(unitParser: UnitParser, userAgentDataHolder: UserAge
                 .map { it.text() }
                 .map { removeEnd(it, " €") }
                 .map { ConvertUtils.convertToBigDecimal(it) }
-    }
-
-    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
-        return Optional.empty()
-    }
-
-    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
-        return Optional.empty()
     }
 }

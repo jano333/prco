@@ -2,7 +2,6 @@ package sk.hudak.prco.z.old
 
 import org.jsoup.nodes.Document
 import org.slf4j.LoggerFactory
-import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.dto.ProductNewData
@@ -23,7 +22,6 @@ import java.util.function.Supplier
 
 
 @Deprecated("use diffrent version")
-@Component
 class AddImpl(private val internalTxService: InternalTxService,
               private val htmlParser: HtmlParser,
               private val productParsers: List<EshopProductsParser>,

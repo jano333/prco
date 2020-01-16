@@ -5,7 +5,6 @@ import org.jsoup.nodes.Document
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.EshopUuid.KID_MARKET
-import sk.hudak.prco.api.ProductAction
 import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
@@ -58,7 +57,7 @@ class KidMarketProductParser(unitParser: UnitParser,
     override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         return ofNullable(documentDetailProduct.select("h1[class=page-heading]").first())
                 .map { it.text() }
-                 .orElse(null)
+                .orElse(null)
     }
 
     override fun parseProductPictureURL(documentDetailProduct: Document): Optional<String> {
@@ -72,16 +71,5 @@ class KidMarketProductParser(unitParser: UnitParser,
                 .map { StringUtils.removeEnd(it, "€") }
                 .map { ConvertUtils.convertToBigDecimal(it) }
     }
-
-    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
-        //TODO
-        return Optional.empty()
-    }
-
-    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
-        //TODO
-        return Optional.empty()
-    }
-
 
 }

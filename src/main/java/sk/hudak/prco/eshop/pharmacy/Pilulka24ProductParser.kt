@@ -7,7 +7,6 @@ import org.jsoup.nodes.Element
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.EshopUuid.PILULKA_24
-import sk.hudak.prco.api.ProductAction
 import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
@@ -80,11 +79,4 @@ class Pilulka24ProductParser(unitParser: UnitParser,
                 .map { ConvertUtils.convertToBigDecimal(it) }
     }
 
-    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
-        return Optional.empty()
-    }
-
-    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
-        return Optional.empty()
-    }
 }

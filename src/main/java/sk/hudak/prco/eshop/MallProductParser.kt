@@ -34,6 +34,7 @@ class MallProductParser(unitParser: UnitParser,
     }
 
     override val eshopUuid: EshopUuid = MALL
+
     override val timeout: Int = TIMEOUT_15_SECOND
 
     override fun parseCountOfPages(documentList: Document): Int {

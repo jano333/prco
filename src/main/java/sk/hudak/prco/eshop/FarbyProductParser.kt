@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils
 import org.jsoup.nodes.Document
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
-import sk.hudak.prco.api.ProductAction
 import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
@@ -58,13 +57,5 @@ class FarbyProductParser(unitParser: UnitParser,
     override fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal> {
         return Optional.ofNullable(documentDetailProduct.select("span[itemprop='price']"))
                 .map { ConvertUtils.convertToBigDecimal(it.text()) }
-    }
-
-    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
-        return Optional.empty()
-    }
-
-    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
-        return Optional.empty()
     }
 }

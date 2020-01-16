@@ -5,7 +5,6 @@ import org.jsoup.nodes.Document
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.EshopUuid.BRENDON
-import sk.hudak.prco.api.ProductAction
 import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
@@ -84,15 +83,5 @@ class BrendonProductParser(unitParser: UnitParser,
                 .map { StringUtils.removeEnd(it, " €") }
                 .filter { StringUtils.isNotBlank(it) }
                 .map { ConvertUtils.convertToBigDecimal(it) }
-    }
-
-    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
-        //TODO
-        return Optional.empty()
-    }
-
-    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
-        //TODO
-        return Optional.empty()
     }
 }

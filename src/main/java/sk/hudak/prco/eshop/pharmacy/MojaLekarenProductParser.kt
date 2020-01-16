@@ -6,7 +6,6 @@ import org.jsoup.nodes.Element
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.EshopUuid.MOJA_LEKAREN
-import sk.hudak.prco.api.ProductAction
 import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
@@ -83,13 +82,4 @@ class MojaLekarenProductParser(unitParser: UnitParser,
                 .map { ConvertUtils.convertToBigDecimal(it) }
     }
 
-    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
-        //TODO impl
-        return Optional.empty()
-    }
-
-    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
-        //TODO impl
-        return Optional.empty()
-    }
 }

@@ -14,9 +14,11 @@ toto je rovnaky produkt:(urobit servic, ktory vyhlada v danom esope produkty kto
 eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 169, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-pronutra-800g-dojcenske-mlieko/
 eshop: FEEDO price for unit 18.11250, price for one item 14.49, id 996, '3x NUTRILON 4 (800g) - dojčenské mlieko', https://www.feedo.sk/3x-nutrilon-4-800g-dojcenske-mlieko/
 ---------
-TODO prest not interesting ktore maju slovo pampers ci tam nie je 7 alebo nieco zabudnute(len manualne staci, netreba UI)
-TODO dokoncit facebook pre grupu pamper zelene1-7(urobit kategorie aj pre 7) a biele0-5 a nutrilo 1-6
-TODO pampers 4 a 4+ davat spolu
+prest not interesting ktore maju slovo pampers ci tam nie je 7 alebo nieco zabudnute(len manualne staci, netreba UI)
+---------
+dokoncit facebook pre grupu pamper zelene1-7(urobit kategorie aj pre 7) a biele0-5 a nutrilo 1-6
+---------
+pampers 4 a 4+ davat spolu
 ---------------------------------------------------------------------------------------------
 zmenint na warning nie error:
 2019-09-13 15:58:28,367 ERROR [PERINBABA-thread] [] s.h.p.m.u.UpdateProductErrorHandlerImpl [UpdateProductErrorHandlerImpl.kt:21] error while parsing product update data for product http://www.perinbaba.sk/plienky-new-baby-dry-2-mini-3-6kg-giant-pack-100ks.html
@@ -57,7 +59,7 @@ dava zle automaticky groupu:
 Pampers Pure Protection 3 6-10 kg plienkové nohavičky 31 kusov
 a dava
 PAMPERS_ZELENE_3
-TODO: urobit group keywordy aj pre pants vsetky velkosti a prest zoznam notinteresting s nazvom pampers
+urobit group keywordy aj pre pants vsetky velkosti a prest zoznam notinteresting s nazvom pampers
 *****************************************************************************************
 ----------------------------
 !!! do nutrilon groupy som pridal aj vanilku

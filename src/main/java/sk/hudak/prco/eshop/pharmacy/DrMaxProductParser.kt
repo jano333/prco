@@ -5,7 +5,6 @@ import org.jsoup.nodes.Document
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.EshopUuid.DR_MAX
-import sk.hudak.prco.api.ProductAction
 import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.dto.UnitTypeValueCount
 import sk.hudak.prco.parser.eshop.JSoupProductParser
@@ -17,8 +16,8 @@ import java.util.*
 
 @Component
 class DrMaxProductParser(unitParser: UnitParser,
-                                    userAgentDataHolder: UserAgentDataHolder,
-                                    searchUrlBuilder: SearchUrlBuilder)
+                         userAgentDataHolder: UserAgentDataHolder,
+                         searchUrlBuilder: SearchUrlBuilder)
     : JSoupProductParser(unitParser, userAgentDataHolder, searchUrlBuilder) {
 
     override val eshopUuid: EshopUuid = DR_MAX
@@ -55,8 +54,7 @@ class DrMaxProductParser(unitParser: UnitParser,
     override fun parseProductNameFromDetail(documentDetailProduct: Document): String? {
         val select = documentDetailProduct.select("#product-detail > div.row > div > div > div.col.data > div.redesign_desktop > div.redesign-product-detail-title.bold")
         val first = select.first().children().first()
-        val text = first.text().trim { it <= ' ' }
-        return text
+        return first.text().trim { it <= ' ' }
     }
 
     override fun parseUnitValueCount(document: Document, productName: String): Optional<UnitTypeValueCount> {
@@ -92,16 +90,5 @@ class DrMaxProductParser(unitParser: UnitParser,
         val s = eshopUuid.productStartUrl + src
         return Optional.of(s)
     }
-
-    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
-        //TODO impl
-        return Optional.empty()
-    }
-
-    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
-        //TODO impl
-        return Optional.empty()
-    }
-
 
 }

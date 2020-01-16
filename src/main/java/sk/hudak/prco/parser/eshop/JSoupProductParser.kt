@@ -58,10 +58,10 @@ abstract class JSoupProductParser : EshopProductsParser {
      * <br></br>Volana 1 v poradi.
      * <br></br> vynimky vyhadzovane touto metodu su odchytovane vyssie
      *
-     * @param document
+     * @param documentList
      * @return
      */
-    abstract override fun parseCountOfPages(document: Document): Int
+    abstract override fun parseCountOfPages(documentList: Document): Int
 
     /**
      * Volana 2 v poradi.<br></br>

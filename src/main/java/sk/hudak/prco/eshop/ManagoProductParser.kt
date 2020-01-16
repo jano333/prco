@@ -6,7 +6,6 @@ import org.jsoup.nodes.Element
 import org.springframework.stereotype.Component
 import sk.hudak.prco.api.EshopUuid
 import sk.hudak.prco.api.EshopUuid.MAGANO
-import sk.hudak.prco.api.ProductAction
 import sk.hudak.prco.builder.SearchUrlBuilder
 import sk.hudak.prco.parser.eshop.JSoupProductParser
 import sk.hudak.prco.parser.unit.UnitParser
@@ -72,15 +71,5 @@ class ManagoProductParser(unitParser: UnitParser, userAgentDataHolder: UserAgent
                 .filter { it.indexOf("€") != -1 }
                 .map { it.substring(0, it.indexOf("€") - 1) }
                 .map { ConvertUtils.convertToBigDecimal(it) }
-    }
-
-    override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
-        //TODO impl
-        return Optional.empty()
-    }
-
-    override fun parseProductActionValidity(documentDetailProduct: Document): Optional<Date> {
-        //TODO impl
-        return Optional.empty()
     }
 }
