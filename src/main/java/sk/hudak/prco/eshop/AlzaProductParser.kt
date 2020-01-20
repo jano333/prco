@@ -120,7 +120,6 @@ class AlzaProductParser(unitParser: UnitParser,
     }
 
     override fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
-        //TODO dorobit parsovanie zlavy v percentach
         return Optional.of(
                 if (existElement(documentDetailProduct, "span[class=icon-percentage icon]") || existElement(documentDetailProduct, "span[class=quantityPercentDiscount icon-percentage icon]"))
                     IN_ACTION

@@ -188,4 +188,8 @@ class UIServiceImpl(private val internalTxService: InternalTxService,
     override fun markProductAsNotInterested(productId: Long?) {
         internalTxService.markProductAsNotInterested(productId!!)
     }
+
+    override fun findProductsInEshop(eshopUuid: EshopUuid): List<ProductFullDto> {
+      return internalTxService.findProductsByFilter(ProductFilterUIDto.withEshopOnly(eshopUuid).orderBy(ProductFilterUIDto.ORDER_BY.NAME))
+    }
 }

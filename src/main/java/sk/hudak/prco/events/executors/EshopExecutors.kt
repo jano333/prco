@@ -15,8 +15,6 @@ import javax.annotation.PreDestroy
 @Component
 class EshopExecutors {
 
-    //TODO PrcoUncaughtExceptionHandler
-
     private val eshopDocumentExecutor = EnumMap<EshopUuid, ScheduledExecutorService>(EshopUuid::class.java)
 
     companion object {

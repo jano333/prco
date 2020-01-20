@@ -11,6 +11,7 @@ object MvcConstants {
     const val  VIEW_ERRORS = "errors"
     const val  VIEW_EXECUTOR_STATISTICS = "executorStatistics"
     const val  VIEW_ESHOPS_ADMIN = "eshopsAdmin"
+    const val  VIEW_PRODUCTS_IN_ESHOP = "productsInEshop"
 
     const val  ATTRIBUTE_COUNT_OF_PRODUCTS_NOT_IN_ANY_GROUP = "countOfProductsNotInAnyGroup"
 

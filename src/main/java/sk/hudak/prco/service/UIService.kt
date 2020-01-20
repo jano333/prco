@@ -190,4 +190,6 @@ interface UIService {
     fun deleteNewProducts(vararg newProductIds: Long)
 
     fun markProductAsNotInterested(productId: Long?)
+
+    fun findProductsInEshop(eshopUuid: EshopUuid): List<ProductFullDto>
 }

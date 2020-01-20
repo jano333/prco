@@ -100,7 +100,7 @@ class ProductFilterUIDto : DtoAble {
         this.onlyInAction = onlyInAction
     }
 
-    private constructor(eshopUuid: EshopUuid) {
+    constructor(eshopUuid: EshopUuid) {
         this.eshopUuid = eshopUuid
     }
 

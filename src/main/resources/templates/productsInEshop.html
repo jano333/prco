@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>List of products in Eshop</title>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/4.1.3/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/3.0.0/jquery.min.js"
+            th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+
+    <link href="../static/css/spring-core.css"
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+
+</head>
+<body>
+<div class="container">
+
+    <h2>Products in Eshop:</h2>
+
+    <form method="post" th:object="${item}" th:action="${'/productsInEshop/'}">
+
+        <select th:field="*{eshopUuid}" onchange="this.form.submit()">
+            <option th:each="o : ${eshopList}"
+                    th:value="${o}"
+                    th:text="${o.name()}">
+            </option>
+        </select>
+        <button type="submit">Show</button>
+        <br/>
+    </form>
+
+    <div th:if="${not #lists.isEmpty(productInEshopList)}">
+        <table class="table table-striped">
+            <tr>
+                <th>Name</th>
+                <th>Price for package</th>
+            </tr>
+            <tr th:each="product : ${productInEshopList}">
+                <!-- nazov -->
+                <td>
+                    <a th:href="${product.url}" th:text="${product.name}"></a>
+                </td>
+
+                <td th:text="${product.priceForPackage}"></td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

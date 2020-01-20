@@ -33,10 +33,10 @@ class PrcoConsole(val internalTxService: InternalTxService,
 //        addMangager.addNewProductsByKeywordForAllEshops(SearchKeyWordId.PAMPERS_ID)
 
 //        updateEE.updateProductDataForEachProductInEshop(EshopUuid.ALZA)
-        EshopUuid.values().forEach {
-            updateManager.updateProductDataForEachProductInEshop(it)
-            Thread.sleep(1 * 1000)
-        }
+//        EshopUuid.values().forEach {
+//            updateManager.updateProductDataForEachProductInEshop(it)
+//            Thread.sleep(1 * 1000)
+//        }
 
         // Pampers Plenky S2 100ks, 4-8 kg
 //        val groupProductKeywords = groupProductResolver.resolveGroupId("Pampers Plenky S2 100ks, 4-8 kg")

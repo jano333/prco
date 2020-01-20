@@ -105,7 +105,7 @@ abstract class JSoupProductParser : EshopProductsParser {
      */
     protected abstract fun parseProductPriceForPackage(documentDetailProduct: Document): Optional<BigDecimal>
 
-    //TODO nasledovne 2 metody spojit do jednej a urobit aj navratovy typ
+    // FIXME nasledovne 2 metody spojit do jednej a urobit aj navratovy typ
 
     protected open fun parseProductAction(documentDetailProduct: Document): Optional<ProductAction> {
         return Optional.empty()
@@ -208,17 +208,17 @@ abstract class JSoupProductParser : EshopProductsParser {
 
         val result = ProductNewData(eshopUuid, productUrl)
 
-        val productNameOpt = parseProductNameFromDetail(document)
-        logWarningIfNullOrEmpty(Optional.ofNullable(productNameOpt), "productName", document.location())
-        if (productNameOpt == null) {
-            throw  ProductNameNotFoundException(productUrl);
+        val productName = parseProductNameFromDetail(document)
+        logWarningIfNullOrEmpty(productName, "productName", document.location())
+        if (productName == null) {
+            throw  ProductNameNotFoundException(productUrl)
         }
-        result.name = productNameOpt
+        result.name = productName
 
 
         val productPictureUrl = internalParseProductPictureURL(document, productUrl)
         logWarningIfNullOrEmpty(productPictureUrl, "pictureUrl", document.location())
-        if (productPictureUrl!=null && productPictureUrl.isNotBlank()) {
+        if (productPictureUrl != null && productPictureUrl.isNotBlank()) {
             result.pictureUrl = productPictureUrl
         }
 
