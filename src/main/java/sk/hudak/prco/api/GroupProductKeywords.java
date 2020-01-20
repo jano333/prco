@@ -39,24 +39,6 @@ public enum GroupProductKeywords {
             asList("lovela", "prasek", "farebna"),
             asList("lovela", "prasek", "barevne")
     ),
-    NUTRILON_1(
-            577L,
-            asList("nutrilon", "1")
-    ),
-    NUTRILON_2(
-            578L,
-            asList("nutrilon", "2")
-    ),
-    NUTRILON_3(
-            579L,
-            asList("nutrilon", "3")
-    ),
-    NUTRILON_4(
-            33L,
-            asList("nutrilon", "4")),
-    NUTRILON_5(
-            257L,
-            asList("nutrilon", "5")),
     ;
 
 
