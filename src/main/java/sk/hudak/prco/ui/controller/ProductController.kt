@@ -93,9 +93,9 @@ class ProductController(uiService: UIService,
         return modelAndView
     }
 
-    @RequestMapping("/product/{id}/notInterested")
-    fun notInterestedNewProducts(@PathVariable id: Long?): ModelAndView {
-        uiService.markProductAsNotInterested(id)
+    @RequestMapping("/product/{productId}/notInterested")
+    fun notInterestedNewProducts(@PathVariable productId: Long?): ModelAndView {
+        uiService.markProductAsNotInterested(productId)
         return ModelAndView(REDIRECT_TO_VIEW_PRODUCTS_NOT_IN_ANY_GROUP)
     }
 

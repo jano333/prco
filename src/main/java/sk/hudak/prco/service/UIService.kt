@@ -40,14 +40,14 @@ interface UIService {
      * @param newProductId
      * @return
      */
-    fun getNewProduct(newProductId: Long?): NewProductFullDto
+    fun getNewProduct(newProductId: Long): NewProductFullDto
 
     /**
      * Nastavi 'confirm' na 'novom' produkte na true. Co znamena, ze potvrdzujem data pre unit hodnoty su spravne.
      *
      * @param newProductId id new produktu
      */
-    fun confirmUnitDataForNewProduct(newProductId: Long?)
+    fun confirmUnitDataForNewProduct(newProductId: Long)
 
     /**
      * Spusti znova vyparsovanie 'unit' values na zaklade nazvu 'new' produktu.
@@ -68,7 +68,7 @@ interface UIService {
      *
      * @param newProductId id new produktu
      */
-    fun markNewProductAsNotInterested(newProductId: Long?)
+    fun markNewProductAsNotInterested(newProductId: Long)
 
     //-------------- PRODUCTS -------------------
 
@@ -93,7 +93,7 @@ interface UIService {
      *
      * @param productId id produktu
      */
-    fun removeProduct(productId: Long?)
+    fun removeProduct(productId: Long)
 
     /**
      * Zoznam vsetkych produktov v danej skupine zoradenych podla najlepsej ceny hore...
@@ -192,4 +192,6 @@ interface UIService {
     fun markProductAsNotInterested(productId: Long?)
 
     fun findProductsInEshop(eshopUuid: EshopUuid): List<ProductFullDto>
+
+    fun updateProductDataForProductWithId(productId: Long)
 }

@@ -37,6 +37,7 @@
             <tr>
                 <th>Name</th>
                 <th>Price for package</th>
+                <th>Actions</th>
             </tr>
             <tr th:each="product : ${productInEshopList}">
                 <!-- nazov -->
@@ -45,6 +46,18 @@
                 </td>
 
                 <td th:text="${product.priceForPackage}"></td>
+
+                <td>
+                    <a th:href="${'/product/'+product.id+'/delete'}">
+                        Delete
+                    </a>
+                    <br>
+                    <a th:href="${'/product/'+product.id+'/updatePrice'}">
+                        Update price
+                    </a>
+                    <br>
+
+                </td>
             </tr>
         </table>
     </div>

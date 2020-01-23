@@ -65,12 +65,12 @@ class UIServiceImpl(private val internalTxService: InternalTxService,
             internalTxService.findNewProducts(filter)
 
 
-    override fun getNewProduct(newProductId: Long?): NewProductFullDto {
-        return internalTxService.getNewProduct(newProductId!!)
+    override fun getNewProduct(newProductId: Long): NewProductFullDto {
+        return internalTxService.getNewProduct(newProductId)
     }
 
-    override fun confirmUnitDataForNewProduct(newProductId: Long?) {
-        val newProductIds = longArrayOf(newProductId!!)
+    override fun confirmUnitDataForNewProduct(newProductId: Long) {
+        val newProductIds = longArrayOf(newProductId)
 
         internalTxService.confirmUnitDataForNewProducts(newProductIds)
     }
@@ -87,8 +87,8 @@ class UIServiceImpl(private val internalTxService: InternalTxService,
 
     }
 
-    override fun markNewProductAsNotInterested(newProductId: Long?) {
-        internalTxService.markNewProductAsNotInterested(newProductId!!)
+    override fun markNewProductAsNotInterested(newProductId: Long) {
+        internalTxService.markNewProductAsNotInterested(newProductId)
     }
 
     override fun getProduct(productId: Long): ProductAddingToGroupDto {
@@ -111,8 +111,8 @@ class UIServiceImpl(private val internalTxService: InternalTxService,
         return internalTxService.findProductsByFilter(filter)
     }
 
-    override fun removeProduct(productId: Long?) {
-        internalTxService.removeProduct(productId!!)
+    override fun removeProduct(productId: Long) {
+        internalTxService.removeProduct(productId)
     }
 
     override fun findProductsInGroup(groupId: Long, withPriceOnly: Boolean, vararg eshopsToSkip: EshopUuid): List<ProductFullDto> {
@@ -191,5 +191,9 @@ class UIServiceImpl(private val internalTxService: InternalTxService,
 
     override fun findProductsInEshop(eshopUuid: EshopUuid): List<ProductFullDto> {
       return internalTxService.findProductsByFilter(ProductFilterUIDto.withEshopOnly(eshopUuid).orderBy(ProductFilterUIDto.ORDER_BY.NAME))
+    }
+
+    override fun updateProductDataForProductWithId(productId: Long) {
+        updateProductManager.updateProductDataForProductWithId(productId)
     }
 }

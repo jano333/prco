@@ -3,6 +3,7 @@ package sk.hudak.prco.ui.controller
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.servlet.ModelAndView
 import sk.hudak.prco.api.EshopUuid
@@ -30,5 +31,21 @@ class ProductsInEshopController(uiService: UIService) : BasicController(uiServic
         modelAndView.addObject("eshopList", EshopUuid.values())
         modelAndView.addObject("productInEshopList", uiService.findProductsInEshop(selectedEshop.eshopUuid))
         return modelAndView
+    }
+
+    @GetMapping("/product/{productId}/delete")
+    fun deleteProduct(@PathVariable productId: Long): ModelAndView {
+        val eshopUuid = uiService.getProduct(productId).eshopUuid!!
+        uiService.removeProduct(productId)
+        return productsInEshop(Item(eshopUuid))
+    }
+
+    @GetMapping("/product/{productId}/updatePrice")
+    fun updatePriceProduct(@PathVariable productId: Long): ModelAndView {
+        val eshopUuid = uiService.getProduct(productId).eshopUuid!!
+
+        uiService.updateProductDataForProductWithId(productId)
+
+        return productsInEshop(Item(eshopUuid))
     }
 }

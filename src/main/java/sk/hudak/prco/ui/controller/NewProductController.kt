@@ -3,8 +3,8 @@ package sk.hudak.prco.ui.controller
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.servlet.ModelAndView
 import sk.hudak.prco.api.Unit
 import sk.hudak.prco.dto.product.NewProductFilterUIDto
@@ -59,7 +59,7 @@ class NewProductController(uiService: UIService) : BasicController(uiService) {
      * @return
      */
     @RequestMapping("/newProduct/{id}/confirm")
-    fun confirmNewProducts(@PathVariable id: Long?): ModelAndView {
+    fun confirmNewProducts(@PathVariable id: Long): ModelAndView {
         uiService.confirmUnitDataForNewProduct(id)
         //reload zoznamu
         return ModelAndView(REDIRECT_TO_VIEW_NEW_PRODUCTS)
@@ -96,7 +96,7 @@ class NewProductController(uiService: UIService) : BasicController(uiService) {
      * @return
      */
     @RequestMapping("/newProduct/{id}/notInterested")
-    fun notInterestedNewProducts(@PathVariable id: Long?): ModelAndView {
+    fun notInterestedNewProducts(@PathVariable id: Long): ModelAndView {
         uiService.markNewProductAsNotInterested(id)
         return ModelAndView(REDIRECT_TO_VIEW_NEW_PRODUCTS)
     }
@@ -108,7 +108,7 @@ class NewProductController(uiService: UIService) : BasicController(uiService) {
      * @return
      */
     @RequestMapping(value = ["/newProduct/{id}/unitData"])
-    fun editProductUnitData(@PathVariable(name = "id") newProductId: Long?): ModelAndView {
+    fun editProductUnitData(@PathVariable(name = "id") newProductId: Long): ModelAndView {
         val (id, _, _, _, name, _, unit, unitValue, unitPackageCount) = uiService.getNewProduct(newProductId)
 
         val productUnitDataDto = ProductUnitDataDto()
@@ -127,7 +127,7 @@ class NewProductController(uiService: UIService) : BasicController(uiService) {
      * @param unitData
      * @return
      */
-    @RequestMapping(value = ["/newProduct/unitData/save"], method = [RequestMethod.POST])
+    @PostMapping("/newProduct/unitData/save")
     fun saveProductUnitData(unitData: ProductUnitDataDto): String {
         uiService.updateProductUnitData(unitData)
         return REDIRECT_TO_VIEW_NEW_PRODUCTS
